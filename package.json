@@ -1,0 +1,22 @@
+{
+  "name": "phlviz",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "Chart.StackedBar.js": "regaddi/Chart.StackedBar.js",
+    "backbone": "^1.2.2",
+    "browserify": "^11.0.1",
+    "chart.js": "^1.0.2",
+    "dc": "dc-js/dc.js",
+    "jquery": "^2.1.4",
+    "soda-js": "^0.2.1",
+    "underscore": "^1.8.3",
+    "watchify": "^3.3.1"
+  }
+}

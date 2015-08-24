@@ -1,0 +1,31 @@
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		
+		<title>phlviz</title>
+		<meta name="description" content="">
+		
+		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/foundation/5.5.2/css/foundation.min.css">
+		<link rel="stylesheet" href="styles.css">
+		
+		<link rel="canonical" href="">
+		
+		<script src="//cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.js"></script>
+	</head>
+	
+	<body>
+		<div class="row">
+			<div class="medium-6 columns">
+				<canvas id="chart" class="card" data-domain="data.phila.gov" data-dataset="2pfz-fnns" data-group-by="violation_description" data-chart-type="bar"></canvas>
+			</div>
+			<div class="medium-6 columns">
+				<canvas id="chart" class="card" data-domain="data.phila.gov" data-dataset="2pfz-fnns" data-group-by="issuing_agency" data-chart-type="bar"></canvas>
+			</div>
+		</div>
+		
+		<script src="bundle.js"></script>
+	</body>
+</html>
