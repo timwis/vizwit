@@ -3,7 +3,8 @@ var $ = require('jquery'),
 	Backbone = require('backbone'),
 	
 	Socrata = require('./collections/socrata'),
-	Bar = require('./views/bar');
+	Bar = require('./views/bar'),
+	Table = require('./views/table');
 	
 var vent = _.clone(Backbone.Events);
 
@@ -11,15 +12,26 @@ var vent = _.clone(Backbone.Events);
 $('.card').each(function(index, el) {
 	var config = $(el).data();
 	
-	var collection = new Socrata(null, config),
-		filteredCollection = new Socrata(null, config);
-		
-	new Bar({
-		el: el,
-		collection: collection,
-		filteredCollection: filteredCollection,
-		vent: vent
-	});
+	var collection = new Socrata(null, config);
+	var filteredCollection = new Socrata(null, config);
+	
+	switch(config.chartType) {
+		case 'bar':
+			new Bar({
+				el: el,
+				collection: collection,
+				filteredCollection: filteredCollection,
+				vent: vent
+			});
+			break;
+		case 'table':
+			new Table({
+				el: el,
+				collection: collection,
+				vent: vent
+			});
+			break;
+	}
 	
 	collection.fetch();
 });

@@ -1,4 +1,12 @@
 .card {
-	width: 500px;
-	height: 400px;
+	width: 100%;
+	min-height: 350px;
+}
+
+.scroll-y {
+	overflow-x: scroll;
+}
+
+.card.table {
+	white-space: nowrap;
 }

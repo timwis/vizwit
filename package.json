@@ -13,6 +13,7 @@
     "backbone": "^1.2.2",
     "browserify": "^11.0.1",
     "chart.js": "^1.0.2",
+    "datatables": "^1.10.8",
     "dc": "dc-js/dc.js",
     "jquery": "^2.1.4",
     "soda-js": "^0.2.1",

@@ -16,13 +16,15 @@ module.exports = Backbone.Collection.extend({
 	sync: function(method, model, options) {
 		console.log(arguments);
 		
-		this.consumer.query()
+		var query = this.consumer.query()
 			.withDataset(this.dataset)
-			.select('count(*), ' + this.groupBy)
-			.where(this.filter)
+			.where(this.filter);
+		if(this.groupBy) {
+			query.select('count(*), ' + this.groupBy)
 			.group(this.groupBy)
 			.order('count desc')
-			.getRows()
+		}
+		query.getRows()
 			.on('success', options.success)
 			.on('error', options.error);
 	}
