@@ -1,8 +1,8 @@
 var $ = require('jquery'),
 	_ = require('underscore'),
 	Backbone = require('backbone'),
-	Chart = require('chart.js');
-require('Chart.StackedBar.js')
+	Chartist = require('chartist');
+require('chartist-plugin-tooltip');
 
 var colors = {
 	primary: {
@@ -27,7 +27,7 @@ module.exports = Backbone.View.extend({
 		
 		_.bindAll(this, 'onClick');
 		
-		this.ctx = this.el.getContext('2d');
+		//this.ctx = this.el.getContext('2d');
 		
 		// Listen to vent filters
 		this.listenTo(this.vent, 'filter', this.onFilter);
@@ -46,11 +46,9 @@ module.exports = Backbone.View.extend({
 		var self = this,
 			subset = new Backbone.Collection(this.collection.slice(0, 10)),
 			labels = subset.pluck(this.collection.groupBy),
-			datasets = [];
-			datasets.push(_.extend({
-				label: '',
-				data: subset.pluck('count')
-			}, this.filteredCollection.length ? colors.subdued : colors.primary));
+			series = [];
+			series.push(subset.pluck('count'));
+			//}, this.filteredCollection.length ? colors.subdued : colors.primary));
 		
 		if(this.filteredCollection.length) {
 			var data2 = [];
@@ -60,19 +58,18 @@ module.exports = Backbone.View.extend({
 				var match = self.filteredCollection.findWhere(criteria);
 				data2.push(match ? match.get('count') : 0);
 			});
-			datasets.push(_.extend({
-				label: '',
-				data: data2
-			}, colors.primary));
+			series.push(data2);
 		}
 		
-		console.log('creating chart', datasets)
+		console.log('creating chart', series)
 		
-		this.chart = new Chart(this.ctx).Bar({
+		this.chart = new Chartist.Bar(this.el, {
 			labels: labels,
-			datasets: datasets
+			series: series
 		}, {
-			responsive: true
+			plugins: [
+				Chartist.plugins.tooltip()
+			]
 		});
 	},
 	onClick: function(e) {

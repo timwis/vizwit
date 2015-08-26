@@ -10,3 +10,7 @@
 .card.table {
 	white-space: nowrap;
 }
+
+.ct-label {
+	font-size: 1rem;
+}

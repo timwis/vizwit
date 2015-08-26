@@ -13,11 +13,24 @@
     "backbone": "^1.2.2",
     "browserify": "^11.0.1",
     "chart.js": "^1.0.2",
+    "chartist": "^0.9.4",
+    "chartist-plugin-accessibility": "0.0.4",
+    "chartist-plugin-tooltip": "globegitter/chartist-plugin-tooltip",
     "datatables": "^1.10.8",
     "dc": "dc-js/dc.js",
     "jquery": "^2.1.4",
     "soda-js": "^0.2.1",
     "underscore": "^1.8.3",
     "watchify": "^3.3.1"
+  },
+  "devDependencies": {
+    "browserify-shim": "^3.8.10"
+  },
+  "browserify": {
+    "transform": [
+      "browserify-shim"
+    ]
+  },
+  "browserify-shim": {
   }
 }
