@@ -2,7 +2,7 @@ var $ = require('jquery'),
 	_ = require('underscore'),
 	Backbone = require('backbone'),
 	Chartist = require('chartist');
-require('chartist-plugin-tooltip');
+//require('chartist-plugin-tooltip');
 
 var colors = {
 	primary: {
@@ -37,17 +37,26 @@ module.exports = Backbone.View.extend({
 		this.listenTo(this.filteredCollection, 'sync', this.render);
 	},
 	events: {
-		'click': 'onClick'
+		'click .ct-bar': 'onClick'
 	},
 	render: function() {
 		//console.log(this.collection.toJSON())
-		if(this.chart) this.chart.destroy();
+		//if(this.chart) this.chart.destroy();
 		
 		var self = this,
 			subset = new Backbone.Collection(this.collection.slice(0, 10)),
 			labels = subset.pluck(this.collection.groupBy),
+			groupBy = this.collection.groupBy,
 			series = [];
-			series.push(subset.pluck('count'));
+			series.push(subset.map(function(model) {
+				return {
+					value: model.get('count'),
+					meta: {
+						label: model.get(groupBy)
+					}
+				};
+			}));
+			//subset.pluck('count'));
 			//}, this.filteredCollection.length ? colors.subdued : colors.primary));
 		
 		if(this.filteredCollection.length) {
@@ -56,7 +65,12 @@ module.exports = Backbone.View.extend({
 				var criteria = {};
 				criteria[self.collection.groupBy] = label;
 				var match = self.filteredCollection.findWhere(criteria);
-				data2.push(match ? match.get('count') : 0);
+				data2.push({
+					value: match ? match.get('count') : 0,
+					meta: {
+						label: match.get(groupBy)
+					}
+				});
 			});
 			series.push(data2);
 		}
@@ -67,19 +81,20 @@ module.exports = Backbone.View.extend({
 			labels: labels,
 			series: series
 		}, {
-			plugins: [
-				Chartist.plugins.tooltip()
-			]
+			seriesBarDistance: 0
 		});
 	},
 	onClick: function(e) {
-		var bars = this.chart.getBarsAtEvent(e);
+		/*var bars = this.chart.getBarsAtEvent(e);
 		if(bars.length) {
 			console.log(this.collection.groupBy, bars[0]);
 			this.vent.trigger('filter', this.collection.groupBy, bars[0].label);
 			bars[0].strokeColor = 'rgba(151,187,205,1.0)';
 			console.log(bars[0])
-		}
+		}*/
+		var label = Chartist.deserialize($(e.currentTarget).attr('ct:meta')).label;
+		console.log('Filtering by', label);
+		this.vent.trigger('filter', this.collection.groupBy, label);
 	},
 	onFilter: function(key, value) {
 		if(key !== this.filteredCollection.groupBy) {
