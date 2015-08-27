@@ -34511,7 +34511,7 @@ module.exports = Backbone.View.extend({
 				data2.push({
 					value: match ? match.get('count') : 0,
 					meta: {
-						label: match.get(groupBy)
+						label: label
 					}
 				});
 			});
