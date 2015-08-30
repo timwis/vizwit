@@ -47,7 +47,6 @@ module.exports = Backbone.View.extend({
 			
 			// If the filtered collection has been fetched, find the corresponding record and put it in another series
 			if(self.filteredCollection.length) {
-				console.log('has length')
 				var match = self.filteredCollection.get(label);
 				// Push a record even if there's no match so we don't align w/ the wrong bar in the other collection
 				formattedSeries.push({

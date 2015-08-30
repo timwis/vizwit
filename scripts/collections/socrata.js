@@ -31,8 +31,10 @@ module.exports = Backbone.Collection.extend({
 			.group(this.groupBy)
 			.order('count desc');
 		} else {
-			query.order(':id');
+			query.order(this.order || ':id');
 		}
+		if(this.limit) query.limit(this.limit);
+		if(this.offset) query.offset(this.offset);
 		return query.getURL();
 	}
 })

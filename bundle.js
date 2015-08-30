@@ -36215,8 +36215,10 @@ module.exports = Backbone.Collection.extend({
 			.group(this.groupBy)
 			.order('count desc');
 		} else {
-			query.order(':id');
+			query.order(this.order || ':id');
 		}
+		if(this.limit) query.limit(this.limit);
+		if(this.offset) query.offset(this.offset);
 		return query.getURL();
 	}
 })
@@ -36325,7 +36327,6 @@ module.exports = Backbone.View.extend({
 			
 			// If the filtered collection has been fetched, find the corresponding record and put it in another series
 			if(self.filteredCollection.length) {
-				console.log('has length')
 				var match = self.filteredCollection.get(label);
 				// Push a record even if there's no match so we don't align w/ the wrong bar in the other collection
 				formattedSeries.push({
@@ -36383,14 +36384,14 @@ require('datatables');
 require('../../assets/js/datatables/dataTables.bootstrap');
 
 var sampleColumns = [
-	{name: 'division', label: 'division', cell: 'string'},
-	{name: 'fine', label: 'fine', cell: 'string'},
-	{name: 'issue_date_and_time', label: 'issue_date_and_time', cell: 'string'},
-	{name: 'issuing_agency', label: 'issuing_agency', cell: 'string'},
-	{name: 'location', label: 'location', cell: 'string'},
-	{name: 'plate_id', label: 'plate_id', cell: 'string'},
-	{name: 'state', label: 'state', cell: 'string'},
-	{name: 'violation_description', label: 'violation_description', cell: 'string'}
+	{data: 'division', title: 'division', defaultContent: ''},
+	{data: 'fine', title: 'fine', defaultContent: ''},
+	{data: 'issue_date_and_time', title: 'issue_date_and_time', defaultContent: ''},
+	{data: 'issuing_agency', title: 'issuing_agency', defaultContent: ''},
+	{data: 'location', title: 'location', defaultContent: ''},
+	{data: 'plate_id', title: 'plate_id', defaultContent: ''},
+	{data: 'state', title: 'state', defaultContent: ''},
+	{data: 'violation_description', title: 'violation_description', defaultContent: ''}
 ];
 	
 module.exports = Backbone.View.extend({
@@ -36399,14 +36400,14 @@ module.exports = Backbone.View.extend({
 		this.vent = options.vent || null;
 		
 		// Listen to collection
-		this.listenTo(this.collection, 'sync', this.render);
+		//this.listenTo(this.collection, 'sync', this.render);
 		
 		// Listen to vent filters
 		this.listenTo(this.vent, 'filter', this.onFilter);
 		
 		// Fetch collection
-		this.collection.fetch();
-		//this.render();
+		//this.collection.fetch();
+		this.render();
 	},
 	render: function() {
 		var self = this;
@@ -36419,7 +36420,7 @@ module.exports = Backbone.View.extend({
 			// Define the columns from the first model in the collection
 			// This is dangerous as the first model may not contain every property
 			// This should be done either in a config file or with a metadata request at page init
-			var columns = [];
+			/*var columns = [];
 			if(this.collection.length) {
 				this.collection.at(0).keys().forEach(function(key) {
 					columns.push({
@@ -36430,29 +36431,31 @@ module.exports = Backbone.View.extend({
 				});
 			} else {
 				columns = sampleColumns;
-			}
+			}*/
 			
 			// Initialize the table
 			console.log('initializing table')
 			this.table = this.$el.DataTable({
-				data: this.collection.toJSON(),
-				columns: columns
-				/*ajax: function(data, callback, settings) {
+				columns: sampleColumns,
+				serverSide: true,
+				ajax: function(data, callback, settings) {
 					console.log('ajax', arguments)
+					self.collection.offset = data.start || 0;
+					self.collection.limit = data.length || 25;
+					self.collection.order = data.columns[data.order[0].column].data + ' ' + data.order[0].dir;
 					self.collection.fetch({
 						success: function(collection, response, options) {
-							console.log(collection.toJSON())
-							callback(collection.toJSON());
+							callback({data: collection.toJSON()});
 						}
 					});
-				}*/
+				}
 			});
 		}
 	},
 	// When another chart is filtered, filter this collection
 	onFilter: function(key, value) {
 		this.collection.filter[key] = value;
-		this.collection.fetch();
+		this.table.ajax.reload();
 	}
 });
 },{"../../assets/js/datatables/dataTables.bootstrap":1,"backbone":2,"datatables":8,"jquery":9,"underscore":15}]},{},[17]);
