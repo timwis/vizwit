@@ -36,22 +36,24 @@ module.exports = Backbone.View.extend({
 		
 		// Map collection(s) into format expected by chart library
 		subset.forEach(function(model) {
+			var label = model.get(self.collection.groupBy);
 			defaultSeries.push({
 				value: model.get(self.collection.countProperty),
 				meta: {
 					// Store the name of the bar (chartist doesn't do this by default)
-					label: model.get(self.collection.groupBy)
+					label: label
 				}
 			});
 			
 			// If the filtered collection has been fetched, find the corresponding record and put it in another series
 			if(self.filteredCollection.length) {
-				var match = self.filteredCollection.get(model.get(self.collection.groupBy));
+				console.log('has length')
+				var match = self.filteredCollection.get(label);
 				// Push a record even if there's no match so we don't align w/ the wrong bar in the other collection
 				formattedSeries.push({
 					value: match ? match.get(self.collection.countProperty) : 0,
 					meta: {
-						label: self.collection.groupBy
+						label: label
 					}
 				});
 			}
