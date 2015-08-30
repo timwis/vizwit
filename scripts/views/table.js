@@ -1,7 +1,8 @@
 var $ = require('jquery'),
 	_ = require('underscore'),
-	Backbone = require('backbone'),
-	Backgrid = require('backgrid');
+	Backbone = require('backbone');
+require('datatables');
+require('../../assets/js/datatables/dataTables.bootstrap');
 
 var sampleColumns = [
 	{name: 'division', label: 'division', cell: 'string'},
@@ -12,30 +13,9 @@ var sampleColumns = [
 	{name: 'plate_id', label: 'plate_id', cell: 'string'},
 	{name: 'state', label: 'state', cell: 'string'},
 	{name: 'violation_description', label: 'violation_description', cell: 'string'}
-]
-
-module.exports = Backgrid.Grid.extend({
-	columns: sampleColumns,
-	initialize: function(options) {
-		options = options || {};
-		this.vent = options.vent || null;
-		
-		// Listen to collection
-		this.listenTo(this.collection, 'sync', this.render);
-		
-		// Listen to vent filters
-		this.listenTo(this.vent, 'filter', this.onFilter);
-		
-		// Fetch collection
-		this.collection.fetch();
-		//this.render();
-		
-		// Call parent method
-		Backgrid.Grid.prototype.initialize.apply(this, arguments);
-	},
-});
+];
 	
-/*module.exports = Backbone.View.extend({
+module.exports = Backbone.View.extend({
 	initialize: function(options) {
 		options = options || {};
 		this.vent = options.vent || null;
@@ -78,12 +58,8 @@ module.exports = Backgrid.Grid.extend({
 			console.log('initializing table')
 			this.table = this.$el.DataTable({
 				data: this.collection.toJSON(),
-				columns: columns,
-				scrollX: true,
-				scrollY: 400,
-				deferRender: true,
-				scroller: true,
-				ajax: function(data, callback, settings) {
+				columns: columns
+				/*ajax: function(data, callback, settings) {
 					console.log('ajax', arguments)
 					self.collection.fetch({
 						success: function(collection, response, options) {
@@ -91,7 +67,7 @@ module.exports = Backgrid.Grid.extend({
 							callback(collection.toJSON());
 						}
 					});
-				}
+				}*/
 			});
 		}
 	},
@@ -100,4 +76,4 @@ module.exports = Backgrid.Grid.extend({
 		this.collection.filter[key] = value;
 		this.collection.fetch();
 	}
-});*/
+});
