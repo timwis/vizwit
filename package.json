@@ -26,7 +26,7 @@
     "dc": "dc-js/dc.js",
     "jquery": "^2.1.4",
     "node-sass": "^3.2.0",
-    "soda-js": "timwis/soda-js",
+    "soda-js": "timwis/soda-js#timwis",
     "underscore": "^1.8.3",
     "watchify": "^3.3.1"
   },
@@ -41,6 +41,10 @@
     ]
   },
   "browserify-shim": {
-    "backgrid-infinator": { "depends": [ "jquery:jQuery" ] }
+    "backgrid-infinator": {
+      "depends": [
+        "jquery:jQuery"
+      ]
+    }
   }
 }
