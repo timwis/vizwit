@@ -64,6 +64,7 @@ module.exports = Backbone.View.extend({
 					self.collection.offset = data.start || 0;
 					self.collection.limit = data.length || 25;
 					self.collection.order = data.columns[data.order[0].column].data + ' ' + data.order[0].dir;
+					self.collection.q = data.search.value ? data.search.value : null;
 					self.collection.fetch({
 						success: function(collection, response, options) {
 							callback({data: collection.toJSON()});

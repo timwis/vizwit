@@ -35,6 +35,7 @@ module.exports = Backbone.Collection.extend({
 		}
 		if(this.limit) query.limit(this.limit);
 		if(this.offset) query.offset(this.offset);
+		if(this.q) { query.q(this.q); console.log(this.q) }
 		return query.getURL();
 	}
 })
