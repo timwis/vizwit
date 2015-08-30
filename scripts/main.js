@@ -32,6 +32,4 @@ $('.card').each(function(index, el) {
 			});
 			break;
 	}
-	
-	collection.fetch();
 });

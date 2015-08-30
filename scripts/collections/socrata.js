@@ -3,7 +3,14 @@ var $ = require('jquery'),
 	Backbone = require('backbone'),
 	soda = require('soda-js');
 	
+var modelFactory = function(idAttribute) {
+	return Backbone.Model.extend({
+		idAttribute: idAttribute
+	});
+};
+	
 module.exports = Backbone.Collection.extend({
+	countProperty: 'count',
 	initialize: function(models, options) {
 		// Save config to collection
 		options = options || {};
@@ -12,20 +19,20 @@ module.exports = Backbone.Collection.extend({
 		this.dataset = options.dataset || null;
 		this.groupBy = options.groupBy || null;
 		this.filter = options.filter || {};
-	},
-	sync: function(method, model, options) {
-		console.log(arguments);
 		
+		this.model = modelFactory(options.groupBy);
+	},
+	url: function() {
 		var query = this.consumer.query()
 			.withDataset(this.dataset)
 			.where(this.filter);
 		if(this.groupBy) {
 			query.select('count(*), ' + this.groupBy)
 			.group(this.groupBy)
-			.order('count desc')
+			.order('count desc');
+		} else {
+			query.order(':id');
 		}
-		query.getRows()
-			.on('success', options.success)
-			.on('error', options.error);
+		return query.getURL();
 	}
 })

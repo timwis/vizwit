@@ -1,33 +1,17 @@
 var $ = require('jquery'),
 	_ = require('underscore'),
 	Backbone = require('backbone'),
-	Chartist = require('chartist');
-//require('chartist-plugin-tooltip');
-
-var colors = {
-	primary: {
-		fillColor: 'rgba(151,187,205,0.5)',
-		strokeColor: 'rgba(151,187,205,0.8)',
-		highlightFill: 'rgba(151,187,205,0.75)',
-		highlightStroke: 'rgba(151,187,205,1)'
-	},
-	subdued: {
-		fillColor: 'rgba(220,220,220,0.5)',
-		strokeColor: 'rgba(220,220,220,0.8)',
-		highlightFill: 'rgba(220,220,220,0.75)',
-		highlightStroke: 'rgba(220,220,220,1)'
-	}
-};
+	Chartist = require('chartist'),
+	numberFormatter = require('../util/number-formatter');
 	
 module.exports = Backbone.View.extend({
 	initialize: function(options) {
+		// Save options to view
 		options = options || {};
 		this.vent = options.vent || null;
 		this.filteredCollection = options.filteredCollection || null;
 		
 		_.bindAll(this, 'onClick');
-		
-		//this.ctx = this.el.getContext('2d');
 		
 		// Listen to vent filters
 		this.listenTo(this.vent, 'filter', this.onFilter);
@@ -35,70 +19,77 @@ module.exports = Backbone.View.extend({
 		// Listen to collection
 		this.listenTo(this.collection, 'sync', this.render);
 		this.listenTo(this.filteredCollection, 'sync', this.render);
+		
+		// Fetch collection
+		this.collection.fetch();
 	},
 	events: {
 		'click .ct-bar': 'onClick'
 	},
 	render: function() {
-		//console.log(this.collection.toJSON())
-		//if(this.chart) this.chart.destroy();
-		
 		var self = this,
-			subset = new Backbone.Collection(this.collection.slice(0, 10)),
-			labels = subset.pluck(this.collection.groupBy),
-			groupBy = this.collection.groupBy,
-			series = [];
-			series.push(subset.map(function(model) {
-				return {
-					value: model.get('count'),
-					meta: {
-						label: model.get(groupBy)
-					}
-				};
-			}));
-			//subset.pluck('count'));
-			//}, this.filteredCollection.length ? colors.subdued : colors.primary));
+			chartData = [], defaultSeries = [], formattedSeries = [],
 		
-		if(this.filteredCollection.length) {
-			var data2 = [];
-			labels.forEach(function(label) {
-				var criteria = {};
-				criteria[self.collection.groupBy] = label;
-				var match = self.filteredCollection.findWhere(criteria);
-				data2.push({
-					value: match ? match.get('count') : 0,
+			// Get the first 10 from the collection (TODO: Add a "remainder" bucket?)
+			subset = new Backbone.Collection(this.collection.slice(0, 10)),
+			labels = subset.pluck(this.collection.groupBy);
+		
+		// Map collection(s) into format expected by chart library
+		subset.forEach(function(model) {
+			defaultSeries.push({
+				value: model.get(self.collection.countProperty),
+				meta: {
+					// Store the name of the bar (chartist doesn't do this by default)
+					label: model.get(self.collection.groupBy)
+				}
+			});
+			
+			// If the filtered collection has been fetched, find the corresponding record and put it in another series
+			if(self.filteredCollection.length) {
+				var match = self.filteredCollection.get(model.get(self.collection.groupBy));
+				// Push a record even if there's no match so we don't align w/ the wrong bar in the other collection
+				formattedSeries.push({
+					value: match ? match.get(self.collection.countProperty) : 0,
 					meta: {
-						label: label
+						label: self.collection.groupBy
 					}
 				});
-			});
-			series.push(data2);
+			}
+		});
+		
+		// Push series into an array of arrays for the chart
+		chartData.push(defaultSeries);
+		if(formattedSeries.length) {
+			chartData.push(formattedSeries);
 		}
 		
-		console.log('creating chart', series)
-		
+		// Initialize/reinitialize chart
 		this.chart = new Chartist.Bar(this.el, {
 			labels: labels,
-			series: series
+			series: chartData
 		}, {
-			seriesBarDistance: 0
+			// Stack bars on top of one another
+			seriesBarDistance: 0,
+			
+			axisY: {
+				// Print labels as 12k, 1M, etc.
+				labelInterpolationFnc: numberFormatter
+			}
 		});
 	},
+	// When the user clicks on a bar in this chart
 	onClick: function(e) {
-		/*var bars = this.chart.getBarsAtEvent(e);
-		if(bars.length) {
-			console.log(this.collection.groupBy, bars[0]);
-			this.vent.trigger('filter', this.collection.groupBy, bars[0].label);
-			bars[0].strokeColor = 'rgba(151,187,205,1.0)';
-			console.log(bars[0])
-		}*/
+		// Deserialize meta attribute, which contains the bar's label
 		var label = Chartist.deserialize($(e.currentTarget).attr('ct:meta')).label;
-		console.log('Filtering by', label);
+		
+		// Trigger the global event handler with this filter
 		this.vent.trigger('filter', this.collection.groupBy, label);
 	},
+	// When a chart has been filtered
 	onFilter: function(key, value) {
+		// Only listen to other charts
 		if(key !== this.filteredCollection.groupBy) {
-			console.log('Something else filtered', key, value);
+			// Add the filter to the filtered collection and fetch it with the filter
 			this.filteredCollection.filter[key] = value;
 			this.filteredCollection.fetch();
 		}
