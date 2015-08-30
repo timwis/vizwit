@@ -4,13 +4,19 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "npm run watch & npm run livereload & npm run static",
+    "watch": "./node_modules/watchify/bin/cmd.js scripts/main.js -o bundle.js",
+    "livereload": "./node_modules/livereloadify/cli.js ./",
+    "static": "./node_modules/node-static/bin/cli.js ./",
+    "styles": "./node_modules/node-sass/bin/node-sass styles/scss/ -o styles"
   },
   "author": "",
   "license": "MIT",
   "dependencies": {
     "Chart.StackedBar.js": "regaddi/Chart.StackedBar.js",
     "backbone": "^1.2.2",
+    "backgrid": "ryno1234/backgrid",
+    "backgrid-paginator": "^0.3.7",
     "browserify": "^11.0.1",
     "chart.js": "^1.0.2",
     "chartist": "^0.9.4",
@@ -19,12 +25,15 @@
     "datatables": "^1.10.8",
     "dc": "dc-js/dc.js",
     "jquery": "^2.1.4",
-    "soda-js": "^0.2.1",
+    "node-sass": "^3.2.0",
+    "soda-js": "timwis/soda-js",
     "underscore": "^1.8.3",
     "watchify": "^3.3.1"
   },
   "devDependencies": {
-    "browserify-shim": "^3.8.10"
+    "browserify-shim": "^3.8.10",
+    "livereloadify": "^2.0.0",
+    "node-static": "^0.7.7"
   },
   "browserify": {
     "transform": [
@@ -32,5 +41,6 @@
     ]
   },
   "browserify-shim": {
+    "backgrid-infinator": { "depends": [ "jquery:jQuery" ] }
   }
 }
