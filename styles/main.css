@@ -3,9 +3,9 @@
 	min-height: 350px;
 }
 
-.scroll-y {
+/*.scroll-y {
 	overflow-x: scroll;
-}
+}*/
 
 .card.table {
 	white-space: nowrap;
