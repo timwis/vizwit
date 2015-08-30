@@ -32616,7 +32616,7 @@ return jQuery;
       this._group = [];
       this._having = [];
       this._order = [];
-      this._offset = this._limit = null;
+      this._offset = this._limit = this._q = null;
     }
 
     Query.prototype.withDataset = function(datasetId) {
@@ -32683,6 +32683,11 @@ return jQuery;
       return this;
     };
 
+    Query.prototype.q = function(q) {
+      this._q = q;
+      return this;
+    };
+
     Query.prototype.getOpts = function() {
       var k, opts, queryComponents, v;
       opts = {
@@ -32744,6 +32749,9 @@ return jQuery;
         }
         if (isNumber(this._limit)) {
           query.limit = this._limit;
+        }
+        if (this._q) {
+          query.q = this._q;
         }
       }
       return query;
@@ -36219,6 +36227,7 @@ module.exports = Backbone.Collection.extend({
 		}
 		if(this.limit) query.limit(this.limit);
 		if(this.offset) query.offset(this.offset);
+		if(this.q) { query.q(this.q); console.log(this.q) }
 		return query.getURL();
 	}
 })
@@ -36443,6 +36452,7 @@ module.exports = Backbone.View.extend({
 					self.collection.offset = data.start || 0;
 					self.collection.limit = data.length || 25;
 					self.collection.order = data.columns[data.order[0].column].data + ' ' + data.order[0].dir;
+					self.collection.q = data.search.value ? data.search.value : null;
 					self.collection.fetch({
 						success: function(collection, response, options) {
 							callback({data: collection.toJSON()});
