@@ -1,7 +1,6 @@
 var $ = require('jquery'),
 	_ = require('underscore'),
 	Backbone = require('backbone'),
-	Extendr = require('extendr'),
 	numberFormatter = require('../util/number-formatter');
 require('amcharts/dist/amcharts/amcharts');
 require('amcharts/dist/amcharts/serial');
@@ -65,18 +64,18 @@ module.exports = Backbone.View.extend({
 		var chartData = this.formatChartData(this.settings.limit);
 		
 		// Define the series/graph for the original amount
-		var graphs = [Extendr.deepClone(this.settings.graphs[0])];
+		var graphs = [$.extend(true, {}, this.settings.graphs[0])];
 		
 		// If there's a filtered amount, define the series/graph for it
 		if(this.filteredCollection.length) {
 			// Change color of original graph to subdued
 			graphs[0].lineColor = '#ddd';
 			
-			graphs.push(Extendr.deepClone(this.settings.graphs[1]));
+			graphs.push($.extend(true, {}, this.settings.graphs[1]));
 		}
 		
 		// Initialize chart
-		var config = Extendr.dereference(this.settings.chart);
+		var config = $.extend(true, {}, this.settings.chart);
 		config.graphs = graphs;
 		config.dataProvider = chartData;
 		this.chart = AmCharts.makeChart(this.el, config);

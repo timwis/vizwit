@@ -16,7 +16,6 @@
     "amcharts": "^3.14.5",
     "backbone": "^1.2.2",
     "datatables": "^1.10.8",
-    "extendr": "^2.1.0",
     "jquery": "^2.1.4",
     "soda-js": "timwis/soda-js#timwis",
     "underscore": "^1.8.3"
