@@ -75,8 +75,8 @@ module.exports = Backbone.View.extend({
 		}
 	},
 	// When another chart is filtered, filter this collection
-	onFilter: function(key, value) {
-		this.collection.filter[key] = value;
+	onFilter: function(key, expression) {
+		this.collection.filter[key] = expression;
 		this.table.ajax.reload();
 	}
 });

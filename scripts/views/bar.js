@@ -1,11 +1,8 @@
 var $ = require('jquery'),
 	_ = require('underscore'),
 	Backbone = require('backbone'),
-	Extendr = require('extendr'),
 	BaseChart = require('./basechart'),
 	numberFormatter = require('../util/number-formatter');
-require('amcharts/dist/amcharts/amcharts');
-require('amcharts/dist/amcharts/serial');
 	
 module.exports = BaseChart.extend({
 	settings: {
@@ -55,6 +52,6 @@ module.exports = BaseChart.extend({
 	// When the user clicks on a bar in this chart
 	onClick: function(e) {
 		// Trigger the global event handler with this filter
-		this.vent.trigger('filter', this.collection.groupBy, e.item.category);
+		this.vent.trigger('filter', this.collection.triggerField, this.collection.groupBy + ' = \'' + e.item.category + '\'');
 	}
 })

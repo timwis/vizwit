@@ -23,14 +23,18 @@ module.exports = Backbone.Collection.extend({
 		this.consumer = new soda.Consumer(this.domain);
 		this.dataset = options.dataset || null;
 		this.groupBy = options.groupBy || null;
+		this.triggerField = options.triggerField || options.groupBy;
 		this.filter = options.filter || {};
 		
 		//this.model = modelFactory(options.groupBy);
 	},
 	url: function() {
+		var filter = _.values(this.filter).join(' and ');
 		var query = this.consumer.query()
-			.withDataset(this.dataset)
-			.where(this.filter);
+			.withDataset(this.dataset);
+		if(filter) {
+			query.where(filter);
+		}
 		if(this.groupBy) {
 			query.select('count(*), ' + this.groupBy + ' as label')
 			.group(this.groupBy)

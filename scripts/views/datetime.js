@@ -4,6 +4,10 @@ var $ = require('jquery'),
 	BaseChart = require('./basechart'),
 	numberFormatter = require('../util/number-formatter');
 	
+var trimLastCharacter = function(str) {
+	return str.substr(0, str.length - 1);
+};
+	
 module.exports = BaseChart.extend({
 	settings: {
 		collectionOrder: 'label',
@@ -40,8 +44,8 @@ module.exports = BaseChart.extend({
 			dataDateFormat: 'YYYY-MM-DDT00:00:00.000', //"2015-04-07T16:21:00.000"
 			chartCursor: {
 				categoryBalloonDateFormat: "MMM YYYY",
-				cursorPosition: "mouse"/*,
-				selectWithoutZooming: true*/
+				cursorPosition: "mouse",
+				selectWithoutZooming: true
 			}
 		}
 	},
@@ -59,8 +63,12 @@ module.exports = BaseChart.extend({
 	// When the user clicks on a bar in this chart
 	onClick: function(e) {
 		console.log('Filtered by', (new Date(e.start)).toISOString(), (new Date(e.end)).toISOString());
+		var field = this.collection.triggerField,
+			start = trimLastCharacter((new Date(e.start)).toISOString()),
+			end = trimLastCharacter((new Date(e.end)).toISOString());
+		
 		
 		// Trigger the global event handler with this filter
-		//this.vent.trigger('filter', this.collection.groupBy, e.item.category);
+		this.vent.trigger('filter', field, field + ' >= \'' + start + '\' and ' + field + ' <= \'' + end + '\'');
 	}
 })

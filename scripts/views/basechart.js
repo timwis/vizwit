@@ -104,11 +104,11 @@ module.exports = Backbone.View.extend({
 		return chartData;
 	},
 	// When a chart has been filtered
-	onFilter: function(key, value) {
+	onFilter: function(key, expression) {
 		// Only listen to other charts
-		if(key !== this.filteredCollection.groupBy) {
+		if(key !== this.filteredCollection.triggerField) {
 			// Add the filter to the filtered collection and fetch it with the filter
-			this.filteredCollection.filter[key] = value;
+			this.filteredCollection.filter[key] = expression;
 			this.filteredCollection.fetch();
 		}
 	}
