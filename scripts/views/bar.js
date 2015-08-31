@@ -1,8 +1,9 @@
 var $ = require('jquery'),
 	_ = require('underscore'),
 	Backbone = require('backbone'),
-	Chartist = require('chartist'),
 	numberFormatter = require('../util/number-formatter');
+require('amcharts/dist/amcharts/amcharts');
+require('amcharts/dist/amcharts/serial');
 	
 module.exports = Backbone.View.extend({
 	initialize: function(options) {
@@ -23,68 +24,74 @@ module.exports = Backbone.View.extend({
 		// Fetch collection
 		this.collection.fetch();
 	},
-	events: {
-		'click .ct-bar': 'onClick'
-	},
 	render: function() {
 		var self = this,
-			chartData = [], defaultSeries = [], formattedSeries = [],
+			chartData = [];
 		
-			// Get the first 10 from the collection (TODO: Add a "remainder" bucket?)
-			subset = new Backbone.Collection(this.collection.slice(0, 10)),
-			labels = subset.pluck(this.collection.groupBy);
+		// Get the first 10 from the collection (TODO: Add a "remainder" bucket?)
+		var subset = new Backbone.Collection(this.collection.slice(0, 10));
+			
+		var graphs = [{
+			title: 'Data',
+			type: 'column',
+			valueField: 'count',
+			fillAlphas: 1,
+			clustered: false,
+			lineColor: '#97bbcd',
+			balloonText: '<b>[[category]]</b><br>Total: [[value]]'
+		}];
+			
+		if(this.filteredCollection.length) {
+			graphs[0].lineColor = '#ddd';
+			graphs.push({
+				title: 'Filtered Data',
+				type: 'column',
+				valueField: 'filteredCount',
+				fillAlphas: 0.8,
+				clustered: false,
+				lineColor: '#97bbcd',
+				balloonText: '<b>[[category]]</b><br>Total: [[count]]<br>Filtered Amount: [[value]]'
+			});
+		}
+		console.log('graphs', graphs)
 		
 		// Map collection(s) into format expected by chart library
 		subset.forEach(function(model) {
-			var label = model.get(self.collection.groupBy);
-			defaultSeries.push({
-				value: model.get(self.collection.countProperty),
-				meta: {
-					// Store the name of the bar (chartist doesn't do this by default)
-					label: label
-				}
-			});
-			
+			var label = model.get(self.collection.groupBy),
+				data = {
+					label: label,
+					count: model.get(self.collection.countProperty)
+				};
 			// If the filtered collection has been fetched, find the corresponding record and put it in another series
 			if(self.filteredCollection.length) {
 				var match = self.filteredCollection.get(label);
 				// Push a record even if there's no match so we don't align w/ the wrong bar in the other collection
-				formattedSeries.push({
-					value: match ? match.get(self.collection.countProperty) : 0,
-					meta: {
-						label: label
-					}
-				});
+				data.filteredCount = match ? match.get(self.collection.countProperty) : 0;
+			}
+					
+			chartData.push(data);
+		});
+		
+		// TODO: Initialize chart with chartData
+		this.chart = AmCharts.makeChart(this.el, {
+			type: 'serial',
+			categoryField: 'label',
+			graphs: graphs,
+			dataProvider: chartData,
+			valueAxes: [{
+				labelFunction: numberFormatter
+			}],
+			categoryAxis: {
+				autoWrap: true
 			}
 		});
 		
-		// Push series into an array of arrays for the chart
-		chartData.push(defaultSeries);
-		if(formattedSeries.length) {
-			chartData.push(formattedSeries);
-		}
-		
-		// Initialize/reinitialize chart
-		this.chart = new Chartist.Bar(this.el, {
-			labels: labels,
-			series: chartData
-		}, {
-			// Stack bars on top of one another
-			seriesBarDistance: 0,
-			
-			axisY: {
-				// Print labels as 12k, 1M, etc.
-				labelInterpolationFnc: numberFormatter
-			}
-		});
+		this.chart.addListener('clickGraphItem', this.onClick);
 	},
 	// When the user clicks on a bar in this chart
 	onClick: function(e) {
-		// Deserialize meta attribute, which contains the bar's label
-		var label = Chartist.deserialize($(e.currentTarget).attr('ct:meta')).label;
-		
 		// Trigger the global event handler with this filter
-		this.vent.trigger('filter', this.collection.groupBy, label);
+		this.vent.trigger('filter', this.collection.groupBy, e.item.category);
 	},
 	// When a chart has been filtered
 	onFilter: function(key, value) {

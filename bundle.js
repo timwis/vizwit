@@ -186,7 +186,452 @@ else if ( jQuery ) {
 })(window, document);
 
 
-},{"datatables":8,"jquery":9}],2:[function(require,module,exports){
+},{"datatables":9,"jquery":10}],2:[function(require,module,exports){
+(function(){var d;window.AmCharts?d=window.AmCharts:(d={},window.AmCharts=d,d.themes={},d.maps={},d.inheriting={},d.charts=[],d.onReadyArray=[],d.useUTC=!1,d.updateRate=30,d.uid=0,d.lang={},d.translations={},d.mapTranslations={},d.windows={},d.initHandlers=[]);d.Class=function(a){var b=function(){arguments[0]!==d.inheriting&&(this.events={},this.construct.apply(this,arguments))};a.inherits?(b.prototype=new a.inherits(d.inheriting),b.base=a.inherits.prototype,delete a.inherits):(b.prototype.createEvents=
+function(){for(var a=0,b=arguments.length;a<b;a++)this.events[arguments[a]]=[]},b.prototype.listenTo=function(a,b,c){this.removeListener(a,b,c);a.events[b].push({handler:c,scope:this})},b.prototype.addListener=function(a,b,c){this.removeListener(this,a,b);this.events[a].push({handler:b,scope:c})},b.prototype.removeListener=function(a,b,c){if(a&&a.events)for(a=a.events[b],b=a.length-1;0<=b;b--)a[b].handler===c&&a.splice(b,1)},b.prototype.fire=function(a,b){for(var c=this.events[a],d=0,k=c.length;d<
+k;d++){var l=c[d];l.handler.call(l.scope,b)}});for(var c in a)b.prototype[c]=a[c];return b};d.addChart=function(a){d.updateInt||(d.updateInt=setInterval(function(){d.update()},Math.round(1E3/d.updateRate)));d.charts.push(a)};d.removeChart=function(a){for(var b=d.charts,c=b.length-1;0<=c;c--)b[c]==a&&b.splice(c,1);0===b.length&&d.updateInt&&(clearInterval(d.updateInt),d.updateInt=NaN)};d.isModern=!0;d.getIEVersion=function(){var a=0,b,c;"Microsoft Internet Explorer"==navigator.appName&&(b=navigator.userAgent,
+c=/MSIE ([0-9]{1,}[.0-9]{0,})/,null!==c.exec(b)&&(a=parseFloat(RegExp.$1)));return a};d.applyLang=function(a,b){var c=d.translations;b.dayNames=d.extend({},d.dayNames);b.shortDayNames=d.extend({},d.shortDayNames);b.monthNames=d.extend({},d.monthNames);b.shortMonthNames=d.extend({},d.shortMonthNames);c&&(c=c[a])&&(d.lang=c,c.monthNames&&(b.dayNames=d.extend({},c.dayNames),b.shortDayNames=d.extend({},c.shortDayNames),b.monthNames=d.extend({},c.monthNames),b.shortMonthNames=d.extend({},c.shortMonthNames)))};
+d.IEversion=d.getIEVersion();9>d.IEversion&&0<d.IEversion&&(d.isModern=!1,d.isIE=!0);d.dx=0;d.dy=0;if(document.addEventListener||window.opera)d.isNN=!0,d.isIE=!1,d.dx=.5,d.dy=.5;document.attachEvent&&(d.isNN=!1,d.isIE=!0,d.isModern||(d.dx=0,d.dy=0));window.chrome&&(d.chrome=!0);d.handleMouseUp=function(a){for(var b=d.charts,c=0;c<b.length;c++){var e=b[c];e&&e.handleReleaseOutside&&e.handleReleaseOutside(a)}};d.handleMouseMove=function(a){for(var b=d.charts,c=0;c<b.length;c++){var e=b[c];e&&e.handleMouseMove&&
+e.handleMouseMove(a)}};d.handleWheel=function(a){for(var b=d.charts,c=0;c<b.length;c++){var e=b[c];if(e&&e.mouseIsOver){e.mouseWheelScrollEnabled||e.mouseWheelZoomEnabled?e.handleWheel&&e.handleWheel(a):a.stopPropagation&&a.stopPropagation();break}}};d.resetMouseOver=function(){for(var a=d.charts,b=0;b<a.length;b++){var c=a[b];c&&(c.mouseIsOver=!1)}};d.ready=function(a){d.onReadyArray.push(a)};d.handleLoad=function(){d.isReady=!0;for(var a=d.onReadyArray,b=0;b<a.length;b++){var c=a[b];isNaN(d.processDelay)?
+c():setTimeout(c,d.processDelay*b)}};d.addInitHandler=function(a,b){d.initHandlers.push({method:a,types:b})};d.callInitHandler=function(a){var b=d.initHandlers;if(d.initHandlers)for(var c=0;c<b.length;c++){var e=b[c];e.types?d.isInArray(e.types,a.type)&&e.method(a):e.method(a)}};d.getUniqueId=function(){d.uid++;return"AmChartsEl-"+d.uid};d.isNN&&(document.addEventListener("mousemove",d.handleMouseMove,!0),document.addEventListener("mouseup",d.handleMouseUp,!0),window.addEventListener("load",d.handleLoad,
+!0),window.addEventListener("DOMMouseScroll",d.handleWheel,!0),document.addEventListener("mousewheel",d.handleWheel,!0));d.isIE&&(document.attachEvent("onmousemove",d.handleMouseMove),document.attachEvent("onmouseup",d.handleMouseUp),window.attachEvent("onload",d.handleLoad));d.clear=function(){var a=d.charts;if(a)for(var b=a.length-1;0<=b;b--)a[b].clear();d.updateInt&&clearInterval(d.updateInt);d.charts=[];d.isNN&&(document.removeEventListener("mousemove",d.handleMouseMove,!0),document.removeEventListener("mouseup",
+d.handleMouseUp,!0),window.removeEventListener("load",d.handleLoad,!0),window.removeEventListener("DOMMouseScroll",d.handleWheel,!0),document.removeEventListener("mousewheel",d.handleWheel,!0));d.isIE&&(document.detachEvent("onmousemove",d.handleMouseMove),document.detachEvent("onmouseup",d.handleMouseUp),window.detachEvent("onload",d.handleLoad))};d.makeChart=function(a,b,c){var e=b.type,h=b.theme;d.isString(h)&&(h=d.themes[h],b.theme=h);var f;switch(e){case "serial":f=new d.AmSerialChart(h);break;
+case "xy":f=new d.AmXYChart(h);break;case "pie":f=new d.AmPieChart(h);break;case "radar":f=new d.AmRadarChart(h);break;case "gauge":f=new d.AmAngularGauge(h);break;case "funnel":f=new d.AmFunnelChart(h);break;case "map":f=new d.AmMap(h);break;case "stock":f=new d.AmStockChart(h);break;case "gantt":f=new d.AmGanttChart(h)}d.extend(f,b);d.isReady?isNaN(c)?f.write(a):setTimeout(function(){d.realWrite(f,a)},c):d.ready(function(){isNaN(c)?f.write(a):setTimeout(function(){d.realWrite(f,a)},c)});return f};
+d.realWrite=function(a,b){a.write(b)};d.updateCount=0;d.validateAt=Math.round(d.updateRate/5);d.update=function(){var a=d.charts;d.updateCount++;var b=!1;d.updateCount==d.validateAt&&(b=!0,d.updateCount=0);if(a)for(var c=0;c<a.length;c++)a[c].update&&a[c].update(),b&&a[c].autoResize&&a[c].validateSize&&a[c].validateSize()};d.bezierX=3;d.bezierY=6})();(function(){var d=window.AmCharts;d.toBoolean=function(a,b){if(void 0===a)return b;switch(String(a).toLowerCase()){case "true":case "yes":case "1":return!0;case "false":case "no":case "0":case null:return!1;default:return Boolean(a)}};d.removeFromArray=function(a,b){var c;if(void 0!==b&&void 0!==a)for(c=a.length-1;0<=c;c--)a[c]==b&&a.splice(c,1)};d.getPath=function(){var a=document.getElementsByTagName("script");if(a)for(var b=0;b<a.length;b++){var c=a[b].src;if(-1!==c.search(/\/(amcharts|ammap)\.js/))return c.replace(/\/(amcharts|ammap)\.js.*/,
+"/")}};d.normalizeUrl=function(a){return""!==a&&-1===a.search(/\/$/)?a+"/":a};d.isAbsolute=function(a){return 0===a.search(/^http[s]?:|^\//)};d.isInArray=function(a,b){for(var c=0;c<a.length;c++)if(a[c]==b)return!0;return!1};d.getDecimals=function(a){var b=0;isNaN(a)||(a=String(a),-1!=a.indexOf("e-")?b=Number(a.split("-")[1]):-1!=a.indexOf(".")&&(b=a.split(".")[1].length));return b};d.wrappedText=function(a,b,c,e,h,f,g,k,l){var m=d.text(a,b,c,e,h,f,g),n="\n";d.isModern||(n="<br>");if(10<l)return m;
+if(m){var q=m.getBBox();if(q.width>k){q=Math.ceil(q.width/k);m.remove();for(var m=[],p=0;-1<(p=b.indexOf(" ",p));)m.push(p),p+=1;for(var r,p=0;p<m.length;p+=Math.ceil(m.length/q))r=m[p],b=b.substr(0,r)+n+b.substr(r+1);if(isNaN(r)){if(0===l)for(p=1;p<q;p++)r=Math.round(b.length/q*p),b=b.substr(0,r)+n+b.substr(r);return d.text(a,b,c,e,h,f,g)}return d.wrappedText(a,b,c,e,h,f,g,k,l+1)}return m}};d.getStyle=function(a,b){var c="";document.defaultView&&document.defaultView.getComputedStyle?c=document.defaultView.getComputedStyle(a,
+"").getPropertyValue(b):a.currentStyle&&(b=b.replace(/\-(\w)/g,function(a,b){return b.toUpperCase()}),c=a.currentStyle[b]);return c};d.removePx=function(a){if(void 0!==a)return Number(a.substring(0,a.length-2))};d.getURL=function(a,b){if(a)if("_self"!=b&&b)if("_top"==b&&window.top)window.top.location.href=a;else if("_parent"==b&&window.parent)window.parent.location.href=a;else if("_blank"==b)window.open(a);else{var c=document.getElementsByName(b)[0];c?c.src=a:(c=d.windows[b])?c.opener&&!c.opener.closed?
+c.location.href=a:d.windows[b]=window.open(a):d.windows[b]=window.open(a)}else window.location.href=a};d.ifArray=function(a){return a&&0<a.length?!0:!1};d.callMethod=function(a,b){var c;for(c=0;c<b.length;c++){var e=b[c];if(e){if(e[a])e[a]();var h=e.length;if(0<h){var d;for(d=0;d<h;d++){var g=e[d];if(g&&g[a])g[a]()}}}}};d.toNumber=function(a){return"number"==typeof a?a:Number(String(a).replace(/[^0-9\-.]+/g,""))};d.toColor=function(a){if(""!==a&&void 0!==a)if(-1!=a.indexOf(",")){a=a.split(",");var b;
+for(b=0;b<a.length;b++){var c=a[b].substring(a[b].length-6,a[b].length);a[b]="#"+c}}else a=a.substring(a.length-6,a.length),a="#"+a;return a};d.toCoordinate=function(a,b,c){var e;void 0!==a&&(a=String(a),c&&c<b&&(b=c),e=Number(a),-1!=a.indexOf("!")&&(e=b-Number(a.substr(1))),-1!=a.indexOf("%")&&(e=b*Number(a.substr(0,a.length-1))/100));return e};d.fitToBounds=function(a,b,c){a<b&&(a=b);a>c&&(a=c);return a};d.isDefined=function(a){return void 0===a?!1:!0};d.stripNumbers=function(a){return a.replace(/[0-9]+/g,
+"")};d.roundTo=function(a,b){if(0>b)return a;var c=Math.pow(10,b);return Math.round(a*c)/c};d.toFixed=function(a,b){var c=String(Math.round(a*Math.pow(10,b)));if(0<b){var e=c.length;if(e<b){var h;for(h=0;h<b-e;h++)c="0"+c}e=c.substring(0,c.length-b);""===e&&(e=0);return e+"."+c.substring(c.length-b,c.length)}return String(c)};d.formatDuration=function(a,b,c,e,h,f){var g=d.intervals,k=f.decimalSeparator;if(a>=g[b].contains){var l=a-Math.floor(a/g[b].contains)*g[b].contains;"ss"==b&&(l=d.formatNumber(l,
+f),1==l.split(k)[0].length&&(l="0"+l));("mm"==b||"hh"==b)&&10>l&&(l="0"+l);c=l+""+e[b]+""+c;a=Math.floor(a/g[b].contains);b=g[b].nextInterval;return d.formatDuration(a,b,c,e,h,f)}"ss"==b&&(a=d.formatNumber(a,f),1==a.split(k)[0].length&&(a="0"+a));("mm"==b||"hh"==b)&&10>a&&(a="0"+a);c=a+""+e[b]+""+c;if(g[h].count>g[b].count)for(a=g[b].count;a<g[h].count;a++)b=g[b].nextInterval,"ss"==b||"mm"==b||"hh"==b?c="00"+e[b]+""+c:"DD"==b&&(c="0"+e[b]+""+c);":"==c.charAt(c.length-1)&&(c=c.substring(0,c.length-
+1));return c};d.formatNumber=function(a,b,c,e,h){a=d.roundTo(a,b.precision);isNaN(c)&&(c=b.precision);var f=b.decimalSeparator;b=b.thousandsSeparator;var g;g=0>a?"-":"";a=Math.abs(a);var k=String(a),l=!1;-1!=k.indexOf("e")&&(l=!0);0<=c&&!l&&(k=d.toFixed(a,c));var m="";if(l)m=k;else{var k=k.split("."),l=String(k[0]),n;for(n=l.length;0<=n;n-=3)m=n!=l.length?0!==n?l.substring(n-3,n)+b+m:l.substring(n-3,n)+m:l.substring(n-3,n);void 0!==k[1]&&(m=m+f+k[1]);void 0!==c&&0<c&&"0"!=m&&(m=d.addZeroes(m,f,c))}m=
+g+m;""===g&&!0===e&&0!==a&&(m="+"+m);!0===h&&(m+="%");return m};d.addZeroes=function(a,b,c){a=a.split(b);void 0===a[1]&&0<c&&(a[1]="0");return a[1].length<c?(a[1]+="0",d.addZeroes(a[0]+b+a[1],b,c)):void 0!==a[1]?a[0]+b+a[1]:a[0]};d.scientificToNormal=function(a){var b;a=String(a).split("e");var c;if("-"==a[1].substr(0,1)){b="0.";for(c=0;c<Math.abs(Number(a[1]))-1;c++)b+="0";b+=a[0].split(".").join("")}else{var e=0;b=a[0].split(".");b[1]&&(e=b[1].length);b=a[0].split(".").join("");for(c=0;c<Math.abs(Number(a[1]))-
+e;c++)b+="0"}return b};d.toScientific=function(a,b){if(0===a)return"0";var c=Math.floor(Math.log(Math.abs(a))*Math.LOG10E),e=String(e).split(".").join(b);return String(e)+"e"+c};d.randomColor=function(){return"#"+("00000"+(16777216*Math.random()<<0).toString(16)).substr(-6)};d.hitTest=function(a,b,c){var e=!1,h=a.x,f=a.x+a.width,g=a.y,k=a.y+a.height,l=d.isInRectangle;e||(e=l(h,g,b));e||(e=l(h,k,b));e||(e=l(f,g,b));e||(e=l(f,k,b));e||!0===c||(e=d.hitTest(b,a,!0));return e};d.isInRectangle=function(a,
+b,c){return a>=c.x-5&&a<=c.x+c.width+5&&b>=c.y-5&&b<=c.y+c.height+5?!0:!1};d.isPercents=function(a){if(-1!=String(a).indexOf("%"))return!0};d.findPosX=function(a){var b=a,c=a.offsetLeft;if(a.offsetParent){for(;a=a.offsetParent;)c+=a.offsetLeft;for(;(b=b.parentNode)&&b!=document.body;)c-=b.scrollLeft||0}return c};d.findPosY=function(a){var b=a,c=a.offsetTop;if(a.offsetParent){for(;a=a.offsetParent;)c+=a.offsetTop;for(;(b=b.parentNode)&&b!=document.body;)c-=b.scrollTop||0}return c};d.findIfFixed=function(a){if(a.offsetParent)for(;a=
+a.offsetParent;)if("fixed"==d.getStyle(a,"position"))return!0;return!1};d.findIfAuto=function(a){return a.style&&"auto"==d.getStyle(a,"overflow")?!0:a.parentNode?d.findIfAuto(a.parentNode):!1};d.findScrollLeft=function(a,b){a.scrollLeft&&(b+=a.scrollLeft);return a.parentNode?d.findScrollLeft(a.parentNode,b):b};d.findScrollTop=function(a,b){a.scrollTop&&(b+=a.scrollTop);return a.parentNode?d.findScrollTop(a.parentNode,b):b};d.formatValue=function(a,b,c,e,h,f,g,k){if(b){void 0===h&&(h="");var l;for(l=
+0;l<c.length;l++){var m=c[l],n=b[m];void 0!==n&&(n=f?d.addPrefix(n,k,g,e):d.formatNumber(n,e),a=a.replace(new RegExp("\\[\\["+h+""+m+"\\]\\]","g"),n))}}return a};d.formatDataContextValue=function(a,b){if(a){var c=a.match(/\[\[.*?\]\]/g),e;for(e=0;e<c.length;e++){var h=c[e],h=h.substr(2,h.length-4);void 0!==b[h]&&(a=a.replace(new RegExp("\\[\\["+h+"\\]\\]","g"),b[h]))}}return a};d.massReplace=function(a,b){for(var c in b)if(b.hasOwnProperty(c)){var e=b[c];void 0===e&&(e="");a=a.replace(c,e)}return a};
+d.cleanFromEmpty=function(a){return a.replace(/\[\[[^\]]*\]\]/g,"")};d.addPrefix=function(a,b,c,e,h){var f=d.formatNumber(a,e),g="",k,l,m;if(0===a)return"0";0>a&&(g="-");a=Math.abs(a);if(1<a)for(k=b.length-1;-1<k;k--){if(a>=b[k].number&&(l=a/b[k].number,m=Number(e.precision),1>m&&(m=1),c=d.roundTo(l,m),m=d.formatNumber(c,{precision:-1,decimalSeparator:e.decimalSeparator,thousandsSeparator:e.thousandsSeparator}),!h||l==c)){f=g+""+m+""+b[k].prefix;break}}else for(k=0;k<c.length;k++)if(a<=c[k].number){l=
+a/c[k].number;m=Math.abs(Math.round(Math.log(l)*Math.LOG10E));l=d.roundTo(l,m);f=g+""+l+""+c[k].prefix;break}return f};d.remove=function(a){a&&a.remove()};d.getEffect=function(a){">"==a&&(a="easeOutSine");"<"==a&&(a="easeInSine");"elastic"==a&&(a="easeOutElastic");return a};d.getObjById=function(a,b){var c,e;for(e=0;e<a.length;e++){var h=a[e];h.id==b&&(c=h)}return c};d.applyTheme=function(a,b,c){b||(b=d.theme);b&&b[c]&&d.extend(a,b[c])};d.isString=function(a){return"string"==typeof a?!0:!1};d.extend=
+function(a,b,c){var e;a||(a={});for(e in b)c?a.hasOwnProperty(e)||(a[e]=b[e]):a[e]=b[e];return a};d.copyProperties=function(a,b){for(var c in a)a.hasOwnProperty(c)&&"events"!=c&&void 0!==a[c]&&"function"!=typeof a[c]&&"cname"!=c&&(b[c]=a[c])};d.processObject=function(a,b,c,e){!1===a instanceof b&&(a=e?d.extend(new b(c),a):d.extend(a,new b(c),!0));return a};d.fixNewLines=function(a){var b=RegExp("\\n","g");a&&(a=a.replace(b,"<br />"));return a};d.fixBrakes=function(a){if(d.isModern){var b=RegExp("<br>",
+"g");a&&(a=a.replace(b,"\n"))}else a=d.fixNewLines(a);return a};d.deleteObject=function(a,b){if(a){if(void 0===b||null===b)b=20;if(0!==b)if("[object Array]"===Object.prototype.toString.call(a))for(var c=0;c<a.length;c++)d.deleteObject(a[c],b-1),a[c]=null;else if(a&&!a.tagName)try{for(c in a)a[c]&&("object"==typeof a[c]&&d.deleteObject(a[c],b-1),"function"!=typeof a[c]&&(a[c]=null))}catch(e){}}};d.bounce=function(a,b,c,e,h){return(b/=h)<1/2.75?7.5625*e*b*b+c:b<2/2.75?e*(7.5625*(b-=1.5/2.75)*b+.75)+
+c:b<2.5/2.75?e*(7.5625*(b-=2.25/2.75)*b+.9375)+c:e*(7.5625*(b-=2.625/2.75)*b+.984375)+c};d.easeInSine=function(a,b,c,e,h){return-e*Math.cos(b/h*(Math.PI/2))+e+c};d.easeOutSine=function(a,b,c,e,h){return e*Math.sin(b/h*(Math.PI/2))+c};d.easeOutElastic=function(a,b,c,e,h){a=1.70158;var d=0,g=e;if(0===b)return c;if(1==(b/=h))return c+e;d||(d=.3*h);g<Math.abs(e)?(g=e,a=d/4):a=d/(2*Math.PI)*Math.asin(e/g);return g*Math.pow(2,-10*b)*Math.sin(2*(b*h-a)*Math.PI/d)+e+c};d.fixStepE=function(a){a=a.toExponential(0).split("e");
+var b=Number(a[1]);9==Number(a[0])&&b++;return d.generateNumber(1,b)};d.generateNumber=function(a,b){var c="",e;e=0>b?Math.abs(b)-1:Math.abs(b);var h;for(h=0;h<e;h++)c+="0";return 0>b?Number("0."+c+String(a)):Number(String(a)+c)};d.setCN=function(a,b,c,e){if(a.addClassNames&&b&&(b=b.node)&&c){var h=b.getAttribute("class");a=a.classNamePrefix+"-";e&&(a="");h?b.setAttribute("class",h+" "+a+c):b.setAttribute("class",a+c)}};d.parseDefs=function(a,b){for(var c in a){var e=typeof a[c];if(0<a[c].length&&
+"object"==e)for(var h=0;h<a[c].length;h++)e=document.createElementNS(d.SVG_NS,c),b.appendChild(e),d.parseDefs(a[c][h],e);else"object"==e?(e=document.createElementNS(d.SVG_NS,c),b.appendChild(e),d.parseDefs(a[c],e)):b.setAttribute(c,a[c])}}})();(function(){var d=window.AmCharts;d.AxisBase=d.Class({construct:function(a){this.createEvents("clickItem","rollOverItem","rollOutItem");this.viY=this.viX=this.y=this.x=this.dy=this.dx=0;this.axisThickness=1;this.axisColor="#000000";this.axisAlpha=1;this.gridCount=this.tickLength=5;this.gridAlpha=.15;this.gridThickness=1;this.gridColor="#000000";this.dashLength=0;this.labelFrequency=1;this.showLastLabel=this.showFirstLabel=!0;this.fillColor="#FFFFFF";this.fillAlpha=0;this.labelsEnabled=!0;this.labelRotation=
+0;this.autoGridCount=!0;this.offset=0;this.guides=[];this.visible=!0;this.counter=0;this.guides=[];this.ignoreAxisWidth=this.inside=!1;this.minHorizontalGap=75;this.minVerticalGap=35;this.titleBold=!0;this.minorGridEnabled=!1;this.minorGridAlpha=.07;this.autoWrap=!1;this.titleAlign="middle";this.labelOffset=0;this.bcn="axis-";this.periods=[{period:"ss",count:1},{period:"ss",count:5},{period:"ss",count:10},{period:"ss",count:30},{period:"mm",count:1},{period:"mm",count:5},{period:"mm",count:10},{period:"mm",
+count:30},{period:"hh",count:1},{period:"hh",count:3},{period:"hh",count:6},{period:"hh",count:12},{period:"DD",count:1},{period:"DD",count:2},{period:"DD",count:3},{period:"DD",count:4},{period:"DD",count:5},{period:"WW",count:1},{period:"MM",count:1},{period:"MM",count:2},{period:"MM",count:3},{period:"MM",count:6},{period:"YYYY",count:1},{period:"YYYY",count:2},{period:"YYYY",count:5},{period:"YYYY",count:10},{period:"YYYY",count:50},{period:"YYYY",count:100}];this.dateFormats=[{period:"fff",format:"JJ:NN:SS"},
+{period:"ss",format:"JJ:NN:SS"},{period:"mm",format:"JJ:NN"},{period:"hh",format:"JJ:NN"},{period:"DD",format:"MMM DD"},{period:"WW",format:"MMM DD"},{period:"MM",format:"MMM"},{period:"YYYY",format:"YYYY"}];this.nextPeriod={fff:"ss",ss:"mm",mm:"hh",hh:"DD",DD:"MM",MM:"YYYY"};d.applyTheme(this,a,"AxisBase")},zoom:function(a,b){this.start=a;this.end=b;this.dataChanged=!0;this.draw()},fixAxisPosition:function(){var a=this.position;"H"==this.orientation?("left"==a&&(a="bottom"),"right"==a&&(a="top")):
+("bottom"==a&&(a="left"),"top"==a&&(a="right"));this.position=a},draw:function(){var a=this.chart;this.allLabels=[];this.counter=0;this.destroy();this.fixAxisPosition();this.labels=[];var b=a.container,c=b.set();a.gridSet.push(c);this.set=c;b=b.set();a.axesLabelsSet.push(b);this.labelsSet=b;this.axisLine=new this.axisRenderer(this);this.autoGridCount?("V"==this.orientation?(a=this.height/this.minVerticalGap,3>a&&(a=3)):a=this.width/this.minHorizontalGap,this.gridCountR=Math.max(a,1)):this.gridCountR=
+this.gridCount;this.axisWidth=this.axisLine.axisWidth;this.addTitle()},setOrientation:function(a){this.orientation=a?"H":"V"},addTitle:function(){var a=this.title;this.titleLabel=null;if(a){var b=this.chart,c=this.titleColor;void 0===c&&(c=b.color);var e=this.titleFontSize;isNaN(e)&&(e=b.fontSize+1);a=d.text(b.container,a,c,b.fontFamily,e,this.titleAlign,this.titleBold);d.setCN(b,a,this.bcn+"title");this.titleLabel=a}},positionTitle:function(){var a=this.titleLabel;if(a){var b,c,e=this.labelsSet,
+h={};0<e.length()?h=e.getBBox():(h.x=0,h.y=0,h.width=this.viW,h.height=this.viH,d.VML&&(h.y+=this.y,h.x+=this.x));e.push(a);var e=h.x,f=h.y;d.VML&&(this.rotate?e-=this.x:f-=this.y);var g=h.width,h=h.height,k=this.viW,l=this.viH,m=0,n=a.getBBox().height/2,q=this.inside,p=this.titleAlign;switch(this.position){case "top":b="left"==p?-1:"right"==p?k:k/2;c=f-10-n;break;case "bottom":b="left"==p?-1:"right"==p?k:k/2;c=f+h+10+n;break;case "left":b=e-10-n;q&&(b-=5);c="left"==p?l+1:"right"==p?-1:l/2;m=-90;
+break;case "right":b=e+g+10+n-3,q&&(b+=7),c="left"==p?l+2:"right"==p?-2:l/2,m=-90}this.marginsChanged?(a.translate(b,c),this.tx=b,this.ty=c):a.translate(this.tx,this.ty);this.marginsChanged=!1;0!==m&&a.rotate(m)}},pushAxisItem:function(a,b){var c=this,e=a.graphics();0<e.length()&&(b?c.labelsSet.push(e):c.set.push(e));if(e=a.getLabel())this.labelsSet.push(e),e.click(function(b){c.handleMouse(b,a,"clickItem")}).mouseover(function(b){c.handleMouse(b,a,"rollOverItem")}).mouseout(function(b){c.handleMouse(b,
+a,"rollOutItem")})},handleMouse:function(a,b,c){this.fire(c,{type:c,value:b.value,serialDataItem:b.serialDataItem,axis:this,target:b.label,chart:this.chart,event:a})},addGuide:function(a){for(var b=this.guides,c=!1,e=b.length,h=0;h<b.length;h++)b[h]==a&&(c=!0,e=h);a=d.processObject(a,d.Guide,this.theme);a.id||(a.id="guideAuto"+e+"_"+(new Date).getTime());c||b.push(a)},removeGuide:function(a){var b=this.guides,c;for(c=0;c<b.length;c++)b[c]==a&&b.splice(c,1)},handleGuideOver:function(a){clearTimeout(this.chart.hoverInt);
+var b=a.graphics.getBBox(),c=b.x+b.width/2,b=b.y+b.height/2,e=a.fillColor;void 0===e&&(e=a.lineColor);this.chart.showBalloon(a.balloonText,e,!0,c,b)},handleGuideOut:function(){this.chart.hideBalloon()},addEventListeners:function(a,b){var c=this;a.mouseover(function(){c.handleGuideOver(b)});a.touchstart(function(){c.handleGuideOver(b)});a.mouseout(function(){c.handleGuideOut(b)})},getBBox:function(){var a=this.labelsSet.getBBox();d.VML||(a={x:a.x+this.x,y:a.y+this.y,width:a.width,height:a.height});
+return a},destroy:function(){d.remove(this.set);d.remove(this.labelsSet);var a=this.axisLine;a&&d.remove(a.set);d.remove(this.grid0)},chooseMinorFrequency:function(a){for(var b=10;0<b;b--)if(a/b==Math.round(a/b))return a/b},parseDatesDraw:function(){var a,b=this.chart,c=this.showFirstLabel,e=this.showLastLabel,h,f="",g=d.extractPeriod(this.minPeriod),k=d.getPeriodDuration(g.period,g.count),l,m,n,q,p,r=this.firstDayOfWeek,t=this.boldPeriodBeginning;a=this.minorGridEnabled;var u,z=this.gridAlpha,v,
+w=this.choosePeriod(0),x=w.period,w=w.count,A=d.getPeriodDuration(x,w);A<k&&(x=g.period,w=g.count,A=k);g=x;"WW"==g&&(g="DD");this.stepWidth=this.getStepWidth(this.timeDifference);var B=Math.ceil(this.timeDifference/A)+5,D=l=d.resetDateToMin(new Date(this.startTime-A),x,w,r).getTime();g==x&&1==w&&this.centerLabelOnFullPeriod&&(n=A*this.stepWidth);this.cellWidth=k*this.stepWidth;q=Math.round(l/A);k=-1;q/2==Math.round(q/2)&&(k=-2,l-=A);q=this.firstTime;var C=0;a&&1<w&&(u=this.chooseMinorFrequency(w),
+v=d.getPeriodDuration(x,u));if(0<this.gridCountR)for(a=k;a<=B;a++){p=q+A*(a+Math.floor((D-q)/A))-C;"DD"==x&&(p+=36E5);p=d.resetDateToMin(new Date(p),x,w,r).getTime();"MM"==x&&(h=(p-l)/A,1.5<=(p-l)/A&&(p=p-(h-1)*A+d.getPeriodDuration("DD",3),p=d.resetDateToMin(new Date(p),x,1).getTime(),C+=A));h=(p-this.startTime)*this.stepWidth;h=this.rotate?h+(this.x-this.viX):"date"==this.type?this.axisWidth-h+(this.y-this.viY):h+(this.y-this.viY);f=!1;this.nextPeriod[g]&&(f=this.checkPeriodChange(this.nextPeriod[g],
+1,p,l,g));l=!1;f&&this.markPeriodChange?(f=this.dateFormatsObject[this.nextPeriod[g]],this.twoLineMode&&(f=this.dateFormatsObject[g]+"\n"+f,f=d.fixBrakes(f)),l=!0):f=this.dateFormatsObject[g];t||(l=!1);this.currentDateFormat=f;f=d.formatDate(new Date(p),f,b);if(a==k&&!c||a==B&&!e)f=" ";this.labelFunction&&(f=this.labelFunction(f,new Date(p),this,x,w,m).toString());this.boldLabels&&(l=!0);m=new this.axisItemRenderer(this,h,f,!1,n,0,!1,l);this.pushAxisItem(m);m=l=p;if(!isNaN(u))for(h=1;h<w;h+=u)this.gridAlpha=
+this.minorGridAlpha,f=p+v*h,f=d.resetDateToMin(new Date(f),x,u,r).getTime(),f=new this.axisItemRenderer(this,(f-this.startTime)*this.stepWidth,void 0,void 0,void 0,void 0,void 0,void 0,void 0,!0),this.pushAxisItem(f);this.gridAlpha=z}},choosePeriod:function(a){var b=d.getPeriodDuration(this.periods[a].period,this.periods[a].count),c=Math.ceil(this.timeDifference/b),e=this.periods;return this.timeDifference<b&&0<a?e[a-1]:c<=this.gridCountR?e[a]:a+1<e.length?this.choosePeriod(a+1):e[a]},getStepWidth:function(a){var b;
+this.startOnAxis?(b=this.axisWidth/(a-1),1==a&&(b=this.axisWidth)):b=this.axisWidth/a;return b},timeZoom:function(a,b){this.startTime=a;this.endTime=b},minDuration:function(){var a=d.extractPeriod(this.minPeriod);return d.getPeriodDuration(a.period,a.count)},checkPeriodChange:function(a,b,c,e,h){c=new Date(c);var f=new Date(e),g=this.firstDayOfWeek;e=b;"DD"==a&&(b=1);c=d.resetDateToMin(c,a,b,g).getTime();b=d.resetDateToMin(f,a,b,g).getTime();return"DD"==a&&"hh"!=h&&c-b<=d.getPeriodDuration(a,e)?!1:
+c!=b?!0:!1},generateDFObject:function(){this.dateFormatsObject={};var a;for(a=0;a<this.dateFormats.length;a++){var b=this.dateFormats[a];this.dateFormatsObject[b.period]=b.format}}})})();(function(){var d=window.AmCharts;d.ValueAxis=d.Class({inherits:d.AxisBase,construct:function(a){this.cname="ValueAxis";this.createEvents("axisChanged","logarithmicAxisFailed","axisSelfZoomed","axisZoomed");d.ValueAxis.base.construct.call(this,a);this.dataChanged=!0;this.stackType="none";this.position="left";this.unitPosition="right";this.recalculateToPercents=this.includeHidden=this.includeGuidesInMinMax=this.integersOnly=!1;this.durationUnits={DD:"d. ",hh:":",mm:":",ss:""};this.scrollbar=!1;this.baseValue=
+0;this.radarCategoriesEnabled=!0;this.gridType="polygons";this.useScientificNotation=!1;this.axisTitleOffset=10;this.minMaxMultiplier=1;this.logGridLimit=2;this.totalTextOffset=this.treatZeroAs=0;this.minPeriod="ss";d.applyTheme(this,a,this.cname)},updateData:function(){0>=this.gridCountR&&(this.gridCountR=1);this.totals=[];this.data=this.chart.chartData;var a=this.chart;"xy"!=a.type&&(this.stackGraphs("smoothedLine"),this.stackGraphs("line"),this.stackGraphs("column"),this.stackGraphs("step"));this.recalculateToPercents&&
+this.recalculate();this.synchronizationMultiplier&&this.synchronizeWith?(d.isString(this.synchronizeWith)&&(this.synchronizeWith=a.getValueAxisById(this.synchronizeWith)),this.synchronizeWith&&(this.synchronizeWithAxis(this.synchronizeWith),this.foundGraphs=!0)):(this.foundGraphs=!1,this.getMinMax())},draw:function(){d.ValueAxis.base.draw.call(this);var a=this.chart,b=this.set;d.setCN(a,this.set,"value-axis value-axis-"+this.id);d.setCN(a,this.labelsSet,"value-axis value-axis-"+this.id);d.setCN(a,
+this.axisLine.axisSet,"value-axis value-axis-"+this.id);var c=this.type;"duration"==c&&(this.duration="ss");!0===this.dataChanged&&(this.updateData(),this.dataChanged=!1);"date"==c&&(this.logarithmic=!1,this.min=this.minRR,this.max=this.maxRR,this.minimumDate&&(this.min=this.minimumDate.getTime()),this.maximumDate&&(this.max=this.maximumDate.getTime()));if(this.logarithmic){var e=this.treatZeroAs,h=this.getMin(0,this.data.length-1);this.minReal<h&&(this.minReal=h);isNaN(this.minReal)&&(this.minReal=
+h);0<e&&0===h&&(this.minReal=h=e);if(0>=h||0>=this.minimum){this.fire("logarithmicAxisFailed",{type:"logarithmicAxisFailed",chart:a});return}}this.grid0=null;var f,g,k=a.dx,l=a.dy,e=!1,h=this.logarithmic;if(isNaN(this.min)||isNaN(this.max)||!this.foundGraphs||Infinity==this.min||-Infinity==this.max)e=!0;else{var m=this.labelFrequency,n=this.showFirstLabel,q=this.showLastLabel,p=1;f=0;this.minCalc=this.min;this.maxCalc=this.max;this.strictMinMax&&(isNaN(this.minimum)||(this.min=this.minimum),isNaN(this.maximum)||
+(this.max=this.maximum));isNaN(this.minZoom)||(this.min=this.minZoom);isNaN(this.maxZoom)||(this.max=this.maxZoom);var r=Math.round((this.maxCalc-this.minCalc)/this.step)+1,t;!0===h?(t=Math.log(this.max)*Math.LOG10E-Math.log(this.minReal)*Math.LOG10E,this.stepWidth=this.axisWidth/t,t>this.logGridLimit&&(r=Math.ceil(Math.log(this.max)*Math.LOG10E)+1,f=Math.round(Math.log(this.minReal)*Math.LOG10E),r>this.gridCountR&&(p=Math.ceil(r/this.gridCountR)))):this.stepWidth=this.axisWidth/(this.max-this.min);
+var u=0;1>this.step&&-1<this.step&&(u=d.getDecimals(this.step));this.integersOnly&&(u=0);u>this.maxDecCount&&(u=this.maxDecCount);var z=this.precision;isNaN(z)||(u=z);this.max=d.roundTo(this.max,this.maxDecCount);this.min=d.roundTo(this.min,this.maxDecCount);g={};g.precision=u;g.decimalSeparator=a.nf.decimalSeparator;g.thousandsSeparator=a.nf.thousandsSeparator;this.numberFormatter=g;var v,w=this.guides,x=w.length;if(0<x){var A=this.fillAlpha;for(g=this.fillAlpha=0;g<x;g++){var B=w[g],D=NaN,C=B.above;
+isNaN(B.toValue)||(D=this.getCoordinate(B.toValue),v=new this.axisItemRenderer(this,D,"",!0,NaN,NaN,B),this.pushAxisItem(v,C));var I=NaN;isNaN(B.value)||(I=this.getCoordinate(B.value),v=new this.axisItemRenderer(this,I,B.label,!0,NaN,(D-I)/2,B),this.pushAxisItem(v,C));isNaN(D-I)||(v=new this.guideFillRenderer(this,I,D,B),this.pushAxisItem(v,C),v=v.graphics(),B.graphics=v,B.balloonText&&this.addEventListeners(v,B))}this.fillAlpha=A}this.exponential=!1;for(g=f;g<r;g+=p)w=d.roundTo(this.step*g+this.min,
+u),-1!=String(w).indexOf("e")&&(this.exponential=!0);this.duration&&(this.maxInterval=d.getMaxInterval(this.max,this.duration));var u=this.step,H,w=this.minorGridAlpha;this.minorGridEnabled&&(H=this.getMinorGridStep(u,this.stepWidth*u));if("date"==c)this.generateDFObject(),this.timeDifference=this.max-this.min,this.maxTime=this.lastTime=this.max,this.startTime=this.firstTime=this.min,this.parseDatesDraw();else for(g=f;g<r;g+=p)if(c=u*g+this.minCalc,h&&this.max-this.min>10*this.min&&(c-=this.min),
+c=d.roundTo(c,this.maxDecCount+1),!this.integersOnly||Math.round(c)==c)if(isNaN(z)||Number(d.toFixed(c,z))==c){!0===h&&(0===c&&(c=this.minReal),t>this.logGridLimit&&(c=Math.pow(10,g)));v=this.formatValue(c,!1,g);Math.round(g/m)!=g/m&&(v=void 0);if(0===g&&!n||g==r-1&&!q)v=" ";f=this.getCoordinate(c);v=new this.axisItemRenderer(this,f,v,void 0,void 0,void 0,void 0,this.boldLabels);this.pushAxisItem(v);if(c==this.baseValue&&"radar"!=a.type){var O,J,A=this.viW,B=this.viH;v=this.viX;x=this.viY;"H"==this.orientation?
+0<=f&&f<=A+1&&(O=[f,f,f+k],J=[B,0,l]):0<=f&&f<=B+1&&(O=[0,A,A+k],J=[f,f,f+l]);O&&(f=d.fitToBounds(2*this.gridAlpha,0,1),f=d.line(a.container,O,J,this.gridColor,f,1,this.dashLength),f.translate(v,x),this.grid0=f,a.axesSet.push(f),f.toBack(),d.setCN(a,f,this.bcn+"zero-grid-"+this.id),d.setCN(a,f,this.bcn+"zero-grid"))}if(!isNaN(H)&&0<w&&g<r-1){f=this.gridAlpha;this.gridAlpha=this.minorGridAlpha;for(v=1;v<u/H;v++)x=this.getCoordinate(c+H*v),x=new this.axisItemRenderer(this,x,"",!1,0,0,!1,!1,0,!0),this.pushAxisItem(x);
+this.gridAlpha=f}}t=this.baseValue;this.min>this.baseValue&&this.max>this.baseValue&&(t=this.min);this.min<this.baseValue&&this.max<this.baseValue&&(t=this.max);h&&t<this.minReal&&(t=this.minReal);this.baseCoord=this.getCoordinate(t);t={type:"axisChanged",target:this,chart:a};t.min=h?this.minReal:this.min;t.max=this.max;this.fire("axisChanged",t);this.axisCreated=!0}h=this.axisLine.set;t=this.labelsSet;this.positionTitle();"radar"!=a.type?(a=this.viX,H=this.viY,b.translate(a,H),t.translate(a,H)):
+h.toFront();!this.visible||e?(b.hide(),h.hide(),t.hide()):(b.show(),h.show(),t.show());this.axisY=this.y-this.viY;this.axisX=this.x-this.viX},formatValue:function(a,b,c){var e=this.exponential,h=this.logarithmic,f=this.numberFormatter,g=this.chart;!0===this.logarithmic&&(e=-1!=String(a).indexOf("e")?!0:!1);this.useScientificNotation&&(e=!0);this.usePrefixes&&(e=!1);e?(b=-1==String(a).indexOf("e")?a.toExponential(15):String(a),c=b.split("e"),b=Number(c[0]),c=Number(c[1]),b=d.roundTo(b,14),10==b&&(b=
+1,c+=1),b=b+"e"+c,0===a&&(b="0"),1==a&&(b="1")):(h&&(e=String(a).split("."),e[1]?(f.precision=e[1].length,0>c&&(f.precision=Math.abs(c)),b&&1<a&&(f.precision=0)):f.precision=-1),b=this.usePrefixes?d.addPrefix(a,g.prefixesOfBigNumbers,g.prefixesOfSmallNumbers,f,!b):d.formatNumber(a,f,f.precision));this.duration&&(b=d.formatDuration(a,this.duration,"",this.durationUnits,this.maxInterval,f));"date"==this.type&&(b=d.formatDate(new Date(a),this.currentDateFormat,g));this.recalculateToPercents?b+="%":(f=
+this.unit)&&(b="left"==this.unitPosition?f+b:b+f);this.labelFunction&&(b=this.labelFunction(a,b,this).toString());return b},getMinorGridStep:function(a,b){var c=[5,4,2];60>b&&c.shift();for(var e=Math.floor(Math.log(Math.abs(a))*Math.LOG10E),h=0;h<c.length;h++){var d=a/c[h],g=Math.floor(Math.log(Math.abs(d))*Math.LOG10E);if(!(0<Math.abs(e-g)))if(1>a){if(g=Math.pow(10,-g)*d,g==Math.round(g))return d}else if(d==Math.round(d))return d}},stackGraphs:function(a){var b=this.stackType;"stacked"==b&&(b="regular");
+"line"==b&&(b="none");"100% stacked"==b&&(b="100%");this.stackType=b;var c=[],e=[],h=[],f=[],g,k=this.chart.graphs,l,m,n,q,p=this.baseValue,r=!1;if("line"==a||"step"==a||"smoothedLine"==a)r=!0;if(r&&("regular"==b||"100%"==b))for(q=0;q<k.length;q++)n=k[q],n.hidden||(m=n.type,n.chart==this.chart&&n.valueAxis==this&&a==m&&n.stackable&&(l&&(n.stackGraph=l),l=n));for(l=this.start;l<=this.end;l++){var t=0;for(q=0;q<k.length;q++)if(n=k[q],n.hidden)n.newStack&&(h[l]=NaN,e[l]=NaN);else if(m=n.type,n.chart==
+this.chart&&n.valueAxis==this&&a==m&&n.stackable)if(m=this.data[l].axes[this.id].graphs[n.id],g=m.values.value,isNaN(g))n.newStack&&(h[l]=NaN,e[l]=NaN);else{var u=d.getDecimals(g);t<u&&(t=u);isNaN(f[l])?f[l]=Math.abs(g):f[l]+=Math.abs(g);f[l]=d.roundTo(f[l],t);u=n.fillToGraph;r&&u&&(u=this.data[l].axes[this.id].graphs[u.id])&&(m.values.open=u.values.value);"regular"==b&&(r&&(isNaN(c[l])?(c[l]=g,m.values.close=g,m.values.open=this.baseValue):(isNaN(g)?m.values.close=c[l]:m.values.close=g+c[l],m.values.open=
+c[l],c[l]=m.values.close)),"column"==a&&(n.newStack&&(h[l]=NaN,e[l]=NaN),m.values.close=g,0>g?(m.values.close=g,isNaN(e[l])?m.values.open=p:(m.values.close+=e[l],m.values.open=e[l]),e[l]=m.values.close):(m.values.close=g,isNaN(h[l])?m.values.open=p:(m.values.close+=h[l],m.values.open=h[l]),h[l]=m.values.close)))}}for(l=this.start;l<=this.end;l++)for(q=0;q<k.length;q++)(n=k[q],n.hidden)?n.newStack&&(h[l]=NaN,e[l]=NaN):(m=n.type,n.chart==this.chart&&n.valueAxis==this&&a==m&&n.stackable&&(m=this.data[l].axes[this.id].graphs[n.id],
+g=m.values.value,isNaN(g)||(c=g/f[l]*100,m.values.percents=c,m.values.total=f[l],n.newStack&&(h[l]=NaN,e[l]=NaN),"100%"==b&&(isNaN(e[l])&&(e[l]=0),isNaN(h[l])&&(h[l]=0),0>c?(m.values.close=d.fitToBounds(c+e[l],-100,100),m.values.open=e[l],e[l]=m.values.close):(m.values.close=d.fitToBounds(c+h[l],-100,100),m.values.open=h[l],h[l]=m.values.close)))))},recalculate:function(){var a=this.chart,b=a.graphs,c;for(c=0;c<b.length;c++){var e=b[c];if(e.valueAxis==this){var h="value";if("candlestick"==e.type||
+"ohlc"==e.type)h="open";var f,g,k=this.end+2,k=d.fitToBounds(this.end+1,0,this.data.length-1),l=this.start;0<l&&l--;var m;g=this.start;e.compareFromStart&&(g=0);if(!isNaN(a.startTime)&&(m=a.categoryAxis)){var n=m.minDuration(),n=new Date(a.startTime+n/2),q=d.resetDateToMin(new Date(a.startTime),m.minPeriod).getTime();d.resetDateToMin(new Date(n),m.minPeriod).getTime()>q&&g++}if(m=a.recalculateFromDate)m=d.getDate(m,a.dataDateFormat,"fff"),g=a.getClosestIndex(a.chartData,"time",m.getTime(),!0,0,a.chartData.length),
+k=a.chartData.length-1;for(m=g;m<=k&&(g=this.data[m].axes[this.id].graphs[e.id],f=g.values[h],isNaN(f));m++);this.recBaseValue=f;for(h=l;h<=k;h++){g=this.data[h].axes[this.id].graphs[e.id];g.percents={};var l=g.values,p;for(p in l)g.percents[p]="percents"!=p?l[p]/f*100-100:l[p]}}}},getMinMax:function(){var a=!1,b=this.chart,c=b.graphs,e;for(e=0;e<c.length;e++){var h=c[e].type;("line"==h||"step"==h||"smoothedLine"==h)&&this.expandMinMax&&(a=!0)}a&&(0<this.start&&this.start--,this.end<this.data.length-
+1&&this.end++);"serial"==b.type&&(!0!==b.categoryAxis.parseDates||a||this.end<this.data.length-1&&this.end++);a=this.minMaxMultiplier;this.min=this.getMin(this.start,this.end);this.max=this.getMax();this.minRR=this.min;this.maxRR=this.max;a=(this.max-this.min)*(a-1);this.min-=a;this.max+=a;a=this.guides.length;if(this.includeGuidesInMinMax&&0<a)for(b=0;b<a;b++)c=this.guides[b],c.toValue<this.min&&(this.min=c.toValue),c.value<this.min&&(this.min=c.value),c.toValue>this.max&&(this.max=c.toValue),c.value>
+this.max&&(this.max=c.value);isNaN(this.minimum)||(this.min=this.minimum);isNaN(this.maximum)||(this.max=this.maximum);this.minimumDate&&(this.min=this.minimumDate.getTime());this.maximumDate&&(this.max=this.maximumDate.getTime());this.min>this.max&&(a=this.max,this.max=this.min,this.min=a);isNaN(this.minTemp)||(this.min=this.minTemp);isNaN(this.maxTemp)||(this.max=this.maxTemp);this.minReal=this.min;this.maxReal=this.max;0===this.min&&0===this.max&&(this.max=9);this.min>this.max&&(this.min=this.max-
+1);a=this.min;b=this.max;c=this.max-this.min;e=0===c?Math.pow(10,Math.floor(Math.log(Math.abs(this.max))*Math.LOG10E))/10:Math.pow(10,Math.floor(Math.log(Math.abs(c))*Math.LOG10E))/10;isNaN(this.maximum)&&isNaN(this.maxTemp)&&(this.max=Math.ceil(this.max/e)*e+e);isNaN(this.minimum)&&isNaN(this.minTemp)&&(this.min=Math.floor(this.min/e)*e-e);0>this.min&&0<=a&&(this.min=0);0<this.max&&0>=b&&(this.max=0);"100%"==this.stackType&&(this.min=0>this.min?-100:0,this.max=0>this.max?0:100);c=this.max-this.min;
+e=Math.pow(10,Math.floor(Math.log(Math.abs(c))*Math.LOG10E))/10;this.step=Math.ceil(c/this.gridCountR/e)*e;c=Math.pow(10,Math.floor(Math.log(Math.abs(this.step))*Math.LOG10E));c=d.fixStepE(c);e=Math.ceil(this.step/c);5<e&&(e=10);5>=e&&2<e&&(e=5);this.step=Math.ceil(this.step/(c*e))*c*e;1>c?(this.maxDecCount=Math.abs(Math.log(Math.abs(c))*Math.LOG10E),this.maxDecCount=Math.round(this.maxDecCount),this.step=d.roundTo(this.step,this.maxDecCount+1)):this.maxDecCount=0;this.min=this.step*Math.floor(this.min/
+this.step);this.max=this.step*Math.ceil(this.max/this.step);0>this.min&&0<=a&&(this.min=0);0<this.max&&0>=b&&(this.max=0);1<this.minReal&&1<this.max-this.minReal&&(this.minReal=Math.floor(this.minReal));c=Math.pow(10,Math.floor(Math.log(Math.abs(this.minReal))*Math.LOG10E));0===this.min&&(this.minReal=c);0===this.min&&1<this.minReal&&(this.minReal=1);0<this.min&&0<this.minReal-this.step&&(this.minReal=this.min+this.step<this.minReal?this.min+this.step:this.min);this.logarithmic&&(2<Math.log(b)*Math.LOG10E-
+Math.log(a)*Math.LOG10E?(this.minReal=this.min=Math.pow(10,Math.floor(Math.log(Math.abs(a))*Math.LOG10E)),this.max=Math.pow(10,Math.ceil(Math.log(Math.abs(b))*Math.LOG10E))):(b=Math.pow(10,Math.floor(Math.log(Math.abs(this.min))*Math.LOG10E))/10,a=Math.pow(10,Math.floor(Math.log(Math.abs(a))*Math.LOG10E))/10,b<a&&(this.minReal=this.min=10*a)))},getMin:function(a,b){var c,e;for(e=a;e<=b;e++){var h=this.data[e].axes[this.id].graphs,d;for(d in h)if(h.hasOwnProperty(d)){var g=this.chart.getGraphById(d);
+if(g.includeInMinMax&&(!g.hidden||this.includeHidden)){isNaN(c)&&(c=Infinity);this.foundGraphs=!0;g=h[d].values;this.recalculateToPercents&&(g=h[d].percents);var k;if(this.minMaxField)k=g[this.minMaxField],k<c&&(c=k);else for(var l in g)g.hasOwnProperty(l)&&"percents"!=l&&"total"!=l&&(k=g[l],k<c&&(c=k))}}}return c},getMax:function(){var a,b;for(b=this.start;b<=this.end;b++){var c=this.data[b].axes[this.id].graphs,e;for(e in c)if(c.hasOwnProperty(e)){var d=this.chart.getGraphById(e);if(d.includeInMinMax&&
+(!d.hidden||this.includeHidden)){isNaN(a)&&(a=-Infinity);this.foundGraphs=!0;d=c[e].values;this.recalculateToPercents&&(d=c[e].percents);var f;if(this.minMaxField)f=d[this.minMaxField],f>a&&(a=f);else for(var g in d)d.hasOwnProperty(g)&&"percents"!=g&&"total"!=g&&(f=d[g],f>a&&(a=f))}}}return a},dispatchZoomEvent:function(a,b){var c={type:"axisZoomed",startValue:a,endValue:b,target:this,chart:this.chart};this.fire(c.type,c)},zoomOut:function(){var a=this.chart;"xy"!=a.type&&(this.maxZoom=this.minZoom=
+void 0,a.updateAfterValueZoom())},zoomToValues:function(a,b){var c=this.chart;"xy"==c.type?(b<a&&(c=b,b=a,a=c),a<this.min&&(a=this.min),b>this.max&&(b=this.max),c={type:"axisSelfZoomed"},c.chart=this.chart,c.valueAxis=this,c.multiplier=this.axisWidth/Math.abs(this.getCoordinate(b)-this.getCoordinate(a)),c.startValue=a,c.endValue=b,c.position="V"==this.orientation?this.reversed?this.getCoordinate(a):this.getCoordinate(b):this.reversed?this.getCoordinate(b):this.getCoordinate(a),this.fire(c.type,c)):
+(this.minZoom=a,this.maxZoom=b,c.updateAfterValueZoom())},coordinateToValue:function(a){if(isNaN(a))return NaN;var b=this.axisWidth,c=this.stepWidth,e=this.reversed,d=this.rotate,f=this.min,g=this.minReal;return!0===this.logarithmic?Math.pow(10,(d?!0===e?(b-a)/c:a/c:!0===e?a/c:(b-a)/c)+Math.log(g)*Math.LOG10E):!0===e?d?f-(a-b)/c:a/c+f:d?a/c+f:f-(a-b)/c},getCoordinate:function(a){if(isNaN(a))return NaN;var b=this.rotate,c=this.reversed,e=this.axisWidth,d=this.stepWidth,f=this.min,g=this.minReal;!0===
+this.logarithmic?(0===a&&(a=this.treatZeroAs),a=Math.log(a)*Math.LOG10E-Math.log(g)*Math.LOG10E,b=b?!0===c?e-d*a:d*a:!0===c?d*a:e-d*a):b=!0===c?b?e-d*(a-f):d*(a-f):b?d*(a-f):e-d*(a-f);b=this.rotate?b+(this.x-this.viX):b+(this.y-this.viY);1E7<Math.abs(b)&&(b=1E7*(b/Math.abs(b)));return Math.round(b)},synchronizeWithAxis:function(a){this.synchronizeWith=a;this.listenTo(this.synchronizeWith,"axisChanged",this.handleSynchronization)},handleSynchronization:function(){if(this.synchronizeWith){d.isString(this.synchronizeWith)&&
+(this.synchronizeWith=this.chart.getValueAxisById(this.synchronizeWith));var a=this.synchronizeWith,b=a.min,c=a.max,a=a.step,e=this.synchronizationMultiplier;e&&(this.min=b*e,this.max=c*e,this.step=a*e,b=Math.pow(10,Math.floor(Math.log(Math.abs(this.step))*Math.LOG10E)),b=Math.abs(Math.log(Math.abs(b))*Math.LOG10E),this.maxDecCount=b=Math.round(b),this.draw())}}})})();(function(){var d=window.AmCharts;d.RecAxis=d.Class({construct:function(a){var b=a.chart,c=a.axisThickness,e=a.axisColor,h=a.axisAlpha,f=a.offset,g=a.dx,k=a.dy,l=a.viX,m=a.viY,n=a.viH,q=a.viW,p=b.container;"H"==a.orientation?(e=d.line(p,[0,q],[0,0],e,h,c),this.axisWidth=a.width,"bottom"==a.position?(k=c/2+f+n+m-1,c=l):(k=-c/2-f+m+k,c=g+l)):(this.axisWidth=a.height,"right"==a.position?(e=d.line(p,[0,0,-g],[0,n,n-k],e,h,c),k=m+k,c=c/2+f+g+q+l-1):(e=d.line(p,[0,0],[0,n],e,h,c),k=m,c=-c/2-f+l));e.translate(c,
+k);c=b.container.set();c.push(e);b.axesSet.push(c);d.setCN(b,e,a.bcn+"line");this.axisSet=c;this.set=e}})})();(function(){var d=window.AmCharts;d.RecItem=d.Class({construct:function(a,b,c,e,h,f,g,k,l,m,n,q){b=Math.round(b);var p=a.chart;this.value=c;void 0==c&&(c="");l||(l=0);void 0==e&&(e=!0);var r=p.fontFamily,t=a.fontSize;void 0==t&&(t=p.fontSize);var u=a.color;void 0==u&&(u=p.color);void 0!==n&&(u=n);var z=a.chart.container,v=z.set();this.set=v;var w=a.axisThickness,x=a.axisColor,A=a.axisAlpha,B=a.tickLength,D=a.gridAlpha,C=a.gridThickness,I=a.gridColor,H=a.dashLength,O=a.fillColor,J=a.fillAlpha,da=a.labelsEnabled;
+n=a.labelRotation;var pa=a.counter,U=a.inside,na=a.labelOffset,qa=a.dx,ja=a.dy,Pa=a.orientation,aa=a.position,Z=a.previousCoord,V=a.viH,sa=a.viW,ba=a.offset,ca,ta;g?(void 0!==g.id&&(q=p.classNamePrefix+"-guide-"+g.id),da=!0,isNaN(g.tickLength)||(B=g.tickLength),void 0!=g.lineColor&&(I=g.lineColor),void 0!=g.color&&(u=g.color),isNaN(g.lineAlpha)||(D=g.lineAlpha),isNaN(g.dashLength)||(H=g.dashLength),isNaN(g.lineThickness)||(C=g.lineThickness),!0===g.inside&&(U=!0),isNaN(g.labelRotation)||(n=g.labelRotation),
+isNaN(g.fontSize)||(t=g.fontSize),g.position&&(aa=g.position),void 0!==g.boldLabel&&(k=g.boldLabel),isNaN(g.labelOffset)||(na=g.labelOffset)):""===c&&(B=0);m&&!isNaN(a.minorTickLength)&&(B=a.minorTickLength);var ia="start";h&&(ia="middle");var Q=n*Math.PI/180,W,wa,G=0,y=0,ka=0,ea=W=0,Qa=0;"V"==Pa&&(n=0);var Y;da&&""!==c&&(Y=a.autoWrap&&0===n?d.wrappedText(z,c,u,r,t,ia,k,h,0):d.text(z,c,u,r,t,ia,k),ia=Y.getBBox(),ea=ia.width,Qa=ia.height);if("H"==Pa){if(0<=b&&b<=sa+1&&(0<B&&0<A&&b+l<=sa+1&&(ca=d.line(z,
+[b+l,b+l],[0,B],x,A,C),v.push(ca)),0<D&&(ta=d.line(z,[b,b+qa,b+qa],[V,V+ja,ja],I,D,C,H),v.push(ta))),y=0,G=b,g&&90==n&&U&&(G-=t),!1===e?(ia="start",y="bottom"==aa?U?y+B:y-B:U?y-B:y+B,G+=3,h&&(G+=h/2-3,ia="middle"),0<n&&(ia="middle")):ia="middle",1==pa&&0<J&&!g&&!m&&Z<sa&&(e=d.fitToBounds(b,0,sa),Z=d.fitToBounds(Z,0,sa),W=e-Z,0<W&&(wa=d.rect(z,W,a.height,O,J),wa.translate(e-W+qa,ja),v.push(wa))),"bottom"==aa?(y+=V+t/2+ba,U?(0<n?(y=V-ea/2*Math.sin(Q)-B-3,G+=ea/2*Math.cos(Q)-4+2):0>n?(y=V+ea*Math.sin(Q)-
+B-3+2,G+=-ea*Math.cos(Q)-Qa*Math.sin(Q)-4):y-=B+t+3+3,y-=na):(0<n?(y=V+ea/2*Math.sin(Q)+B+3,G-=ea/2*Math.cos(Q)):0>n?(y=V+B+3-ea/2*Math.sin(Q)+2,G+=ea/2*Math.cos(Q)):y+=B+w+3+3,y+=na)):(y+=ja+t/2-ba,G+=qa,U?(0<n?(y=ea/2*Math.sin(Q)+B+3,G-=ea/2*Math.cos(Q)):y+=B+3,y+=na):(0<n?(y=-(ea/2)*Math.sin(Q)-B-6,G+=ea/2*Math.cos(Q)):y-=B+t+3+w+3,y-=na)),"bottom"==aa?W=(U?V-B-1:V+w-1)+ba:(ka=qa,W=(U?ja:ja-B-w+1)-ba),f&&(G+=f),f=G,0<n&&(f+=ea/2*Math.cos(Q)),Y&&(t=0,U&&(t=ea/2*Math.cos(Q)),f+t>sa+2||0>f))Y.remove(),
+Y=null}else{0<=b&&b<=V+1&&(0<B&&0<A&&b+l<=V+1&&(ca=d.line(z,[0,B],[b+l,b+l],x,A,C),v.push(ca)),0<D&&(ta=d.line(z,[0,qa,sa+qa],[b,b+ja,b+ja],I,D,C,H),v.push(ta)));ia="end";if(!0===U&&"left"==aa||!1===U&&"right"==aa)ia="start";y=b-t/2;1==pa&&0<J&&!g&&!m&&(e=d.fitToBounds(b,0,V),Z=d.fitToBounds(Z,0,V),Q=e-Z,wa=d.polygon(z,[0,a.width,a.width,0],[0,0,Q,Q],O,J),wa.translate(qa,e-Q+ja),v.push(wa));y+=t/2;"right"==aa?(G+=qa+sa+ba,y+=ja,U?(f||(y-=t/2+3),G=G-(B+4)-na):(G+=B+4+w,y-=2,G+=na)):U?(G+=B+4-ba,f||
+(y-=t/2+3),g&&(G+=qa,y+=ja),G+=na):(G+=-B-w-4-2-ba,y-=2,G-=na);ca&&("right"==aa?(ka+=qa+ba+sa,W+=ja,ka=U?ka-w:ka+w):(ka-=ba,U||(ka-=B+w)));f&&(y+=f);U=-3;"right"==aa&&(U+=ja);Y&&(y>V+1||y<U)&&(Y.remove(),Y=null)}ca&&(ca.translate(ka,W),d.setCN(p,ca,a.bcn+"tick"),d.setCN(p,ca,q,!0),g&&d.setCN(p,ca,"guide"));!1===a.visible&&(ca&&ca.remove(),Y&&(Y.remove(),Y=null));Y&&(Y.attr({"text-anchor":ia}),Y.translate(G,y),0!==n&&Y.rotate(-n,a.chart.backgroundColor),a.allLabels.push(Y),this.label=Y,d.setCN(p,Y,
+a.bcn+"label"),d.setCN(p,Y,q,!0),g&&d.setCN(p,Y,"guide"));ta&&(d.setCN(p,ta,a.bcn+"grid"),d.setCN(p,ta,q,!0),g&&d.setCN(p,ta,"guide"));wa&&(d.setCN(p,wa,a.bcn+"fill"),d.setCN(p,wa,q,!0));m?ta&&d.setCN(p,ta,a.bcn+"grid-minor"):(a.counter=0===pa?1:0,a.previousCoord=b);0===this.set.node.childNodes.length&&this.set.remove()},graphics:function(){return this.set},getLabel:function(){return this.label}})})();(function(){var d=window.AmCharts;d.RecFill=d.Class({construct:function(a,b,c,e){var h=a.dx,f=a.dy,g=a.orientation,k=0;if(c<b){var l=b;b=c;c=l}var m=e.fillAlpha;isNaN(m)&&(m=0);var l=a.chart.container,n=e.fillColor;"V"==g?(b=d.fitToBounds(b,0,a.viH),c=d.fitToBounds(c,0,a.viH)):(b=d.fitToBounds(b,0,a.viW),c=d.fitToBounds(c,0,a.viW));c-=b;isNaN(c)&&(c=4,k=2,m=0);0>c&&"object"==typeof n&&(n=n.join(",").split(",").reverse());"V"==g?(g=d.rect(l,a.viW,c,n,m),g.translate(h,b-k+f)):(g=d.rect(l,c,a.viH,n,
+m),g.translate(b-k+h,f));d.setCN(a.chart,g,"guide-fill");e.id&&d.setCN(a.chart,g,"guide-fill-"+e.id);this.set=l.set([g])},graphics:function(){return this.set},getLabel:function(){}})})();(function(){var d=window.AmCharts;d.AmChart=d.Class({construct:function(a){this.theme=a;this.classNamePrefix="amcharts";this.addClassNames=!1;this.version="3.14.5";d.addChart(this);this.createEvents("dataUpdated","init","rendered","drawn","failed","resized");this.height=this.width="100%";this.dataChanged=!0;this.chartCreated=!1;this.previousWidth=this.previousHeight=0;this.backgroundColor="#FFFFFF";this.borderAlpha=this.backgroundAlpha=0;this.color=this.borderColor="#000000";this.fontFamily="Verdana";
+this.fontSize=11;this.usePrefixes=!1;this.addCodeCredits=this.autoResize=!0;this.precision=-1;this.percentPrecision=2;this.decimalSeparator=".";this.thousandsSeparator=",";this.labels=[];this.allLabels=[];this.titles=[];this.marginRight=this.marginLeft=this.autoMarginOffset=0;this.timeOuts=[];this.creditsPosition="top-left";var b=document.createElement("div"),c=b.style;c.overflow="hidden";c.position="relative";c.textAlign="left";this.chartDiv=b;b=document.createElement("div");c=b.style;c.overflow=
+"hidden";c.position="relative";c.textAlign="left";this.legendDiv=b;this.titleHeight=0;this.hideBalloonTime=150;this.handDrawScatter=2;this.handDrawThickness=1;this.prefixesOfBigNumbers=[{number:1E3,prefix:"k"},{number:1E6,prefix:"M"},{number:1E9,prefix:"G"},{number:1E12,prefix:"T"},{number:1E15,prefix:"P"},{number:1E18,prefix:"E"},{number:1E21,prefix:"Z"},{number:1E24,prefix:"Y"}];this.prefixesOfSmallNumbers=[{number:1E-24,prefix:"y"},{number:1E-21,prefix:"z"},{number:1E-18,prefix:"a"},{number:1E-15,
+prefix:"f"},{number:1E-12,prefix:"p"},{number:1E-9,prefix:"n"},{number:1E-6,prefix:"\u03bc"},{number:.001,prefix:"m"}];this.panEventsEnabled=!0;this.product="amcharts";this.animations=[];this.balloon=new d.AmBalloon(this.theme);this.balloon.chart=this;d.applyTheme(this,a,"AmChart")},drawChart:function(){this.drawBackground();this.redrawLabels();this.drawTitles();this.brr()},drawBackground:function(){d.remove(this.background);var a=this.container,b=this.backgroundColor,c=this.backgroundAlpha,e=this.set;
+d.isModern||0!==c||(c=.001);var h=this.updateWidth();this.realWidth=h;var f=this.updateHeight();this.realHeight=f;b=d.polygon(a,[0,h-1,h-1,0],[0,0,f-1,f-1],b,c,1,this.borderColor,this.borderAlpha);d.setCN(this,b,"bg");this.background=b;e.push(b);if(b=this.backgroundImage)a=a.image(b,0,0,h,f),d.setCN(this,b,"bg-image"),this.bgImg=a,e.push(a)},drawTitles:function(){var a=this.titles;if(d.ifArray(a)){var b=20,c;for(c=0;c<a.length;c++){var e=a[c],e=d.processObject(e,d.Title,this.theme);if(!1!==e.enabled){var h=
+e.color;void 0===h&&(h=this.color);var f=e.size;isNaN(f)&&(f=this.fontSize+2);isNaN(e.alpha);var g=this.marginLeft,h=d.text(this.container,e.text,h,this.fontFamily,f);h.translate(g+(this.realWidth-this.marginRight-g)/2,b);h.node.style.pointerEvents="none";d.setCN(this,h,"title");e.id&&d.setCN(this,h,"title-"+e.id);g=!0;void 0!==e.bold&&(g=e.bold);g&&h.attr({"font-weight":"bold"});h.attr({opacity:e.alpha});b+=f+6;this.freeLabelsSet.push(h)}}}},write:function(a){if(a="object"!=typeof a?document.getElementById(a):
+a){for(;a.firstChild;)a.removeChild(a.firstChild);this.div=a;a.style.overflow="hidden";a.style.textAlign="left";var b=this.chartDiv,c=this.legendDiv,e=this.legend,h=c.style,f=b.style;this.measure();this.previousHeight=this.divRealHeight;this.previousWidth=this.divRealWidth;var g,k=document.createElement("div");g=k.style;g.position="relative";this.containerDiv=k;k.className=this.classNamePrefix+"-main-div";b.className=this.classNamePrefix+"-chart-div";a.appendChild(k);var l=this.exportConfig;l&&d.AmExport&&
+!this.AmExport&&(this.AmExport=new d.AmExport(this,l));this.amExport&&d.AmExport&&(this.AmExport=d.extend(this.amExport,new d.AmExport(this),!0));this.AmExport&&this.AmExport.init&&this.AmExport.init();if(e)if(e=this.addLegend(e,e.divId),e.enabled)switch(e.position){case "bottom":k.appendChild(b);k.appendChild(c);break;case "top":k.appendChild(c);k.appendChild(b);break;case "absolute":g.width=a.style.width;g.height=a.style.height;h.position="absolute";f.position="absolute";void 0!==e.left&&(h.left=
+e.left+"px");void 0!==e.right&&(h.right=e.right+"px");void 0!==e.top&&(h.top=e.top+"px");void 0!==e.bottom&&(h.bottom=e.bottom+"px");e.marginLeft=0;e.marginRight=0;k.appendChild(b);k.appendChild(c);break;case "right":g.width=a.style.width;g.height=a.style.height;h.position="relative";f.position="absolute";k.appendChild(b);k.appendChild(c);break;case "left":g.width=a.style.width;g.height=a.style.height;h.position="absolute";f.position="relative";k.appendChild(b);k.appendChild(c);break;case "outside":k.appendChild(b)}else k.appendChild(b);
+else k.appendChild(b);this.listenersAdded||(this.addListeners(),this.listenersAdded=!0);this.initChart()}},createLabelsSet:function(){d.remove(this.labelsSet);this.labelsSet=this.container.set();this.freeLabelsSet.push(this.labelsSet)},initChart:function(){window.AmCharts_path&&(this.path=window.AmCharts_path);void 0===this.path&&(this.path=d.getPath());void 0===this.path&&(this.path="amcharts/");this.path=d.normalizeUrl(this.path);void 0===this.pathToImages&&(this.pathToImages=this.path+"images/");
+this.initHC||(d.callInitHandler(this),this.initHC=!0);this.renderFix();d.applyLang(this.language,this);var a=this.numberFormatter;a&&(isNaN(a.precision)||(this.precision=a.precision),void 0!==a.thousandsSeparator&&(this.thousandsSeparator=a.thousandsSeparator),void 0!==a.decimalSeparator&&(this.decimalSeparator=a.decimalSeparator));(a=this.percentFormatter)&&!isNaN(a.precision)&&(this.percentPrecision=a.precision);this.nf={precision:this.precision,thousandsSeparator:this.thousandsSeparator,decimalSeparator:this.decimalSeparator};
+this.pf={precision:this.percentPrecision,thousandsSeparator:this.thousandsSeparator,decimalSeparator:this.decimalSeparator};this.divIsFixed=d.findIfFixed(this.chartDiv);this.destroy();a=0;document.attachEvent&&!window.opera&&(a=1);this.dmouseX=this.dmouseY=0;var b=document.getElementsByTagName("html")[0];b&&window.getComputedStyle&&(b=window.getComputedStyle(b,null))&&(this.dmouseY=d.removePx(b.getPropertyValue("margin-top")),this.dmouseX=d.removePx(b.getPropertyValue("margin-left")));this.mouseMode=
+a;(a=this.container)?(a.container.innerHTML="",a.width=this.realWidth,a.height=this.realHeight,a.addDefs(this),this.chartDiv.appendChild(a.container)):a=new d.AmDraw(this.chartDiv,this.realWidth,this.realHeight,this);a.chart=this;d.VML||d.SVG?(a.handDrawn=this.handDrawn,a.handDrawScatter=this.handDrawScatter,a.handDrawThickness=this.handDrawThickness,this.container=a,this.set&&this.set.remove(),this.set=a.set(),this.gridSet&&this.gridSet.remove(),this.gridSet=a.set(),this.cursorLineSet&&this.cursorLineSet.remove(),
+this.cursorLineSet=a.set(),this.graphsBehindSet&&this.graphsBehindSet.remove(),this.graphsBehindSet=a.set(),this.bulletBehindSet&&this.bulletBehindSet.remove(),this.bulletBehindSet=a.set(),this.columnSet&&this.columnSet.remove(),this.columnSet=a.set(),this.graphsSet&&this.graphsSet.remove(),this.graphsSet=a.set(),this.trendLinesSet&&this.trendLinesSet.remove(),this.trendLinesSet=a.set(),this.axesSet&&this.axesSet.remove(),this.axesSet=a.set(),this.cursorSet&&this.cursorSet.remove(),this.cursorSet=
+a.set(),this.scrollbarsSet&&this.scrollbarsSet.remove(),this.scrollbarsSet=a.set(),this.bulletSet&&this.bulletSet.remove(),this.bulletSet=a.set(),this.freeLabelsSet&&this.freeLabelsSet.remove(),this.axesLabelsSet&&this.axesLabelsSet.remove(),this.axesLabelsSet=a.set(),this.freeLabelsSet=a.set(),this.balloonsSet&&this.balloonsSet.remove(),this.balloonsSet=a.set(),this.zoomButtonSet&&this.zoomButtonSet.remove(),this.zbSet&&(this.zbSet.remove(),this.zbSet=null),this.zoomButtonSet=a.set(),this.linkSet&&
+this.linkSet.remove(),this.linkSet=a.set()):this.fire("failed",{type:"failed",chart:this})},premeasure:function(){var a=this.div;if(a){var b=a.offsetWidth,c=a.offsetHeight;a.clientHeight&&(b=a.clientWidth,c=a.clientHeight);if(b!=this.mw||c!=this.mh)this.mw=b,this.mh=c,this.measure()}},measure:function(){var a=this.div;if(a){var b=this.chartDiv,c=a.offsetWidth,e=a.offsetHeight,h=this.container;a.clientHeight&&(c=a.clientWidth,e=a.clientHeight);var f=d.removePx(d.getStyle(a,"padding-left")),g=d.removePx(d.getStyle(a,
+"padding-right")),k=d.removePx(d.getStyle(a,"padding-top")),l=d.removePx(d.getStyle(a,"padding-bottom"));isNaN(f)||(c-=f);isNaN(g)||(c-=g);isNaN(k)||(e-=k);isNaN(l)||(e-=l);f=a.style;a=f.width;f=f.height;-1!=a.indexOf("px")&&(c=d.removePx(a));-1!=f.indexOf("px")&&(e=d.removePx(f));e=Math.round(e);c=Math.round(c);a=Math.round(d.toCoordinate(this.width,c));f=Math.round(d.toCoordinate(this.height,e));(c!=this.previousWidth||e!=this.previousHeight)&&0<a&&0<f&&(b.style.width=a+"px",b.style.height=f+"px",
+h&&h.setSize(a,f),this.balloon=d.processObject(this.balloon,d.AmBalloon,this.theme),this.balloon.setBounds(2,2,a-2,f));this.balloon.chart=this;this.realWidth=a;this.realHeight=f;this.divRealWidth=c;this.divRealHeight=e}},destroy:function(){this.chartDiv.innerHTML="";this.clearTimeOuts();this.legend&&this.legend.destroy()},clearTimeOuts:function(){var a=this.timeOuts;if(a){var b;for(b=0;b<a.length;b++)clearTimeout(a[b])}this.timeOuts=[]},clear:function(a){d.callMethod("clear",[this.chartScrollbar,
+this.scrollbarV,this.scrollbarH,this.chartCursor]);this.chartCursor=this.scrollbarH=this.scrollbarV=this.chartScrollbar=null;this.clearTimeOuts();this.container&&(this.container.remove(this.chartDiv),this.container.remove(this.legendDiv));a||d.removeChart(this);if(a=this.div)for(;a.firstChild;)a.removeChild(a.firstChild);this.legend&&this.legend.destroy()},setMouseCursor:function(a){"auto"==a&&d.isNN&&(a="default");this.chartDiv.style.cursor=a;this.legendDiv.style.cursor=a},redrawLabels:function(){this.labels=
+[];var a=this.allLabels;this.createLabelsSet();var b;for(b=0;b<a.length;b++)this.drawLabel(a[b])},drawLabel:function(a){if(this.container&&!1!==a.enabled){a=d.processObject(a,d.Label,this.theme);var b=a.y,c=a.text,e=a.align,h=a.size,f=a.color,g=a.rotation,k=a.alpha,l=a.bold,m=d.toCoordinate(a.x,this.realWidth),b=d.toCoordinate(b,this.realHeight);m||(m=0);b||(b=0);void 0===f&&(f=this.color);isNaN(h)&&(h=this.fontSize);e||(e="start");"left"==e&&(e="start");"right"==e&&(e="end");"center"==e&&(e="middle",
+g?b=this.realHeight-b+b/2:m=this.realWidth/2-m);void 0===k&&(k=1);void 0===g&&(g=0);b+=h/2;c=d.text(this.container,c,f,this.fontFamily,h,e,l,k);c.translate(m,b);d.setCN(this,c,"label");a.id&&d.setCN(this,c,"label-"+a.id);0!==g&&c.rotate(g);a.url?(c.setAttr("cursor","pointer"),c.click(function(){d.getURL(a.url)})):c.node.style.pointerEvents="none";this.labelsSet.push(c);this.labels.push(c)}},addLabel:function(a,b,c,e,d,f,g,k,l,m){a={x:a,y:b,text:c,align:e,size:d,color:f,alpha:k,rotation:g,bold:l,url:m,
+enabled:!0};this.container&&this.drawLabel(a);this.allLabels.push(a)},clearLabels:function(){var a=this.labels,b;for(b=a.length-1;0<=b;b--)a[b].remove();this.labels=[];this.allLabels=[]},updateHeight:function(){var a=this.divRealHeight,b=this.legend;if(b){var c=this.legendDiv.offsetHeight,b=b.position;if("top"==b||"bottom"==b){a-=c;if(0>a||isNaN(a))a=0;this.chartDiv.style.height=a+"px"}}return a},updateWidth:function(){var a=this.divRealWidth,b=this.divRealHeight,c=this.legend;if(c){var e=this.legendDiv,
+d=e.offsetWidth;isNaN(c.width)||(d=c.width);c.ieW&&(d=c.ieW);var f=e.offsetHeight,e=e.style,g=this.chartDiv.style,c=c.position;if("right"==c||"left"==c){a-=d;if(0>a||isNaN(a))a=0;g.width=a+"px";"left"==c?(g.left=d+"px",e.left="0px"):(g.left="0px",e.left=a+"px");b>f&&(e.top=(b-f)/2+"px")}}return a},getTitleHeight:function(){var a=0,b=this.titles,c=!0;if(0<b.length){var a=20,e;for(e=0;e<b.length;e++){var d=b[e];!1!==d.enabled&&(c=!1,d=d.size,isNaN(d)&&(d=this.fontSize+2),a+=d+6)}c&&(a=0)}return a},
+addTitle:function(a,b,c,e,d){isNaN(b)&&(b=this.fontSize+2);a={text:a,size:b,color:c,alpha:e,bold:d,enabled:!0};this.titles.push(a);return a},handleWheel:function(a){var b=0;a||(a=window.event);a.wheelDelta?b=a.wheelDelta/120:a.detail&&(b=-a.detail/3);b&&this.handleWheelReal(b,a.shiftKey);a.preventDefault&&a.preventDefault()},handleWheelReal:function(){},addListeners:function(){var a=this,b=a.chartDiv;document.addEventListener?(a.panEventsEnabled&&(b.style.msTouchAction="none"),"ontouchstart"in document.documentElement&&
+(b.addEventListener("touchstart",function(b){a.handleTouchMove.call(a,b);a.handleTouchStart.call(a,b)},!0),b.addEventListener("touchmove",function(b){a.handleTouchMove.call(a,b)},!0),b.addEventListener("touchend",function(b){a.handleTouchEnd.call(a,b)},!0)),b.addEventListener("mousedown",function(b){a.mouseIsOver=!0;a.handleMouseMove.call(a,b);a.handleMouseDown.call(a,b)},!0),b.addEventListener("mouseover",function(b){a.handleMouseOver.call(a,b)},!0),b.addEventListener("mouseout",function(b){a.handleMouseOut.call(a,
+b)},!0)):(b.attachEvent("onmousedown",function(b){a.handleMouseDown.call(a,b)}),b.attachEvent("onmouseover",function(b){a.handleMouseOver.call(a,b)}),b.attachEvent("onmouseout",function(b){a.handleMouseOut.call(a,b)}))},dispDUpd:function(){if(!this.skipEvents){var a;this.dispatchDataUpdated&&(this.dispatchDataUpdated=!1,a="dataUpdated",this.fire(a,{type:a,chart:this}));this.chartCreated||(a="init",this.fire(a,{type:a,chart:this}));this.chartRendered||(a="rendered",this.fire(a,{type:a,chart:this}),
+this.chartRendered=!0);a="drawn";this.fire(a,{type:a,chart:this})}this.skipEvents=!1},validateSize:function(){var a=this;a.premeasure();if(a.divRealWidth!=a.previousWidth||a.divRealHeight!=a.previousHeight){var b=a.legend;if(0<a.realWidth&&0<a.realHeight){a.sizeChanged=!0;if(b){a.legendInitTO&&clearTimeout(a.legendInitTO);var c=setTimeout(function(){b.invalidateSize()},10);a.timeOuts.push(c);a.legendInitTO=c}"xy"!=a.type?a.marginsUpdated=!1:(a.marginsUpdated=!0,a.selfZoom=!0);clearTimeout(a.initTO);
+c=setTimeout(function(){a.initChart()},10);a.timeOuts.push(c);a.initTO=c}a.fire("resized",{type:"resized",chart:a});a.renderFix();b&&b.renderFix&&b.renderFix();a.previousHeight=a.divRealHeight;a.previousWidth=a.divRealWidth}},invalidateSize:function(){this.previousHeight=this.previousWidth=NaN;this.invalidateSizeReal()},invalidateSizeReal:function(){var a=this;a.marginsUpdated=!1;clearTimeout(a.validateTO);var b=setTimeout(function(){a.validateSize()},5);a.timeOuts.push(b);a.validateTO=b},validateData:function(a){this.chartCreated&&
+(this.dataChanged=!0,this.marginsUpdated=!1,this.initChart(a))},validateNow:function(a,b){this.initTO&&clearTimeout(this.initTO);a&&(this.dataChanged=!0);this.skipEvents=b;this.chartRendered=!1;this.write(this.div)},showItem:function(a){a.hidden=!1;this.initChart()},hideItem:function(a){a.hidden=!0;this.initChart()},hideBalloon:function(){var a=this;clearTimeout(a.hoverInt);clearTimeout(a.balloonTO);a.hoverInt=setTimeout(function(){a.hideBalloonReal.call(a)},a.hideBalloonTime)},cleanChart:function(){},
+hideBalloonReal:function(){var a=this.balloon;a&&a.hide()},showBalloon:function(a,b,c,e,d){var f=this;clearTimeout(f.balloonTO);clearTimeout(f.hoverInt);f.balloonTO=setTimeout(function(){f.showBalloonReal.call(f,a,b,c,e,d)},1)},showBalloonReal:function(a,b,c,e,d){this.handleMouseMove();var f=this.balloon;f.enabled&&(f.followCursor(!1),f.changeColor(b),!c||f.fixedPosition?(f.setPosition(e,d),f.followCursor(!1)):f.followCursor(!0),a&&f.showBalloon(a))},handleTouchMove:function(a){this.hideBalloon();
+var b=this.chartDiv;a.touches&&(a=a.touches.item(0),this.mouseX=a.pageX-d.findPosX(b),this.mouseY=a.pageY-d.findPosY(b))},handleMouseOver:function(){this.outTO&&clearTimeout(this.outTO);d.resetMouseOver();this.mouseIsOver=!0},handleMouseOut:function(){var a=this;a.outTO&&clearTimeout(a.outTO);a.outTO=setTimeout(function(){a.handleMouseOutReal()},10)},handleMouseOutReal:function(){d.resetMouseOver();this.mouseIsOver=!1},handleMouseMove:function(a){if(this.mouseIsOver){var b=this.chartDiv;a||(a=window.event);
+var c,e;if(a){this.posX=d.findPosX(b);this.posY=d.findPosY(b);switch(this.mouseMode){case 1:c=a.clientX-this.posX;e=a.clientY-this.posY;if(!this.divIsFixed){var b=document.body,h,f,g,k;b&&(h=b.scrollLeft,g=b.scrollTop);if(b=document.documentElement)f=b.scrollLeft,k=b.scrollTop;h=Math.max(h,f);g=Math.max(g,k);c+=h;e+=g}break;case 0:this.divIsFixed?(c=a.clientX-this.posX,e=a.clientY-this.posY):(c=a.pageX-this.posX,e=a.pageY-this.posY)}a.touches&&(a=a.touches.item(0),c=a.pageX-this.posX,e=a.pageY-this.posY);
+this.mouseX=c-this.dmouseX;this.mouseY=e-this.dmouseY}}},handleTouchStart:function(a){this.handleMouseDown(a)},handleTouchEnd:function(a){d.resetMouseOver();this.handleReleaseOutside(a)},handleReleaseOutside:function(){},handleMouseDown:function(a){d.resetMouseOver();this.mouseIsOver=!0;a&&a.preventDefault&&(this.panEventsEnabled?a.preventDefault():a.touches||a.preventDefault())},addLegend:function(a,b){a=d.processObject(a,d.AmLegend,this.theme);a.divId=b;a.ieW=0;var c;c="object"!=typeof b&&b?document.getElementById(b):
+b;this.legend=a;a.chart=this;c?(a.div=c,a.position="outside",a.autoMargins=!1):a.div=this.legendDiv;c=this.handleLegendEvent;this.listenTo(a,"showItem",c);this.listenTo(a,"hideItem",c);this.listenTo(a,"clickMarker",c);this.listenTo(a,"rollOverItem",c);this.listenTo(a,"rollOutItem",c);this.listenTo(a,"rollOverMarker",c);this.listenTo(a,"rollOutMarker",c);this.listenTo(a,"clickLabel",c);return a},removeLegend:function(){this.legend=void 0;this.legendDiv.innerHTML=""},handleResize:function(){(d.isPercents(this.width)||
+d.isPercents(this.height))&&this.invalidateSizeReal();this.renderFix()},renderFix:function(){if(!d.VML){var a=this.container;a&&a.renderFix()}},getSVG:function(){if(d.hasSVG)return this.container},animate:function(a,b,c,e,h,f,g){a["an_"+b]&&d.removeFromArray(this.animations,a["an_"+b]);c={obj:a,frame:0,attribute:b,from:c,to:e,time:h,effect:f,suffix:g};a["an_"+b]=c;this.animations.push(c);return c},setLegendData:function(a){var b=this.legend;b&&b.setData(a)},stopAnim:function(a){d.removeFromArray(this.animations,
+a)},updateAnimations:function(){var a;this.container&&this.container.update();if(this.animations)for(a=this.animations.length-1;0<=a;a--){var b=this.animations[a],c=1E3*b.time/d.updateRate,e=b.frame+1,h=b.obj,f=b.attribute;if(e<=c){b.frame++;var g=Number(b.from),k=Number(b.to)-g,c=d[b.effect](0,e,g,k,c);0===k?(this.animations.splice(a,1),h.node.style[f]=Number(b.to)+b.suffix):h.node.style[f]=c+b.suffix}else h.node.style[f]=Number(b.to)+b.suffix,this.animations.splice(a,1)}},update:function(){this.updateAnimations()},
+inIframe:function(){try{return window.self!==window.top}catch(a){return!0}},brr:function(){var a=window.location.hostname.split("."),b;2<=a.length&&(b=a[a.length-2]+"."+a[a.length-1]);this.amLink&&(a=this.amLink.parentNode)&&a.removeChild(this.amLink);a=this.creditsPosition;if("amcharts.com"!=b||!0===this.inIframe()){var c=b=0,e=this.realWidth,d=this.realHeight,f=this.type;if("serial"==f||"xy"==f||"gantt"==f)b=this.marginLeftReal,c=this.marginTopReal,e=b+this.plotAreaWidth,d=c+this.plotAreaHeight;
+var g="http://www.amcharts.com/javascript-charts/",k="JavaScript charts",l="JS chart by amCharts";"ammap"==this.product&&(g="http://www.ammap.com/javascript-maps/",k="Interactive JavaScript maps",l="JS map by amCharts");f=document.createElement("a");l=document.createTextNode(l);f.setAttribute("href",g);f.setAttribute("title",k);f.appendChild(l);this.chartDiv.appendChild(f);this.amLink=f;g=f.style;g.position="absolute";g.textDecoration="none";g.color=this.color;g.fontFamily=this.fontFamily;g.fontSize=
+this.fontSize+"px";g.opacity=.7;g.display="block";var k=f.offsetWidth,f=f.offsetHeight,l=5+b,m=c+5;"bottom-left"==a&&(l=5+b,m=d-f-3);"bottom-right"==a&&(l=e-k-5,m=d-f-3);"top-right"==a&&(l=e-k-5,m=c+5);g.left=l+"px";g.top=m+"px"}}});d.Slice=d.Class({construct:function(){}});d.SerialDataItem=d.Class({construct:function(){}});d.GraphDataItem=d.Class({construct:function(){}});d.Guide=d.Class({construct:function(a){this.cname="Guide";d.applyTheme(this,a,this.cname)}});d.Title=d.Class({construct:function(a){this.cname=
+"Title";d.applyTheme(this,a,this.cname)}});d.Label=d.Class({construct:function(a){this.cname="Label";d.applyTheme(this,a,this.cname)}})})();(function(){var d=window.AmCharts;d.AmGraph=d.Class({construct:function(a){this.cname="AmGraph";this.createEvents("rollOverGraphItem","rollOutGraphItem","clickGraphItem","doubleClickGraphItem","rightClickGraphItem","clickGraph","rollOverGraph","rollOutGraph");this.type="line";this.stackable=!0;this.columnCount=1;this.columnIndex=0;this.centerCustomBullets=this.showBalloon=!0;this.maxBulletSize=50;this.minBulletSize=4;this.balloonText="[[value]]";this.hidden=this.scrollbar=this.animationPlayed=!1;
+this.pointPosition="middle";this.depthCount=1;this.includeInMinMax=!0;this.negativeBase=0;this.visibleInLegend=!0;this.showAllValueLabels=!1;this.showBulletsAt=this.showBalloonAt="close";this.lineThickness=1;this.dashLength=0;this.connect=!0;this.lineAlpha=1;this.bullet="none";this.bulletBorderThickness=2;this.bulletBorderAlpha=0;this.bulletAlpha=1;this.bulletSize=8;this.cornerRadiusTop=this.hideBulletsCount=this.bulletOffset=0;this.cursorBulletAlpha=1;this.gradientOrientation="vertical";this.dy=
+this.dx=0;this.periodValue="";this.clustered=!0;this.periodSpan=1;this.y=this.x=0;this.switchable=!0;this.tcc=this.minDistance=1;this.labelRotation=0;this.labelAnchor="auto";this.labelOffset=3;this.bcn="graph-";this.dateFormat="MMM DD, YYYY";d.applyTheme(this,a,this.cname)},draw:function(){var a=this.chart,b=a.type;isNaN(this.precision)||(this.numberFormatter?this.numberFormatter.precision=this.precision:this.numberFormatter={precision:this.precision,decimalSeparator:a.decimalSeparator,thousandsSeparator:a.thousandsSeparator});
+var c=a.container;this.container=c;this.destroy();var e=c.set(),h=c.set();this.behindColumns?(a.graphsBehindSet.push(e),a.bulletBehindSet.push(h)):(a.graphsSet.push(e),a.bulletSet.push(h));var f=this.bulletAxis;d.isString(f)&&(this.bulletAxis=a.getValueAxisById(f));this.bulletSet=h;if(!this.scrollbar){var f=a.marginLeftReal,g=a.marginTopReal;e.translate(f,g);h.translate(f,g)}c=c.set();d.remove(this.columnsSet);e.push(c);this.set=e;d.setCN(a,e,"graph-"+this.type);d.setCN(a,e,"graph-"+this.id);d.setCN(a,
+h,"graph-"+this.type);d.setCN(a,h,"graph-"+this.id);this.columnsSet=c;this.columnsArray=[];this.ownColumns=[];this.allBullets=[];this.animationArray=[];e=this.labelPosition;e||(h=this.valueAxis.stackType,e="top","column"==this.type&&(a.rotate&&(e="right"),"100%"==h||"regular"==h)&&(e="middle"),this.labelPosition=e);d.ifArray(this.data)&&(a=!1,"xy"==b?this.xAxis.axisCreated&&this.yAxis.axisCreated&&(a=!0):this.valueAxis.axisCreated&&(a=!0),!this.hidden&&a&&this.createGraph())},createGraph:function(){var a=
+this,b=a.chart;a.startAlpha=b.startAlpha;a.seqAn=b.sequencedAnimation;a.baseCoord=a.valueAxis.baseCoord;void 0===a.fillAlphas&&(a.fillAlphas=0);a.bulletColorR=a.bulletColor;void 0===a.bulletColorR&&(a.bulletColorR=a.lineColorR,a.bulletColorNegative=a.negativeLineColor);void 0===a.bulletAlpha&&(a.bulletAlpha=a.lineAlpha);b=b.type;"gantt"==b&&(b="serial");clearTimeout(a.playedTO);if(!isNaN(a.valueAxis.min)&&!isNaN(a.valueAxis.max)){switch(b){case "serial":a.categoryAxis&&(a.createSerialGraph(),"candlestick"==
+a.type&&1>a.valueAxis.minMaxMultiplier&&a.positiveClip(a.set));break;case "radar":a.createRadarGraph();break;case "xy":a.createXYGraph(),a.positiveClip(a.set)}a.playedTO=setTimeout(function(){a.setAnimationPlayed.call(a)},500*a.chart.startDuration)}},setAnimationPlayed:function(){this.animationPlayed=!0},createXYGraph:function(){var a=[],b=[],c=this.xAxis,e=this.yAxis;this.pmh=e.viH+1;this.pmw=c.viW+1;this.pmy=this.pmx=0;var d;for(d=this.start;d<=this.end;d++){var f=this.data[d].axes[c.id].graphs[this.id],
+g=f.values,k=g.x,l=g.y,g=c.getCoordinate(k),m=e.getCoordinate(l);!isNaN(k)&&!isNaN(l)&&(a.push(g),b.push(m),f.x=g,f.y=m,k=this.createBullet(f,g,m,d),l=this.labelText)&&(f=this.createLabel(f,g,m,l),this.positionLabel(g,m,f,k),this.allBullets.push(f))}this.drawLineGraph(a,b);this.launchAnimation()},createRadarGraph:function(){var a=this.valueAxis.stackType,b=[],c=[],e,d,f;for(f=this.start;f<=this.end;f++){var g=this.data[f].axes[this.valueAxis.id].graphs[this.id],k;k="none"==a||"3d"==a?g.values.value:
+g.values.close;if(isNaN(k))this.drawLineGraph(b,c),b=[],c=[];else{var l=this.y-(this.valueAxis.getCoordinate(k)-this.height),m=180-360/(this.end-this.start+1)*f;k=l*Math.sin(m/180*Math.PI);l*=Math.cos(m/180*Math.PI);b.push(k);c.push(l);var m=this.createBullet(g,k,l,f),n=this.labelText;n&&(g=this.createLabel(g,k,l,n),this.positionLabel(k,l,g,m),this.allBullets.push(g));isNaN(e)&&(e=k);isNaN(d)&&(d=l)}}b.push(e);c.push(d);this.drawLineGraph(b,c);this.launchAnimation()},positionLabel:function(a,b,c,
+e){var d="middle",f=!1,g=this.labelPosition,k=c.getBBox();if(e){var l=e.graphDataItem,m=this.chart.rotate,n=l.isNegative,q=this.chart;b-=k.height/4/2;switch(g){case "top":g=m?"top":n?"bottom":"top";break;case "right":g=m?n?"left":"right":"right";break;case "bottom":g=m?"bottom":n?"top":"bottom";break;case "left":g=m?n?"right":"left":"left"}var p=l.columnGraphics,r=0,t=0;p&&(r=p.x,t=p.y);var u=this.labelOffset;switch(g){case "top":b-=e.size/2+k.height/2+u;break;case "right":d="start";a+=e.size/2+u;
+break;case "bottom":b+=e.size/2+k.height/2+u;break;case "left":d="end";a-=e.size/2+u;break;case "inside":"column"==this.type&&(f=!0,m?n?(d="end",a=r-3-u):(d="start",a=r+3+u):b=n?t+7+u:t-10-u);break;case "middle":"column"==this.type&&(f=!0,m?a-=(a-r)/2+u-3:b-=(b-t)/2+u-3)}"auto"!=this.labelAnchor&&(d=this.labelAnchor);c.attr({"text-anchor":d});this.labelRotation&&c.rotate(this.labelRotation);c.translate(a,b);k=c.getBBox();!this.showAllValueLabels&&p&&f&&(k.height>l.columnHeight||k.width>l.columnWidth)&&
+(c.remove(),c=!1);if(c&&("serial"==q.type||"gantt"==q.type))if(m){if(0>b||b>this.height)c.remove(),c=!1}else if(0>a||a>this.width)c.remove(),c=!1;return c}},getGradRotation:function(){var a=270;"horizontal"==this.gradientOrientation&&(a=0);return this.gradientRotation=a},createSerialGraph:function(){this.dashLengthSwitched=this.fillColorsSwitched=this.lineColorSwitched=void 0;var a=this.chart,b=this.id,c=this.index,e=this.data,h=this.chart.container,f=this.valueAxis,g=this.type,k=this.columnWidthReal,
+l=this.showBulletsAt;isNaN(this.columnWidth)||(k=this.columnWidth);isNaN(k)&&(k=.8);var m=this.useNegativeColorIfDown,n=this.width,q=this.height,p=this.y,r=this.rotate,t=this.columnCount,u=d.toCoordinate(this.cornerRadiusTop,k/2),z=this.connect,v=[],w=[],x,A,B,D,C=this.chart.graphs.length,I,H=this.dx/this.tcc,O=this.dy/this.tcc,J=f.stackType,da=this.start,pa=this.end,U=this.scrollbar,na="graph-column-";U&&(na="scrollbar-graph-column-");var qa=this.categoryAxis,ja=this.baseCoord,Pa=this.negativeBase,
+aa=this.columnIndex,Z=this.lineThickness,V=this.lineAlpha,sa=this.lineColorR,ba=this.dashLength,ca=this.set,ta,ia=this.getGradRotation(),Q=this.chart.columnSpacing,W=qa.cellWidth,wa=(W*k-t)/t;Q>wa&&(Q=wa);var G,y,ka,ea=q+1,Qa=n+1,Y=0,qb=0,rb,sb,eb,fb,tb=this.fillColorsR,Ja=this.negativeFillColors,Da=this.negativeLineColor,Wa=this.fillAlphas,Xa=this.negativeFillAlphas;"object"==typeof Wa&&(Wa=Wa[0]);"object"==typeof Xa&&(Xa=Xa[0]);var gb=f.getCoordinate(f.min);f.logarithmic&&(gb=f.getCoordinate(f.minReal));
+this.minCoord=gb;this.resetBullet&&(this.bullet="none");if(!(U||"line"!=g&&"smoothedLine"!=g&&"step"!=g||(1==e.length&&"step"!=g&&"none"==this.bullet&&(this.bullet="round",this.resetBullet=!0),!Ja&&void 0==Da||m))){var Ra=Pa;Ra>f.max&&(Ra=f.max);Ra<f.min&&(Ra=f.min);f.logarithmic&&(Ra=f.minReal);var Ga=f.getCoordinate(Ra),Ib=f.getCoordinate(f.max);r?(ea=q,Qa=Math.abs(Ib-Ga)+1,rb=q,sb=Math.abs(gb-Ga)+1,fb=qb=0,f.reversed?(Y=0,eb=Ga):(Y=Ga,eb=0)):(Qa=n,ea=Math.abs(Ib-Ga)+1,sb=n,rb=Math.abs(gb-Ga)+1,
+eb=Y=0,f.reversed?(fb=p,qb=Ga):fb=Ga+1)}var Ha=Math.round;this.pmx=Ha(Y);this.pmy=Ha(qb);this.pmh=Ha(ea);this.pmw=Ha(Qa);this.nmx=Ha(eb);this.nmy=Ha(fb);this.nmh=Ha(rb);this.nmw=Ha(sb);d.isModern||(this.nmy=this.nmx=0,this.nmh=this.height);this.clustered||(t=1);k="column"==g?(W*k-Q*(t-1))/t:W*k;1>k&&(k=1);var Jb=this.fixedColumnWidth;isNaN(Jb)||(k=Jb);var K;if("line"==g||"step"==g||"smoothedLine"==g){if(0<da){for(K=da-1;-1<K;K--)if(G=e[K],y=G.axes[f.id].graphs[b],ka=y.values.value,!isNaN(ka)){da=
+K;break}if(this.lineColorField)for(K=da;-1<K;K--)if(G=e[K],y=G.axes[f.id].graphs[b],y.lineColor){this.bulletColorSwitched=this.lineColorSwitched=y.lineColor;break}if(this.fillColorsField)for(K=da;-1<K;K--)if(G=e[K],y=G.axes[f.id].graphs[b],y.fillColors){this.fillColorsSwitched=y.fillColors;break}if(this.dashLengthField)for(K=da;-1<K;K--)if(G=e[K],y=G.axes[f.id].graphs[b],!isNaN(y.dashLength)){this.dashLengthSwitched=y.dashLength;break}}if(pa<e.length-1)for(K=pa+1;K<e.length;K++)if(G=e[K],y=G.axes[f.id].graphs[b],
+ka=y.values.value,!isNaN(ka)){pa=K;break}}pa<e.length-1&&pa++;var R=[],S=[],Ka=!1;if("line"==g||"step"==g||"smoothedLine"==g)if(this.stackable&&"regular"==J||"100%"==J||this.fillToGraph)Ka=!0;var Kb=this.noStepRisers,hb=-1E3,ib=-1E3,jb=this.minDistance,La=!0,Ya=!1;for(K=da;K<=pa;K++){G=e[K];y=G.axes[f.id].graphs[b];y.index=K;var Za,Ma=NaN;if(m&&void 0==this.openField)for(var ub=K+1;ub<e.length&&(!e[ub]||!(Za=e[K+1].axes[f.id].graphs[b])||!Za.values||(Ma=Za.values.value,isNaN(Ma)));ub++);var T,P,M,
+fa,la=NaN,F=NaN,E=NaN,N=NaN,L=NaN,Na=NaN,Ea=NaN,Oa=NaN,Fa=NaN,ya=NaN,za=NaN,ga=NaN,ha=NaN,X=NaN,vb=NaN,wb=NaN,ma=NaN,oa=void 0,Ia=tb,Sa=Wa,Ba=sa,ua,xa,xb=this.proCandlesticks,kb=this.topRadius,$a=this.pattern;void 0!=y.pattern&&($a=y.pattern);isNaN(y.alpha)||(Sa=y.alpha);isNaN(y.dashLength)||(ba=y.dashLength);var Ca=y.values;f.recalculateToPercents&&(Ca=y.percents);if(Ca){X=this.stackable&&"none"!=J&&"3d"!=J?Ca.close:Ca.value;if("candlestick"==g||"ohlc"==g)X=Ca.close,wb=Ca.low,Ea=f.getCoordinate(wb),
+vb=Ca.high,Fa=f.getCoordinate(vb);ma=Ca.open;E=f.getCoordinate(X);isNaN(ma)||(L=f.getCoordinate(ma),m&&(Ma=ma,ma=L=NaN));m&&(void 0==this.openField?Za&&(Za.isNegative=Ma<X?!0:!1,isNaN(Ma)&&(y.isNegative=!La)):y.isNegative=Ma>X?!0:!1);if(!U)switch(this.showBalloonAt){case "close":y.y=E;break;case "open":y.y=L;break;case "high":y.y=Fa;break;case "low":y.y=Ea}var la=G.x[qa.id],Ta=this.periodSpan-1,ra=Math.floor(W/2)+Math.floor(Ta*W/2),Aa=ra,lb=0;"left"==this.stepDirection&&(lb=(2*W+Ta*W)/2,la-=lb);"center"==
+this.stepDirection&&(lb=W/2,la-=lb);"start"==this.pointPosition&&(la-=W/2+Math.floor(Ta*W/2),ra=0,Aa=Math.floor(W)+Math.floor(Ta*W));"end"==this.pointPosition&&(la+=W/2+Math.floor(Ta*W/2),ra=Math.floor(W)+Math.floor(Ta*W),Aa=0);if(Kb){var yb=this.columnWidth;isNaN(yb)||(ra*=yb,Aa*=yb)}U||(y.x=la);-1E5>la&&(la=-1E5);la>n+1E5&&(la=n+1E5);r?(F=E,N=L,L=E=la,isNaN(ma)&&!this.fillToGraph&&(N=ja),Na=Ea,Oa=Fa):(N=F=la,isNaN(ma)&&!this.fillToGraph&&(L=ja));if(!xb&&X<ma||xb&&X<ta)y.isNegative=!0,Ja&&(Ia=Ja),
+Xa&&(Sa=Xa),void 0!=Da&&(Ba=Da);Ya=!1;isNaN(X)||(m?X>Ma?(La&&(Ya=!0),La=!1):(La||(Ya=!0),La=!0):y.isNegative=X<Pa?!0:!1,ta=X);var Lb=!1;U&&a.chartScrollbar.ignoreCustomColors&&(Lb=!0);Lb||(void 0!=y.color&&(Ia=y.color),y.fillColors&&(Ia=y.fillColors));switch(g){case "line":if(isNaN(X))z||(this.drawLineGraph(v,w,R,S),v=[],w=[],R=[],S=[]);else{if(Math.abs(F-hb)>=jb||Math.abs(E-ib)>=jb)v.push(F),w.push(E),hb=F,ib=E;ya=F;za=E;ga=F;ha=E;!Ka||isNaN(L)||isNaN(N)||(R.push(N),S.push(L));if(Ya||void 0!=y.lineColor||
+void 0!=y.fillColors||!isNaN(y.dashLength))this.drawLineGraph(v,w,R,S),v=[F],w=[E],R=[],S=[],!Ka||isNaN(L)||isNaN(N)||(R.push(N),S.push(L)),m?La?(this.lineColorSwitched=sa,this.fillColorsSwitched=tb):(this.lineColorSwitched=Da,this.fillColorsSwitched=Ja):(this.lineColorSwitched=y.lineColor,this.fillColorsSwitched=y.fillColors),this.dashLengthSwitched=y.dashLength;y.gap&&(this.drawLineGraph(v,w,R,S),v=[],w=[],R=[],S=[])}break;case "smoothedLine":if(isNaN(X))z||(this.drawSmoothedGraph(v,w,R,S),v=[],
+w=[],R=[],S=[]);else{if(Math.abs(F-hb)>=jb||Math.abs(E-ib)>=jb)v.push(F),w.push(E),hb=F,ib=E;ya=F;za=E;ga=F;ha=E;!Ka||isNaN(L)||isNaN(N)||(R.push(N),S.push(L));void 0==y.lineColor&&void 0==y.fillColors&&isNaN(y.dashLength)||(this.drawSmoothedGraph(v,w,R,S),v=[F],w=[E],R=[],S=[],!Ka||isNaN(L)||isNaN(N)||(R.push(N),S.push(L)),this.lineColorSwitched=y.lineColor,this.fillColorsSwitched=y.fillColors,this.dashLengthSwitched=y.dashLength);y.gap&&(this.drawSmoothedGraph(v,w,R,S),v=[],w=[],R=[],S=[])}break;
+case "step":if(!isNaN(X)){r?(isNaN(x)||(v.push(x),w.push(E-ra)),w.push(E-ra),v.push(F),w.push(E+Aa),v.push(F),!Ka||isNaN(L)||isNaN(N)||(isNaN(B)||(R.push(B),S.push(L-ra)),R.push(N),S.push(L-ra),R.push(N),S.push(L+Aa))):(isNaN(A)||(w.push(A),v.push(F-ra)),v.push(F-ra),w.push(E),v.push(F+Aa),w.push(E),!Ka||isNaN(L)||isNaN(N)||(isNaN(D)||(R.push(N-ra),S.push(D)),R.push(N-ra),S.push(L),R.push(N+Aa),S.push(L)));x=F;A=E;B=N;D=L;ya=F;za=E;ga=F;ha=E;if(Ya||void 0!=y.lineColor||void 0!=y.fillColors||!isNaN(y.dashLength)){var Zb=
+v[v.length-2],$b=w[w.length-2];v.pop();w.pop();this.drawLineGraph(v,w,R,S);v=[Zb];w=[$b];r?(w.push(E+Aa),v.push(F)):(v.push(F+Aa),w.push(E));R=[];S=[];this.lineColorSwitched=y.lineColor;this.fillColorsSwitched=y.fillColors;this.dashLengthSwitched=y.dashLength;m&&(La?(this.lineColorSwitched=sa,this.fillColorsSwitched=tb):(this.lineColorSwitched=Da,this.fillColorsSwitched=Ja))}if(Kb||y.gap)x=A=NaN,this.drawLineGraph(v,w,R,S),v=[],w=[],R=[],S=[]}else if(!z){if(1>=this.periodSpan||1<this.periodSpan&&
+F-x>ra+Aa)x=A=NaN;this.drawLineGraph(v,w,R,S);v=[];w=[];R=[];S=[]}break;case "column":ua=Ba;void 0!=y.lineColor&&(ua=y.lineColor);if(!isNaN(X)){m||(y.isNegative=X<Pa?!0:!1);y.isNegative&&(Ja&&(Ia=Ja),void 0!=Da&&(ua=Da));var Mb=f.min,Nb=f.max;if(!(X<Mb&&ma<Mb||X>Nb&&ma>Nb)){var va;if(r){"3d"==J?(P=E-(t/2-this.depthCount+1)*(k+Q)+Q/2+O*aa,T=N+H*aa,va=aa):(P=Math.floor(E-(t/2-aa)*(k+Q)+Q/2),T=N,va=0);M=k;ya=F;za=P+k/2;isNaN(N)||N>F&&!y.isNegative&&(ya=N);ga=F;ha=P+k/2;P+M>q+va*O&&(M=q-P+va*O);P<va*
+O&&(M+=P,P=va*O);fa=F-N;var ac=T;T=d.fitToBounds(T,0,n);fa+=ac-T;fa=d.fitToBounds(fa,-T,n-T+H*aa);P<q&&0<M&&(oa=new d.Cuboid(h,fa,M,H-a.d3x,O-a.d3y,Ia,Sa,Z,ua,V,ia,u,r,ba,$a,kb,na),y.columnWidth=Math.abs(fa),y.columnHeight=Math.abs(M))}else{"3d"==J?(T=F-(t/2-this.depthCount+1)*(k+Q)+Q/2+H*aa,P=L+O*aa,va=aa):(T=F-(t/2-aa)*(k+Q)+Q/2,P=L,va=0);M=k;ya=T+k/2;za=E;isNaN(L)||L<E&&!y.isNegative&&(za=L);ga=T+k/2;ha=E;T+M>n+va*H&&(M=n-T+va*H);T<va*H&&(M+=T-va*H,T=va*H);fa=E-L;var bc=P;P=d.fitToBounds(P,this.dy,
+q);fa+=bc-P;fa=d.fitToBounds(fa,-P+O*aa,q-P);T<n+aa*H&&0<M&&(this.showOnAxis&&(P-=O/2),oa=new d.Cuboid(h,M,fa,H-a.d3x,O-a.d3y,Ia,Sa,Z,ua,this.lineAlpha,ia,u,r,ba,$a,kb,na),y.columnHeight=Math.abs(fa),y.columnWidth=Math.abs(M))}}if(oa&&(xa=oa.set,d.setCN(a,oa.set,"graph-"+this.type),d.setCN(a,oa.set,"graph-"+this.id),y.className&&d.setCN(a,oa.set,y.className,!0),y.columnGraphics=xa,xa.translate(T,P),this.columnsSet.push(xa),(y.url||this.showHandOnHover)&&xa.setAttr("cursor","pointer"),!U)){"none"==
+J&&(I=r?(this.end+1-K)*C-c:C*K+c);"3d"==J&&(r?(I=(this.end+1-K)*C-c-1E3*this.depthCount,ya+=H*this.columnIndex,ga+=H*this.columnIndex,y.y+=H*this.columnIndex):(I=(C-c)*(K+1)+1E3*this.depthCount,za+=O*this.columnIndex,ha+=O*this.columnIndex,y.y+=O*this.columnIndex));if("regular"==J||"100%"==J)I=r?0<Ca.value?(this.end+1-K)*C+c:(this.end+1-K)*C-c:0<Ca.value?C*K+c:C*K-c;this.columnsArray.push({column:oa,depth:I});y.x=r?P+M/2:T+M/2;this.ownColumns.push(oa);this.animateColumns(oa,K,F,N,E,L);this.addListeners(xa,
+y)}}break;case "candlestick":if(!isNaN(ma)&&!isNaN(X)){var Ua,ab;ua=Ba;void 0!=y.lineColor&&(ua=y.lineColor);if(r){if(P=E-k/2,T=N,M=k,P+M>q&&(M=q-P),0>P&&(M+=P,P=0),P<q&&0<M){var zb,Ab;X>ma?(zb=[F,Oa],Ab=[N,Na]):(zb=[N,Oa],Ab=[F,Na]);!isNaN(Oa)&&!isNaN(Na)&&E<q&&0<E&&(Ua=d.line(h,zb,[E,E],ua,V,Z),ab=d.line(h,Ab,[E,E],ua,V,Z));fa=F-N;oa=new d.Cuboid(h,fa,M,H,O,Ia,Wa,Z,ua,V,ia,u,r,ba,$a,kb,na)}}else if(T=F-k/2,P=L+Z/2,M=k,T+M>n&&(M=n-T),0>T&&(M+=T,T=0),fa=E-L,T<n&&0<M){xb&&X>=ma&&(Sa=0);var oa=new d.Cuboid(h,
+M,fa,H,O,Ia,Sa,Z,ua,V,ia,u,r,ba,$a,kb,na),Bb,Cb;X>ma?(Bb=[E,Fa],Cb=[L,Ea]):(Bb=[L,Fa],Cb=[E,Ea]);!isNaN(Fa)&&!isNaN(Ea)&&F<n&&0<F&&(Ua=d.line(h,[F,F],Bb,ua,V,Z),ab=d.line(h,[F,F],Cb,ua,V,Z),d.setCN(a,Ua,this.bcn+"line-high"),y.className&&d.setCN(a,Ua,y.className,!0),d.setCN(a,ab,this.bcn+"line-low"),y.className&&d.setCN(a,ab,y.className,!0))}oa&&(xa=oa.set,y.columnGraphics=xa,ca.push(xa),xa.translate(T,P-Z/2),(y.url||this.showHandOnHover)&&xa.setAttr("cursor","pointer"),Ua&&(ca.push(Ua),ca.push(ab)),
+ya=F,za=E,r?(ha=E,ga=F,"open"==l&&(ga=N),"high"==l&&(ga=Oa),"low"==l&&(ga=Na)):(ha=E,"open"==l&&(ha=L),"high"==l&&(ha=Fa),"low"==l&&(ha=Ea),ga=F),U||(y.x=r?P+M/2:T+M/2,this.animateColumns(oa,K,F,N,E,L),this.addListeners(xa,y)))}break;case "ohlc":if(!(isNaN(ma)||isNaN(vb)||isNaN(wb)||isNaN(X))){var Ob=h.set();ca.push(Ob);X<ma&&(y.isNegative=!0,void 0!=Da&&(Ba=Da));var mb,nb,ob;if(r){var Db=E-k/2,Db=d.fitToBounds(Db,0,q),Pb=d.fitToBounds(E,0,q),Eb=E+k/2,Eb=d.fitToBounds(Eb,0,q);nb=d.line(h,[N,N],[Db,
+Pb],Ba,V,Z,ba);0<E&&E<q&&(mb=d.line(h,[Na,Oa],[E,E],Ba,V,Z,ba));ob=d.line(h,[F,F],[Pb,Eb],Ba,V,Z,ba);ha=E;ga=F;"open"==l&&(ga=N);"high"==l&&(ga=Oa);"low"==l&&(ga=Na)}else{var Fb=F-k/2,Fb=d.fitToBounds(Fb,0,n),Qb=d.fitToBounds(F,0,n),Gb=F+k/2,Gb=d.fitToBounds(Gb,0,n);nb=d.line(h,[Fb,Qb],[L,L],Ba,V,Z,ba);0<F&&F<n&&(mb=d.line(h,[F,F],[Ea,Fa],Ba,V,Z,ba));ob=d.line(h,[Qb,Gb],[E,E],Ba,V,Z,ba);ha=E;"open"==l&&(ha=L);"high"==l&&(ha=Fa);"low"==l&&(ha=Ea);ga=F}ca.push(nb);ca.push(mb);ca.push(ob);d.setCN(a,
+nb,this.bcn+"stroke-open");d.setCN(a,ob,this.bcn+"stroke-close");d.setCN(a,mb,this.bcn+"stroke");y.className&&d.setCN(a,Ob,y.className,!0);ya=F;za=E}}if(!U&&!isNaN(X)){var Rb=this.hideBulletsCount;if(this.end-this.start<=Rb||0===Rb){var Sb=this.createBullet(y,ga,ha,K),Tb=this.labelText;if(Tb&&Sb){var Hb=this.createLabel(y,ga,ha,Tb);(Hb=this.positionLabel(ya,za,Hb,Sb,M,fa))&&this.allBullets.push(Hb)}if("regular"==J||"100%"==J){var Ub=f.totalText;if(Ub){var Va=this.createLabel(y,0,0,Ub,f.totalTextColor);
+this.allBullets.push(Va);var Vb=Va.getBBox(),Wb=Vb.width,Xb=Vb.height,bb,cb,pb=f.totalTextOffset,Yb=f.totals[K];Yb&&Yb.remove();var db=0;"column"!=g&&(db=this.bulletSize);r?(cb=E,bb=0>X?F-Wb/2-2-db-pb:F+Wb/2+3+db+pb):(bb=F,cb=0>X?E+Xb/2+db+pb:E-Xb/2-3-db-pb);Va.translate(bb,cb);f.totals[K]=Va;r?(0>cb||cb>q)&&Va.remove():(0>bb||bb>n)&&Va.remove()}}}}}}if("line"==g||"step"==g||"smoothedLine"==g)"smoothedLine"==g?this.drawSmoothedGraph(v,w,R,S):this.drawLineGraph(v,w,R,S),U||this.launchAnimation();this.bulletsHidden&&
+this.hideBullets();this.customBulletsHidden&&this.hideCustomBullets()},animateColumns:function(a,b){var c=this,e=c.chart.startDuration;0<e&&!c.animationPlayed&&(c.seqAn?(a.set.hide(),c.animationArray.push(a),e=setTimeout(function(){c.animate.call(c)},e/(c.end-c.start+1)*(b-c.start)*1E3),c.timeOuts.push(e)):c.animate(a))},createLabel:function(a,b,c,e,h){var f=this.chart,g=a.labelColor;g||(g=this.color);g||(g=f.color);h&&(g=h);h=this.fontSize;void 0===h&&(this.fontSize=h=f.fontSize);var k=this.labelFunction;
+e=f.formatString(e,a);e=d.cleanFromEmpty(e);k&&(e=k(a,e));a=d.text(this.container,e,g,f.fontFamily,h);a.node.style.pointerEvents="none";a.translate(b,c);this.bulletSet.push(a);return a},positiveClip:function(a){a.clipRect(this.pmx,this.pmy,this.pmw,this.pmh)},negativeClip:function(a){a.clipRect(this.nmx,this.nmy,this.nmw,this.nmh)},drawLineGraph:function(a,b,c,e){var h=this;if(1<a.length){var f=h.set,g=h.chart,k=h.container,l=k.set(),m=k.set();f.push(m);f.push(l);var n=h.lineAlpha,q=h.lineThickness,
+f=h.fillAlphas,p=h.lineColorR,r=h.negativeLineAlpha;isNaN(r)&&(r=n);var t=h.lineColorSwitched;t&&(p=t);var t=h.fillColorsR,u=h.fillColorsSwitched;u&&(t=u);var z=h.dashLength;(u=h.dashLengthSwitched)&&(z=u);var u=h.negativeLineColor,v=h.negativeFillColors,w=h.negativeFillAlphas,x=h.baseCoord;0!==h.negativeBase&&(x=h.valueAxis.getCoordinate(h.negativeBase),x>h.height&&(x=h.height),0>x&&(x=0));n=d.line(k,a,b,p,n,q,z,!1,!0);d.setCN(g,n,h.bcn+"stroke");l.push(n);l.click(function(a){h.handleGraphEvent(a,
+"clickGraph")}).mouseover(function(a){h.handleGraphEvent(a,"rollOverGraph")}).mouseout(function(a){h.handleGraphEvent(a,"rollOutGraph")});void 0===u||h.useNegativeColorIfDown||(q=d.line(k,a,b,u,r,q,z,!1,!0),d.setCN(g,q,h.bcn+"stroke"),d.setCN(g,q,h.bcn+"stroke-negative"),m.push(q));if(0<f||0<w)if(q=a.join(";").split(";"),r=b.join(";").split(";"),n=g.type,"serial"==n?0<c.length?(c.reverse(),e.reverse(),q=a.concat(c),r=b.concat(e)):h.rotate?(r.push(r[r.length-1]),q.push(x),r.push(r[0]),q.push(x),r.push(r[0]),
+q.push(q[0])):(q.push(q[q.length-1]),r.push(x),q.push(q[0]),r.push(x),q.push(a[0]),r.push(r[0])):"xy"==n&&(b=h.fillToAxis)&&(d.isString(b)&&(b=g.getValueAxisById(b)),"H"==b.orientation?(x="top"==b.position?0:b.viH,q.push(q[q.length-1]),r.push(x),q.push(q[0]),r.push(x),q.push(a[0]),r.push(r[0])):(x="left"==b.position?0:b.viW,r.push(r[r.length-1]),q.push(x),r.push(r[0]),q.push(x),r.push(r[0]),q.push(q[0]))),a=h.gradientRotation,0<f&&(b=d.polygon(k,q,r,t,f,1,"#000",0,a),b.pattern(h.pattern,NaN,g.path),
+d.setCN(g,b,h.bcn+"fill"),l.push(b)),v||void 0!==u)isNaN(w)&&(w=f),v||(v=u),k=d.polygon(k,q,r,v,w,1,"#000",0,a),d.setCN(g,k,h.bcn+"fill"),d.setCN(g,k,h.bcn+"fill-negative"),k.pattern(h.pattern,NaN,g.path),m.push(k),m.click(function(a){h.handleGraphEvent(a,"clickGraph")}).mouseover(function(a){h.handleGraphEvent(a,"rollOverGraph")}).mouseout(function(a){h.handleGraphEvent(a,"rollOutGraph")});h.applyMask(m,l)}},applyMask:function(a,b){var c=a.length();"serial"!=this.chart.type||this.scrollbar||(this.positiveClip(b),
+0<c&&this.negativeClip(a))},drawSmoothedGraph:function(a,b,c,e){if(1<a.length){var h=this.set,f=this.chart,g=this.container,k=g.set(),l=g.set();h.push(l);h.push(k);var m=this.lineAlpha,n=this.lineThickness,h=this.dashLength,q=this.fillAlphas,p=this.lineColorR,r=this.fillColorsR,t=this.negativeLineColor,u=this.negativeFillColors,z=this.negativeFillAlphas,v=this.baseCoord,w=this.lineColorSwitched;w&&(p=w);(w=this.fillColorsSwitched)&&(r=w);w=this.negativeLineAlpha;isNaN(w)&&(w=m);m=new d.Bezier(g,a,
+b,p,m,n,r,0,h);d.setCN(f,m,this.bcn+"stroke");k.push(m.path);void 0!==t&&(n=new d.Bezier(g,a,b,t,w,n,r,0,h),d.setCN(f,n,this.bcn+"stroke"),d.setCN(f,n,this.bcn+"stroke-negative"),l.push(n.path));0<q&&(m=a.join(";").split(";"),p=b.join(";").split(";"),n="",0<c.length?(c.push("M"),e.push("M"),c.reverse(),e.reverse(),m=a.concat(c),p=b.concat(e)):(this.rotate?(n+=" L"+v+","+b[b.length-1],n+=" L"+v+","+b[0]):(n+=" L"+a[a.length-1]+","+v,n+=" L"+a[0]+","+v),n+=" L"+a[0]+","+b[0]),c=new d.Bezier(g,m,p,NaN,
+0,0,r,q,h,n),d.setCN(f,c,this.bcn+"fill"),c.path.pattern(this.pattern,NaN,f.path),k.push(c.path),u||void 0!==t)&&(z||(z=q),u||(u=t),a=new d.Bezier(g,a,b,NaN,0,0,u,z,h,n),a.path.pattern(this.pattern,NaN,f.path),d.setCN(f,a,this.bcn+"fill"),d.setCN(f,a,this.bcn+"fill-negative"),l.push(a.path));this.applyMask(l,k)}},launchAnimation:function(){var a=this,b=a.chart.startDuration;if(0<b&&!a.animationPlayed){var c=a.set,e=a.bulletSet;d.VML||(c.attr({opacity:a.startAlpha}),e.attr({opacity:a.startAlpha}));
+c.hide();e.hide();a.seqAn?(b=setTimeout(function(){a.animateGraphs.call(a)},a.index*b*1E3),a.timeOuts.push(b)):a.animateGraphs()}},animateGraphs:function(){var a=this.chart,b=this.set,c=this.bulletSet,e=this.x,d=this.y;b.show();c.show();var f=a.startDuration,a=a.startEffect;b&&(this.rotate?(b.translate(-1E3,d),c.translate(-1E3,d)):(b.translate(e,-1E3),c.translate(e,-1E3)),b.animate({opacity:1,translate:e+","+d},f,a),c.animate({opacity:1,translate:e+","+d},f,a))},animate:function(a){var b=this.chart,
+c=this.animationArray;!a&&0<c.length&&(a=c[0],c.shift());c=d[d.getEffect(b.startEffect)];b=b.startDuration;a&&(this.rotate?a.animateWidth(b,c):a.animateHeight(b,c),a.set.show())},legendKeyColor:function(){var a=this.legendColor,b=this.lineAlpha;void 0===a&&(a=this.lineColorR,0===b&&(b=this.fillColorsR)&&(a="object"==typeof b?b[0]:b));return a},legendKeyAlpha:function(){var a=this.legendAlpha;void 0===a&&(a=this.lineAlpha,this.fillAlphas>a&&(a=this.fillAlphas),0===a&&(a=this.bulletAlpha),0===a&&(a=
+1));return a},createBullet:function(a,b,c){if(!isNaN(b)&&!isNaN(c)){var e=this.chart,h=this.container,f=this.bulletOffset,g=this.bulletSize;isNaN(a.bulletSize)||(g=a.bulletSize);var k=a.values.value,l=this.maxValue,m=this.minValue,n=this.maxBulletSize,q=this.minBulletSize;isNaN(l)||(isNaN(k)||(g=(k-m)/(l-m)*(n-q)+q),m==l&&(g=n));l=g;this.bulletAxis&&(g=a.values.error,isNaN(g)||(k=g),g=this.bulletAxis.stepWidth*k);g<this.minBulletSize&&(g=this.minBulletSize);this.rotate?b=a.isNegative?b-f:b+f:c=a.isNegative?
+c+f:c-f;var p,q=this.bulletColorR;a.lineColor&&(this.bulletColorSwitched=a.lineColor);this.bulletColorSwitched&&(q=this.bulletColorSwitched);a.isNegative&&void 0!==this.bulletColorNegative&&(q=this.bulletColorNegative);void 0!==a.color&&(q=a.color);var r;"xy"==e.type&&this.valueField&&(r=this.pattern,a.pattern&&(r=a.pattern));f=this.bullet;a.bullet&&(f=a.bullet);var k=this.bulletBorderThickness,m=this.bulletBorderColorR,n=this.bulletBorderAlpha,t=this.bulletAlpha;m||(m=q);this.useLineColorForBulletBorder&&
+(m=this.lineColorR);var u=a.alpha;isNaN(u)||(t=u);if("none"!=this.bullet||a.bullet)p=d.bullet(h,f,g,q,t,k,m,n,l,0,r,e.path);if(this.customBullet||a.customBullet)r=this.customBullet,a.customBullet&&(r=a.customBullet),r&&(p&&p.remove(),"function"==typeof r?(p=new r,p.chart=e,a.bulletConfig&&(p.availableSpace=c,p.graph=this,p.graphDataItem=a,p.bulletY=c,a.bulletConfig.minCoord=this.minCoord-c,p.bulletConfig=a.bulletConfig),p.write(h),p=p.set):(p=h.set(),h=h.image(r,0,0,g,g),p.push(h),this.centerCustomBullets&&
+h.translate(-g/2,-g/2)));if(p){(a.url||this.showHandOnHover)&&p.setAttr("cursor","pointer");if("serial"==e.type||"gantt"==e.type)if(-.5>b-0||b-0>this.width||c<-g/2||c-0>this.height)p.remove(),p=null;p&&(this.bulletSet.push(p),p.translate(b,c),this.addListeners(p,a),this.allBullets.push(p));a.bx=b;a.by=c;d.setCN(e,p,this.bcn+"bullet");a.className&&d.setCN(e,p,a.className,!0)}p?(p.size=g||0,a.bulletGraphics=p):p={size:0};p.graphDataItem=a;return p}},showBullets:function(){var a=this.allBullets,b;this.bulletsHidden=
+!1;for(b=0;b<a.length;b++)a[b].show()},hideBullets:function(){var a=this.allBullets,b;this.bulletsHidden=!0;for(b=0;b<a.length;b++)a[b].hide()},showCustomBullets:function(){var a=this.allBullets,b;this.customBulletsHidden=!1;for(b=0;b<a.length;b++)a[b].graphDataItem.customBullet&&a[b].show()},hideCustomBullets:function(){var a=this.allBullets,b;this.customBulletsHidden=!0;for(b=0;b<a.length;b++)a[b].graphDataItem.customBullet&&a[b].hide()},addListeners:function(a,b){var c=this;a.mouseover(function(a){c.handleRollOver(b,
+a)}).mouseout(function(a){c.handleRollOut(b,a)}).touchend(function(a){c.handleRollOver(b,a);c.chart.panEventsEnabled&&c.handleClick(b,a)}).touchstart(function(a){c.handleRollOver(b,a)}).click(function(a){c.handleClick(b,a)}).dblclick(function(a){c.handleDoubleClick(b,a)}).contextmenu(function(a){c.handleRightClick(b,a)})},handleRollOver:function(a,b){if(a){var c=this.chart,e={type:"rollOverGraphItem",item:a,index:a.index,graph:this,target:this,chart:this.chart,event:b};this.fire("rollOverGraphItem",
+e);c.fire("rollOverGraphItem",e);clearTimeout(c.hoverInt);e=this.showBalloon;!c.chartCursor||"serial"!=c.type&&"gantt"!=c.type||(e=!1,!c.chartCursor.valueBalloonsEnabled&&this.showBalloon&&(e=!0));if(e){var e=c.formatString(this.balloonText,a,!0),h=this.balloonFunction;h&&(e=h(a,a.graph));e=d.cleanFromEmpty(e);h=c.getBalloonColor(this,a);c.balloon.showBullet=!1;c.balloon.pointerOrientation="V";var f=a.x,g=a.y;c.rotate&&(f=a.y,g=a.x);""!==e?c.showBalloon(e,h,!0,f+c.marginLeftReal,g+c.marginTopReal):
+this.chart.hideBalloonReal()}else this.chart.hideBalloonReal()}this.handleGraphEvent(b,"rollOverGraph")},handleRollOut:function(a,b){this.chart.hideBalloon();if(a){var c={type:"rollOutGraphItem",item:a,index:a.index,graph:this,target:this,chart:this.chart,event:b};this.fire("rollOutGraphItem",c);this.chart.fire("rollOutGraphItem",c)}this.handleGraphEvent(b,"rollOutGraph")},handleClick:function(a,b){if(a){var c={type:"clickGraphItem",item:a,index:a.index,graph:this,target:this,chart:this.chart,event:b};
+this.fire("clickGraphItem",c);this.chart.fire("clickGraphItem",c);d.getURL(a.url,this.urlTarget)}this.handleGraphEvent(b,"clickGraph")},handleGraphEvent:function(a,b){var c={type:b,graph:this,target:this,chart:this.chart,event:a};this.fire(b,c);this.chart.fire(b,c)},handleRightClick:function(a,b){if(a){var c={type:"rightClickGraphItem",item:a,index:a.index,graph:this,target:this,chart:this.chart,event:b};this.fire("rightClickGraphItem",c);this.chart.fire("rightClickGraphItem",c)}},handleDoubleClick:function(a,
+b){if(a){var c={type:"doubleClickGraphItem",item:a,index:a.index,graph:this,target:this,chart:this.chart,event:b};this.fire("doubleClickGraphItem",c);this.chart.fire("doubleClickGraphItem",c)}},zoom:function(a,b){this.start=a;this.end=b;this.draw()},changeOpacity:function(a){var b=this.set;b&&b.setAttr("opacity",a);if(b=this.ownColumns){var c;for(c=0;c<b.length;c++){var e=b[c].set;e&&e.setAttr("opacity",a)}}(b=this.bulletSet)&&b.setAttr("opacity",a)},destroy:function(){d.remove(this.set);d.remove(this.bulletSet);
+var a=this.timeOuts;if(a){var b;for(b=0;b<a.length;b++)clearTimeout(a[b])}this.timeOuts=[]}})})();(function(){var d=window.AmCharts;d.ChartCursor=d.Class({construct:function(a){this.cname="ChartCursor";this.createEvents("changed","zoomed","onHideCursor","draw","selected","moved");this.enabled=!0;this.cursorAlpha=1;this.selectionAlpha=.2;this.cursorColor="#CC0000";this.categoryBalloonAlpha=1;this.color="#FFFFFF";this.type="cursor";this.zoomed=!1;this.zoomable=!0;this.pan=!1;this.categoryBalloonDateFormat="MMM DD, YYYY";this.categoryBalloonEnabled=this.valueBalloonsEnabled=!0;this.rolledOver=!1;
+this.cursorPosition="middle";this.bulletsEnabled=this.skipZoomDispatch=!1;this.bulletSize=8;this.selectWithoutZooming=this.oneBalloonOnly=!1;this.graphBulletSize=1.7;this.animationDuration=.3;this.zooming=!1;this.adjustment=0;this.avoidBalloonOverlapping=!0;this.leaveCursor=!1;d.applyTheme(this,a,this.cname)},draw:function(){this.destroy();var a=this.chart,b=a.container;this.rotate=a.rotate;this.container=b;b=b.set();b.translate(this.x,this.y);this.set=b;a.cursorSet.push(b);b=new d.AmBalloon;b.className=
+"category";b.chart=a;this.categoryBalloon=b;d.copyProperties(a.balloon,b);b.cornerRadius=0;b.shadowAlpha=0;b.borderThickness=1;b.borderAlpha=1;b.showBullet=!1;var c=this.categoryBalloonColor;void 0===c&&(c=this.cursorColor);b.fillColor=c;b.balloonColor=c;b.fillAlpha=this.categoryBalloonAlpha;b.borderColor=c;b.color=this.color;c=this.valueLineAxis;d.isString(c)&&(c=a.getValueAxisById(c));c||(c=a.valueAxes[0]);this.valueLineAxis=c;this.valueLineBalloonEnabled&&(this.vaBalloon=c=new d.AmBalloon,d.copyProperties(b,
+c),c.animationDuration=0,this.rotate||(c.pointerOrientation="H"));this.rotate&&(b.pointerOrientation="H");this.extraWidth=0;this.prevX=[];this.prevY=[];this.prevTX=[];this.prevTY=[];if(this.valueBalloonsEnabled)for(b=0;b<a.graphs.length;b++)c=new d.AmBalloon,c.className=a.graphs[b].id,c.chart=a,d.copyProperties(a.balloon,c),a.graphs[b].valueBalloon=c;"cursor"==this.type?this.createCursor():this.createCrosshair()},updateData:function(){var a=this.chart;this.data=a.chartData;this.firstTime=a.firstTime;
+this.lastTime=a.lastTime},createCursor:function(){var a=this.chart,b=this.cursorAlpha,c=a.categoryAxis,e=this.categoryBalloon,h,f,g,k;g=a.dx;k=a.dy;var l=this.width,m=this.height,n=a.rotate;e.pointerWidth=c.tickLength;n?(h=[0,l,l+g],f=[0,0,k],g=[g,0,0],k=[k,0,m]):(h=[g,0,0],f=[k,0,m],g=[0,l,l+g],k=[0,0,k]);h=d.line(this.container,h,f,this.cursorColor,b,1);d.setCN(a,h,"cursor-line");this.line=h;h.node.style.pointerEvents="none";(f=this.fullRectSet)?(f.push(h),f.translate(this.x,this.y)):this.set.push(h);
+this.valueLineEnabled&&(h=this.valueLineAlpha,isNaN(h)||(b=h),b=d.line(this.container,g,k,this.cursorColor,b,1),b.node.style.pointerEvents="none",d.setCN(a,b,"cursor-value-line"),this.vLine=b,this.set.push(b));this.setBalloonBounds(e,c,n);(a=this.vaBalloon)&&this.setBalloonBounds(a,this.valueLineAxis,!n);this.hideCursor()},createCrosshair:function(){var a=this.cursorAlpha,b=this.container,c=d.line(b,[0,0],[0,this.height],this.cursorColor,a,1),a=d.line(b,[0,this.width],[0,0],this.cursorColor,a,1);
+d.setCN(this.chart,c,"cursor-line");d.setCN(this.chart,a,"cursor-line");this.set.push(c);this.set.push(a);this.vLine=c;this.hLine=a;this.hideCursor()},update:function(){var a=this.chart;if(a.mouseIsOver){var b=a.mouseX-this.x,c=a.mouseY-this.y;-.5<b&&b<this.width+1&&0<c&&c<this.height?(this.drawing?this.rolledOver||a.setMouseCursor("crosshair"):this.pan&&(this.rolledOver||a.setMouseCursor("move")),this.rolledOver=!0,(this.valueLineEnabled||this.valueLineBalloonEnabled)&&this.updateVLine(b,c),this.setPosition()):
+this.rolledOver&&(this.handleMouseOut(),this.rolledOver=!1)}else this.rolledOver&&(this.handleMouseOut(),this.rolledOver=!1)},updateVLine:function(a,b){var c=this.vLine,e=this.vaBalloon;if((c||e)&&!this.panning&&!this.drawing){c&&c.show();var d=this.valueLineAxis,f,g=this.rotate;g?(c&&c.translate(a,0),d&&(f=d.coordinateToValue(a)),c=a):(c&&c.translate(0,b),d&&(f=d.coordinateToValue(b)),c=b-1);if(e&&!isNaN(f)&&this.prevLineValue!=f){var k=d.formatValue(f,!0);this.setBalloonPosition(e,d,c,!g);e.showBalloon(k)}this.prevLineValue=
+f}},getMousePosition:function(){var a,b=this.width,c=this.height;a=this.chart;this.rotate?(a=a.mouseY-this.y,0>a&&(a=0),a>c&&(a=c)):(a=a.mouseX-this.x-1,0>a&&(a=0),a>b&&(a=b));return a},updateCrosshair:function(){var a=this.chart,b=a.mouseX-this.x,c=a.mouseY-this.y,e=this.vLine,h=this.hLine,b=d.fitToBounds(b,0,this.width),c=d.fitToBounds(c,0,this.height);e&&0<this.cursorAlpha&&(e.show(),h.show(),e.translate(b,0),h.translate(0,c));this.zooming&&(a.hideXScrollbar&&(b=NaN),a.hideYScrollbar&&(c=NaN),
+this.updateSelectionSize(b,c));this.fireMoved();a.mouseIsOver||this.zooming||this.hideCursor()},fireMoved:function(){var a=this.chart,b={type:"moved",target:this};b.chart=a;b.zooming=this.zooming;b.x=a.mouseX-this.x;b.y=a.mouseY-this.y;this.fire("moved",b)},updateSelectionSize:function(a,b){d.remove(this.selection);var c=this.selectionPosX,e=this.selectionPosY,h=0,f=0,g=this.width,k=this.height;isNaN(a)||(c>a&&(h=a,g=c-a),c<a&&(h=c,g=a-c),c==a&&(h=a,g=0),g+=this.extraWidth,h-=this.extraWidth/2);isNaN(b)||
+(e>b&&(f=b,k=e-b),e<b&&(f=e,k=b-e),e==b&&(f=b,k=0),k+=this.extraWidth,f-=this.extraWidth/2);0<g&&0<k&&(c=d.rect(this.container,g,k,this.cursorColor,this.selectionAlpha),d.setCN(this.chart,c,"cursor-selection"),c.translate(h+this.x,f+this.y),this.selection=c)},arrangeBalloons:function(){var a=this.valueBalloons,b=this.x,c=this.y,e=this.height+c;a.sort(this.compareY);var d;for(d=0;d<a.length;d++){var f=a[d].balloon;f.setBounds(b,c,b+this.width,e);f.prevX=this.prevX[d];f.prevY=this.prevY[d];f.prevTX=
+this.prevTX[d];f.prevTY=this.prevTY[d];f.draw();e=f.yPos-3}this.arrangeBalloons2()},compareY:function(a,b){return a.yy<b.yy?1:-1},arrangeBalloons2:function(){var a=this.valueBalloons;a.reverse();var b,c=this.x,e,d,f=a.length;for(d=0;d<f;d++){var g=a[d].balloon;b=g.bottom;var k=g.bottom-g.yPos,l=f-d-1;0<d&&b-k<e+3&&(g.setBounds(c,e+3,c+this.width,e+k+3),g.prevX=this.prevX[l],g.prevY=this.prevY[l],g.prevTX=this.prevTX[l],g.prevTY=this.prevTY[l],g.draw());g.set&&g.set.show();this.prevX[l]=g.prevX;this.prevY[l]=
+g.prevY;this.prevTX[l]=g.prevTX;this.prevTY[l]=g.prevTY;e=g.bottom}},showBullets:function(){d.remove(this.allBullets);var a=this.container,b=a.set();this.set.push(b);this.set.show();this.allBullets=b;var b=this.chart.graphs,c;for(c=0;c<b.length;c++){var e=b[c];if(!e.hidden&&e.balloonText){var h=this.data[this.index].axes[e.valueAxis.id].graphs[e.id],f=h.y;if(!isNaN(f)){var g,k;g=h.x;this.rotate?(k=f,f=g):k=g;e=d.circle(a,this.bulletSize/2,this.chart.getBalloonColor(e,h,!0),e.cursorBulletAlpha);e.translate(k,
+f);this.allBullets.push(e)}}}},destroy:function(){this.clear();d.remove(this.selection);this.selection=null;var a=this.categoryBalloon;a&&a.destroy();(a=this.vaBalloon)&&a.destroy();this.destroyValueBalloons();d.remove(this.set)},clear:function(){},destroyValueBalloons:function(){var a=this.valueBalloons;if(a){var b;for(b=0;b<a.length;b++)a[b].balloon.hide()}},zoom:function(a,b,c,e){var h=this.chart;this.destroyValueBalloons();this.zooming=!1;var f;this.rotate?this.selectionPosY=f=h.mouseY:this.selectionPosX=
+f=h.mouseX;this.start=a;this.end=b;this.startTime=c;this.endTime=e;this.zoomed=!0;e=h.categoryAxis;f=this.rotate;b=this.width;c=this.height;a=e.stepWidth;if(this.fullWidth){var g=1;e.parseDates&&!e.equalSpacing&&(g=e.minDuration());f?this.extraWidth=c=a*g:(this.extraWidth=b=a*g,this.categoryBalloon.minWidth=b);this.line&&this.line.remove();this.line=d.rect(this.container,b,c,this.cursorColor,this.cursorAlpha,0);this.line.node.style.pointerEvents="none";d.setCN(h,this.line,"cursor-fill");this.fullRectSet&&
+this.fullRectSet.push(this.line)}this.stepWidth=a;this.tempVal=this.valueBalloonsEnabled;this.valueBalloonsEnabled=!1;this.setPosition();this.valueBalloonsEnabled=this.tempVal;this.hideCursor()},hideObj:function(a){a&&a.hide()},hideCursor:function(a){void 0===a&&(a=!0);this.leaveCursor||(this.hideObj(this.set),this.hideObj(this.categoryBalloon),this.hideObj(this.line),this.hideObj(this.vLine),this.hideObj(this.hLine),this.hideObj(this.vaBalloon),this.hideObj(this.allBullets),this.destroyValueBalloons(),
+this.selectWithoutZooming||d.remove(this.selection),this.previousIndex=NaN,a&&this.fire("onHideCursor",{type:"onHideCursor",chart:this.chart,target:this}),this.drawing||this.chart.setMouseCursor("auto"),this.normalizeBulletSize())},setPosition:function(a,b,c){void 0===b&&(b=!0);if("cursor"==this.type){if(this.tempPosition=NaN,d.ifArray(this.data))isNaN(a)&&(a=this.getMousePosition()),(a!=this.previousMousePosition||!0===this.zoomed||this.oneBalloonOnly)&&!isNaN(a)&&("mouse"==this.cursorPosition&&
+(this.tempPosition=a),isNaN(c)&&(c=this.chart.categoryAxis.xToIndex(a)),c!=this.previousIndex||this.zoomed||"mouse"==this.cursorPosition||this.oneBalloonOnly)&&(this.updateCursor(c,b),this.zoomed=!1),this.previousMousePosition=a}else this.updateCrosshair()},normalizeBulletSize:function(){var a=this.resizedBullets;if(a)for(var b=0;b<a.length;b++){var c=a[b],e=c.bulletGraphics;e&&(e.translate(c.bx,c.by,1),c=c.graph,isNaN(this.graphBulletAlpha)||(e.setAttr("fill-opacity",c.bulletAlpha),e.setAttr("stroke-opacity",
+c.bulletBorderAlpha)))}},updateCursor:function(a,b){var c=this.chart,e=this.fullWidth,h=c.mouseX-this.x,f=c.mouseY-this.y;this.drawingNow&&(d.remove(this.drawingLine),this.drawingLine=d.line(this.container,[this.x+this.drawStartX,this.x+h],[this.y+this.drawStartY,this.y+f],this.cursorColor,1,1));if(this.enabled){void 0===b&&(b=!0);this.index=a+=this.adjustment;var g=c.categoryAxis,k=c.dx,l=c.dy,m=this.x+1,n=this.y+1,q=this.width,p=this.height,r=this.data[a];this.fireMoved();if(r){var t=r.x[g.id],
+u=c.rotate,z=this.stepWidth,v=this.categoryBalloon,w=this.firstTime,x=this.lastTime,A=this.cursorPosition,B=this.zooming,D=this.panning,C=c.graphs;if(c.mouseIsOver||B||D||this.forceShow)if(this.forceShow=!1,D){var k=this.panClickPos,c=this.panClickEndTime,B=this.panClickStartTime,I=this.panClickEnd,m=this.panClickStart,h=(u?k-f:k-h)/z;if(!g.parseDates||g.equalSpacing)h=Math.round(h);0!==h&&(k={type:"zoomed",target:this},k.chart=this.chart,g.parseDates&&!g.equalSpacing?(c+h>x&&(h=x-c),B+h<w&&(h=w-
+B),k.start=Math.round(B+h),k.end=Math.round(c+h),this.fire(k.type,k)):I+h>=this.data.length||0>m+h||(k.start=m+h,k.end=I+h,this.fire(k.type,k)))}else{"start"==A?t-=g.cellWidth/2:"mouse"==A&&(c.mouseIsOver?t=u?f-2:h-2:isNaN(this.tempPosition)||(t=this.tempPosition-2));if(u){if(0>t)if(B)t=0;else{this.hideCursor();return}if(t>p+1)if(B)t=p+1;else{this.hideCursor();return}}else{if(0>t)if(B)t=0;else{this.hideCursor();return}if(t>q)if(B)t=q;else{this.hideCursor();return}}w=this.line;0<this.cursorAlpha&&
+(u?(x=0,z=t+l,e&&(z-=g.cellWidth/2)):(x=t,z=0,e&&(x-=g.cellWidth/2)),A=this.animationDuration,0<A&&!this.zooming?isNaN(this.previousX)?w.translate(x,z):(w.translate(this.previousX,this.previousY),w.animate({translate:x+","+z},A,"easeOutSine")):w.translate(x,z),this.previousX=x,this.previousY=z,w.show());this.linePos=u?t+l:t;B&&(e&&w.hide(),u?this.updateSelectionSize(NaN,t):this.updateSelectionSize(t,NaN));z=!0;B&&(z=!1);this.categoryBalloonEnabled&&z?(this.setBalloonPosition(v,g,t,u),(w=this.categoryBalloonFunction)?
+v.showBalloon(w(r.category)):g.parseDates?(g=d.formatDate(r.category,this.categoryBalloonDateFormat,c),-1!=g.indexOf("fff")&&(g=d.formatMilliseconds(g,r.category)),v.showBalloon(g)):v.showBalloon(d.fixNewLines(r.category))):v.hide();C&&this.bulletsEnabled&&this.showBullets();if(this.oneBalloonOnly){t=Infinity;for(g=0;g<C.length;g++)v=C[g],v.showBalloon&&!v.hidden&&v.balloonText&&(w=r.axes[v.valueAxis.id].graphs[v.id],x=w.y,isNaN(x)||(u?Math.abs(h-x)<t&&(t=Math.abs(h-x),I=v):Math.abs(f-x)<t&&(t=Math.abs(f-
+x),I=v)));this.mostCloseGraph&&(I=this.mostCloseGraph)}if(a!=this.previousIndex||I!=this.previousMostCloseGraph)if(this.normalizeBulletSize(),this.destroyValueBalloons(),this.resizedBullets=[],C&&this.valueBalloonsEnabled&&z&&c.balloon.enabled){this.valueBalloons=t=[];for(g=0;g<C.length;g++)if(v=C[g],x=NaN,(!this.oneBalloonOnly||v==I)&&v.showBalloon&&!v.hidden&&v.balloonText&&("step"==v.type&&"left"==v.stepDirection&&(r=this.data[a+1]),r)){if(w=r.axes[v.valueAxis.id].graphs[v.id])x=w.y;if(this.showNextAvailable&&
+isNaN(x)&&a+1<this.data.length)for(z=a+1;z<this.data.length;z++)if(e=this.data[z])if(w=e.axes[v.valueAxis.id].graphs[v.id],x=w.y,!isNaN(x))break;if(!isNaN(x)){e=w.x;l=!0;if(u){if(z=x,0>e||e>p)l=!1}else if(z=e,e=x,0>z||z>q+k+1)l=!1;l&&(l=this.graphBulletSize,A=this.graphBulletAlpha,1==l&&isNaN(A)||!d.isModern||!(D=w.bulletGraphics)||(D.translate(w.bx,w.by,l),this.resizedBullets.push(w),isNaN(A)||(D.setAttr("fill-opacity",A),D.setAttr("stroke-opacity",A))),l=v.valueBalloon,A=c.getBalloonColor(v,w),
+l.setBounds(m,n,m+q,n+p),l.pointerOrientation="H",D=this.balloonPointerOrientation,"vertical"==D&&(l.pointerOrientation="V"),"horizontal"==D&&(l.pointerOrientation="H"),l.changeColor(A),void 0!==v.balloonAlpha&&(l.fillAlpha=v.balloonAlpha),void 0!==v.balloonTextColor&&(l.color=v.balloonTextColor),l.setPosition(z+m,e+n),z=c.formatString(v.balloonText,w,!0),(e=v.balloonFunction)&&(z=e(w,v).toString()),""!==z&&(u?l.showBalloon(z):(l.text=z,l.show=!0),t.push({yy:x,balloon:l})),!u&&l.set&&(l.set.hide(),
+v=l.textDiv)&&(v.style.visibility="hidden"))}}this.avoidBalloonOverlapping&&this.arrangeBalloons()}b?(k={type:"changed"},k.index=a,k.chart=this.chart,k.zooming=B,k.mostCloseGraph=I,k.position=u?f:h,k.target=this,c.fire("changed",k),this.fire("changed",k),this.skipZoomDispatch=!1):(this.skipZoomDispatch=!0,c.updateLegendValues(a));this.previousIndex=a;this.previousMostCloseGraph=I}}}else this.hideCursor()},setBalloonPosition:function(a,b,c,e){var d=b.position,f=b.inside;b=b.axisThickness;var g=this.chart,
+k=g.dx,g=g.dy,l=this.x,m=this.y,n=this.width,q=this.height;e?(f&&("right"==d?a.setBounds(l,m+g,l+n+k,m+c+g):a.setBounds(l,m+g,l+n+k,m+c)),"right"==d?f?a.setPosition(l+n+k,m+c+g):a.setPosition(l+n+k+b,m+c+g):f?a.setPosition(l,m+c):a.setPosition(l-b,m+c)):"top"==d?f?a.setPosition(l+c+k,m+g):a.setPosition(l+c+k,m+g-b+1):f?a.setPosition(l+c,m+q):a.setPosition(l+c,m+q+b-1)},setBalloonBounds:function(a,b,c){var e=b.position,d=b.inside,f=b.axisThickness,g=b.tickLength,k=this.chart,l=k.dx,k=k.dy,m=this.x,
+n=this.y,q=this.width,p=this.height;c?(d&&(a.pointerWidth=0),"right"==e?d?a.setBounds(m,n+k,m+q+l,n+p+k):a.setBounds(m+q+l+f,n+k,m+q+1E3,n+p+k):d?a.setBounds(m,n,q+m,p+n):a.setBounds(-1E3,-1E3,m-g-f,n+p+15)):(a.maxWidth=q,b.parseDates&&(g=0,a.pointerWidth=0),"top"==e?d?a.setBounds(m+l,n+k,q+l+m,p+n):a.setBounds(m+l,-1E3,q+l+m,n+k-g-f):d?a.setBounds(m,n,q+m,p+n-g):a.setBounds(m,n+p+g+f-1,m+q,n+p+g+f))},enableDrawing:function(a){this.enabled=!a;this.hideCursor();this.rolledOver=!1;this.drawing=a},isZooming:function(a){a&&
+a!=this.zooming&&this.handleMouseDown("fake");a||a==this.zooming||this.handleMouseUp()},handleMouseOut:function(){if(this.enabled)if(this.zooming)this.setPosition();else{this.index=void 0;var a={type:"changed",index:void 0,target:this};a.chart=this.chart;this.fire("changed",a);this.hideCursor()}},handleReleaseOutside:function(){this.handleMouseUp()},handleMouseUp:function(){var a=this.chart,b=this.data,c;if(a){var e=a.mouseX-this.x,h=a.mouseY-this.y;if(this.drawingNow){this.drawingNow=!1;d.remove(this.drawingLine);
+c=this.drawStartX;var f=this.drawStartY;if(2<Math.abs(c-e)||2<Math.abs(f-h))c={type:"draw",target:this,chart:a,initialX:c,initialY:f,finalX:e,finalY:h},this.fire(c.type,c)}if(this.enabled&&0<b.length){if(this.pan)this.rolledOver=!1;else if(this.zoomable&&this.zooming){c=this.selectWithoutZooming?{type:"selected"}:{type:"zoomed"};c.target=this;c.chart=a;if("cursor"==this.type)this.rotate?this.selectionPosY=h:this.selectionPosX=h=e,4>Math.abs(h-this.initialMouse)&&this.fromIndex==this.index||(this.index<
+this.fromIndex?(c.end=this.fromIndex,c.start=this.index):(c.end=this.index,c.start=this.fromIndex),h=a.categoryAxis,h.parseDates&&!h.equalSpacing&&(b[c.start]&&(c.start=b[c.start].time),b[c.end]&&(c.end=a.getEndTime(b[c.end].time))),this.skipZoomDispatch||this.fire(c.type,c));else{var g=this.initialMouseX,k=this.initialMouseY;3>Math.abs(e-g)&&3>Math.abs(h-k)||(b=Math.min(g,e),f=Math.min(k,h),e=Math.abs(g-e),h=Math.abs(k-h),a.hideXScrollbar&&(b=0,e=this.width),a.hideYScrollbar&&(f=0,h=this.height),
+c.selectionHeight=h,c.selectionWidth=e,c.selectionY=f,c.selectionX=b,this.skipZoomDispatch||this.fire(c.type,c))}this.selectWithoutZooming||d.remove(this.selection)}this.skipZoomDispatch=!1}}this.panning=this.zooming=!1},showCursorAt:function(a){var b=this.chart.categoryAxis;a=b.parseDates?b.dateToCoordinate(a):b.categoryToCoordinate(a);this.previousMousePosition=NaN;this.forceShow=!0;this.setPosition(a,!1)},clearSelection:function(){d.remove(this.selection)},handleMouseDown:function(a){if(this.zoomable||
+this.pan||this.drawing){var b=this.rotate,c=this.chart,e=c.mouseX-this.x,h=c.mouseY-this.y;if(0<e&&e<this.width&&0<h&&h<this.height||"fake"==a)this.setPosition(),this.selectWithoutZooming&&d.remove(this.selection),this.drawing?(this.drawStartY=h,this.drawStartX=e,this.drawingNow=!0):this.pan?(this.zoomable=!1,c.setMouseCursor("move"),this.panning=!0,this.panClickPos=b?h:e,this.panClickStart=this.start,this.panClickEnd=this.end,this.panClickStartTime=this.startTime,this.panClickEndTime=this.endTime):
+this.zoomable&&("cursor"==this.type?(this.fromIndex=this.index,b?(this.initialMouse=h,this.selectionPosY=this.linePos):(this.initialMouse=e,this.selectionPosX=this.linePos)):(this.initialMouseX=e,this.initialMouseY=h,this.selectionPosX=e,this.selectionPosY=h),this.zooming=!0)}}})})();(function(){var d=window.AmCharts;d.SimpleChartScrollbar=d.Class({construct:function(a){this.createEvents("zoomed");this.backgroundColor="#D4D4D4";this.backgroundAlpha=1;this.selectedBackgroundColor="#EFEFEF";this.scrollDuration=this.selectedBackgroundAlpha=1;this.resizeEnabled=!0;this.hideResizeGrips=!1;this.scrollbarHeight=20;this.updateOnReleaseOnly=!1;9>document.documentMode&&(this.updateOnReleaseOnly=!0);this.dragIconHeight=this.dragIconWidth=35;this.dragIcon="dragIconRoundBig";d.applyTheme(this,
+a,"SimpleChartScrollbar")},draw:function(){var a=this;a.destroy();if(a.enabled){var b=a.chart.container,c=a.rotate,e=a.chart,h=b.set();a.set=h;e.scrollbarsSet.push(h);var f,g;c?(f=a.scrollbarHeight,g=e.plotAreaHeight):(g=a.scrollbarHeight,f=e.plotAreaWidth);a.width=f;if((a.height=g)&&f){var k=d.rect(b,f,g,a.backgroundColor,a.backgroundAlpha,1,a.backgroundColor,a.backgroundAlpha);d.setCN(e,k,"scrollbar-bg");a.bg=k;h.push(k);k=d.rect(b,f,g,"#000",.005);h.push(k);a.invisibleBg=k;k.click(function(){a.handleBgClick()}).mouseover(function(){a.handleMouseOver()}).mouseout(function(){a.handleMouseOut()}).touchend(function(){a.handleBgClick()});
+k=d.rect(b,f,g,a.selectedBackgroundColor,a.selectedBackgroundAlpha);d.setCN(e,k,"scrollbar-bg-selected");a.selectedBG=k;h.push(k);f=d.rect(b,f,g,"#000",.005);a.dragger=f;h.push(f);f.mousedown(function(b){a.handleDragStart(b)}).mouseup(function(){a.handleDragStop()}).mouseover(function(){a.handleDraggerOver()}).mouseout(function(){a.handleMouseOut()}).touchstart(function(b){a.handleDragStart(b)}).touchend(function(){a.handleDragStop()});f=e.pathToImages;c?(k=f+a.dragIcon+"H.png",f=a.dragIconWidth,
+c=a.dragIconHeight):(k=f+a.dragIcon+".png",c=a.dragIconWidth,f=a.dragIconHeight);g=b.image(k,0,0,c,f);d.setCN(e,g,"scrollbar-grip-left");k=b.image(k,0,0,c,f);d.setCN(e,k,"scrollbar-grip-right");var l=10,m=20;e.panEventsEnabled&&(l=25,m=a.scrollbarHeight);var n=d.rect(b,l,m,"#000",.005),q=d.rect(b,l,m,"#000",.005);q.translate(-(l-c)/2,-(m-f)/2);n.translate(-(l-c)/2,-(m-f)/2);c=b.set([g,q]);b=b.set([k,n]);a.iconLeft=c;h.push(a.iconLeft);a.iconRight=b;h.push(b);c.mousedown(function(){a.leftDragStart()}).mouseup(function(){a.leftDragStop()}).mouseover(function(){a.iconRollOver()}).mouseout(function(){a.iconRollOut()}).touchstart(function(){a.leftDragStart()}).touchend(function(){a.leftDragStop()});
+b.mousedown(function(){a.rightDragStart()}).mouseup(function(){a.rightDragStop()}).mouseover(function(){a.iconRollOver()}).mouseout(function(){a.iconRollOut()}).touchstart(function(){a.rightDragStart()}).touchend(function(){a.rightDragStop()});d.ifArray(e.chartData)?h.show():h.hide();a.hideDragIcons();a.clipDragger(!1)}h.translate(a.x,a.y);h.node.style.msTouchAction="none"}},updateScrollbarSize:function(a,b){a=Math.round(a);b=Math.round(b);var c=this.dragger,e,d,f,g;this.rotate?(e=0,d=a,f=this.width+
+1,g=b-a,c.setAttr("height",b-a),c.setAttr("y",d)):(e=a,d=0,f=b-a,g=this.height+1,c.setAttr("width",b-a),c.setAttr("x",e));this.clipAndUpdate(e,d,f,g)},update:function(){var a,b=!1,c,e,d=this.x,f=this.y,g=this.dragger,k=this.getDBox();if(k){c=k.x+d;e=k.y+f;var l=k.width,k=k.height,m=this.rotate,n=this.chart,q=this.width,p=this.height,r=n.mouseX,t=n.mouseY;a=this.initialMouse;this.forceClip&&this.clipDragger(!0);n.mouseIsOver&&(this.dragging&&(n=this.initialCoord,m?(a=n+(t-a),0>a&&(a=0),n=p-k,a>n&&
+(a=n),g.setAttr("y",a)):(a=n+(r-a),0>a&&(a=0),n=q-l,a>n&&(a=n),g.setAttr("x",a)),this.clipDragger(!0)),this.resizingRight&&(m?(a=t-e,a+e>p+f&&(a=p-e+f),0>a?(this.resizingRight=!1,b=this.resizingLeft=!0):(0===a&&(a=.1),g.setAttr("height",a))):(a=r-c,a+c>q+d&&(a=q-c+d),0>a?(this.resizingRight=!1,b=this.resizingLeft=!0):(0===a&&(a=.1),g.setAttr("width",a))),this.clipDragger(!0)),this.resizingLeft&&(m?(c=e,e=t,e<f&&(e=f),e>p+f&&(e=p+f),a=!0===b?c-e:k+c-e,0>a?(this.resizingRight=!0,this.resizingLeft=!1,
+g.setAttr("y",c+k-f)):(0===a&&(a=.1),g.setAttr("y",e-f),g.setAttr("height",a))):(e=r,e<d&&(e=d),e>q+d&&(e=q+d),a=!0===b?c-e:l+c-e,0>a?(this.resizingRight=!0,this.resizingLeft=!1,g.setAttr("x",c+l-d)):(0===a&&(a=.1),g.setAttr("x",e-d),g.setAttr("width",a))),this.clipDragger(!0)))}},stopForceClip:function(){this.forceClip=!1},clipDragger:function(a){var b=this.getDBox();if(b){var c=b.x,e=b.y,d=b.width,b=b.height,f=!1;if(this.rotate){if(c=0,d=this.width+1,this.clipY!=e||this.clipH!=b)f=!0}else if(e=
+0,b=this.height+1,this.clipX!=c||this.clipW!=d)f=!0;f&&(this.clipAndUpdate(c,e,d,b),a&&(this.updateOnReleaseOnly||this.dispatchScrollbarEvent()))}},maskGraphs:function(){},clipAndUpdate:function(a,b,c,e){this.clipX=a;this.clipY=b;this.clipW=c;this.clipH=e;this.selectedBG.clipRect(a,b,c,e);this.updateDragIconPositions();this.maskGraphs(a,b,c,e)},dispatchScrollbarEvent:function(){if(this.skipEvent)this.skipEvent=!1;else{var a=this.chart;a.hideBalloon();var b=this.getDBox(),c=b.x,e=b.y,d=b.width,b=b.height;
+this.rotate?(c=e,d=this.height/b):d=this.width/d;a={type:"zoomed",position:c,chart:a,target:this,multiplier:d};this.fire(a.type,a)}},updateDragIconPositions:function(){var a=this.getDBox(),b=a.x,c=a.y,e=this.iconLeft,d=this.iconRight,f,g,k=this.scrollbarHeight;this.rotate?(f=this.dragIconWidth,g=this.dragIconHeight,e.translate((k-g)/2,c-f/2),d.translate((k-g)/2,c+a.height-f/2)):(f=this.dragIconHeight,g=this.dragIconWidth,e.translate(b-g/2,(k-f)/2),d.translate(b-g/2+a.width,(k-f)/2))},showDragIcons:function(){this.resizeEnabled&&
+(this.iconLeft.show(),this.iconRight.show())},hideDragIcons:function(){if(!this.resizingLeft&&!this.resizingRight&&!this.dragging){if(this.hideResizeGrips||!this.resizeEnabled)this.iconLeft.hide(),this.iconRight.hide();this.removeCursors()}},removeCursors:function(){this.chart.setMouseCursor("auto")},relativeZoom:function(a,b){this.enabled&&(this.dragger.stop(),this.multiplier=a,this.position=b,this.updateScrollbarSize(b,this.rotate?b+this.height/a:b+this.width/a),this.clipDragger())},destroy:function(){this.clear();
+d.remove(this.set);d.remove(this.iconRight);d.remove(this.iconLeft)},clear:function(){},handleDragStart:function(){if(this.enabled){var a=this.chart;this.dragger.stop();this.removeCursors();this.dragging=!0;var b=this.getDBox();this.rotate?(this.initialCoord=b.y,this.initialMouse=a.mouseY):(this.initialCoord=b.x,this.initialMouse=a.mouseX)}},handleDragStop:function(){this.updateOnReleaseOnly&&(this.update(),this.skipEvent=!1,this.dispatchScrollbarEvent());this.dragging=!1;this.mouseIsOver&&this.removeCursors();
+this.update()},handleDraggerOver:function(){this.handleMouseOver()},leftDragStart:function(){this.dragger.stop();this.resizingLeft=!0},leftDragStop:function(){this.resizingLeft=!1;this.mouseIsOver||this.removeCursors();this.updateOnRelease()},rightDragStart:function(){this.dragger.stop();this.resizingRight=!0},rightDragStop:function(){this.resizingRight=!1;this.mouseIsOver||this.removeCursors();this.updateOnRelease()},iconRollOut:function(){this.removeCursors()},iconRollOver:function(){this.rotate?
+this.chart.setMouseCursor("n-resize"):this.chart.setMouseCursor("e-resize");this.handleMouseOver()},getDBox:function(){if(this.dragger)return this.dragger.getBBox()},handleBgClick:function(){var a=this;if(!a.resizingRight&&!a.resizingLeft){a.zooming=!0;var b,c,e=a.scrollDuration,h=a.dragger;b=a.getDBox();var f=b.height,g=b.width;c=a.chart;var k=a.y,l=a.x,m=a.rotate;m?(b="y",c=c.mouseY-f/2-k,c=d.fitToBounds(c,0,a.height-f)):(b="x",c=c.mouseX-g/2-l,c=d.fitToBounds(c,0,a.width-g));a.updateOnReleaseOnly?
+(a.skipEvent=!1,h.setAttr(b,c),a.dispatchScrollbarEvent(),a.clipDragger()):(c=Math.round(c),m?h.animate({y:c},e,">"):h.animate({x:c},e,">"),a.forceClip=!0,clearTimeout(a.forceTO),a.forceTO=setTimeout(function(){a.stopForceClip.call(a)},5E3*e))}},updateOnRelease:function(){this.updateOnReleaseOnly&&(this.update(),this.skipEvent=!1,this.dispatchScrollbarEvent())},handleReleaseOutside:function(){if(this.set){if(this.resizingLeft||this.resizingRight||this.dragging)this.updateOnRelease(),this.removeCursors();
+this.mouseIsOver=this.dragging=this.resizingRight=this.resizingLeft=!1;this.hideDragIcons();this.update()}},handleMouseOver:function(){this.mouseIsOver=!0;this.showDragIcons()},handleMouseOut:function(){this.mouseIsOver=!1;this.hideDragIcons()}})})();(function(){var d=window.AmCharts;d.ChartScrollbar=d.Class({inherits:d.SimpleChartScrollbar,construct:function(a){this.cname="ChartScrollbar";d.ChartScrollbar.base.construct.call(this,a);this.enabled=!0;this.graphLineColor="#BBBBBB";this.graphLineAlpha=0;this.graphFillColor="#BBBBBB";this.graphFillAlpha=1;this.selectedGraphLineColor="#888888";this.selectedGraphLineAlpha=0;this.selectedGraphFillColor="#888888";this.selectedGraphFillAlpha=1;this.gridCount=0;this.gridColor="#FFFFFF";this.gridAlpha=.7;
+this.skipEvent=this.autoGridCount=!1;this.color="#FFFFFF";this.scrollbarCreated=!1;this.offset=0;this.oppositeAxis=!0;d.applyTheme(this,a,this.cname)},init:function(){var a=this.categoryAxis,b=this.chart;a||(this.categoryAxis=a=new d.CategoryAxis);a.chart=b;a.id="scrollbar";a.dateFormats=b.categoryAxis.dateFormats;a.markPeriodChange=b.categoryAxis.markPeriodChange;a.boldPeriodBeginning=b.categoryAxis.boldPeriodBeginning;a.axisItemRenderer=d.RecItem;a.axisRenderer=d.RecAxis;a.guideFillRenderer=d.RecFill;
+a.inside=!0;a.fontSize=this.fontSize;a.tickLength=0;a.axisAlpha=0;d.isString(this.graph)&&(this.graph=d.getObjById(b.graphs,this.graph));if(a=this.graph){var c=this.valueAxis;c||(this.valueAxis=c=new d.ValueAxis,c.visible=!1,c.scrollbar=!0,c.axisItemRenderer=d.RecItem,c.axisRenderer=d.RecAxis,c.guideFillRenderer=d.RecFill,c.labelsEnabled=!1,c.chart=b);b=this.unselectedGraph;b||(b=new d.AmGraph,b.scrollbar=!0,this.unselectedGraph=b,b.negativeBase=a.negativeBase,b.noStepRisers=a.noStepRisers);b=this.selectedGraph;
+b||(b=new d.AmGraph,b.scrollbar=!0,this.selectedGraph=b,b.negativeBase=a.negativeBase,b.noStepRisers=a.noStepRisers)}this.scrollbarCreated=!0},draw:function(){var a=this;d.ChartScrollbar.base.draw.call(a);if(a.enabled){a.scrollbarCreated||a.init();var b=a.chart,c=b.chartData,e=a.categoryAxis,h=a.rotate,f=a.x,g=a.y,k=a.width,l=a.height,m=b.categoryAxis,n=a.set;e.setOrientation(!h);e.parseDates=m.parseDates;e.rotate=h;e.equalSpacing=m.equalSpacing;e.minPeriod=m.minPeriod;e.startOnAxis=m.startOnAxis;
+e.viW=k;e.viH=l;e.width=k;e.height=l;e.gridCount=a.gridCount;e.gridColor=a.gridColor;e.gridAlpha=a.gridAlpha;e.color=a.color;e.tickLength=0;e.axisAlpha=0;e.autoGridCount=a.autoGridCount;e.parseDates&&!e.equalSpacing&&e.timeZoom(b.firstTime,b.lastTime);e.zoom(0,c.length-1);if(m=a.graph){var q=a.valueAxis,p=m.valueAxis;q.id=p.id;q.rotate=h;q.setOrientation(h);q.width=k;q.height=l;q.viW=k;q.viH=l;q.dataProvider=c;q.reversed=p.reversed;q.logarithmic=p.logarithmic;q.gridAlpha=0;q.axisAlpha=0;n.push(q.set);
+h?(q.y=g,q.x=0):(q.x=f,q.y=0);var f=Infinity,g=-Infinity,r;for(r=0;r<c.length;r++){var t=c[r].axes[p.id].graphs[m.id].values,u;for(u in t)if(t.hasOwnProperty(u)&&"percents"!=u&&"total"!=u){var z=t[u];z<f&&(f=z);z>g&&(g=z)}}Infinity!=f&&(q.minimum=f);-Infinity!=g&&(q.maximum=g+.1*(g-f));f==g&&(--q.minimum,q.maximum+=1);void 0!==a.minimum&&(q.minimum=a.minimum);void 0!==a.maximum&&(q.maximum=a.maximum);q.zoom(0,c.length-1);u=a.unselectedGraph;u.id=m.id;u.bcn="scrollbar-graph-";u.rotate=h;u.chart=b;
+u.data=c;u.valueAxis=q;u.chart=m.chart;u.categoryAxis=a.categoryAxis;u.periodSpan=m.periodSpan;u.valueField=m.valueField;u.openField=m.openField;u.closeField=m.closeField;u.highField=m.highField;u.lowField=m.lowField;u.lineAlpha=a.graphLineAlpha;u.lineColorR=a.graphLineColor;u.fillAlphas=a.graphFillAlpha;u.fillColorsR=a.graphFillColor;u.connect=m.connect;u.hidden=m.hidden;u.width=k;u.height=l;u.pointPosition=m.pointPosition;u.stepDirection=m.stepDirection;u.periodSpan=m.periodSpan;p=a.selectedGraph;
+p.id=m.id;p.bcn=u.bcn+"selected-";p.rotate=h;p.chart=b;p.data=c;p.valueAxis=q;p.chart=m.chart;p.categoryAxis=e;p.periodSpan=m.periodSpan;p.valueField=m.valueField;p.openField=m.openField;p.closeField=m.closeField;p.highField=m.highField;p.lowField=m.lowField;p.lineAlpha=a.selectedGraphLineAlpha;p.lineColorR=a.selectedGraphLineColor;p.fillAlphas=a.selectedGraphFillAlpha;p.fillColorsR=a.selectedGraphFillColor;p.connect=m.connect;p.hidden=m.hidden;p.width=k;p.height=l;p.pointPosition=m.pointPosition;
+p.stepDirection=m.stepDirection;p.periodSpan=m.periodSpan;b=a.graphType;b||(b=m.type);u.type=b;p.type=b;c=c.length-1;u.zoom(0,c);p.zoom(0,c);p.set.click(function(){a.handleBackgroundClick()}).mouseover(function(){a.handleMouseOver()}).mouseout(function(){a.handleMouseOut()});u.set.click(function(){a.handleBackgroundClick()}).mouseover(function(){a.handleMouseOver()}).mouseout(function(){a.handleMouseOut()});n.push(u.set);n.push(p.set)}n.push(e.set);n.push(e.labelsSet);a.bg.toBack();a.invisibleBg.toFront();
+a.dragger.toFront();a.iconLeft.toFront();a.iconRight.toFront()}},timeZoom:function(a,b,c){this.startTime=a;this.endTime=b;this.timeDifference=b-a;this.skipEvent=!d.toBoolean(c);this.zoomScrollbar();this.skipEvent||this.dispatchScrollbarEvent()},zoom:function(a,b){this.start=a;this.end=b;this.skipEvent=!0;this.zoomScrollbar()},dispatchScrollbarEvent:function(){if(this.skipEvent)this.skipEvent=!1;else{var a=this.chart.chartData,b,c,e=this.dragger.getBBox();b=e.x;var d=e.y,f=e.width,e=e.height,g=this.chart;
+this.rotate?(b=d,c=e):c=f;f={type:"zoomed",target:this};f.chart=g;var k=this.categoryAxis,l=this.stepWidth,d=g.minSelectedTime,e=!1;if(k.parseDates&&!k.equalSpacing){if(a=g.lastTime,g=g.firstTime,k=Math.round(b/l)+g,b=this.dragging?k+this.timeDifference:Math.round((b+c)/l)+g,k>b&&(k=b),0<d&&b-k<d&&(b=Math.round(k+(b-k)/2),e=Math.round(d/2),k=b-e,b+=e,e=!0),b>a&&(b=a),b-d<k&&(k=b-d),k<g&&(k=g),k+d>b&&(b=k+d),k!=this.startTime||b!=this.endTime)this.startTime=k,this.endTime=b,f.start=k,f.end=b,f.startDate=
+new Date(k),f.endDate=new Date(b),this.fire(f.type,f)}else if(k.startOnAxis||(b+=l/2),c-=this.stepWidth/2,d=k.xToIndex(b),b=k.xToIndex(b+c),d!=this.start||this.end!=b)k.startOnAxis&&(this.resizingRight&&d==b&&b++,this.resizingLeft&&d==b&&(0<d?d--:b=1)),this.start=d,this.end=this.dragging?this.start+this.difference:b,f.start=this.start,f.end=this.end,k.parseDates&&(a[this.start]&&(f.startDate=new Date(a[this.start].time)),a[this.end]&&(f.endDate=new Date(a[this.end].time))),this.fire(f.type,f);e&&
+this.zoomScrollbar()}},zoomScrollbar:function(){var a,b;a=this.chart;var c=a.chartData,e=this.categoryAxis;e.parseDates&&!e.equalSpacing?(c=e.stepWidth,e=a.firstTime,a=c*(this.startTime-e),b=c*(this.endTime-e)):(a=c[this.start].x[e.id],b=c[this.end].x[e.id],c=e.stepWidth,e.startOnAxis||(e=c/2,a-=e,b+=e));this.stepWidth=c;this.updateScrollbarSize(a,b)},maskGraphs:function(a,b,c,e){var d=this.selectedGraph;d&&d.set.clipRect(a,b,c,e)},handleDragStart:function(){d.ChartScrollbar.base.handleDragStart.call(this);
+this.difference=this.end-this.start;this.timeDifference=this.endTime-this.startTime;0>this.timeDifference&&(this.timeDifference=0)},handleBackgroundClick:function(){d.ChartScrollbar.base.handleBackgroundClick.call(this);this.dragging||(this.difference=this.end-this.start,this.timeDifference=this.endTime-this.startTime,0>this.timeDifference&&(this.timeDifference=0))}})})();(function(){var d=window.AmCharts;d.AmBalloon=d.Class({construct:function(a){this.cname="AmBalloon";this.enabled=!0;this.fillColor="#FFFFFF";this.fillAlpha=.8;this.borderThickness=2;this.borderColor="#FFFFFF";this.borderAlpha=1;this.cornerRadius=0;this.maxWidth=220;this.horizontalPadding=8;this.verticalPadding=4;this.pointerWidth=6;this.pointerOrientation="V";this.color="#000000";this.adjustBorderColor=!0;this.show=this.follow=this.showBullet=!1;this.bulletSize=3;this.shadowAlpha=.4;this.shadowColor=
+"#000000";this.fadeOutDuration=this.animationDuration=.3;this.fixedPosition=!1;this.offsetY=6;this.offsetX=1;this.textAlign="center";this.disableMouseEvents=!0;this.deltaSignX=this.deltaSignY=1;d.isModern||(this.offsetY*=1.5);d.applyTheme(this,a,this.cname)},draw:function(){var a=this.pointToX,b=this.pointToY,c=this.chart;d.VML&&(this.fadeOutDuration=0);this.xAnim&&c.stopAnim(this.xAnim);this.yAnim&&c.stopAnim(this.yAnim);if(!isNaN(a)){var e=this.follow,h=c.container,f=this.set;d.remove(f);this.removeDiv();
+f=h.set();f.node.style.pointerEvents="none";this.set=f;c.balloonsSet.push(f);if(this.show){var g=this.l,k=this.t,l=this.r,m=this.b,n=this.balloonColor,q=this.fillColor,p=this.borderColor,r=q;void 0!=n&&(this.adjustBorderColor?r=p=n:q=n);var t=this.horizontalPadding,u=this.verticalPadding,z=this.pointerWidth,v=this.pointerOrientation,w=this.cornerRadius,x=c.fontFamily,A=this.fontSize;void 0==A&&(A=c.fontSize);var n=document.createElement("div"),B=c.classNamePrefix;n.className=B+"-balloon-div";this.className&&
+(n.className=n.className+" "+B+"-balloon-div-"+this.className);B=n.style;this.disableMouseEvents&&(B.pointerEvents="none");B.position="absolute";var D=this.minWidth,C="";isNaN(D)||(C="min-width:"+(D-2*t)+"px; ");n.innerHTML="<div style='text-align:"+this.textAlign+"; "+C+"max-width:"+this.maxWidth+"px; font-size:"+A+"px; color:"+this.color+"; font-family:"+x+"'>"+this.text+"</div>";c.chartDiv.appendChild(n);this.textDiv=n;A=n.offsetWidth;x=n.offsetHeight;n.clientHeight&&(A=n.clientWidth,x=n.clientHeight);
+x+=2*u;C=A+2*t;!isNaN(D)&&C<D&&(C=D);window.opera&&(x+=2);var I=!1,A=this.offsetY;c.handDrawn&&(A+=c.handDrawScatter+2);"H"!=v?(D=a-C/2,b<k+x+10&&"down"!=v?(I=!0,e&&(b+=A),A=b+z,this.deltaSignY=-1):(e&&(b-=A),A=b-x-z,this.deltaSignY=1)):(2*z>x&&(z=x/2),A=b-x/2,a<g+(l-g)/2?(D=a+z,this.deltaSignX=-1):(D=a-C-z,this.deltaSignX=1));A+x>=m&&(A=m-x);A<k&&(A=k);D<g&&(D=g);D+C>l&&(D=l-C);var k=A+u,m=D+t,u=this.shadowAlpha,H=this.shadowColor,t=this.borderThickness,O=this.bulletSize,J;0<w||0===z?(0<u&&(a=d.rect(h,
+C,x,q,0,t+1,H,u,this.cornerRadius),d.isModern?a.translate(1,1):a.translate(4,4),f.push(a)),q=d.rect(h,C,x,q,this.fillAlpha,t,p,this.borderAlpha,this.cornerRadius),this.showBullet&&(J=d.circle(h,O,r,this.fillAlpha),f.push(J))):(r=[],w=[],"H"!=v?(g=a-D,g>C-z&&(g=C-z),g<z&&(g=z),r=[0,g-z,a-D,g+z,C,C,0,0],w=I?[0,0,b-A,0,0,x,x,0]:[x,x,b-A,x,x,0,0,x]):(r=b-A,r>x-z&&(r=x-z),r<z&&(r=z),w=[0,r-z,b-A,r+z,x,x,0,0],r=a<g+(l-g)/2?[0,0,D<a?0:a-D,0,0,C,C,0]:[C,C,D+C>a?C:a-D,C,C,0,0,C]),0<u&&(a=d.polygon(h,r,w,q,
+0,t,H,u),a.translate(1,1),f.push(a)),q=d.polygon(h,r,w,q,this.fillAlpha,t,p,this.borderAlpha));this.bg=q;f.push(q);q.toFront();d.setCN(c,q,"balloon-bg");this.className&&d.setCN(c,q,"balloon-bg-"+this.className);h=1*this.deltaSignX;B.left=m+"px";B.top=k+"px";f.translate(D-h,A);q=q.getBBox();this.bottom=A+x+1;this.yPos=q.y+A;J&&J.translate(this.pointToX-D+h,b-A);b=this.animationDuration;0<this.animationDuration&&!e&&!isNaN(this.prevX)&&(f.translate(this.prevX,this.prevY),f.animate({translate:D-h+","+
+A},b,"easeOutSine"),n&&(B.left=this.prevTX+"px",B.top=this.prevTY+"px",this.xAnim=c.animate({node:n},"left",this.prevTX,m,b,"easeOutSine","px"),this.yAnim=c.animate({node:n},"top",this.prevTY,k,b,"easeOutSine","px")));this.prevX=D-h;this.prevY=A;this.prevTX=m;this.prevTY=k}}},followMouse:function(){if(this.follow&&this.show){var a=this.chart.mouseX-this.offsetX*this.deltaSignX,b=this.chart.mouseY;this.pointToX=a;this.pointToY=b;if(a!=this.previousX||b!=this.previousY)if(this.previousX=a,this.previousY=
+b,0===this.cornerRadius)this.draw();else{var c=this.set;if(c){var e=c.getBBox(),a=a-e.width/2,d=b-e.height-10;a<this.l&&(a=this.l);a>this.r-e.width&&(a=this.r-e.width);d<this.t&&(d=b+10);c.translate(a,d);b=this.textDiv.style;b.left=a+this.horizontalPadding+"px";b.top=d+this.verticalPadding+"px"}}}},changeColor:function(a){this.balloonColor=a},setBounds:function(a,b,c,e){this.l=a;this.t=b;this.r=c;this.b=e;this.destroyTO&&clearTimeout(this.destroyTO)},showBalloon:function(a){this.text=a;this.show=
+!0;this.destroyTO&&clearTimeout(this.destroyTO);a=this.chart;this.fadeAnim1&&a.stopAnim(this.fadeAnim1);this.fadeAnim2&&a.stopAnim(this.fadeAnim2);this.draw()},hide:function(a){var b=this;isNaN(a)&&(a=b.fadeOutDuration);var c=b.chart;if(0<a){b.destroyTO&&clearTimeout(b.destroyTO);b.destroyTO=setTimeout(function(){b.destroy.call(b)},1E3*a);b.follow=!1;b.show=!1;var e=b.set;e&&(e.setAttr("opacity",b.fillAlpha),b.fadeAnim1=e.animate({opacity:0},a,"easeInSine"));b.textDiv&&(b.fadeAnim2=c.animate({node:b.textDiv},
+"opacity",1,0,a,"easeInSine",""))}else b.show=!1,b.follow=!1,b.destroy()},setPosition:function(a,b,c){this.pointToX=a;this.pointToY=b;c&&(a==this.previousX&&b==this.previousY||this.draw());this.previousX=a;this.previousY=b},followCursor:function(a){var b=this;(b.follow=a)?(b.pShowBullet=b.showBullet,b.showBullet=!1):void 0!==b.pShowBullet&&(b.showBullet=b.pShowBullet);clearInterval(b.interval);var c=b.chart.mouseX,e=b.chart.mouseY;!isNaN(c)&&a&&(b.pointToX=c-b.offsetX*b.deltaSignX,b.pointToY=e,b.followMouse(),
+b.interval=setInterval(function(){b.followMouse.call(b)},40))},removeDiv:function(){if(this.textDiv){var a=this.textDiv.parentNode;a&&a.removeChild(this.textDiv)}},destroy:function(){clearInterval(this.interval);d.remove(this.set);this.removeDiv();this.set=null}})})();(function(){var d=window.AmCharts;d.AmCoordinateChart=d.Class({inherits:d.AmChart,construct:function(a){d.AmCoordinateChart.base.construct.call(this,a);this.theme=a;this.createEvents("rollOverGraphItem","rollOutGraphItem","clickGraphItem","doubleClickGraphItem","rightClickGraphItem","clickGraph","rollOverGraph","rollOutGraph");this.startAlpha=1;this.startDuration=0;this.startEffect="elastic";this.sequencedAnimation=!0;this.colors="#FF6600 #FCD202 #B0DE09 #0D8ECF #2A0CD0 #CD0D74 #CC0000 #00CC00 #0000CC #DDDDDD #999999 #333333 #990000".split(" ");
+this.balloonDateFormat="MMM DD, YYYY";this.valueAxes=[];this.graphs=[];this.guides=[];this.gridAboveGraphs=!1;d.applyTheme(this,a,"AmCoordinateChart")},initChart:function(){d.AmCoordinateChart.base.initChart.call(this);var a=this.categoryAxis;a&&(this.categoryAxis=d.processObject(a,d.CategoryAxis,this.theme));this.processValueAxes();this.createValueAxes();this.processGraphs();this.processGuides();d.VML&&(this.startAlpha=1);this.setLegendData(this.graphs);this.gridAboveGraphs&&this.gridSet.toFront()},
+createValueAxes:function(){if(0===this.valueAxes.length){var a=new d.ValueAxis;this.addValueAxis(a)}},parseData:function(){this.processValueAxes();this.processGraphs()},parseSerialData:function(a){var b=this.graphs,c,e={},h=this.seriesIdField;h||(h=this.categoryField);this.chartData=[];if(a){var f=!1,g,k=this.categoryAxis,l,m,n;k&&(f=k.parseDates,l=k.forceShowField,n=k.classNameField,m=k.labelColorField,g=k.categoryFunction);var q,p,r={},t;f&&(c=d.extractPeriod(k.minPeriod),q=c.period,p=c.count,t=
+d.getPeriodDuration(q,p));var u={};this.lookupTable=u;var z,v=this.dataDateFormat,w={};for(z=0;z<a.length;z++){var x={},A=a[z];c=A[this.categoryField];x.dataContext=A;x.category=g?g(c,A,k):String(c);l&&(x.forceShow=A[l]);n&&(x.className=A[n]);m&&(x.labelColor=A[m]);u[A[h]]=x;if(f&&(k.categoryFunction?c=k.categoryFunction(c,A,k):(!v||c instanceof Date||(c=c.toString()+" |"),c=d.getDate(c,v,k.minPeriod)),c=d.resetDateToMin(c,q,p,k.firstDayOfWeek),x.category=c,x.time=c.getTime(),isNaN(x.time)))continue;
+var B=this.valueAxes;x.axes={};x.x={};var D;for(D=0;D<B.length;D++){var C=B[D].id;x.axes[C]={};x.axes[C].graphs={};var I;for(I=0;I<b.length;I++){c=b[I];var H=c.id,O=1.1;isNaN(c.gapPeriod)||(O=c.gapPeriod);var J=c.periodValue;if(c.valueAxis.id==C){x.axes[C].graphs[H]={};var da={};da.index=z;var pa=A;c.dataProvider&&(pa=e);da.values=this.processValues(pa,c,J);!c.connect&&w&&w[H]&&x.time-r[H]>=t*O&&(w[H].gap=!0);this.processFields(c,da,pa);da.category=x.category;da.serialDataItem=x;da.graph=c;x.axes[C].graphs[H]=
+da;r[H]=x.time;w[H]=da}}}this.chartData[z]=x}}for(a=0;a<b.length;a++)c=b[a],c.dataProvider&&this.parseGraphData(c)},processValues:function(a,b,c){var e={},h,f=!1;"candlestick"!=b.type&&"ohlc"!=b.type||""===c||(f=!0);for(var g="value error open close low high".split(" "),k=0;k<g.length;k++){var l=g[k];"value"!=l&&"error"!=l&&f&&(c=l.charAt(0).toUpperCase()+l.slice(1));var m=a[b[l+"Field"]+c];h=Number(m);isNaN(h)||(e[l]=h);"date"==b.valueAxis.type&&void 0!==m&&(h=d.getDate(m,b.chart.dataDateFormat),
+e[l]=h.getTime())}return e},parseGraphData:function(a){var b=a.dataProvider,c=a.seriesIdField;c||(c=this.seriesIdField);c||(c=this.categoryField);var e;for(e=0;e<b.length;e++){var d=b[e],f=this.lookupTable[String(d[c])],g=a.valueAxis.id;f&&(g=f.axes[g].graphs[a.id],g.serialDataItem=f,g.values=this.processValues(d,a,a.periodValue),this.processFields(a,g,d))}},addValueAxis:function(a){a.chart=this;this.valueAxes.push(a);this.validateData()},removeValueAxesAndGraphs:function(){var a=this.valueAxes,b;
+for(b=a.length-1;-1<b;b--)this.removeValueAxis(a[b])},removeValueAxis:function(a){var b=this.graphs,c;for(c=b.length-1;0<=c;c--){var e=b[c];e&&e.valueAxis==a&&this.removeGraph(e)}b=this.valueAxes;for(c=b.length-1;0<=c;c--)b[c]==a&&b.splice(c,1);this.validateData()},addGraph:function(a){this.graphs.push(a);this.chooseGraphColor(a,this.graphs.length-1);this.validateData()},removeGraph:function(a){var b=this.graphs,c;for(c=b.length-1;0<=c;c--)b[c]==a&&(b.splice(c,1),a.destroy());this.validateData()},
+processValueAxes:function(){var a=this.valueAxes,b;for(b=0;b<a.length;b++){var c=a[b],c=d.processObject(c,d.ValueAxis,this.theme);a[b]=c;c.chart=this;c.id||(c.id="valueAxisAuto"+b+"_"+(new Date).getTime());void 0===c.usePrefixes&&(c.usePrefixes=this.usePrefixes)}},processGuides:function(){var a=this.guides,b=this.categoryAxis;if(a)for(var c=0;c<a.length;c++){var e=a[c];(void 0!==e.category||void 0!==e.date)&&b&&b.addGuide(e);e.id||(e.id="guideAuto"+c+"_"+(new Date).getTime());var h=e.valueAxis;h?
+(d.isString(h)&&(h=this.getValueAxisById(h)),h?h.addGuide(e):this.valueAxes[0].addGuide(e)):isNaN(e.value)||this.valueAxes[0].addGuide(e)}},processGraphs:function(){var a=this.graphs,b;for(b=0;b<a.length;b++){var c=a[b],c=d.processObject(c,d.AmGraph,this.theme);a[b]=c;this.chooseGraphColor(c,b);c.chart=this;d.isString(c.valueAxis)&&(c.valueAxis=this.getValueAxisById(c.valueAxis));c.valueAxis||(c.valueAxis=this.valueAxes[0]);c.id||(c.id="graphAuto"+b+"_"+(new Date).getTime())}},formatString:function(a,
+b,c){var e=b.graph,h=e.valueAxis;h.duration&&b.values.value&&(h=d.formatDuration(b.values.value,h.duration,"",h.durationUnits,h.maxInterval,h.numberFormatter),a=a.split("[[value]]").join(h));a=d.massReplace(a,{"[[title]]":e.title,"[[description]]":b.description});a=c?d.fixNewLines(a):d.fixBrakes(a);return a=d.cleanFromEmpty(a)},getBalloonColor:function(a,b,c){var e=a.lineColor,d=a.balloonColor;c&&(d=e);c=a.fillColorsR;"object"==typeof c?e=c[0]:void 0!==c&&(e=c);b.isNegative&&(c=a.negativeLineColor,
+a=a.negativeFillColors,"object"==typeof a?c=a[0]:void 0!==a&&(c=a),void 0!==c&&(e=c));void 0!==b.color&&(e=b.color);void 0===d&&(d=e);return d},getGraphById:function(a){return d.getObjById(this.graphs,a)},getValueAxisById:function(a){return d.getObjById(this.valueAxes,a)},processFields:function(a,b,c){if(a.itemColors){var e=a.itemColors,h=b.index;b.color=h<e.length?e[h]:d.randomColor()}e="lineColor color alpha fillColors description bullet customBullet bulletSize bulletConfig url labelColor dashLength pattern gap className".split(" ");
+for(h=0;h<e.length;h++){var f=e[h],g=a[f+"Field"];g&&(g=c[g],d.isDefined(g)&&(b[f]=g))}b.dataContext=c},chooseGraphColor:function(a,b){if(a.lineColor)a.lineColorR=a.lineColor;else{var c;c=this.colors.length>b?this.colors[b]:d.randomColor();a.lineColorR=c}a.fillColorsR=a.fillColors?a.fillColors:a.lineColorR;a.bulletBorderColorR=a.bulletBorderColor?a.bulletBorderColor:a.useLineColorForBulletBorder?a.lineColorR:a.bulletColor;a.bulletColorR=a.bulletColor?a.bulletColor:a.lineColorR;if(c=this.patterns)a.pattern=
+c[b]},handleLegendEvent:function(a){var b=a.type;a=a.dataItem;if(!this.legend.data&&a){var c=a.hidden,e=a.showBalloon;switch(b){case "clickMarker":this.textClickEnabled&&(e?this.hideGraphsBalloon(a):this.showGraphsBalloon(a));break;case "clickLabel":e?this.hideGraphsBalloon(a):this.showGraphsBalloon(a);break;case "rollOverItem":c||this.highlightGraph(a);break;case "rollOutItem":c||this.unhighlightGraph();break;case "hideItem":this.hideGraph(a);break;case "showItem":this.showGraph(a)}}},highlightGraph:function(a){var b=
+this.graphs,c,e=.2;this.legend&&(e=this.legend.rollOverGraphAlpha);if(1!=e)for(c=0;c<b.length;c++){var d=b[c];d!=a&&d.changeOpacity(e)}},unhighlightGraph:function(){var a;this.legend&&(a=this.legend.rollOverGraphAlpha);if(1!=a){a=this.graphs;var b;for(b=0;b<a.length;b++)a[b].changeOpacity(1)}},showGraph:function(a){a.switchable&&(a.hidden=!1,this.dataChanged=!0,"xy"!=this.type&&(this.marginsUpdated=!1),this.chartCreated&&this.initChart())},hideGraph:function(a){a.switchable&&(this.dataChanged=!0,
+"xy"!=this.type&&(this.marginsUpdated=!1),a.hidden=!0,this.chartCreated&&this.initChart())},hideGraphsBalloon:function(a){a.showBalloon=!1;this.updateLegend()},showGraphsBalloon:function(a){a.showBalloon=!0;this.updateLegend()},updateLegend:function(){this.legend&&this.legend.invalidateSize()},resetAnimation:function(){var a=this.graphs;if(a){var b;for(b=0;b<a.length;b++)a[b].animationPlayed=!1}},animateAgain:function(){this.resetAnimation();this.validateNow()}})})();(function(){var d=window.AmCharts;d.AmSlicedChart=d.Class({inherits:d.AmChart,construct:function(a){this.createEvents("rollOverSlice","rollOutSlice","clickSlice","pullOutSlice","pullInSlice","rightClickSlice");d.AmSlicedChart.base.construct.call(this,a);this.colors="#FF0F00 #FF6600 #FF9E01 #FCD202 #F8FF01 #B0DE09 #04D215 #0D8ECF #0D52D1 #2A0CD0 #8A0CCF #CD0D74 #754DEB #DDDDDD #999999 #333333 #000000 #57032A #CA9726 #990000 #4B0C25".split(" ");this.alpha=1;this.groupPercent=0;this.groupedTitle="Other";
+this.groupedPulled=!1;this.groupedAlpha=1;this.marginLeft=0;this.marginBottom=this.marginTop=10;this.marginRight=0;this.hoverAlpha=1;this.outlineColor="#FFFFFF";this.outlineAlpha=0;this.outlineThickness=1;this.startAlpha=0;this.startDuration=1;this.startEffect="bounce";this.sequencedAnimation=!0;this.pullOutDuration=1;this.pullOutEffect="bounce";this.pullOnHover=this.pullOutOnlyOne=!1;this.labelsEnabled=!0;this.labelTickColor="#000000";this.labelTickAlpha=.2;this.hideLabelsPercent=0;this.urlTarget=
+"_self";this.autoMarginOffset=10;this.gradientRatio=[];this.maxLabelWidth=200;d.applyTheme(this,a,"AmSlicedChart")},initChart:function(){d.AmSlicedChart.base.initChart.call(this);this.dataChanged&&(this.parseData(),this.dispatchDataUpdated=!0,this.dataChanged=!1,this.setLegendData(this.chartData));this.drawChart()},handleLegendEvent:function(a){var b=a.type,c=a.dataItem,e=this.legend;if(!e.data&&c){var d=c.hidden;a=a.event;switch(b){case "clickMarker":d||e.switchable||this.clickSlice(c,a);break;case "clickLabel":d||
+this.clickSlice(c,a,!1);break;case "rollOverItem":d||this.rollOverSlice(c,!1,a);break;case "rollOutItem":d||this.rollOutSlice(c,a);break;case "hideItem":this.hideSlice(c,a);break;case "showItem":this.showSlice(c,a)}}},invalidateVisibility:function(){this.recalculatePercents();this.initChart();var a=this.legend;a&&a.invalidateSize()},addEventListeners:function(a,b){var c=this;a.mouseover(function(a){c.rollOverSlice(b,!0,a)}).mouseout(function(a){c.rollOutSlice(b,a)}).touchend(function(a){c.rollOverSlice(b,
+a);c.panEventsEnabled&&c.clickSlice(b,a)}).touchstart(function(a){c.rollOverSlice(b,a)}).click(function(a){c.clickSlice(b,a)}).contextmenu(function(a){c.handleRightClick(b,a)})},formatString:function(a,b,c){a=d.formatValue(a,b,["value"],this.nf,"",this.usePrefixes,this.prefixesOfSmallNumbers,this.prefixesOfBigNumbers);var e=this.pf.precision;isNaN(this.tempPrec)||(this.pf.precision=this.tempPrec);a=d.formatValue(a,b,["percents"],this.pf);a=d.massReplace(a,{"[[title]]":b.title,"[[description]]":b.description});
+this.pf.precision=e;-1!=a.indexOf("[[")&&(a=d.formatDataContextValue(a,b.dataContext));a=c?d.fixNewLines(a):d.fixBrakes(a);return a=d.cleanFromEmpty(a)},startSlices:function(){var a;for(a=0;a<this.chartData.length;a++)0<this.startDuration&&this.sequencedAnimation?this.setStartTO(a):this.startSlice(this.chartData[a])},setStartTO:function(a){var b=this;a=setTimeout(function(){b.startSequenced.call(b)},b.startDuration/b.chartData.length*500*a);b.timeOuts.push(a)},pullSlices:function(a){var b=this.chartData,
+c;for(c=0;c<b.length;c++){var e=b[c];e.pulled&&this.pullSlice(e,1,a)}},startSequenced:function(){var a=this.chartData,b;for(b=0;b<a.length;b++)if(!a[b].started){this.startSlice(this.chartData[b]);break}},startSlice:function(a){a.started=!0;var b=a.wedge,c=this.startDuration;b&&0<c&&(0<a.alpha&&b.show(),b.translate(a.startX,a.startY),b.animate({opacity:1,translate:"0,0"},c,this.startEffect))},showLabels:function(){var a=this.chartData,b;for(b=0;b<a.length;b++){var c=a[b];if(0<c.alpha){var e=c.label;
+e&&e.show();(c=c.tick)&&c.show()}}},showSlice:function(a){isNaN(a)?a.hidden=!1:this.chartData[a].hidden=!1;this.invalidateVisibility()},hideSlice:function(a){isNaN(a)?a.hidden=!0:this.chartData[a].hidden=!0;this.hideBalloon();this.invalidateVisibility()},rollOverSlice:function(a,b,c){isNaN(a)||(a=this.chartData[a]);clearTimeout(this.hoverInt);if(!a.hidden){this.pullOnHover&&this.pullSlice(a,1);1>this.hoverAlpha&&a.wedge&&a.wedge.attr({opacity:this.hoverAlpha});var e=a.balloonX,h=a.balloonY;a.pulled&&
+(e+=a.pullX,h+=a.pullY);var f=this.formatString(this.balloonText,a,!0),g=this.balloonFunction;g&&(f=g(a,f));g=d.adjustLuminosity(a.color,-.15);f?this.showBalloon(f,g,b,e,h):this.hideBalloon();0===a.value&&this.hideBalloon();a={type:"rollOverSlice",dataItem:a,chart:this,event:c};this.fire(a.type,a)}},rollOutSlice:function(a,b){isNaN(a)||(a=this.chartData[a]);a.wedge&&a.wedge.attr({opacity:1});this.hideBalloon();var c={type:"rollOutSlice",dataItem:a,chart:this,event:b};this.fire(c.type,c)},clickSlice:function(a,
+b,c){isNaN(a)||(a=this.chartData[a]);a.pulled?this.pullSlice(a,0):this.pullSlice(a,1);d.getURL(a.url,this.urlTarget);c||(a={type:"clickSlice",dataItem:a,chart:this,event:b},this.fire(a.type,a))},handleRightClick:function(a,b){isNaN(a)||(a=this.chartData[a]);var c={type:"rightClickSlice",dataItem:a,chart:this,event:b};this.fire(c.type,c)},drawTicks:function(){var a=this.chartData,b;for(b=0;b<a.length;b++){var c=a[b];if(c.label){var e=c.ty,e=d.line(this.container,[c.tx0,c.tx,c.tx2],[c.ty0,e,e],this.labelTickColor,
+this.labelTickAlpha);d.setCN(this,e,this.type+"-tick");d.setCN(this,e,c.className,!0);c.tick=e;c.wedge.push(e)}}},initialStart:function(){var a=this,b=a.startDuration,c=setTimeout(function(){a.showLabels.call(a)},1E3*b);a.timeOuts.push(c);a.chartCreated?a.pullSlices(!0):(a.startSlices(),0<b?(b=setTimeout(function(){a.pullSlices.call(a)},1200*b),a.timeOuts.push(b)):a.pullSlices(!0))},pullSlice:function(a,b,c){var e=this.pullOutDuration;!0===c&&(e=0);(c=a.wedge)&&(0<e?c.animate({translate:b*a.pullX+
+","+b*a.pullY},e,this.pullOutEffect):c.translate(b*a.pullX,b*a.pullY));1==b?(a.pulled=!0,this.pullOutOnlyOne&&this.pullInAll(a.index),a={type:"pullOutSlice",dataItem:a,chart:this}):(a.pulled=!1,a={type:"pullInSlice",dataItem:a,chart:this});this.fire(a.type,a)},pullInAll:function(a){var b=this.chartData,c;for(c=0;c<this.chartData.length;c++)c!=a&&b[c].pulled&&this.pullSlice(b[c],0)},pullOutAll:function(){var a=this.chartData,b;for(b=0;b<a.length;b++)a[b].pulled||this.pullSlice(a[b],1)},parseData:function(){var a=
+[];this.chartData=a;var b=this.dataProvider;isNaN(this.pieAlpha)||(this.alpha=this.pieAlpha);if(void 0!==b){var c=b.length,e=0,h,f,g;for(h=0;h<c;h++){f={};var k=b[h];f.dataContext=k;f.value=Number(k[this.valueField]);(g=k[this.titleField])||(g="");f.title=g;f.pulled=d.toBoolean(k[this.pulledField],!1);(g=k[this.descriptionField])||(g="");f.description=g;f.labelRadius=Number(k[this.labelRadiusField]);f.switchable=!0;f.className=k[this.classNameField];f.url=k[this.urlField];g=k[this.patternField];!g&&
+this.patterns&&(g=this.patterns[h]);f.pattern=g;f.visibleInLegend=d.toBoolean(k[this.visibleInLegendField],!0);g=k[this.alphaField];f.alpha=void 0!==g?Number(g):this.alpha;g=k[this.colorField];void 0!==g&&(f.color=g);f.labelColor=d.toColor(k[this.labelColorField]);e+=f.value;f.hidden=!1;a[h]=f}for(h=b=0;h<c;h++)f=a[h],f.percents=f.value/e*100,f.percents<this.groupPercent&&b++;1<b&&(this.groupValue=0,this.removeSmallSlices(),a.push({title:this.groupedTitle,value:this.groupValue,percents:this.groupValue/
+e*100,pulled:this.groupedPulled,color:this.groupedColor,url:this.groupedUrl,description:this.groupedDescription,alpha:this.groupedAlpha,pattern:this.groupedPattern,className:this.groupedClassName,dataContext:{}}));c=this.baseColor;c||(c=this.pieBaseColor);e=this.brightnessStep;e||(e=this.pieBrightnessStep);for(h=0;h<a.length;h++)c?g=d.adjustLuminosity(c,h*e/100):(g=this.colors[h],void 0===g&&(g=d.randomColor())),void 0===a[h].color&&(a[h].color=g);this.recalculatePercents()}},recalculatePercents:function(){var a=
+this.chartData,b=0,c,e;for(c=0;c<a.length;c++)e=a[c],!e.hidden&&0<e.value&&(b+=e.value);for(c=0;c<a.length;c++)e=this.chartData[c],e.percents=!e.hidden&&0<e.value?100*e.value/b:0},removeSmallSlices:function(){var a=this.chartData,b;for(b=a.length-1;0<=b;b--)a[b].percents<this.groupPercent&&(this.groupValue+=a[b].value,a.splice(b,1))},animateAgain:function(){var a=this;a.startSlices();for(var b=0;b<a.chartData.length;b++){var c=a.chartData[b];c.started=!1;var e=c.wedge;e&&e.translate(c.startX,c.startY)}b=
+a.startDuration;0<b?(b=setTimeout(function(){a.pullSlices.call(a)},1200*b),a.timeOuts.push(b)):a.pullSlices()},measureMaxLabel:function(){var a=this.chartData,b=0,c;for(c=0;c<a.length;c++){var e=a[c],h=this.formatString(this.labelText,e),f=this.labelFunction;f&&(h=f(e,h));e=d.text(this.container,h,this.color,this.fontFamily,this.fontSize);h=e.getBBox().width;h>b&&(b=h);e.remove()}return b}})})();(function(){var d=window.AmCharts;d.AmRectangularChart=d.Class({inherits:d.AmCoordinateChart,construct:function(a){d.AmRectangularChart.base.construct.call(this,a);this.theme=a;this.createEvents("zoomed");this.marginRight=this.marginBottom=this.marginTop=this.marginLeft=20;this.verticalPosition=this.horizontalPosition=this.depth3D=this.angle=0;this.heightMultiplier=this.widthMultiplier=1;this.plotAreaFillColors="#FFFFFF";this.plotAreaFillAlphas=0;this.plotAreaBorderColor="#000000";this.plotAreaBorderAlpha=
+0;this.zoomOutButtonImageSize=19;this.zoomOutButtonImage="lens.png";this.zoomOutText="Show all";this.zoomOutButtonColor="#e5e5e5";this.zoomOutButtonAlpha=0;this.zoomOutButtonRollOverAlpha=1;this.zoomOutButtonPadding=8;this.trendLines=[];this.autoMargins=!0;this.marginsUpdated=!1;this.autoMarginOffset=10;d.applyTheme(this,a,"AmRectangularChart")},initChart:function(){d.AmRectangularChart.base.initChart.call(this);this.updateDxy();var a=!0;!this.marginsUpdated&&this.autoMargins&&(this.resetMargins(),
+a=!1);this.processScrollbars();this.updateMargins();this.updatePlotArea();this.updateScrollbars();this.updateTrendLines();this.updateChartCursor();this.updateValueAxes();a&&(this.scrollbarOnly||this.updateGraphs())},drawChart:function(){d.AmRectangularChart.base.drawChart.call(this);this.drawPlotArea();if(d.ifArray(this.chartData)){var a=this.chartCursor;a&&a.draw()}},resetMargins:function(){var a={},b;if("xy"==this.type){var c=this.xAxes,e=this.yAxes;for(b=0;b<c.length;b++){var d=c[b];d.ignoreAxisWidth||
+(d.setOrientation(!0),d.fixAxisPosition(),a[d.position]=!0)}for(b=0;b<e.length;b++)c=e[b],c.ignoreAxisWidth||(c.setOrientation(!1),c.fixAxisPosition(),a[c.position]=!0)}else{e=this.valueAxes;for(b=0;b<e.length;b++)c=e[b],c.ignoreAxisWidth||(c.setOrientation(this.rotate),c.fixAxisPosition(),a[c.position]=!0);(b=this.categoryAxis)&&!b.ignoreAxisWidth&&(b.setOrientation(!this.rotate),b.fixAxisPosition(),b.fixAxisPosition(),a[b.position]=!0)}a.left&&(this.marginLeft=0);a.right&&(this.marginRight=0);a.top&&
+(this.marginTop=0);a.bottom&&(this.marginBottom=0);this.fixMargins=a},measureMargins:function(){var a=this.valueAxes,b,c=this.autoMarginOffset,e=this.fixMargins,d=this.realWidth,f=this.realHeight,g=c,k=c,l=d;b=f;var m;for(m=0;m<a.length;m++)a[m].handleSynchronization(),b=this.getAxisBounds(a[m],g,l,k,b),g=Math.round(b.l),l=Math.round(b.r),k=Math.round(b.t),b=Math.round(b.b);if(a=this.categoryAxis)b=this.getAxisBounds(a,g,l,k,b),g=Math.round(b.l),l=Math.round(b.r),k=Math.round(b.t),b=Math.round(b.b);
+e.left&&g<c&&(this.marginLeft=Math.round(-g+c));e.right&&l>=d-c&&(this.marginRight=Math.round(l-d+c));e.top&&k<c+this.titleHeight&&(this.marginTop=Math.round(this.marginTop-k+c+this.titleHeight));e.bottom&&b>f-c&&(this.marginBottom=Math.round(this.marginBottom+b-f+c));this.initChart()},getAxisBounds:function(a,b,c,e,d){if(!a.ignoreAxisWidth){var f=a.labelsSet,g=a.tickLength;a.inside&&(g=0);if(f)switch(f=a.getBBox(),a.position){case "top":a=f.y;e>a&&(e=a);break;case "bottom":a=f.y+f.height;d<a&&(d=
+a);break;case "right":a=f.x+f.width+g+3;c<a&&(c=a);break;case "left":a=f.x-g,b>a&&(b=a)}}return{l:b,t:e,r:c,b:d}},drawZoomOutButton:function(){var a=this;if(!a.zbSet){var b=a.container.set();a.zoomButtonSet.push(b);var c=a.color,e=a.fontSize,h=a.zoomOutButtonImageSize,f=a.zoomOutButtonImage,g=d.lang.zoomOutText||a.zoomOutText,k=a.zoomOutButtonColor,l=a.zoomOutButtonAlpha,m=a.zoomOutButtonFontSize,n=a.zoomOutButtonPadding;isNaN(m)||(e=m);(m=a.zoomOutButtonFontColor)&&(c=m);var m=a.zoomOutButton,q;
+m&&(m.fontSize&&(e=m.fontSize),m.color&&(c=m.color),m.backgroundColor&&(k=m.backgroundColor),isNaN(m.backgroundAlpha)||(a.zoomOutButtonRollOverAlpha=m.backgroundAlpha));var p=m=0;void 0!==a.pathToImages&&f&&(q=a.container.image(a.pathToImages+f,0,0,h,h),d.setCN(a,q,"zoom-out-image"),b.push(q),q=q.getBBox(),m=q.width+5);void 0!==g&&(c=d.text(a.container,g,c,a.fontFamily,e,"start"),d.setCN(a,c,"zoom-out-label"),e=c.getBBox(),p=q?q.height/2-3:e.height/2,c.translate(m,p),b.push(c));q=b.getBBox();c=1;
+d.isModern||(c=0);k=d.rect(a.container,q.width+2*n+5,q.height+2*n-2,k,1,1,k,c);k.setAttr("opacity",l);k.translate(-n,-n);d.setCN(a,k,"zoom-out-bg");b.push(k);k.toBack();a.zbBG=k;q=k.getBBox();b.translate(a.marginLeftReal+a.plotAreaWidth-q.width+n,a.marginTopReal+n);b.hide();b.mouseover(function(){a.rollOverZB()}).mouseout(function(){a.rollOutZB()}).click(function(){a.clickZB()}).touchstart(function(){a.rollOverZB()}).touchend(function(){a.rollOutZB();a.clickZB()});for(l=0;l<b.length;l++)b[l].attr({cursor:"pointer"});
+a.zbSet=b}},rollOverZB:function(){this.zbBG.setAttr("opacity",this.zoomOutButtonRollOverAlpha)},rollOutZB:function(){this.zbBG.setAttr("opacity",this.zoomOutButtonAlpha)},clickZB:function(){this.zoomOut()},zoomOut:function(){this.updateScrollbar=!0;this.zoom()},drawPlotArea:function(){var a=this.dx,b=this.dy,c=this.marginLeftReal,e=this.marginTopReal,h=this.plotAreaWidth-1,f=this.plotAreaHeight-1,g=this.plotAreaFillColors,k=this.plotAreaFillAlphas,l=this.plotAreaBorderColor,m=this.plotAreaBorderAlpha;
+"object"==typeof k&&(k=k[0]);g=d.polygon(this.container,[0,h,h,0,0],[0,0,f,f,0],g,k,1,l,m,this.plotAreaGradientAngle);d.setCN(this,g,"plot-area");g.translate(c+a,e+b);this.set.push(g);0!==a&&0!==b&&(g=this.plotAreaFillColors,"object"==typeof g&&(g=g[0]),g=d.adjustLuminosity(g,-.15),h=d.polygon(this.container,[0,a,h+a,h,0],[0,b,b,0,0],g,k,1,l,m),d.setCN(this,h,"plot-area-bottom"),h.translate(c,e+f),this.set.push(h),a=d.polygon(this.container,[0,0,a,a,0],[0,f,f+b,b,0],g,k,1,l,m),d.setCN(this,a,"plot-area-left"),
+a.translate(c,e),this.set.push(a));(c=this.bbset)&&this.scrollbarOnly&&c.remove()},updatePlotArea:function(){var a=this.updateWidth(),b=this.updateHeight(),c=this.container;this.realWidth=a;this.realWidth=b;c&&this.container.setSize(a,b);a=a-this.marginLeftReal-this.marginRightReal-this.dx;b=b-this.marginTopReal-this.marginBottomReal;1>a&&(a=1);1>b&&(b=1);this.plotAreaWidth=Math.round(a);this.plotAreaHeight=Math.round(b)},updateDxy:function(){this.dx=Math.round(this.depth3D*Math.cos(this.angle*Math.PI/
+180));this.dy=Math.round(-this.depth3D*Math.sin(this.angle*Math.PI/180));this.d3x=Math.round(this.columnSpacing3D*Math.cos(this.angle*Math.PI/180));this.d3y=Math.round(-this.columnSpacing3D*Math.sin(this.angle*Math.PI/180))},updateMargins:function(){var a=this.getTitleHeight();this.titleHeight=a;this.marginTopReal=this.marginTop-this.dy;this.fixMargins&&!this.fixMargins.top&&(this.marginTopReal+=a);this.marginBottomReal=this.marginBottom;this.marginLeftReal=this.marginLeft;this.marginRightReal=this.marginRight},
+updateValueAxes:function(){var a=this.valueAxes,b=this.marginLeftReal,c=this.marginTopReal,e=this.plotAreaHeight,h=this.plotAreaWidth,f;for(f=0;f<a.length;f++){var g=a[f];g.axisRenderer=d.RecAxis;g.guideFillRenderer=d.RecFill;g.axisItemRenderer=d.RecItem;g.dx=this.dx;g.dy=this.dy;g.viW=h-1;g.viH=e-1;g.marginsChanged=!0;g.viX=b;g.viY=c;this.updateObjectSize(g)}},updateObjectSize:function(a){a.width=(this.plotAreaWidth-1)*this.widthMultiplier;a.height=(this.plotAreaHeight-1)*this.heightMultiplier;a.x=
+this.marginLeftReal+this.horizontalPosition;a.y=this.marginTopReal+this.verticalPosition},updateGraphs:function(){var a=this.graphs,b;for(b=0;b<a.length;b++){var c=a[b];c.x=this.marginLeftReal+this.horizontalPosition;c.y=this.marginTopReal+this.verticalPosition;c.width=this.plotAreaWidth*this.widthMultiplier;c.height=this.plotAreaHeight*this.heightMultiplier;c.index=b;c.dx=this.dx;c.dy=this.dy;c.rotate=this.rotate}},updateChartCursor:function(){var a=this.chartCursor;a&&(a=d.processObject(a,d.ChartCursor,
+this.theme),this.addChartCursor(a),a.x=this.marginLeftReal,a.y=this.marginTopReal,a.width=this.plotAreaWidth-1,a.height=this.plotAreaHeight-1,a.chart=this)},processScrollbars:function(){var a=this.chartScrollbar;a&&(a=d.processObject(a,d.ChartScrollbar,this.theme),this.addChartScrollbar(a))},updateScrollbars:function(){},addChartCursor:function(a){d.callMethod("destroy",[this.chartCursor]);a&&(this.listenTo(a,"changed",this.handleCursorChange),this.listenTo(a,"zoomed",this.handleCursorZoom));this.chartCursor=
+a},removeChartCursor:function(){d.callMethod("destroy",[this.chartCursor]);this.chartCursor=null},zoomTrendLines:function(){var a=this.trendLines,b;for(b=0;b<a.length;b++){var c=a[b];c.valueAxis.recalculateToPercents?c.set&&c.set.hide():(c.x=this.marginLeftReal+this.horizontalPosition,c.y=this.marginTopReal+this.verticalPosition,c.draw())}},addTrendLine:function(a){this.trendLines.push(a)},removeTrendLine:function(a){var b=this.trendLines,c;for(c=b.length-1;0<=c;c--)b[c]==a&&b.splice(c,1)},adjustMargins:function(a,
+b){var c=a.position,e=a.scrollbarHeight+a.offset;a.enabled&&("top"==c?b?this.marginLeftReal+=e:this.marginTopReal+=e:b?this.marginRightReal+=e:this.marginBottomReal+=e)},getScrollbarPosition:function(a,b,c){var e="bottom",d="top";a.oppositeAxis||(d=e,e="top");a.position=b?"bottom"==c||"left"==c?e:d:"top"==c||"right"==c?e:d},updateChartScrollbar:function(a,b){if(a){a.rotate=b;var c=this.marginTopReal,e=this.marginLeftReal,d=a.scrollbarHeight,f=this.dx,g=this.dy,k=a.offset;"top"==a.position?b?(a.y=
+c,a.x=e-d-k):(a.y=c-d+g-k,a.x=e+f):b?(a.y=c+g,a.x=e+this.plotAreaWidth+f+k):(a.y=c+this.plotAreaHeight+k,a.x=this.marginLeftReal)}},showZB:function(a){var b=this.zbSet;a&&(b=this.zoomOutText,""!==b&&b&&this.drawZoomOutButton());if(b=this.zbSet)this.zoomButtonSet.push(b),a?b.show():b.hide(),this.rollOutZB()},handleReleaseOutside:function(a){d.AmRectangularChart.base.handleReleaseOutside.call(this,a);(a=this.chartCursor)&&a.handleReleaseOutside&&a.handleReleaseOutside()},handleMouseDown:function(a){d.AmRectangularChart.base.handleMouseDown.call(this,
+a);var b=this.chartCursor;b&&b.handleMouseDown(a)},handleCursorChange:function(){},update:function(){d.AmRectangularChart.base.update.call(this);this.chartCursor&&this.chartCursor.update&&this.chartCursor.update()}})})();(function(){var d=window.AmCharts;d.TrendLine=d.Class({construct:function(a){this.cname="TrendLine";this.createEvents("click");this.isProtected=!1;this.dashLength=0;this.lineColor="#00CC00";this.lineThickness=this.lineAlpha=1;d.applyTheme(this,a,this.cname)},draw:function(){var a=this;a.destroy();var b=a.chart,c=b.container,e,h,f,g,k=a.categoryAxis,l=a.initialDate,m=a.initialCategory,n=a.finalDate,q=a.finalCategory,p=a.valueAxis,r=a.valueAxisX,t=a.initialXValue,u=a.finalXValue,z=a.initialValue,v=
+a.finalValue,w=p.recalculateToPercents,x=b.dataDateFormat;k&&(l&&(l=d.getDate(l,x,"fff"),a.initialDate=l,e=k.dateToCoordinate(l)),m&&(e=k.categoryToCoordinate(m)),n&&(n=d.getDate(n,x,"fff"),a.finalDate=n,h=k.dateToCoordinate(n)),q&&(h=k.categoryToCoordinate(q)));r&&!w&&(isNaN(t)||(e=r.getCoordinate(t)),isNaN(u)||(h=r.getCoordinate(u)));p&&!w&&(isNaN(z)||(f=p.getCoordinate(z)),isNaN(v)||(g=p.getCoordinate(v)));isNaN(e)||isNaN(h)||isNaN(f)||isNaN(f)||(b.rotate?(k=[f,g],h=[e,h]):(k=[e,h],h=[f,g]),f=
+a.lineColor,e=d.line(c,k,h,f,a.lineAlpha,a.lineThickness,a.dashLength),g=k,l=h,q=k[1]-k[0],p=h[1]-h[0],0===q&&(q=.01),0===p&&(p=.01),m=q/Math.abs(q),n=p/Math.abs(p),p=q*p/Math.abs(q*p)*Math.sqrt(Math.pow(q,2)+Math.pow(p,2)),q=Math.asin(q/p),p=90*Math.PI/180-q,q=Math.abs(5*Math.cos(p)),p=Math.abs(5*Math.sin(p)),g.push(k[1]-m*p,k[0]-m*p),l.push(h[1]+n*q,h[0]+n*q),k=d.polygon(c,g,l,f,.005,0),c=c.set([k,e]),c.translate(b.marginLeftReal,b.marginTopReal),b.trendLinesSet.push(c),d.setCN(b,e,"trend-line"),
+d.setCN(b,e,"trend-line-"+a.id),a.line=e,a.set=c,k.mouseup(function(){a.handleLineClick()}).mouseover(function(){a.handleLineOver()}).mouseout(function(){a.handleLineOut()}),k.touchend&&k.touchend(function(){a.handleLineClick()}),c.clipRect(0,0,b.plotAreaWidth,b.plotAreaHeight))},handleLineClick:function(){var a={type:"click",trendLine:this,chart:this.chart};this.fire(a.type,a)},handleLineOver:function(){var a=this.rollOverColor;void 0!==a&&this.line.attr({stroke:a})},handleLineOut:function(){this.line.attr({stroke:this.lineColor})},
+destroy:function(){d.remove(this.set)}})})();(function(){var d=window.AmCharts;d.circle=function(a,b,c,e,h,f,g,k,l){0>=b&&(b=.001);if(void 0==h||0===h)h=.01;void 0===f&&(f="#000000");void 0===g&&(g=0);e={fill:c,stroke:f,"fill-opacity":e,"stroke-width":h,"stroke-opacity":g};a=isNaN(l)?a.circle(0,0,b).attr(e):a.ellipse(0,0,b,l).attr(e);k&&a.gradient("radialGradient",[c,d.adjustLuminosity(c,-.6)]);return a};d.text=function(a,b,c,e,h,f,g,k){f||(f="middle");"right"==f&&(f="end");"left"==f&&(f="start");isNaN(k)&&(k=1);void 0!==b&&(b=String(b),d.isIE&&
+!d.isModern&&(b=b.replace("&amp;","&"),b=b.replace("&","&amp;")));c={fill:c,"font-family":e,"font-size":h,opacity:k};!0===g&&(c["font-weight"]="bold");c["text-anchor"]=f;return a.text(b,c)};d.polygon=function(a,b,c,e,h,f,g,k,l,m,n){isNaN(f)&&(f=.01);isNaN(k)&&(k=h);var q=e,p=!1;"object"==typeof q&&1<q.length&&(p=!0,q=q[0]);void 0===g&&(g=q);h={fill:q,stroke:g,"fill-opacity":h,"stroke-width":f,"stroke-opacity":k};void 0!==n&&0<n&&(h["stroke-dasharray"]=n);n=d.dx;f=d.dy;a.handDrawn&&(c=d.makeHD(b,c,
+a.handDrawScatter),b=c[0],c=c[1]);g=Math.round;m&&(g=d.doNothing);m="M"+(g(b[0])+n)+","+(g(c[0])+f);for(k=1;k<b.length;k++)m+=" L"+(g(b[k])+n)+","+(g(c[k])+f);a=a.path(m+" Z").attr(h);p&&a.gradient("linearGradient",e,l);return a};d.rect=function(a,b,c,e,h,f,g,k,l,m,n){if(isNaN(b)||isNaN(c))return a.set();isNaN(f)&&(f=0);void 0===l&&(l=0);void 0===m&&(m=270);isNaN(h)&&(h=0);var q=e,p=!1;"object"==typeof q&&(q=q[0],p=!0);void 0===g&&(g=q);void 0===k&&(k=h);b=Math.round(b);c=Math.round(c);var r=0,t=
+0;0>b&&(b=Math.abs(b),r=-b);0>c&&(c=Math.abs(c),t=-c);r+=d.dx;t+=d.dy;h={fill:q,stroke:g,"fill-opacity":h,"stroke-opacity":k};void 0!==n&&0<n&&(h["stroke-dasharray"]=n);a=a.rect(r,t,b,c,l,f).attr(h);p&&a.gradient("linearGradient",e,m);return a};d.bullet=function(a,b,c,e,h,f,g,k,l,m,n,q){var p;"circle"==b&&(b="round");switch(b){case "round":p=d.circle(a,c/2,e,h,f,g,k);break;case "square":p=d.polygon(a,[-c/2,c/2,c/2,-c/2],[c/2,c/2,-c/2,-c/2],e,h,f,g,k,m-180);break;case "rectangle":p=d.polygon(a,[-c,
+c,c,-c],[c/2,c/2,-c/2,-c/2],e,h,f,g,k,m-180);break;case "diamond":p=d.polygon(a,[-c/2,0,c/2,0],[0,-c/2,0,c/2],e,h,f,g,k);break;case "triangleUp":p=d.triangle(a,c,0,e,h,f,g,k);break;case "triangleDown":p=d.triangle(a,c,180,e,h,f,g,k);break;case "triangleLeft":p=d.triangle(a,c,270,e,h,f,g,k);break;case "triangleRight":p=d.triangle(a,c,90,e,h,f,g,k);break;case "bubble":p=d.circle(a,c/2,e,h,f,g,k,!0);break;case "line":p=d.line(a,[-c/2,c/2],[0,0],e,h,f,g,k);break;case "yError":p=a.set();p.push(d.line(a,
+[0,0],[-c/2,c/2],e,h,f));p.push(d.line(a,[-l,l],[-c/2,-c/2],e,h,f));p.push(d.line(a,[-l,l],[c/2,c/2],e,h,f));break;case "xError":p=a.set(),p.push(d.line(a,[-c/2,c/2],[0,0],e,h,f)),p.push(d.line(a,[-c/2,-c/2],[-l,l],e,h,f)),p.push(d.line(a,[c/2,c/2],[-l,l],e,h,f))}p&&p.pattern(n,NaN,q);return p};d.triangle=function(a,b,c,e,d,f,g,k){if(void 0===f||0===f)f=1;void 0===g&&(g="#000");void 0===k&&(k=0);e={fill:e,stroke:g,"fill-opacity":d,"stroke-width":f,"stroke-opacity":k};b/=2;var l;0===c&&(l=" M"+-b+
+","+b+" L0,"+-b+" L"+b+","+b+" Z");180==c&&(l=" M"+-b+","+-b+" L0,"+b+" L"+b+","+-b+" Z");90==c&&(l=" M"+-b+","+-b+" L"+b+",0 L"+-b+","+b+" Z");270==c&&(l=" M"+-b+",0 L"+b+","+b+" L"+b+","+-b+" Z");return a.path(l).attr(e)};d.line=function(a,b,c,e,h,f,g,k,l,m,n){if(a.handDrawn&&!n)return d.handDrawnLine(a,b,c,e,h,f,g,k,l,m,n);f={fill:"none","stroke-width":f};void 0!==g&&0<g&&(f["stroke-dasharray"]=g);isNaN(h)||(f["stroke-opacity"]=h);e&&(f.stroke=e);e=Math.round;m&&(e=d.doNothing);m=d.dx;h=d.dy;g=
+"M"+(e(b[0])+m)+","+(e(c[0])+h);for(k=1;k<b.length;k++)g+=" L"+(e(b[k])+m)+","+(e(c[k])+h);if(d.VML)return a.path(g,void 0,!0).attr(f);l&&(g+=" M0,0 L0,0");return a.path(g).attr(f)};d.makeHD=function(a,b,c){for(var e=[],d=[],f=1;f<a.length;f++)for(var g=Number(a[f-1]),k=Number(b[f-1]),l=Number(a[f]),m=Number(b[f]),n=Math.sqrt(Math.pow(l-g,2)+Math.pow(m-k,2)),n=Math.round(n/50)+1,l=(l-g)/n,m=(m-k)/n,q=0;q<=n;q++){var p=g+q*l+Math.random()*c,r=k+q*m+Math.random()*c;e.push(p);d.push(r)}return[e,d]};
+d.handDrawnLine=function(a,b,c,e,h,f,g,k,l,m){var n,q=a.set();for(n=1;n<b.length;n++)for(var p=[b[n-1],b[n]],r=[c[n-1],c[n]],r=d.makeHD(p,r,a.handDrawScatter),p=r[0],r=r[1],t=1;t<p.length;t++)q.push(d.line(a,[p[t-1],p[t]],[r[t-1],r[t]],e,h,f+Math.random()*a.handDrawThickness-a.handDrawThickness/2,g,k,l,m,!0));return q};d.doNothing=function(a){return a};d.wedge=function(a,b,c,e,h,f,g,k,l,m,n,q,p){var r=Math.round;f=r(f);g=r(g);k=r(k);var t=r(g/f*k),u=d.VML,z=359.5+f/100;359.94<z&&(z=359.94);h>=z&&
+(h=z);var v=1/180*Math.PI,z=b+Math.sin(e*v)*k,w=c-Math.cos(e*v)*t,x=b+Math.sin(e*v)*f,A=c-Math.cos(e*v)*g,B=b+Math.sin((e+h)*v)*f,D=c-Math.cos((e+h)*v)*g,C=b+Math.sin((e+h)*v)*k,v=c-Math.cos((e+h)*v)*t,I={fill:d.adjustLuminosity(m.fill,-.2),"stroke-opacity":0,"fill-opacity":m["fill-opacity"]},H=0;180<Math.abs(h)&&(H=1);e=a.set();var O;u&&(z=r(10*z),x=r(10*x),B=r(10*B),C=r(10*C),w=r(10*w),A=r(10*A),D=r(10*D),v=r(10*v),b=r(10*b),l=r(10*l),c=r(10*c),f*=10,g*=10,k*=10,t*=10,1>Math.abs(h)&&1>=Math.abs(B-
+x)&&1>=Math.abs(D-A)&&(O=!0));h="";var J;q&&(I["fill-opacity"]=0,I["stroke-opacity"]=m["stroke-opacity"]/2,I.stroke=m.stroke);0<l&&(J=" M"+z+","+(w+l)+" L"+x+","+(A+l),u?(O||(J+=" A"+(b-f)+","+(l+c-g)+","+(b+f)+","+(l+c+g)+","+x+","+(A+l)+","+B+","+(D+l)),J+=" L"+C+","+(v+l),0<k&&(O||(J+=" B"+(b-k)+","+(l+c-t)+","+(b+k)+","+(l+c+t)+","+C+","+(l+v)+","+z+","+(l+w)))):(J+=" A"+f+","+g+",0,"+H+",1,"+B+","+(D+l)+" L"+C+","+(v+l),0<k&&(J+=" A"+k+","+t+",0,"+H+",0,"+z+","+(w+l))),J=a.path(J+" Z",void 0,
+void 0,"1000,1000").attr(I),e.push(J),J=a.path(" M"+z+","+w+" L"+z+","+(w+l)+" L"+x+","+(A+l)+" L"+x+","+A+" L"+z+","+w+" Z",void 0,void 0,"1000,1000").attr(I),l=a.path(" M"+B+","+D+" L"+B+","+(D+l)+" L"+C+","+(v+l)+" L"+C+","+v+" L"+B+","+D+" Z",void 0,void 0,"1000,1000").attr(I),e.push(J),e.push(l));u?(O||(h=" A"+r(b-f)+","+r(c-g)+","+r(b+f)+","+r(c+g)+","+r(x)+","+r(A)+","+r(B)+","+r(D)),f=" M"+r(z)+","+r(w)+" L"+r(x)+","+r(A)+h+" L"+r(C)+","+r(v)):f=" M"+z+","+w+" L"+x+","+A+(" A"+f+","+g+",0,"+
+H+",1,"+B+","+D)+" L"+C+","+v;0<k&&(u?O||(f+=" B"+(b-k)+","+(c-t)+","+(b+k)+","+(c+t)+","+C+","+v+","+z+","+w):f+=" A"+k+","+t+",0,"+H+",0,"+z+","+w);a.handDrawn&&(b=d.line(a,[z,x],[w,A],m.stroke,m.thickness*Math.random()*a.handDrawThickness,m["stroke-opacity"]),e.push(b));a=a.path(f+" Z",void 0,void 0,"1000,1000").attr(m);if(n){b=[];for(c=0;c<n.length;c++)b.push(d.adjustLuminosity(m.fill,n[c]));0<b.length&&a.gradient("linearGradient",b)}a.pattern(q,NaN,p);e.wedge=a;e.push(a);return e};d.adjustLuminosity=
+function(a,b){a=String(a).replace(/[^0-9a-f]/gi,"");6>a.length&&(a=String(a[0])+String(a[0])+String(a[1])+String(a[1])+String(a[2])+String(a[2]));b=b||0;var c="#",d,h;for(h=0;3>h;h++)d=parseInt(a.substr(2*h,2),16),d=Math.round(Math.min(Math.max(0,d+d*b),255)).toString(16),c+=("00"+d).substr(d.length);return c}})();(function(){var d=window.AmCharts;d.Bezier=d.Class({construct:function(a,b,c,e,h,f,g,k,l,m){"object"==typeof g&&(g=g[0]);"object"==typeof k&&(k=k[0]);0===k&&(g="none");f={fill:g,"fill-opacity":k,"stroke-width":f};void 0!==l&&0<l&&(f["stroke-dasharray"]=l);isNaN(h)||(f["stroke-opacity"]=h);e&&(f.stroke=e);e="M"+Math.round(b[0])+","+Math.round(c[0]);h=[];for(l=0;l<b.length;l++)h.push({x:Number(b[l]),y:Number(c[l])});1<h.length&&(b=this.interpolate(h),e+=this.drawBeziers(b));m?e+=m:d.VML||(e+="M0,0 L0,0");
+this.path=a.path(e).attr(f);this.node=this.path.node},interpolate:function(a){var b=[];b.push({x:a[0].x,y:a[0].y});var c=a[1].x-a[0].x,e=a[1].y-a[0].y,h=d.bezierX,f=d.bezierY;b.push({x:a[0].x+c/h,y:a[0].y+e/f});var g;for(g=1;g<a.length-1;g++){var k=a[g-1],l=a[g],e=a[g+1];isNaN(e.x)&&(e=l);isNaN(l.x)&&(l=k);isNaN(k.x)&&(k=l);c=e.x-l.x;e=e.y-k.y;k=l.x-k.x;k>c&&(k=c);b.push({x:l.x-k/h,y:l.y-e/f});b.push({x:l.x,y:l.y});b.push({x:l.x+k/h,y:l.y+e/f})}e=a[a.length-1].y-a[a.length-2].y;c=a[a.length-1].x-
+a[a.length-2].x;b.push({x:a[a.length-1].x-c/h,y:a[a.length-1].y-e/f});b.push({x:a[a.length-1].x,y:a[a.length-1].y});return b},drawBeziers:function(a){var b="",c;for(c=0;c<(a.length-1)/3;c++)b+=this.drawBezierMidpoint(a[3*c],a[3*c+1],a[3*c+2],a[3*c+3]);return b},drawBezierMidpoint:function(a,b,c,d){var h=Math.round,f=this.getPointOnSegment(a,b,.75),g=this.getPointOnSegment(d,c,.75),k=(d.x-a.x)/16,l=(d.y-a.y)/16,m=this.getPointOnSegment(a,b,.375);a=this.getPointOnSegment(f,g,.375);a.x-=k;a.y-=l;b=this.getPointOnSegment(g,
+f,.375);b.x+=k;b.y+=l;c=this.getPointOnSegment(d,c,.375);k=this.getMiddle(m,a);f=this.getMiddle(f,g);g=this.getMiddle(b,c);m=" Q"+h(m.x)+","+h(m.y)+","+h(k.x)+","+h(k.y);m+=" Q"+h(a.x)+","+h(a.y)+","+h(f.x)+","+h(f.y);m+=" Q"+h(b.x)+","+h(b.y)+","+h(g.x)+","+h(g.y);return m+=" Q"+h(c.x)+","+h(c.y)+","+h(d.x)+","+h(d.y)},getMiddle:function(a,b){return{x:(a.x+b.x)/2,y:(a.y+b.y)/2}},getPointOnSegment:function(a,b,c){return{x:a.x+(b.x-a.x)*c,y:a.y+(b.y-a.y)*c}}})})();(function(){var d=window.AmCharts;d.AmDraw=d.Class({construct:function(a,b,c,e){d.SVG_NS="http://www.w3.org/2000/svg";d.SVG_XLINK="http://www.w3.org/1999/xlink";d.hasSVG=!!document.createElementNS&&!!document.createElementNS(d.SVG_NS,"svg").createSVGRect;1>b&&(b=10);1>c&&(c=10);this.div=a;this.width=b;this.height=c;this.rBin=document.createElement("div");d.hasSVG?(d.SVG=!0,b=this.createSvgElement("svg"),a.appendChild(b),this.container=b,this.addDefs(e),this.R=new d.SVGRenderer(this)):d.isIE&&d.VMLRenderer&&
+(d.VML=!0,d.vmlStyleSheet||(document.namespaces.add("amvml","urn:schemas-microsoft-com:vml"),31>document.styleSheets.length?(b=document.createStyleSheet(),b.addRule(".amvml","behavior:url(#default#VML); display:inline-block; antialias:true"),d.vmlStyleSheet=b):document.styleSheets[0].addRule(".amvml","behavior:url(#default#VML); display:inline-block; antialias:true")),this.container=a,this.R=new d.VMLRenderer(this,e),this.R.disableSelection(a))},createSvgElement:function(a){return document.createElementNS(d.SVG_NS,
+a)},circle:function(a,b,c,e){var h=new d.AmDObject("circle",this);h.attr({r:c,cx:a,cy:b});this.addToContainer(h.node,e);return h},ellipse:function(a,b,c,e,h){var f=new d.AmDObject("ellipse",this);f.attr({rx:c,ry:e,cx:a,cy:b});this.addToContainer(f.node,h);return f},setSize:function(a,b){0<a&&0<b&&(this.container.style.width=a+"px",this.container.style.height=b+"px")},rect:function(a,b,c,e,h,f,g){var k=new d.AmDObject("rect",this);d.VML&&(h=Math.round(100*h/Math.min(c,e)),c+=2*f,e+=2*f,k.bw=f,k.node.style.marginLeft=
+-f,k.node.style.marginTop=-f);1>c&&(c=1);1>e&&(e=1);k.attr({x:a,y:b,width:c,height:e,rx:h,ry:h,"stroke-width":f});this.addToContainer(k.node,g);return k},image:function(a,b,c,e,h,f){var g=new d.AmDObject("image",this);g.attr({x:b,y:c,width:e,height:h});this.R.path(g,a);this.addToContainer(g.node,f);return g},addToContainer:function(a,b){b||(b=this.container);b.appendChild(a)},text:function(a,b,c){return this.R.text(a,b,c)},path:function(a,b,c,e){var h=new d.AmDObject("path",this);e||(e="100,100");
+h.attr({cs:e});c?h.attr({dd:a}):h.attr({d:a});this.addToContainer(h.node,b);return h},set:function(a){return this.R.set(a)},remove:function(a){if(a){var b=this.rBin;b.appendChild(a);b.innerHTML=""}},renderFix:function(){var a=this.container,b=a.style,c;try{c=a.getScreenCTM()||a.createSVGMatrix()}catch(d){c=a.createSVGMatrix()}a=1-c.e%1;c=1-c.f%1;.5<a&&--a;.5<c&&--c;a&&(b.left=a+"px");c&&(b.top=c+"px")},update:function(){this.R.update()},addDefs:function(a){if(d.hasSVG){var b=this.createSvgElement("desc"),
+c=this.container;c.setAttribute("version","1.1");c.style.position="absolute";this.setSize(this.width,this.height);d.rtl&&(c.setAttribute("direction","rtl"),c.style.left="auto",c.style.right="0px");a.addCodeCredits&&b.appendChild(document.createTextNode("JavaScript chart by amCharts "+a.version));c.appendChild(b);a.defs&&(b=this.createSvgElement("defs"),c.appendChild(b),d.parseDefs(a.defs,b),this.defs=b)}}})})();(function(){var d=window.AmCharts;d.AmDObject=d.Class({construct:function(a,b){this.D=b;this.R=b.R;this.node=this.R.create(this,a);this.y=this.x=0;this.scale=1},attr:function(a){this.R.attr(this,a);return this},getAttr:function(a){return this.node.getAttribute(a)},setAttr:function(a,b){this.R.setAttr(this,a,b);return this},clipRect:function(a,b,c,d){this.R.clipRect(this,a,b,c,d)},translate:function(a,b,c,d){d||(a=Math.round(a),b=Math.round(b));this.R.move(this,a,b,c);this.x=a;this.y=b;this.scale=
+c;this.angle&&this.rotate(this.angle)},rotate:function(a,b){this.R.rotate(this,a,b);this.angle=a},animate:function(a,b,c){for(var e in a)if(a.hasOwnProperty(e)){var h=e,f=a[e];c=d.getEffect(c);this.R.animate(this,h,f,b,c)}},push:function(a){if(a){var b=this.node;b.appendChild(a.node);var c=a.clipPath;c&&b.appendChild(c);(a=a.grad)&&b.appendChild(a)}},text:function(a){this.R.setText(this,a)},remove:function(){this.R.remove(this)},clear:function(){var a=this.node;if(a.hasChildNodes())for(;1<=a.childNodes.length;)a.removeChild(a.firstChild)},
+hide:function(){this.setAttr("visibility","hidden")},show:function(){this.setAttr("visibility","visible")},getBBox:function(){return this.R.getBBox(this)},toFront:function(){var a=this.node;if(a){this.prevNextNode=a.nextSibling;var b=a.parentNode;b&&b.appendChild(a)}},toPrevious:function(){var a=this.node;a&&this.prevNextNode&&(a=a.parentNode)&&a.insertBefore(this.prevNextNode,null)},toBack:function(){var a=this.node;if(a){this.prevNextNode=a.nextSibling;var b=a.parentNode;if(b){var c=b.firstChild;
+c&&b.insertBefore(a,c)}}},mouseover:function(a){this.R.addListener(this,"mouseover",a);return this},mouseout:function(a){this.R.addListener(this,"mouseout",a);return this},click:function(a){this.R.addListener(this,"click",a);return this},dblclick:function(a){this.R.addListener(this,"dblclick",a);return this},mousedown:function(a){this.R.addListener(this,"mousedown",a);return this},mouseup:function(a){this.R.addListener(this,"mouseup",a);return this},touchstart:function(a){this.R.addListener(this,
+"touchstart",a);return this},touchend:function(a){this.R.addListener(this,"touchend",a);return this},contextmenu:function(a){this.node.addEventListener?this.node.addEventListener("contextmenu",a,!0):this.R.addListener(this,"contextmenu",a);return this},stop:function(){d.removeFromArray(this.R.animations,this.an_x);d.removeFromArray(this.R.animations,this.an_y)},length:function(){return this.node.childNodes.length},gradient:function(a,b,c){this.R.gradient(this,a,b,c)},pattern:function(a,b,c){a&&this.R.pattern(this,
+a,b,c)}})})();(function(){var d=window.AmCharts;d.VMLRenderer=d.Class({construct:function(a,b){this.chart=b;this.D=a;this.cNames={circle:"oval",ellipse:"oval",rect:"roundrect",path:"shape"};this.styleMap={x:"left",y:"top",width:"width",height:"height","font-family":"fontFamily","font-size":"fontSize",visibility:"visibility"}},create:function(a,b){var c;if("group"==b)c=document.createElement("div"),a.type="div";else if("text"==b)c=document.createElement("div"),a.type="text";else if("image"==b)c=document.createElement("img"),
+a.type="image";else{a.type="shape";a.shapeType=this.cNames[b];c=document.createElement("amvml:"+this.cNames[b]);var d=document.createElement("amvml:stroke");c.appendChild(d);a.stroke=d;var h=document.createElement("amvml:fill");c.appendChild(h);a.fill=h;h.className="amvml";d.className="amvml";c.className="amvml"}c.style.position="absolute";c.style.top=0;c.style.left=0;return c},path:function(a,b){a.node.setAttribute("src",b)},setAttr:function(a,b,c){if(void 0!==c){var e;8===document.documentMode&&
+(e=!0);var h=a.node,f=a.type,g=h.style;"r"==b&&(g.width=2*c,g.height=2*c);"oval"==a.shapeType&&("rx"==b&&(g.width=2*c),"ry"==b&&(g.height=2*c));"roundrect"==a.shapeType&&("width"!=b&&"height"!=b||--c);"cursor"==b&&(g.cursor=c);"cx"==b&&(g.left=c-d.removePx(g.width)/2);"cy"==b&&(g.top=c-d.removePx(g.height)/2);var k=this.styleMap[b];void 0!==k&&(g[k]=c);"text"==f&&("text-anchor"==b&&(a.anchor=c,k=h.clientWidth,"end"==c&&(g.marginLeft=-k+"px"),"middle"==c&&(g.marginLeft=-(k/2)+"px",g.textAlign="center"),
+"start"==c&&(g.marginLeft="0px")),"fill"==b&&(g.color=c),"font-weight"==b&&(g.fontWeight=c));if(g=a.children)for(k=0;k<g.length;k++)g[k].setAttr(b,c);if("shape"==f){"cs"==b&&(h.style.width="100px",h.style.height="100px",h.setAttribute("coordsize",c));"d"==b&&h.setAttribute("path",this.svgPathToVml(c));"dd"==b&&h.setAttribute("path",c);f=a.stroke;a=a.fill;"stroke"==b&&(e?f.color=c:f.setAttribute("color",c));"stroke-width"==b&&(e?f.weight=c:f.setAttribute("weight",c));"stroke-opacity"==b&&(e?f.opacity=
+c:f.setAttribute("opacity",c));"stroke-dasharray"==b&&(g="solid",0<c&&3>c&&(g="dot"),3<=c&&6>=c&&(g="dash"),6<c&&(g="longdash"),e?f.dashstyle=g:f.setAttribute("dashstyle",g));if("fill-opacity"==b||"opacity"==b)0===c?e?a.on=!1:a.setAttribute("on",!1):e?a.opacity=c:a.setAttribute("opacity",c);"fill"==b&&(e?a.color=c:a.setAttribute("color",c));"rx"==b&&(e?h.arcSize=c+"%":h.setAttribute("arcsize",c+"%"))}}},attr:function(a,b){for(var c in b)b.hasOwnProperty(c)&&this.setAttr(a,c,b[c])},text:function(a,
+b,c){var e=new d.AmDObject("text",this.D),h=e.node;h.style.whiteSpace="pre";h.innerHTML=a;this.D.addToContainer(h,c);this.attr(e,b);return e},getBBox:function(a){return this.getBox(a.node)},getBox:function(a){var b=a.offsetLeft,c=a.offsetTop,d=a.offsetWidth,h=a.offsetHeight,f;if(a.hasChildNodes()){var g,k,l;for(l=0;l<a.childNodes.length;l++){f=this.getBox(a.childNodes[l]);var m=f.x;isNaN(m)||(isNaN(g)?g=m:m<g&&(g=m));var n=f.y;isNaN(n)||(isNaN(k)?k=n:n<k&&(k=n));m=f.width+m;isNaN(m)||(d=Math.max(d,
+m));f=f.height+n;isNaN(f)||(h=Math.max(h,f))}0>g&&(b+=g);0>k&&(c+=k)}return{x:b,y:c,width:d,height:h}},setText:function(a,b){var c=a.node;c&&(c.innerHTML=b);this.setAttr(a,"text-anchor",a.anchor)},addListener:function(a,b,c){a.node["on"+b]=c},move:function(a,b,c){var e=a.node,h=e.style;"text"==a.type&&(c-=d.removePx(h.fontSize)/2-1);"oval"==a.shapeType&&(b-=d.removePx(h.width)/2,c-=d.removePx(h.height)/2);a=a.bw;isNaN(a)||(b-=a,c-=a);isNaN(b)||isNaN(c)||(e.style.left=b+"px",e.style.top=c+"px")},svgPathToVml:function(a){var b=
+a.split(" ");a="";var c,d=Math.round,h;for(h=0;h<b.length;h++){var f=b[h],g=f.substring(0,1),f=f.substring(1),k=f.split(","),l=d(k[0])+","+d(k[1]);"M"==g&&(a+=" m "+l);"L"==g&&(a+=" l "+l);"Z"==g&&(a+=" x e");if("Q"==g){var m=c.length,n=c[m-1],q=k[0],p=k[1],l=k[2],r=k[3];c=d(c[m-2]/3+2/3*q);n=d(n/3+2/3*p);q=d(2/3*q+l/3);p=d(2/3*p+r/3);a+=" c "+c+","+n+","+q+","+p+","+l+","+r}"A"==g&&(a+=" wa "+f);"B"==g&&(a+=" at "+f);c=k}return a},animate:function(a,b,c,d,h){var f=a.node,g=this.chart;if("translate"==
+b){b=c.split(",");c=b[1];var k=f.offsetTop;g.animate(a,"left",f.offsetLeft,b[0],d,h,"px");g.animate(a,"top",k,c,d,h,"px")}},clipRect:function(a,b,c,d,h){a=a.node;0===b&&0===c?(a.style.width=d+"px",a.style.height=h+"px",a.style.overflow="hidden"):a.style.clip="rect("+c+"px "+(b+d)+"px "+(c+h)+"px "+b+"px)"},rotate:function(a,b,c){if(0!==Number(b)){var e=a.node;a=e.style;c||(c=this.getBGColor(e.parentNode));a.backgroundColor=c;a.paddingLeft=1;c=b*Math.PI/180;var h=Math.cos(c),f=Math.sin(c),g=d.removePx(a.left),
+k=d.removePx(a.top),l=e.offsetWidth,e=e.offsetHeight;b/=Math.abs(b);a.left=g+l/2-l/2*Math.cos(c)-b*e/2*Math.sin(c)+3;a.top=k-b*l/2*Math.sin(c)+b*e/2*Math.sin(c);a.cssText=a.cssText+"; filter:progid:DXImageTransform.Microsoft.Matrix(M11='"+h+"', M12='"+-f+"', M21='"+f+"', M22='"+h+"', sizingmethod='auto expand');"}},getBGColor:function(a){var b="#FFFFFF";if(a.style){var c=a.style.backgroundColor;""!==c?b=c:a.parentNode&&(b=this.getBGColor(a.parentNode))}return b},set:function(a){var b=new d.AmDObject("group",
+this.D);this.D.container.appendChild(b.node);if(a){var c;for(c=0;c<a.length;c++)b.push(a[c])}return b},gradient:function(a,b,c,d){var h="";"radialGradient"==b&&(b="gradientradial",c.reverse());"linearGradient"==b&&(b="gradient");var f;for(f=0;f<c.length;f++){var g=Math.round(100*f/(c.length-1)),h=h+(g+"% "+c[f]);f<c.length-1&&(h+=",")}a=a.fill;90==d?d=0:270==d?d=180:180==d?d=90:0===d&&(d=270);8===document.documentMode?(a.type=b,a.angle=d):(a.setAttribute("type",b),a.setAttribute("angle",d));h&&(a.colors.value=
+h)},remove:function(a){a.clipPath&&this.D.remove(a.clipPath);this.D.remove(a.node)},disableSelection:function(a){void 0!==typeof a.onselectstart&&(a.onselectstart=function(){return!1});a.style.cursor="default"},pattern:function(a,b,c,e){c=a.node;a=a.fill;var h="none";b.color&&(h=b.color);c.fillColor=h;b=b.url;d.isAbsolute(b)||(b=e+b);8===document.documentMode?(a.type="tile",a.src=b):(a.setAttribute("type","tile"),a.setAttribute("src",b))},update:function(){}})})();(function(){var d=window.AmCharts;d.SVGRenderer=d.Class({construct:function(a){this.D=a;this.animations=[]},create:function(a,b){return document.createElementNS(d.SVG_NS,b)},attr:function(a,b){for(var c in b)b.hasOwnProperty(c)&&this.setAttr(a,c,b[c])},setAttr:function(a,b,c){void 0!==c&&a.node.setAttribute(b,c)},animate:function(a,b,c,e,h){var f=a.node;a["an_"+b]&&d.removeFromArray(this.animations,a["an_"+b]);"translate"==b?(f=(f=f.getAttribute("transform"))?String(f).substring(10,f.length-1):"0,0",
+f=f.split(", ").join(" "),f=f.split(" ").join(","),0===f&&(f="0,0")):f=Number(f.getAttribute(b));c={obj:a,frame:0,attribute:b,from:f,to:c,time:e,effect:h};this.animations.push(c);a["an_"+b]=c},update:function(){var a,b=this.animations;for(a=b.length-1;0<=a;a--){var c=b[a],e=1E3*c.time/d.updateRate,h=c.frame+1,f=c.obj,g=c.attribute,k,l,m;h<=e?(c.frame++,"translate"==g?(k=c.from.split(","),g=Number(k[0]),k=Number(k[1]),isNaN(k)&&(k=0),l=c.to.split(","),m=Number(l[0]),l=Number(l[1]),m=0===m-g?m:Math.round(d[c.effect](0,
+h,g,m-g,e)),c=0===l-k?l:Math.round(d[c.effect](0,h,k,l-k,e)),g="transform",c="translate("+m+","+c+")"):(l=Number(c.from),k=Number(c.to),m=k-l,c=d[c.effect](0,h,l,m,e),isNaN(c)&&(c=k),0===m&&this.animations.splice(a,1)),this.setAttr(f,g,c)):("translate"==g?(l=c.to.split(","),m=Number(l[0]),l=Number(l[1]),f.translate(m,l)):(k=Number(c.to),this.setAttr(f,g,k)),this.animations.splice(a,1))}},getBBox:function(a){if(a=a.node)try{return a.getBBox()}catch(b){}return{width:0,height:0,x:0,y:0}},path:function(a,
+b){a.node.setAttributeNS(d.SVG_XLINK,"xlink:href",b)},clipRect:function(a,b,c,e,h){var f=a.node,g=a.clipPath;g&&this.D.remove(g);var k=f.parentNode;k&&(f=document.createElementNS(d.SVG_NS,"clipPath"),g=d.getUniqueId(),f.setAttribute("id",g),this.D.rect(b,c,e,h,0,0,f),k.appendChild(f),b="#",d.baseHref&&!d.isIE&&(b=this.removeTarget(window.location.href)+b),this.setAttr(a,"clip-path","url("+b+g+")"),this.clipPathC++,a.clipPath=f)},text:function(a,b,c){var e=new d.AmDObject("text",this.D);a=String(a).split("\n");
+var h=b["font-size"],f;for(f=0;f<a.length;f++){var g=this.create(null,"tspan");g.appendChild(document.createTextNode(a[f]));g.setAttribute("y",(h+2)*f+Math.round(h/2));g.setAttribute("x",0);g.style.fontSize=h+"px";e.node.appendChild(g)}e.node.setAttribute("y",Math.round(h/2));this.attr(e,b);this.D.addToContainer(e.node,c);return e},setText:function(a,b){var c=a.node;c&&(c.removeChild(c.firstChild),c.appendChild(document.createTextNode(b)))},move:function(a,b,c,d){isNaN(b)&&(b=0);isNaN(c)&&(c=0);b=
+"translate("+b+","+c+")";d&&(b=b+" scale("+d+")");this.setAttr(a,"transform",b)},rotate:function(a,b){var c=a.node.getAttribute("transform"),d="rotate("+b+")";c&&(d=c+" "+d);this.setAttr(a,"transform",d)},set:function(a){var b=new d.AmDObject("g",this.D);this.D.container.appendChild(b.node);if(a){var c;for(c=0;c<a.length;c++)b.push(a[c])}return b},addListener:function(a,b,c){a.node["on"+b]=c},gradient:function(a,b,c,e){var h=a.node,f=a.grad;f&&this.D.remove(f);b=document.createElementNS(d.SVG_NS,
+b);f=d.getUniqueId();b.setAttribute("id",f);if(!isNaN(e)){var g=0,k=0,l=0,m=0;90==e?l=100:270==e?m=100:180==e?g=100:0===e&&(k=100);b.setAttribute("x1",g+"%");b.setAttribute("x2",k+"%");b.setAttribute("y1",l+"%");b.setAttribute("y2",m+"%")}for(e=0;e<c.length;e++)g=document.createElementNS(d.SVG_NS,"stop"),k=100*e/(c.length-1),0===e&&(k=0),g.setAttribute("offset",k+"%"),g.setAttribute("stop-color",c[e]),b.appendChild(g);h.parentNode.appendChild(b);c="#";d.baseHref&&!d.isIE&&(c=this.removeTarget(window.location.href)+
+c);h.setAttribute("fill","url("+c+f+")");a.grad=b},removeTarget:function(a){return a.split("#")[0]},pattern:function(a,b,c,e){var h=a.node;isNaN(c)&&(c=1);var f=a.patternNode;f&&this.D.remove(f);var f=document.createElementNS(d.SVG_NS,"pattern"),g=d.getUniqueId(),k=b;b.url&&(k=b.url);d.isAbsolute(k)||(k=e+k);e=Number(b.width);isNaN(e)&&(e=4);var l=Number(b.height);isNaN(l)&&(l=4);e/=c;l/=c;c=b.x;isNaN(c)&&(c=0);var m=-Math.random()*Number(b.randomX);isNaN(m)||(c=m);m=b.y;isNaN(m)&&(m=0);var n=-Math.random()*
+Number(b.randomY);isNaN(n)||(m=n);f.setAttribute("id",g);f.setAttribute("width",e);f.setAttribute("height",l);f.setAttribute("patternUnits","userSpaceOnUse");f.setAttribute("xlink:href",k);b.color&&(n=document.createElementNS(d.SVG_NS,"rect"),n.setAttributeNS(null,"height",e),n.setAttributeNS(null,"width",l),n.setAttributeNS(null,"fill",b.color),f.appendChild(n));this.D.image(k,0,0,e,l,f).translate(c,m);k="#";d.baseHref&&!d.isIE&&(k=this.removeTarget(window.location.href)+k);h.setAttribute("fill",
+"url("+k+g+")");a.patternNode=f;h.parentNode.appendChild(f)},remove:function(a){a.clipPath&&this.D.remove(a.clipPath);a.grad&&this.D.remove(a.grad);a.patternNode&&this.D.remove(a.patternNode);this.D.remove(a.node)}})})();AmCharts.AmDSet=AmCharts.Class({construct:function(d){this.create("g")},attr:function(d){this.R.attr(this.node,d)},move:function(d,a){this.R.move(this.node,d,a)}});(function(){var d=window.AmCharts;d.AmLegend=d.Class({construct:function(a){this.enabled=!0;this.cname="AmLegend";this.createEvents("rollOverMarker","rollOverItem","rollOutMarker","rollOutItem","showItem","hideItem","clickMarker","rollOverItem","rollOutItem","clickLabel");this.position="bottom";this.borderColor=this.color="#000000";this.borderAlpha=0;this.markerLabelGap=5;this.verticalGap=10;this.align="left";this.horizontalGap=0;this.spacing=10;this.markerDisabledColor="#AAB3B3";this.markerType=
+"square";this.markerSize=16;this.markerBorderThickness=this.markerBorderAlpha=1;this.marginBottom=this.marginTop=0;this.marginLeft=this.marginRight=20;this.autoMargins=!0;this.valueWidth=50;this.switchable=!0;this.switchType="x";this.switchColor="#FFFFFF";this.rollOverColor="#CC0000";this.reversedOrder=!1;this.labelText="[[title]]";this.valueText="[[value]]";this.useMarkerColorForLabels=!1;this.rollOverGraphAlpha=1;this.textClickEnabled=!1;this.equalWidths=!0;this.dateFormat="DD-MM-YYYY";this.backgroundColor=
+"#FFFFFF";this.backgroundAlpha=0;this.useGraphSettings=!1;this.showEntries=!0;d.applyTheme(this,a,this.cname)},setData:function(a){this.legendData=a;this.invalidateSize()},invalidateSize:function(){this.destroy();this.entries=[];this.valueLabels=[];var a=this.legendData;this.enabled&&(d.ifArray(a)||d.ifArray(this.data))&&this.drawLegend()},drawLegend:function(){var a=this.chart,b=this.position,c=this.width,e=a.divRealWidth,h=a.divRealHeight,f=this.div,g=this.legendData;this.data&&(g=this.data);isNaN(this.fontSize)&&
+(this.fontSize=a.fontSize);if("right"==b||"left"==b)this.maxColumns=1,this.autoMargins&&(this.marginLeft=this.marginRight=10);else if(this.autoMargins){this.marginRight=a.marginRight;this.marginLeft=a.marginLeft;var k=a.autoMarginOffset;"bottom"==b?(this.marginBottom=k,this.marginTop=0):(this.marginTop=k,this.marginBottom=0)}c=void 0!==c?d.toCoordinate(c,e):a.realWidth;"outside"==b?(c=f.offsetWidth,h=f.offsetHeight,f.clientHeight&&(c=f.clientWidth,h=f.clientHeight)):(isNaN(c)||(f.style.width=c+"px"),
+f.className="amChartsLegend "+a.classNamePrefix+"-legend-div");this.divWidth=c;(b=this.container)?(b.container.innerHTML="",f.appendChild(b.container),b.width=c,b.height=h,b.addDefs(a)):b=new d.AmDraw(f,c,h,a);this.container=b;this.lx=0;this.ly=8;h=this.markerSize;h>this.fontSize&&(this.ly=h/2-1);0<h&&(this.lx+=h+this.markerLabelGap);this.titleWidth=0;if(h=this.title)h=d.text(this.container,h,this.color,a.fontFamily,this.fontSize,"start",!0),d.setCN(a,h,"legend-title"),h.translate(this.marginLeft,
+this.marginTop+this.verticalGap+this.ly+1),a=h.getBBox(),this.titleWidth=a.width+15,this.titleHeight=a.height+6;this.index=this.maxLabelWidth=0;if(this.showEntries){for(a=0;a<g.length;a++)this.createEntry(g[a]);for(a=this.index=0;a<g.length;a++)this.createValue(g[a])}this.arrangeEntries();this.updateValues()},arrangeEntries:function(){var a=this.position,b=this.marginLeft+this.titleWidth,c=this.marginRight,e=this.marginTop,h=this.marginBottom,f=this.horizontalGap,g=this.div,k=this.divWidth,l=this.maxColumns,
+m=this.verticalGap,n=this.spacing,q=k-c-b,p=0,r=0,t=this.container;this.set&&this.set.remove();var u=t.set();this.set=u;var z=t.set();u.push(z);var v=this.entries,w,x;for(x=0;x<v.length;x++){w=v[x].getBBox();var A=w.width;A>p&&(p=A);w=w.height;w>r&&(r=w)}var A=r=0,B=f,D=0,C=0;for(x=0;x<v.length;x++){var I=v[x];this.reversedOrder&&(I=v[v.length-x-1]);w=I.getBBox();var H;this.equalWidths?H=f+A*(p+n+this.markerLabelGap):(H=B,B=B+w.width+f+n);w.height>C&&(C=w.height);H+w.width>q&&0<x&&0!==A&&(r++,A=0,
+H=f,B=H+w.width+f+n,D=D+C+m,C=0);I.translate(H,D);A++;!isNaN(l)&&A>=l&&(A=0,r++,D=D+C+m,B=f,C=0);z.push(I)}w=z.getBBox();l=w.height+2*m-1;"left"==a||"right"==a?(n=w.width+2*f,k=n+b+c,g.style.width=k+"px",this.ieW=k):n=k-b-c-1;c=d.polygon(this.container,[0,n,n,0],[0,0,l,l],this.backgroundColor,this.backgroundAlpha,1,this.borderColor,this.borderAlpha);d.setCN(this.chart,c,"legend-bg");u.push(c);u.translate(b,e);c.toBack();b=f;if("top"==a||"bottom"==a||"absolute"==a||"outside"==a)"center"==this.align?
+b=f+(n-w.width)/2:"right"==this.align&&(b=f+n-w.width);z.translate(b,m+1);this.titleHeight>l&&(l=this.titleHeight);a=l+e+h+1;0>a&&(a=0);a>this.chart.divRealHeight&&(g.style.top="0px");g.style.height=Math.round(a)+"px";t.setSize(this.divWidth,a)},createEntry:function(a){if(!1!==a.visibleInLegend){var b=this.chart,c=a.markerType;a.legendEntryWidth=this.markerSize;c||(c=this.markerType);var e=a.color,h=a.alpha;a.legendKeyColor&&(e=a.legendKeyColor());a.legendKeyAlpha&&(h=a.legendKeyAlpha());var f;!0===
+a.hidden&&(f=e=this.markerDisabledColor);var g=a.pattern,k=a.customMarker;k||(k=this.customMarker);var l=this.container,m=this.markerSize,n=0,q=0,p=m/2;if(this.useGraphSettings){c=a.type;this.switchType=void 0;if("line"==c||"step"==c||"smoothedLine"==c||"ohlc"==c)g=l.set(),a.hidden||(e=a.lineColorR,f=a.bulletBorderColorR),n=d.line(l,[0,2*m],[m/2,m/2],e,a.lineAlpha,a.lineThickness,a.dashLength),d.setCN(b,n,"graph-stroke"),g.push(n),a.bullet&&(a.hidden||(e=a.bulletColorR),n=d.bullet(l,a.bullet,a.bulletSize,
+e,a.bulletAlpha,a.bulletBorderThickness,f,a.bulletBorderAlpha))&&(d.setCN(b,n,"graph-bullet"),n.translate(m+1,m/2),g.push(n)),p=0,n=m,q=m/3;else{var r;a.getGradRotation&&(r=a.getGradRotation());n=a.fillColorsR;!0===a.hidden&&(n=e);if(g=this.createMarker("rectangle",n,a.fillAlphas,a.lineThickness,e,a.lineAlpha,r,g))p=m,g.translate(p,m/2);n=m}d.setCN(b,g,"graph-"+c);d.setCN(b,g,"graph-"+a.id)}else k?g=l.image(k,0,0,m,m):(g=this.createMarker(c,e,h,void 0,void 0,void 0,void 0,g))&&g.translate(m/2,m/2);
+d.setCN(b,g,"legend-marker");this.addListeners(g,a);l=l.set([g]);this.switchable&&a.switchable&&l.setAttr("cursor","pointer");void 0!==a.id&&d.setCN(b,l,"legend-item-"+a.id);d.setCN(b,l,a.className,!0);(f=this.switchType)&&"none"!=f&&0<m&&("x"==f?(c=this.createX(),c.translate(m/2,m/2)):c=this.createV(),c.dItem=a,!0!==a.hidden?"x"==f?c.hide():c.show():"x"!=f&&c.hide(),this.switchable||c.hide(),this.addListeners(c,a),a.legendSwitch=c,l.push(c),d.setCN(b,c,"legend-switch"));f=this.color;a.showBalloon&&
+this.textClickEnabled&&void 0!==this.selectedColor&&(f=this.selectedColor);this.useMarkerColorForLabels&&(f=e);!0===a.hidden&&(f=this.markerDisabledColor);e=d.massReplace(this.labelText,{"[[title]]":a.title});c=this.fontSize;g&&(m<=c&&g.translate(p,m/2+this.ly-c/2+(c+2-m)/2-q),a.legendEntryWidth=g.getBBox().width);var t;e&&(e=d.fixBrakes(e),a.legendTextReal=e,t=this.labelWidth,t=isNaN(t)?d.text(this.container,e,f,b.fontFamily,c,"start"):d.wrappedText(this.container,e,f,b.fontFamily,c,"start",!1,t,
+0),d.setCN(b,t,"legend-label"),t.translate(this.lx+n,this.ly),l.push(t),b=t.getBBox().width,this.maxLabelWidth<b&&(this.maxLabelWidth=b));this.entries[this.index]=l;a.legendEntry=this.entries[this.index];a.legendLabel=t;this.index++}},addListeners:function(a,b){var c=this;a&&a.mouseover(function(a){c.rollOverMarker(b,a)}).mouseout(function(a){c.rollOutMarker(b,a)}).click(function(a){c.clickMarker(b,a)})},rollOverMarker:function(a,b){this.switchable&&this.dispatch("rollOverMarker",a,b);this.dispatch("rollOverItem",
+a,b)},rollOutMarker:function(a,b){this.switchable&&this.dispatch("rollOutMarker",a,b);this.dispatch("rollOutItem",a,b)},clickMarker:function(a,b){this.switchable&&(!0===a.hidden?this.dispatch("showItem",a,b):this.dispatch("hideItem",a,b));this.dispatch("clickMarker",a,b)},rollOverLabel:function(a,b){a.hidden||(this.textClickEnabled&&a.legendLabel&&a.legendLabel.attr({fill:this.rollOverColor}),this.dispatch("rollOverItem",a,b))},rollOutLabel:function(a,b){if(!a.hidden){if(this.textClickEnabled&&a.legendLabel){var c=
+this.color;void 0!==this.selectedColor&&a.showBalloon&&(c=this.selectedColor);this.useMarkerColorForLabels&&(c=a.lineColor,void 0===c&&(c=a.color));a.legendLabel.attr({fill:c})}this.dispatch("rollOutItem",a,b)}},clickLabel:function(a,b){this.textClickEnabled?a.hidden||this.dispatch("clickLabel",a,b):this.switchable&&(!0===a.hidden?this.dispatch("showItem",a,b):this.dispatch("hideItem",a,b))},dispatch:function(a,b,c){this.fire(a,{type:a,dataItem:b,target:this,event:c,chart:this.chart})},createValue:function(a){var b=
+this,c=b.fontSize,e=b.chart;if(!1!==a.visibleInLegend){var h=b.maxLabelWidth;b.forceWidth&&(h=b.labelWidth);b.equalWidths||(b.valueAlign="left");"left"==b.valueAlign&&(h=a.legendEntry.getBBox().width);var f=h;if(b.valueText&&0<b.valueWidth){var g=b.color;b.useMarkerColorForValues&&(g=a.color,a.legendKeyColor&&(g=a.legendKeyColor()));!0===a.hidden&&(g=b.markerDisabledColor);var k=b.valueText,h=h+b.lx+b.markerLabelGap+b.valueWidth,l="end";"left"==b.valueAlign&&(h-=b.valueWidth,l="start");g=d.text(b.container,
+k,g,b.chart.fontFamily,c,l);d.setCN(e,g,"legend-value");g.translate(h,b.ly);b.entries[b.index].push(g);f+=b.valueWidth+2*b.markerLabelGap;g.dItem=a;b.valueLabels.push(g)}b.index++;e=b.markerSize;e<c+7&&(e=c+7,d.VML&&(e+=3));c=b.container.rect(a.legendEntryWidth,0,f,e,0,0).attr({stroke:"none",fill:"#fff","fill-opacity":.005});c.dItem=a;b.entries[b.index-1].push(c);c.mouseover(function(c){b.rollOverLabel(a,c)}).mouseout(function(c){b.rollOutLabel(a,c)}).click(function(c){b.clickLabel(a,c)})}},createV:function(){var a=
+this.markerSize;return d.polygon(this.container,[a/5,a/2,a-a/5,a/2],[a/3,a-a/5,a/5,a/1.7],this.switchColor)},createX:function(){var a=(this.markerSize-4)/2,b={stroke:this.switchColor,"stroke-width":3},c=this.container,e=d.line(c,[-a,a],[-a,a]).attr(b),a=d.line(c,[-a,a],[a,-a]).attr(b);return this.container.set([e,a])},createMarker:function(a,b,c,e,h,f,g,k){var l=this.markerSize,m=this.container;h||(h=this.markerBorderColor);h||(h=b);isNaN(e)&&(e=this.markerBorderThickness);isNaN(f)&&(f=this.markerBorderAlpha);
+return d.bullet(m,a,l,b,c,e,h,f,l,g,k,this.chart.path)},validateNow:function(){this.invalidateSize()},updateValues:function(){var a=this.valueLabels,b=this.chart,c,d=this.data;for(c=0;c<a.length;c++){var h=a[c],f=h.dItem,g=" ";if(d)f.value?h.text(f.value):h.text("");else{var k;if(void 0!==f.type){k=f.currentDataItem;var l=this.periodValueText;f.legendPeriodValueText&&(l=f.legendPeriodValueText);k?(g=this.valueText,f.legendValueText&&(g=f.legendValueText),g=b.formatString(g,k)):l&&(g=b.formatPeriodString(l,
+f))}else g=b.formatString(this.valueText,f);if(l=this.valueFunction)k&&(f=k),g=l(f,g);h.text(g)}}},renderFix:function(){if(!d.VML){var a=this.container;a&&a.renderFix()}},destroy:function(){this.div.innerHTML="";d.remove(this.set)}})})();(function(){var d=window.AmCharts;d.formatMilliseconds=function(a,b){if(-1!=a.indexOf("fff")){var c=b.getMilliseconds(),d=String(c);10>c&&(d="00"+c);10<=c&&100>c&&(d="0"+c);a=a.replace(/fff/g,d)}return a};d.extractPeriod=function(a){var b=d.stripNumbers(a),c=1;b!=a&&(c=Number(a.slice(0,a.indexOf(b))));return{period:b,count:c}};d.getDate=function(a,b,c){return a instanceof Date?d.newDate(a,c):b&&isNaN(a)?d.stringToDate(a,b):new Date(a)};d.newDate=function(a,b){return b&&"fff"!=b?new Date(a):d.useUTC?
+new Date(a.getUTCFullYear(),a.getUTCMonth(),a.getUTCDate(),a.getUTCHours(),a.getUTCMinutes(),a.getUTCSeconds(),a.getUTCMilliseconds()):new Date(a.getFullYear(),a.getMonth(),a.getDate(),a.getHours(),a.getMinutes(),a.getSeconds(),a.getMilliseconds())};d.resetDateToMin=function(a,b,c,e){void 0===e&&(e=1);var h,f,g,k,l,m,n;d.useUTC?(h=a.getUTCFullYear(),f=a.getUTCMonth(),g=a.getUTCDate(),k=a.getUTCHours(),l=a.getUTCMinutes(),m=a.getUTCSeconds(),n=a.getUTCMilliseconds(),a=a.getUTCDay()):(h=a.getFullYear(),
+f=a.getMonth(),g=a.getDate(),k=a.getHours(),l=a.getMinutes(),m=a.getSeconds(),n=a.getMilliseconds(),a=a.getDay());switch(b){case "YYYY":h=Math.floor(h/c)*c;f=0;g=1;n=m=l=k=0;break;case "MM":f=Math.floor(f/c)*c;g=1;n=m=l=k=0;break;case "WW":g=a>=e?g-a+e:g-(7+a)+e;n=m=l=k=0;break;case "DD":n=m=l=k=0;break;case "hh":k=Math.floor(k/c)*c;n=m=l=0;break;case "mm":l=Math.floor(l/c)*c;n=m=0;break;case "ss":m=Math.floor(m/c)*c;n=0;break;case "fff":n=Math.floor(n/c)*c}d.useUTC?(a=new Date,a.setUTCFullYear(h,
+f,g),a.setUTCHours(k,l,m,n)):a=new Date(h,f,g,k,l,m,n);return a};d.getPeriodDuration=function(a,b){void 0===b&&(b=1);var c;switch(a){case "YYYY":c=316224E5;break;case "MM":c=26784E5;break;case "WW":c=6048E5;break;case "DD":c=864E5;break;case "hh":c=36E5;break;case "mm":c=6E4;break;case "ss":c=1E3;break;case "fff":c=1}return c*b};d.intervals={s:{nextInterval:"ss",contains:1E3},ss:{nextInterval:"mm",contains:60,count:0},mm:{nextInterval:"hh",contains:60,count:1},hh:{nextInterval:"DD",contains:24,count:2},
+DD:{nextInterval:"",contains:Infinity,count:3}};d.getMaxInterval=function(a,b){var c=d.intervals;return a>=c[b].contains?(a=Math.round(a/c[b].contains),b=c[b].nextInterval,d.getMaxInterval(a,b)):"ss"==b?c[b].nextInterval:b};d.dayNames="Sunday Monday Tuesday Wednesday Thursday Friday Saturday".split(" ");d.shortDayNames="Sun Mon Tue Wed Thu Fri Sat".split(" ");d.monthNames="January February March April May June July August September October November December".split(" ");d.shortMonthNames="Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec".split(" ");
+d.getWeekNumber=function(a){a=new Date(a);a.setHours(0,0,0);a.setDate(a.getDate()+4-(a.getDay()||7));var b=new Date(a.getFullYear(),0,1);return Math.ceil(((a-b)/864E5+1)/7)};d.stringToDate=function(a,b){var c={},e=[{pattern:"YYYY",period:"year"},{pattern:"YY",period:"year"},{pattern:"MM",period:"month"},{pattern:"M",period:"month"},{pattern:"DD",period:"date"},{pattern:"D",period:"date"},{pattern:"JJ",period:"hours"},{pattern:"J",period:"hours"},{pattern:"HH",period:"hours"},{pattern:"H",period:"hours"},
+{pattern:"KK",period:"hours"},{pattern:"K",period:"hours"},{pattern:"LL",period:"hours"},{pattern:"L",period:"hours"},{pattern:"NN",period:"minutes"},{pattern:"N",period:"minutes"},{pattern:"SS",period:"seconds"},{pattern:"S",period:"seconds"},{pattern:"QQQ",period:"milliseconds"},{pattern:"QQ",period:"milliseconds"},{pattern:"Q",period:"milliseconds"}],h=!0,f=b.indexOf("AA");-1!=f&&(a.substr(f,2),"pm"==a.toLowerCase&&(h=!1));var f=b,g,k,l;for(l=0;l<e.length;l++)k=e[l].period,c[k]=0,"date"==k&&(c[k]=
+1);for(l=0;l<e.length;l++)if(g=e[l].pattern,k=e[l].period,-1!=b.indexOf(g)){var m=d.getFromDateString(g,a,f);b=b.replace(g,"");if("KK"==g||"K"==g||"LL"==g||"L"==g)h||(m+=12);c[k]=m}d.useUTC?(e=new Date,e.setUTCFullYear(c.year,c.month,c.date),e.setUTCHours(c.hours,c.minutes,c.seconds,c.milliseconds)):e=new Date(c.year,c.month,c.date,c.hours,c.minutes,c.seconds,c.milliseconds);return e};d.getFromDateString=function(a,b,c){if(void 0!==b)return c=c.indexOf(a),b=String(b),b=b.substr(c,a.length),"0"==b.charAt(0)&&
+(b=b.substr(1,b.length-1)),b=Number(b),isNaN(b)&&(b=0),-1!=a.indexOf("M")&&b--,b};d.formatDate=function(a,b,c){c||(c=d);var e,h,f,g,k,l,m,n=d.getWeekNumber(a);d.useUTC?(e=a.getUTCFullYear(),h=a.getUTCMonth(),f=a.getUTCDate(),g=a.getUTCDay(),k=a.getUTCHours(),l=a.getUTCMinutes(),m=a.getUTCSeconds(),a=a.getUTCMilliseconds()):(e=a.getFullYear(),h=a.getMonth(),f=a.getDate(),g=a.getDay(),k=a.getHours(),l=a.getMinutes(),m=a.getSeconds(),a=a.getMilliseconds());var q=String(e).substr(2,2),p=h+1;9>h&&(p="0"+
+p);var r="0"+g;b=b.replace(/W/g,n);n=k;24==n&&(n=0);var t=n;10>t&&(t="0"+t);b=b.replace(/JJ/g,t);b=b.replace(/J/g,n);t=k;0===t&&(t=24,-1!=b.indexOf("H")&&f--);n=f;10>f&&(n="0"+f);var u=t;10>u&&(u="0"+u);b=b.replace(/HH/g,u);b=b.replace(/H/g,t);t=k;11<t&&(t-=12);u=t;10>u&&(u="0"+u);b=b.replace(/KK/g,u);b=b.replace(/K/g,t);t=k;0===t&&(t=12);12<t&&(t-=12);u=t;10>u&&(u="0"+u);b=b.replace(/LL/g,u);b=b.replace(/L/g,t);t=l;10>t&&(t="0"+t);b=b.replace(/NN/g,t);b=b.replace(/N/g,l);l=m;10>l&&(l="0"+l);b=b.replace(/SS/g,
+l);b=b.replace(/S/g,m);m=a;10>m&&(m="00"+m);100>m&&(m="0"+m);l=a;10>l&&(l="00"+l);b=b.replace(/QQQ/g,m);b=b.replace(/QQ/g,l);b=b.replace(/Q/g,a);b=12>k?b.replace(/A/g,"am"):b.replace(/A/g,"pm");b=b.replace(/YYYY/g,"@IIII@");b=b.replace(/YY/g,"@II@");b=b.replace(/MMMM/g,"@XXXX@");b=b.replace(/MMM/g,"@XXX@");b=b.replace(/MM/g,"@XX@");b=b.replace(/M/g,"@X@");b=b.replace(/DD/g,"@RR@");b=b.replace(/D/g,"@R@");b=b.replace(/EEEE/g,"@PPPP@");b=b.replace(/EEE/g,"@PPP@");b=b.replace(/EE/g,"@PP@");b=b.replace(/E/g,
+"@P@");b=b.replace(/@IIII@/g,e);b=b.replace(/@II@/g,q);b=b.replace(/@XXXX@/g,c.monthNames[h]);b=b.replace(/@XXX@/g,c.shortMonthNames[h]);b=b.replace(/@XX@/g,p);b=b.replace(/@X@/g,h+1);b=b.replace(/@RR@/g,n);b=b.replace(/@R@/g,f);b=b.replace(/@PPPP@/g,c.dayNames[g]);b=b.replace(/@PPP@/g,c.shortDayNames[g]);b=b.replace(/@PP@/g,r);return b=b.replace(/@P@/g,g)};d.changeDate=function(a,b,c,e,h){if(d.useUTC)return d.changeUTCDate(a,b,c,e,h);var f=-1;void 0===e&&(e=!0);void 0===h&&(h=!1);!0===e&&(f=1);switch(b){case "YYYY":a.setFullYear(a.getFullYear()+
+c*f);e||h||a.setDate(a.getDate()+1);break;case "MM":b=a.getMonth();a.setMonth(a.getMonth()+c*f);a.getMonth()>b+c*f&&a.setDate(a.getDate()-1);e||h||a.setDate(a.getDate()+1);break;case "DD":a.setDate(a.getDate()+c*f);break;case "WW":a.setDate(a.getDate()+c*f*7);break;case "hh":a.setHours(a.getHours()+c*f);break;case "mm":a.setMinutes(a.getMinutes()+c*f);break;case "ss":a.setSeconds(a.getSeconds()+c*f);break;case "fff":a.setMilliseconds(a.getMilliseconds()+c*f)}return a};d.changeUTCDate=function(a,b,
+c,d,h){var f=-1;void 0===d&&(d=!0);void 0===h&&(h=!1);!0===d&&(f=1);switch(b){case "YYYY":a.setUTCFullYear(a.getUTCFullYear()+c*f);d||h||a.setUTCDate(a.getUTCDate()+1);break;case "MM":b=a.getUTCMonth();a.setUTCMonth(a.getUTCMonth()+c*f);a.getUTCMonth()>b+c*f&&a.setUTCDate(a.getUTCDate()-1);d||h||a.setUTCDate(a.getUTCDate()+1);break;case "DD":a.setUTCDate(a.getUTCDate()+c*f);break;case "WW":a.setUTCDate(a.getUTCDate()+c*f*7);break;case "hh":a.setUTCHours(a.getUTCHours()+c*f);break;case "mm":a.setUTCMinutes(a.getUTCMinutes()+
+c*f);break;case "ss":a.setUTCSeconds(a.getUTCSeconds()+c*f);break;case "fff":a.setUTCMilliseconds(a.getUTCMilliseconds()+c*f)}return a}})();
+},{}],3:[function(require,module,exports){
+(function(){var e=window.AmCharts;e.AmSerialChart=e.Class({inherits:e.AmRectangularChart,construct:function(a){this.type="serial";e.AmSerialChart.base.construct.call(this,a);this.cname="AmSerialChart";this.theme=a;this.createEvents("changed");this.columnSpacing=5;this.columnSpacing3D=0;this.columnWidth=.8;this.updateScrollbar=!0;var b=new e.CategoryAxis(a);b.chart=this;this.categoryAxis=b;this.zoomOutOnDataUpdate=!0;this.mouseWheelZoomEnabled=this.mouseWheelScrollEnabled=this.rotate=this.skipZoom=
+!1;this.minSelectedTime=0;e.applyTheme(this,a,this.cname)},initChart:function(){e.AmSerialChart.base.initChart.call(this);this.updateCategoryAxis(this.categoryAxis,this.rotate,"categoryAxis");this.dataChanged&&(this.updateData(),this.dataChanged=!1,this.dispatchDataUpdated=!0);var a=this.chartCursor;a&&(a.updateData(),a.fullWidth&&(a.fullRectSet=this.cursorLineSet));var a=this.countColumns(),b=this.graphs,c;for(c=0;c<b.length;c++)b[c].columnCount=a;this.updateScrollbar=!0;this.drawChart();this.autoMargins&&
+!this.marginsUpdated&&(this.marginsUpdated=!0,this.measureMargins())},handleWheelReal:function(a,b){if(!this.wheelBusy){var c=this.categoryAxis,d=c.parseDates,g=c.minDuration(),e=c=1;this.mouseWheelZoomEnabled?b||(c=-1):b&&(c=-1);var f=this.chartData.length,m=this.lastTime,l=this.firstTime;0>a?d?(f=this.endTime-this.startTime,d=this.startTime+c*g,g=this.endTime+e*g,0<e&&0<c&&g>=m&&(g=m,d=m-f),this.zoomToDates(new Date(d),new Date(g))):(0<e&&0<c&&this.end>=f-1&&(c=e=0),d=this.start+c,g=this.end+e,
+this.zoomToIndexes(d,g)):d?(f=this.endTime-this.startTime,d=this.startTime-c*g,g=this.endTime-e*g,0<e&&0<c&&d<=l&&(d=l,g=l+f),this.zoomToDates(new Date(d),new Date(g))):(0<e&&0<c&&1>this.start&&(c=e=0),d=this.start-c,g=this.end-e,this.zoomToIndexes(d,g))}},validateData:function(a){this.marginsUpdated=!1;this.zoomOutOnDataUpdate&&!a&&(this.endTime=this.end=this.startTime=this.start=NaN);e.AmSerialChart.base.validateData.call(this)},drawChart:function(){e.AmSerialChart.base.drawChart.call(this);var a=
+this.chartData;if(e.ifArray(a)){var b=this.chartScrollbar;b&&b.draw();if(0<this.realWidth&&0<this.realHeight){var a=a.length-1,c,b=this.categoryAxis;if(b.parseDates&&!b.equalSpacing){if(b=this.startTime,c=this.endTime,isNaN(b)||isNaN(c))b=this.firstTime,c=this.lastTime}else if(b=this.start,c=this.end,isNaN(b)||isNaN(c))b=0,c=a;this.endTime=this.startTime=this.end=this.start=void 0;this.zoom(b,c)}}else this.cleanChart();this.dispDUpd();this.chartCreated=!0},cleanChart:function(){e.callMethod("destroy",
+[this.valueAxes,this.graphs,this.categoryAxis,this.chartScrollbar,this.chartCursor])},updateCategoryAxis:function(a,b,c){a.chart=this;a.id=c;a.rotate=b;a.axisRenderer=e.RecAxis;a.guideFillRenderer=e.RecFill;a.axisItemRenderer=e.RecItem;a.setOrientation(!this.rotate);a.x=this.marginLeftReal;a.y=this.marginTopReal;a.dx=this.dx;a.dy=this.dy;a.width=this.plotAreaWidth-1;a.height=this.plotAreaHeight-1;a.viW=this.plotAreaWidth-1;a.viH=this.plotAreaHeight-1;a.viX=this.marginLeftReal;a.viY=this.marginTopReal;
+a.marginsChanged=!0},updateValueAxes:function(){e.AmSerialChart.base.updateValueAxes.call(this);var a=this.valueAxes,b;for(b=0;b<a.length;b++){var c=a[b],d=this.rotate;c.rotate=d;c.setOrientation(d);d=this.categoryAxis;if(!d.startOnAxis||d.parseDates)c.expandMinMax=!0}},updateData:function(){this.parseData();var a=this.graphs,b,c=this.chartData;for(b=0;b<a.length;b++)a[b].data=c;0<c.length&&(this.firstTime=this.getStartTime(c[0].time),this.lastTime=this.getEndTime(c[c.length-1].time))},getStartTime:function(a){var b=
+this.categoryAxis;return e.resetDateToMin(new Date(a),b.minPeriod,1,b.firstDayOfWeek).getTime()},getEndTime:function(a){var b=e.extractPeriod(this.categoryAxis.minPeriod);return e.changeDate(new Date(a),b.period,b.count,!0).getTime()-1},updateMargins:function(){e.AmSerialChart.base.updateMargins.call(this);var a=this.chartScrollbar;a&&(this.getScrollbarPosition(a,this.rotate,this.categoryAxis.position),this.adjustMargins(a,this.rotate))},updateScrollbars:function(){e.AmSerialChart.base.updateScrollbars.call(this);
+this.updateChartScrollbar(this.chartScrollbar,this.rotate)},zoom:function(a,b){var c=this.categoryAxis;c.parseDates&&!c.equalSpacing?this.timeZoom(a,b):this.indexZoom(a,b);this.updateLegendValues()},timeZoom:function(a,b){var c=this.maxSelectedTime;isNaN(c)||(b!=this.endTime&&b-a>c&&(a=b-c,this.updateScrollbar=!0),a!=this.startTime&&b-a>c&&(b=a+c,this.updateScrollbar=!0));var d=this.minSelectedTime;if(0<d&&b-a<d){var g=Math.round(a+(b-a)/2),d=Math.round(d/2);a=g-d;b=g+d}var h=this.chartData,g=this.categoryAxis;
+if(e.ifArray(h)&&(a!=this.startTime||b!=this.endTime)){var f=g.minDuration(),d=this.firstTime,m=this.lastTime;a||(a=d,isNaN(c)||(a=m-c));b||(b=m);a>m&&(a=m);b<d&&(b=d);a<d&&(a=d);b>m&&(b=m);b<a&&(b=a+f);b-a<f/5&&(b<m?b=a+f/5:a=b-f/5);this.startTime=a;this.endTime=b;c=h.length-1;f=this.getClosestIndex(h,"time",a,!0,0,c);h=this.getClosestIndex(h,"time",b,!1,f,c);g.timeZoom(a,b);g.zoom(f,h);this.start=e.fitToBounds(f,0,c);this.end=e.fitToBounds(h,0,c);this.zoomAxesAndGraphs();this.zoomScrollbar();a!=
+d||b!=m?this.showZB(!0):this.showZB(!1);this.updateColumnsDepth();this.dispatchTimeZoomEvent()}},updateAfterValueZoom:function(){this.zoomAxesAndGraphs();this.zoomScrollbar();this.updateColumnsDepth()},indexZoom:function(a,b){var c=this.maxSelectedSeries;isNaN(c)||(b!=this.end&&b-a>c&&(a=b-c,this.updateScrollbar=!0),a!=this.start&&b-a>c&&(b=a+c,this.updateScrollbar=!0));if(a!=this.start||b!=this.end){var d=this.chartData.length-1;isNaN(a)&&(a=0,isNaN(c)||(a=d-c));isNaN(b)&&(b=d);b<a&&(b=a);b>d&&(b=
+d);a>d&&(a=d-1);0>a&&(a=0);this.start=a;this.end=b;this.categoryAxis.zoom(a,b);this.zoomAxesAndGraphs();this.zoomScrollbar();0!==a||b!=this.chartData.length-1?this.showZB(!0):this.showZB(!1);this.updateColumnsDepth();this.dispatchIndexZoomEvent()}},updateGraphs:function(){e.AmSerialChart.base.updateGraphs.call(this);var a=this.graphs,b;for(b=0;b<a.length;b++){var c=a[b];c.columnWidthReal=this.columnWidth;c.categoryAxis=this.categoryAxis;e.isString(c.fillToGraph)&&(c.fillToGraph=this.getGraphById(c.fillToGraph))}},
+updateColumnsDepth:function(){var a,b=this.graphs,c;e.remove(this.columnsSet);this.columnsArray=[];for(a=0;a<b.length;a++){c=b[a];var d=c.columnsArray;if(d){var g;for(g=0;g<d.length;g++)this.columnsArray.push(d[g])}}this.columnsArray.sort(this.compareDepth);if(0<this.columnsArray.length){b=this.container.set();this.columnSet.push(b);for(a=0;a<this.columnsArray.length;a++)b.push(this.columnsArray[a].column.set);c&&b.translate(c.x,c.y);this.columnsSet=b}},compareDepth:function(a,b){return a.depth>b.depth?
+1:-1},zoomScrollbar:function(){var a=this.chartScrollbar,b=this.categoryAxis;a&&this.updateScrollbar&&a.enabled&&(a.dragger.stop(),b.parseDates&&!b.equalSpacing?a.timeZoom(this.startTime,this.endTime):a.zoom(this.start,this.end),this.updateScrollbar=!0)},updateTrendLines:function(){var a=this.trendLines,b;for(b=0;b<a.length;b++){var c=a[b],c=e.processObject(c,e.TrendLine,this.theme);a[b]=c;c.chart=this;c.id||(c.id="trendLineAuto"+b+"_"+(new Date).getTime());e.isString(c.valueAxis)&&(c.valueAxis=this.getValueAxisById(c.valueAxis));
+c.valueAxis||(c.valueAxis=this.valueAxes[0]);c.categoryAxis=this.categoryAxis}},zoomAxesAndGraphs:function(){if(!this.scrollbarOnly){var a=this.valueAxes,b;for(b=0;b<a.length;b++)a[b].zoom(this.start,this.end);a=this.graphs;for(b=0;b<a.length;b++)a[b].zoom(this.start,this.end);this.zoomTrendLines();(b=this.chartCursor)&&b.zoom(this.start,this.end,this.startTime,this.endTime)}},countColumns:function(){var a=0,b=this.valueAxes.length,c=this.graphs.length,d,e,h=!1,f,m;for(m=0;m<b;m++){e=this.valueAxes[m];
+var l=e.stackType;if("100%"==l||"regular"==l)for(h=!1,f=0;f<c;f++)d=this.graphs[f],d.tcc=1,d.valueAxis==e&&"column"==d.type&&(!h&&d.stackable&&(a++,h=!0),(!d.stackable&&d.clustered||d.newStack)&&a++,d.columnIndex=a-1,d.clustered||(d.columnIndex=0));if("none"==l||"3d"==l){h=!1;for(f=0;f<c;f++)d=this.graphs[f],d.valueAxis==e&&"column"==d.type&&(d.clustered?(d.tcc=1,d.newStack&&(a=0),d.hidden||(d.columnIndex=a,a++)):d.hidden||(h=!0,d.tcc=1,d.columnIndex=0));h&&0===a&&(a=1)}if("3d"==l){e=1;for(m=0;m<
+c;m++)d=this.graphs[m],d.newStack&&e++,d.depthCount=e,d.tcc=a;a=e}}return a},parseData:function(){e.AmSerialChart.base.parseData.call(this);this.parseSerialData(this.dataProvider)},getCategoryIndexByValue:function(a){var b=this.chartData,c,d;for(d=0;d<b.length;d++)b[d].category==a&&(c=d);return c},handleCursorChange:function(a){this.updateLegendValues(a.index)},handleCursorZoom:function(a){this.updateScrollbar=!0;this.zoom(a.start,a.end)},handleScrollbarZoom:function(a){this.updateScrollbar=!1;this.zoom(a.start,
+a.end)},dispatchTimeZoomEvent:function(){if(this.prevStartTime!=this.startTime||this.prevEndTime!=this.endTime){var a={type:"zoomed"};a.startDate=new Date(this.startTime);a.endDate=new Date(this.endTime);a.startIndex=this.start;a.endIndex=this.end;this.startIndex=this.start;this.endIndex=this.end;this.startDate=a.startDate;this.endDate=a.endDate;this.prevStartTime=this.startTime;this.prevEndTime=this.endTime;var b=this.categoryAxis,c=e.extractPeriod(b.minPeriod).period,b=b.dateFormatsObject[c];a.startValue=
+e.formatDate(a.startDate,b,this);a.endValue=e.formatDate(a.endDate,b,this);a.chart=this;a.target=this;this.fire(a.type,a)}},dispatchIndexZoomEvent:function(){if(this.prevStartIndex!=this.start||this.prevEndIndex!=this.end){this.startIndex=this.start;this.endIndex=this.end;var a=this.chartData;if(e.ifArray(a)&&!isNaN(this.start)&&!isNaN(this.end)){var b={chart:this,target:this,type:"zoomed"};b.startIndex=this.start;b.endIndex=this.end;b.startValue=a[this.start].category;b.endValue=a[this.end].category;
+this.categoryAxis.parseDates&&(this.startTime=a[this.start].time,this.endTime=a[this.end].time,b.startDate=new Date(this.startTime),b.endDate=new Date(this.endTime));this.prevStartIndex=this.start;this.prevEndIndex=this.end;this.fire(b.type,b)}}},updateLegendValues:function(a){var b=this.graphs,c;for(c=0;c<b.length;c++){var d=b[c];isNaN(a)?d.currentDataItem=void 0:d.currentDataItem=this.chartData[a].axes[d.valueAxis.id].graphs[d.id]}this.legend&&this.legend.updateValues()},getClosestIndex:function(a,
+b,c,d,e,h){0>e&&(e=0);h>a.length-1&&(h=a.length-1);var f=e+Math.round((h-e)/2),m=a[f][b];if(c==m)return f;if(1>=h-e){if(d)return e;d=a[h][b];return Math.abs(a[e][b]-c)<Math.abs(d-c)?e:h}return c==m?f:c<m?this.getClosestIndex(a,b,c,d,e,f):this.getClosestIndex(a,b,c,d,f,h)},zoomToIndexes:function(a,b){this.updateScrollbar=!0;var c=this.chartData;if(c){var d=c.length;0<d&&(0>a&&(a=0),b>d-1&&(b=d-1),d=this.categoryAxis,d.parseDates&&!d.equalSpacing?this.zoom(c[a].time,this.getEndTime(c[b].time)):this.zoom(a,
+b))}},zoomToDates:function(a,b){this.updateScrollbar=!0;var c=this.chartData;if(this.categoryAxis.equalSpacing){var d=this.getClosestIndex(c,"time",a.getTime(),!0,0,c.length);b=e.resetDateToMin(b,this.categoryAxis.minPeriod,1);c=this.getClosestIndex(c,"time",b.getTime(),!1,0,c.length);this.zoom(d,c)}else this.zoom(a.getTime(),b.getTime())},zoomToCategoryValues:function(a,b){this.updateScrollbar=!0;this.zoom(this.getCategoryIndexByValue(a),this.getCategoryIndexByValue(b))},formatPeriodString:function(a,
+b){if(b){var c=["value","open","low","high","close"],d="value open low high close average sum count".split(" "),g=b.valueAxis,h=this.chartData,f=b.numberFormatter;f||(f=this.nf);for(var m=0;m<c.length;m++){for(var l=c[m],k=0,p=0,n,x,A,v,t,u=0,q=0,r,w,z,B,F,G=this.start;G<=this.end;G++){var y=h[G];if(y&&(y=y.axes[g.id].graphs[b.id])){if(y.values){var C=y.values[l];if(this.rotate){if(0>y.x||y.x>y.graph.height)C=NaN}else if(0>y.x||y.x>y.graph.width)C=NaN;if(!isNaN(C)){isNaN(n)&&(n=C);x=C;if(isNaN(A)||
+A>C)A=C;if(isNaN(v)||v<C)v=C;t=e.getDecimals(k);var E=e.getDecimals(C),k=k+C,k=e.roundTo(k,Math.max(t,E));p++;t=k/p}}if(y.percents&&(y=y.percents[l],!isNaN(y))){isNaN(r)&&(r=y);w=y;if(isNaN(z)||z>y)z=y;if(isNaN(B)||B<y)B=y;F=e.getDecimals(u);C=e.getDecimals(y);u+=y;u=e.roundTo(u,Math.max(F,C));q++;F=u/q}}}u={open:r,close:w,high:B,low:z,average:F,sum:u,count:q};a=e.formatValue(a,{open:n,close:x,high:v,low:A,average:t,sum:k,count:p},d,f,l+"\\.",this.usePrefixes,this.prefixesOfSmallNumbers,this.prefixesOfBigNumbers);
+a=e.formatValue(a,u,d,this.pf,"percents\\."+l+"\\.")}}return a=e.cleanFromEmpty(a)},formatString:function(a,b,c){var d=b.graph;if(-1!=a.indexOf("[[category]]")){var g=b.serialDataItem.category;if(this.categoryAxis.parseDates){var h=this.balloonDateFormat,f=this.chartCursor;f&&(h=f.categoryBalloonDateFormat);-1!=a.indexOf("[[category]]")&&(h=e.formatDate(g,h,this),-1!=h.indexOf("fff")&&(h=e.formatMilliseconds(h,g)),g=h)}a=a.replace(/\[\[category\]\]/g,String(g))}g=d.numberFormatter;g||(g=this.nf);
+h=b.graph.valueAxis;(f=h.duration)&&!isNaN(b.values.value)&&(f=e.formatDuration(b.values.value,f,"",h.durationUnits,h.maxInterval,g),a=a.replace(RegExp("\\[\\[value\\]\\]","g"),f));"date"==h.type&&(h=e.formatDate(new Date(b.values.value),d.dateFormat,this),f=RegExp("\\[\\[value\\]\\]","g"),a=a.replace(f,h),h=e.formatDate(new Date(b.values.open),d.dateFormat,this),f=RegExp("\\[\\[open\\]\\]","g"),a=a.replace(f,h));d="value open low high close total".split(" ");h=this.pf;a=e.formatValue(a,b.percents,
+d,h,"percents\\.");a=e.formatValue(a,b.values,d,g,"",this.usePrefixes,this.prefixesOfSmallNumbers,this.prefixesOfBigNumbers);a=e.formatValue(a,b.values,["percents"],h);-1!=a.indexOf("[[")&&(a=e.formatDataContextValue(a,b.dataContext));-1!=a.indexOf("[[")&&b.graph.customData&&(a=e.formatDataContextValue(a,b.graph.customData));return a=e.AmSerialChart.base.formatString.call(this,a,b,c)},addChartScrollbar:function(a){e.callMethod("destroy",[this.chartScrollbar]);a&&(a.chart=this,this.listenTo(a,"zoomed",
+this.handleScrollbarZoom));this.rotate?void 0===a.width&&(a.width=a.scrollbarHeight):void 0===a.height&&(a.height=a.scrollbarHeight);this.chartScrollbar=a},removeChartScrollbar:function(){e.callMethod("destroy",[this.chartScrollbar]);this.chartScrollbar=null},handleReleaseOutside:function(a){e.AmSerialChart.base.handleReleaseOutside.call(this,a);e.callMethod("handleReleaseOutside",[this.chartScrollbar])},update:function(){e.AmSerialChart.base.update.call(this);this.chartScrollbar&&this.chartScrollbar.update&&
+this.chartScrollbar.update()}})})();(function(){var e=window.AmCharts;e.Cuboid=e.Class({construct:function(a,b,c,d,e,h,f,m,l,k,p,n,x,A,v,t,u){this.set=a.set();this.container=a;this.h=Math.round(c);this.w=Math.round(b);this.dx=d;this.dy=e;this.colors=h;this.alpha=f;this.bwidth=m;this.bcolor=l;this.balpha=k;this.dashLength=A;this.topRadius=t;this.pattern=v;this.rotate=x;this.bcn=u;x?0>b&&0===p&&(p=180):0>c&&270==p&&(p=90);this.gradientRotation=p;0===d&&0===e&&(this.cornerRadius=n);this.draw()},draw:function(){var a=this.set;a.clear();
+var b=this.container,c=b.chart,d=this.w,g=this.h,h=this.dx,f=this.dy,m=this.colors,l=this.alpha,k=this.bwidth,p=this.bcolor,n=this.balpha,x=this.gradientRotation,A=this.cornerRadius,v=this.dashLength,t=this.pattern,u=this.topRadius,q=this.bcn,r=m,w=m;"object"==typeof m&&(r=m[0],w=m[m.length-1]);var z,B,F,G,y,C,E,L,M,Q=l;t&&(l=0);var D,H,I,J,K=this.rotate;if(0<Math.abs(h)||0<Math.abs(f))if(isNaN(u))E=w,w=e.adjustLuminosity(r,-.2),w=e.adjustLuminosity(r,-.2),z=e.polygon(b,[0,h,d+h,d,0],[0,f,f,0,0],
+w,l,1,p,0,x),0<n&&(M=e.line(b,[0,h,d+h],[0,f,f],p,n,k,v)),B=e.polygon(b,[0,0,d,d,0],[0,g,g,0,0],w,l,1,p,0,x),B.translate(h,f),0<n&&(F=e.line(b,[h,h],[f,f+g],p,n,k,v)),G=e.polygon(b,[0,0,h,h,0],[0,g,g+f,f,0],w,l,1,p,0,x),y=e.polygon(b,[d,d,d+h,d+h,d],[0,g,g+f,f,0],w,l,1,p,0,x),0<n&&(C=e.line(b,[d,d+h,d+h,d],[0,f,g+f,g],p,n,k,v)),w=e.adjustLuminosity(E,.2),E=e.polygon(b,[0,h,d+h,d,0],[g,g+f,g+f,g,g],w,l,1,p,0,x),0<n&&(L=e.line(b,[0,h,d+h],[g,g+f,g+f],p,n,k,v));else{var N,O,P;K?(N=g/2,w=h/2,P=g/2,O=
+d+h/2,H=Math.abs(g/2),D=Math.abs(h/2)):(w=d/2,N=f/2,O=d/2,P=g+f/2+1,D=Math.abs(d/2),H=Math.abs(f/2));I=D*u;J=H*u;.1<D&&.1<D&&(z=e.circle(b,D,r,l,k,p,n,!1,H),z.translate(w,N));.1<I&&.1<I&&(E=e.circle(b,I,e.adjustLuminosity(r,.5),l,k,p,n,!1,J),E.translate(O,P))}l=Q;1>Math.abs(g)&&(g=0);1>Math.abs(d)&&(d=0);!isNaN(u)&&(0<Math.abs(h)||0<Math.abs(f))?(m=[r],m={fill:m,stroke:p,"stroke-width":k,"stroke-opacity":n,"fill-opacity":l},K?(l="M0,0 L"+d+","+(g/2-g/2*u),k=" B",0<d&&(k=" A"),e.VML?(l+=k+Math.round(d-
+I)+","+Math.round(g/2-J)+","+Math.round(d+I)+","+Math.round(g/2+J)+","+d+",0,"+d+","+g,l=l+(" L0,"+g)+(k+Math.round(-D)+","+Math.round(g/2-H)+","+Math.round(D)+","+Math.round(g/2+H)+",0,"+g+",0,0")):(l+="A"+I+","+J+",0,0,0,"+d+","+(g-g/2*(1-u))+"L0,"+g,l+="A"+D+","+H+",0,0,1,0,0"),D=90):(k=d/2-d/2*u,l="M0,0 L"+k+","+g,e.VML?(l="M0,0 L"+k+","+g,k=" B",0>g&&(k=" A"),l+=k+Math.round(d/2-I)+","+Math.round(g-J)+","+Math.round(d/2+I)+","+Math.round(g+J)+",0,"+g+","+d+","+g,l+=" L"+d+",0",l+=k+Math.round(d/
+2+D)+","+Math.round(H)+","+Math.round(d/2-D)+","+Math.round(-H)+","+d+",0,0,0"):(l+="A"+I+","+J+",0,0,0,"+(d-d/2*(1-u))+","+g+"L"+d+",0",l+="A"+D+","+H+",0,0,1,0,0"),D=180),b=b.path(l).attr(m),b.gradient("linearGradient",[r,e.adjustLuminosity(r,-.3),e.adjustLuminosity(r,-.3),r],D),K?b.translate(h/2,0):b.translate(0,f/2)):b=0===g?e.line(b,[0,d],[0,0],p,n,k,v):0===d?e.line(b,[0,0],[0,g],p,n,k,v):0<A?e.rect(b,d,g,m,l,k,p,n,A,x,v):e.polygon(b,[0,0,d,d,0],[0,g,g,0,0],m,l,k,p,n,x,!1,v);d=isNaN(u)?0>g?[z,
+M,B,F,G,y,C,E,L,b]:[E,L,B,F,G,y,z,M,C,b]:K?0<d?[z,b,E]:[E,b,z]:0>g?[z,b,E]:[E,b,z];e.setCN(c,b,q+"front");e.setCN(c,B,q+"back");e.setCN(c,E,q+"top");e.setCN(c,z,q+"bottom");e.setCN(c,G,q+"left");e.setCN(c,y,q+"right");for(z=0;z<d.length;z++)if(B=d[z])a.push(B),e.setCN(c,B,q+"element");t&&b.pattern(t,NaN,c.path)},width:function(a){isNaN(a)&&(a=0);this.w=Math.round(a);this.draw()},height:function(a){isNaN(a)&&(a=0);this.h=Math.round(a);this.draw()},animateHeight:function(a,b){var c=this;c.easing=b;
+c.totalFrames=Math.round(1E3*a/e.updateRate);c.rh=c.h;c.frame=0;c.height(1);setTimeout(function(){c.updateHeight.call(c)},e.updateRate)},updateHeight:function(){var a=this;a.frame++;var b=a.totalFrames;a.frame<=b&&(b=a.easing(0,a.frame,1,a.rh-1,b),a.height(b),setTimeout(function(){a.updateHeight.call(a)},e.updateRate))},animateWidth:function(a,b){var c=this;c.easing=b;c.totalFrames=Math.round(1E3*a/e.updateRate);c.rw=c.w;c.frame=0;c.width(1);setTimeout(function(){c.updateWidth.call(c)},e.updateRate)},
+updateWidth:function(){var a=this;a.frame++;var b=a.totalFrames;a.frame<=b&&(b=a.easing(0,a.frame,1,a.rw-1,b),a.width(b),setTimeout(function(){a.updateWidth.call(a)},e.updateRate))}})})();(function(){var e=window.AmCharts;e.CategoryAxis=e.Class({inherits:e.AxisBase,construct:function(a){this.cname="CategoryAxis";e.CategoryAxis.base.construct.call(this,a);this.minPeriod="DD";this.equalSpacing=this.parseDates=!1;this.position="bottom";this.startOnAxis=!1;this.firstDayOfWeek=1;this.gridPosition="middle";this.markPeriodChange=this.boldPeriodBeginning=!0;this.safeDistance=30;this.centerLabelOnFullPeriod=!0;e.applyTheme(this,a,this.cname)},draw:function(){e.CategoryAxis.base.draw.call(this);
+this.generateDFObject();var a=this.chart.chartData;this.data=a;if(e.ifArray(a)){var b,c=this.chart;"scrollbar"!=this.id?(e.setCN(c,this.set,"category-axis"),e.setCN(c,this.labelsSet,"category-axis"),e.setCN(c,this.axisLine.axisSet,"category-axis")):this.bcn=this.id+"-";var d=this.start,g=this.labelFrequency,h=0,f=this.end-d+1,m=this.gridCountR,l=this.showFirstLabel,k=this.showLastLabel,p,n="",n=e.extractPeriod(this.minPeriod),x=e.getPeriodDuration(n.period,n.count),A,v,t,u,q;A=this.rotate;b=this.firstDayOfWeek;
+p=this.boldPeriodBeginning;var r=e.resetDateToMin(new Date(a[a.length-1].time+1.05*x),this.minPeriod,1,b).getTime();this.firstTime=c.firstTime;this.endTime>r&&(this.endTime=r);q=this.minorGridEnabled;var w,r=this.gridAlpha;if(this.parseDates&&!this.equalSpacing)this.lastTime=a[a.length-1].time,this.maxTime=e.resetDateToMin(new Date(this.lastTime+1.05*x),this.minPeriod,1,b).getTime(),this.timeDifference=this.endTime-this.startTime,this.parseDatesDraw();else if(!this.parseDates){if(this.cellWidth=this.getStepWidth(f),
+f<m&&(m=f),h+=this.start,this.stepWidth=this.getStepWidth(f),0<m){m=Math.floor(f/m);w=this.chooseMinorFrequency(m);f=h;f/2==Math.round(f/2)&&f--;0>f&&(f=0);var z=0;this.end-f+1>=this.autoRotateCount&&(this.labelRotation=this.autoRotateAngle);for(b=f;b<=this.end+2;b++){p=!1;0<=b&&b<this.data.length?(v=this.data[b],n=v.category,p=v.forceShow):n="";if(q&&!isNaN(w))if(b/w==Math.round(b/w)||p)b/m==Math.round(b/m)||p||(this.gridAlpha=this.minorGridAlpha,n=void 0);else continue;else if(b/m!=Math.round(b/
+m)&&!p)continue;f=this.getCoordinate(b-h);t=0;"start"==this.gridPosition&&(f-=this.cellWidth/2,t=this.cellWidth/2);p=!0;a=t;"start"==this.tickPosition&&(a=0,p=!1,t=0);if(b==d&&!l||b==this.end&&!k)n=void 0;Math.round(z/g)!=z/g&&(n=void 0);z++;var B=this.cellWidth;A&&(B=NaN);this.labelFunction&&v&&(n=this.labelFunction(n,v,this));n=e.fixBrakes(n);x=!1;this.boldLabels&&(x=!0);b>this.end&&"start"==this.tickPosition&&(n=" ");this.rotate&&this.inside&&(t=-2);t=new this.axisItemRenderer(this,f,n,p,B,t,void 0,
+x,a,!1,v.labelColor,v.className);t.serialDataItem=v;this.pushAxisItem(t);this.gridAlpha=r}}}else if(this.parseDates&&this.equalSpacing){h=this.start;this.startTime=this.data[this.start].time;this.endTime=this.data[this.end].time;this.timeDifference=this.endTime-this.startTime;d=this.choosePeriod(0);g=d.period;A=d.count;a=e.getPeriodDuration(g,A);a<x&&(g=n.period,A=n.count,a=x);v=g;"WW"==v&&(v="DD");this.stepWidth=this.getStepWidth(f);m=Math.ceil(this.timeDifference/a)+1;n=e.resetDateToMin(new Date(this.startTime-
+a),g,A,b).getTime();this.cellWidth=this.getStepWidth(f);f=Math.round(n/a);d=-1;f/2==Math.round(f/2)&&(d=-2,n-=a);f=this.start;f/2==Math.round(f/2)&&f--;0>f&&(f=0);a=this.end+2;a>=this.data.length&&(a=this.data.length);B=!1;B=!l;this.previousPos=-1E3;20<this.labelRotation&&(this.safeDistance=5);var F=f;if(this.data[f].time!=e.resetDateToMin(new Date(this.data[f].time),g,A,b).getTime()){var x=0,G=n;for(b=f;b<a;b++)u=this.data[b].time,this.checkPeriodChange(g,A,u,G)&&(x++,2<=x&&(F=b,b=a),G=u)}q&&1<A&&
+(w=this.chooseMinorFrequency(A),e.getPeriodDuration(g,w));if(0<this.gridCountR)for(b=f;b<a;b++)if(u=this.data[b].time,this.checkPeriodChange(g,A,u,n)&&b>=F){f=this.getCoordinate(b-this.start);q=!1;this.nextPeriod[v]&&(q=this.checkPeriodChange(this.nextPeriod[v],1,u,n,v));x=!1;q&&this.markPeriodChange?(q=this.dateFormatsObject[this.nextPeriod[v]],x=!0):q=this.dateFormatsObject[v];n=e.formatDate(new Date(u),q,c);if(b==d&&!l||b==m&&!k)n=" ";B?B=!1:(p||(x=!1),f-this.previousPos>this.safeDistance*Math.cos(this.labelRotation*
+Math.PI/180)&&(this.labelFunction&&(n=this.labelFunction(n,new Date(u),this,g,A,t)),this.boldLabels&&(x=!0),t=new this.axisItemRenderer(this,f,n,void 0,void 0,void 0,void 0,x),q=t.graphics(),this.pushAxisItem(t),q=q.getBBox().width,e.isModern||(q-=f),this.previousPos=f+q));t=n=u}else isNaN(w)||(this.checkPeriodChange(g,w,u,z)&&(this.gridAlpha=this.minorGridAlpha,f=this.getCoordinate(b-this.start),q=new this.axisItemRenderer(this,f,void 0,void 0,void 0,void 0,void 0,void 0,void 0,!0),this.pushAxisItem(q),
+z=u),this.gridAlpha=r)}for(b=0;b<this.data.length;b++)if(l=this.data[b])k=this.parseDates&&!this.equalSpacing?Math.round((l.time-this.startTime)*this.stepWidth+this.cellWidth/2):this.getCoordinate(b-h),l.x[this.id]=k;l=this.guides.length;for(b=0;b<l;b++)k=this.guides[b],q=p=q=r=d=NaN,w=k.above,k.toCategory&&(p=c.getCategoryIndexByValue(k.toCategory),isNaN(p)||(d=this.getCoordinate(p-h),k.expand&&(d+=this.cellWidth/2),t=new this.axisItemRenderer(this,d,"",!0,NaN,NaN,k),this.pushAxisItem(t,w))),k.category&&
+(q=c.getCategoryIndexByValue(k.category),isNaN(q)||(r=this.getCoordinate(q-h),k.expand&&(r-=this.cellWidth/2),q=(d-r)/2,t=new this.axisItemRenderer(this,r,k.label,!0,NaN,q,k),this.pushAxisItem(t,w))),q=c.dataDateFormat,k.toDate&&(k.toDate=e.getDate(k.toDate,q,this.minPeriod),this.equalSpacing?(p=c.getClosestIndex(this.data,"time",k.toDate.getTime(),!1,0,this.data.length-1),isNaN(p)||(d=this.getCoordinate(p-h))):d=(k.toDate.getTime()-this.startTime)*this.stepWidth,t=new this.axisItemRenderer(this,
+d,"",!0,NaN,NaN,k),this.pushAxisItem(t,w)),k.date&&(k.date=e.getDate(k.date,q,this.minPeriod),this.equalSpacing?(q=c.getClosestIndex(this.data,"time",k.date.getTime(),!1,0,this.data.length-1),isNaN(q)||(r=this.getCoordinate(q-h))):r=(k.date.getTime()-this.startTime)*this.stepWidth,q=(d-r)/2,p=!0,k.toDate&&(p=!1),t="H"==this.orientation?new this.axisItemRenderer(this,r,k.label,p,2*q,NaN,k):new this.axisItemRenderer(this,r,k.label,!1,NaN,q,k),this.pushAxisItem(t,w)),(0<d||0<r)&&(d<this.width||r<this.width)&&
+(d=new this.guideFillRenderer(this,r,d,k),r=d.graphics(),this.pushAxisItem(d,w),k.graphics=r,r.index=b,k.balloonText&&this.addEventListeners(r,k))}this.axisCreated=!0;c=this.x;h=this.y;this.set.translate(c,h);this.labelsSet.translate(c,h);this.positionTitle();(c=this.axisLine.set)&&c.toFront();c=this.getBBox().height;2<c-this.previousHeight&&this.autoWrap&&!this.parseDates&&(this.axisCreated=this.chart.marginsUpdated=!1);this.previousHeight=c},xToIndex:function(a){var b=this.data,c=this.chart,d=c.rotate,
+g=this.stepWidth;this.parseDates&&!this.equalSpacing?(a=this.startTime+Math.round(a/g)-this.minDuration()/2,c=c.getClosestIndex(b,"time",a,!1,this.start,this.end+1)):(this.startOnAxis||(a-=g/2),c=this.start+Math.round(a/g));var c=e.fitToBounds(c,0,b.length-1),h;b[c]&&(h=b[c].x[this.id]);d?h>this.height+1&&c--:h>this.width+1&&c--;0>h&&c++;return c=e.fitToBounds(c,0,b.length-1)},dateToCoordinate:function(a){return this.parseDates&&!this.equalSpacing?(a.getTime()-this.startTime)*this.stepWidth:this.parseDates&&
+this.equalSpacing?(a=this.chart.getClosestIndex(this.data,"time",a.getTime(),!1,0,this.data.length-1),this.getCoordinate(a-this.start)):NaN},categoryToCoordinate:function(a){return this.chart?(a=this.chart.getCategoryIndexByValue(a),this.getCoordinate(a-this.start)):NaN},coordinateToDate:function(a){return this.equalSpacing?(a=this.xToIndex(a),new Date(this.data[a].time)):new Date(this.startTime+a/this.stepWidth)},getCoordinate:function(a){a*=this.stepWidth;this.startOnAxis||(a+=this.stepWidth/2);
+return Math.round(a)}})})();
+},{}],4:[function(require,module,exports){
 (function (global){
 //     Backbone.js 1.2.2
 
@@ -2083,7 +2528,7 @@ else if ( jQuery ) {
 }));
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"jquery":9,"underscore":15}],3:[function(require,module,exports){
+},{"jquery":10,"underscore":16}],5:[function(require,module,exports){
 /*!
  * The buffer module from node.js, for the browser.
  *
@@ -3618,7 +4063,7 @@ function blitBuffer (src, dst, offset, length) {
   return i
 }
 
-},{"base64-js":4,"ieee754":5,"is-array":6}],4:[function(require,module,exports){
+},{"base64-js":6,"ieee754":7,"is-array":8}],6:[function(require,module,exports){
 var lookup = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 
 ;(function (exports) {
@@ -3744,7 +4189,7 @@ var lookup = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 	exports.fromByteArray = uint8ToBase64
 }(typeof exports === 'undefined' ? (this.base64js = {}) : exports))
 
-},{}],5:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 exports.read = function (buffer, offset, isLE, mLen, nBytes) {
   var e, m
   var eLen = nBytes * 8 - mLen - 1
@@ -3830,7 +4275,7 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
   buffer[offset + i - d] |= s * 128
 }
 
-},{}],6:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 
 /**
  * isArray
@@ -3865,4087 +4310,7 @@ module.exports = isArray || function (val) {
   return !! val && '[object Array]' == str.call(val);
 };
 
-},{}],7:[function(require,module,exports){
-(function (root, factory) {
-  if (typeof define === 'function' && define.amd) {
-    // AMD. Register as an anonymous module unless amdModuleId is set
-    define([], function () {
-      return (root['Chartist'] = factory());
-    });
-  } else if (typeof exports === 'object') {
-    // Node. Does not work with strict CommonJS, but
-    // only CommonJS-like environments that support module.exports,
-    // like Node.
-    module.exports = factory();
-  } else {
-    root['Chartist'] = factory();
-  }
-}(this, function () {
-
-/* Chartist.js 0.9.4
- * Copyright © 2015 Gion Kunz
- * Free to use under the WTFPL license.
- * http://www.wtfpl.net/
- */
-/**
- * The core module of Chartist that is mainly providing static functions and higher level functions for chart modules.
- *
- * @module Chartist.Core
- */
-var Chartist = {
-  version: '0.9.4'
-};
-
-(function (window, document, Chartist) {
-  'use strict';
-
-  /**
-   * Helps to simplify functional style code
-   *
-   * @memberof Chartist.Core
-   * @param {*} n This exact value will be returned by the noop function
-   * @return {*} The same value that was provided to the n parameter
-   */
-  Chartist.noop = function (n) {
-    return n;
-  };
-
-  /**
-   * Generates a-z from a number 0 to 26
-   *
-   * @memberof Chartist.Core
-   * @param {Number} n A number from 0 to 26 that will result in a letter a-z
-   * @return {String} A character from a-z based on the input number n
-   */
-  Chartist.alphaNumerate = function (n) {
-    // Limit to a-z
-    return String.fromCharCode(97 + n % 26);
-  };
-
-  /**
-   * Simple recursive object extend
-   *
-   * @memberof Chartist.Core
-   * @param {Object} target Target object where the source will be merged into
-   * @param {Object...} sources This object (objects) will be merged into target and then target is returned
-   * @return {Object} An object that has the same reference as target but is extended and merged with the properties of source
-   */
-  Chartist.extend = function (target) {
-    target = target || {};
-
-    var sources = Array.prototype.slice.call(arguments, 1);
-    sources.forEach(function(source) {
-      for (var prop in source) {
-        if (typeof source[prop] === 'object' && source[prop] !== null && !(source[prop] instanceof Array)) {
-          target[prop] = Chartist.extend({}, target[prop], source[prop]);
-        } else {
-          target[prop] = source[prop];
-        }
-      }
-    });
-
-    return target;
-  };
-
-  /**
-   * Replaces all occurrences of subStr in str with newSubStr and returns a new string.
-   *
-   * @memberof Chartist.Core
-   * @param {String} str
-   * @param {String} subStr
-   * @param {String} newSubStr
-   * @return {String}
-   */
-  Chartist.replaceAll = function(str, subStr, newSubStr) {
-    return str.replace(new RegExp(subStr, 'g'), newSubStr);
-  };
-
-  /**
-   * Converts a string to a number while removing the unit if present. If a number is passed then this will be returned unmodified.
-   *
-   * @memberof Chartist.Core
-   * @param {String|Number} value
-   * @return {Number} Returns the string as number or NaN if the passed length could not be converted to pixel
-   */
-  Chartist.stripUnit = function(value) {
-    if(typeof value === 'string') {
-      value = value.replace(/[^0-9\+-\.]/g, '');
-    }
-
-    return +value;
-  };
-
-  /**
-   * Converts a number to a string with a unit. If a string is passed then this will be returned unmodified.
-   *
-   * @memberof Chartist.Core
-   * @param {Number} value
-   * @param {String} unit
-   * @return {String} Returns the passed number value with unit.
-   */
-  Chartist.ensureUnit = function(value, unit) {
-    if(typeof value === 'number') {
-      value = value + unit;
-    }
-
-    return value;
-  };
-
-  /**
-   * This is a wrapper around document.querySelector that will return the query if it's already of type Node
-   *
-   * @memberof Chartist.Core
-   * @param {String|Node} query The query to use for selecting a Node or a DOM node that will be returned directly
-   * @return {Node}
-   */
-  Chartist.querySelector = function(query) {
-    return query instanceof Node ? query : document.querySelector(query);
-  };
-
-  /**
-   * Functional style helper to produce array with given length initialized with undefined values
-   *
-   * @memberof Chartist.Core
-   * @param length
-   * @return {Array}
-   */
-  Chartist.times = function(length) {
-    return Array.apply(null, new Array(length));
-  };
-
-  /**
-   * Sum helper to be used in reduce functions
-   *
-   * @memberof Chartist.Core
-   * @param previous
-   * @param current
-   * @return {*}
-   */
-  Chartist.sum = function(previous, current) {
-    return previous + (current ? current : 0);
-  };
-
-  /**
-   * Multiply helper to be used in `Array.map` for multiplying each value of an array with a factor.
-   *
-   * @memberof Chartist.Core
-   * @param {Number} factor
-   * @returns {Function} Function that can be used in `Array.map` to multiply each value in an array
-   */
-  Chartist.mapMultiply = function(factor) {
-    return function(num) {
-      return num * factor;
-    };
-  };
-
-  /**
-   * Add helper to be used in `Array.map` for adding a addend to each value of an array.
-   *
-   * @memberof Chartist.Core
-   * @param {Number} addend
-   * @returns {Function} Function that can be used in `Array.map` to add a addend to each value in an array
-   */
-  Chartist.mapAdd = function(addend) {
-    return function(num) {
-      return num + addend;
-    };
-  };
-
-  /**
-   * Map for multi dimensional arrays where their nested arrays will be mapped in serial. The output array will have the length of the largest nested array. The callback function is called with variable arguments where each argument is the nested array value (or undefined if there are no more values).
-   *
-   * @memberof Chartist.Core
-   * @param arr
-   * @param cb
-   * @return {Array}
-   */
-  Chartist.serialMap = function(arr, cb) {
-    var result = [],
-        length = Math.max.apply(null, arr.map(function(e) {
-          return e.length;
-        }));
-
-    Chartist.times(length).forEach(function(e, index) {
-      var args = arr.map(function(e) {
-        return e[index];
-      });
-
-      result[index] = cb.apply(null, args);
-    });
-
-    return result;
-  };
-
-  /**
-   * This helper function can be used to round values with certain precision level after decimal. This is used to prevent rounding errors near float point precision limit.
-   *
-   * @memberof Chartist.Core
-   * @param {Number} value The value that should be rounded with precision
-   * @param {Number} [digits] The number of digits after decimal used to do the rounding
-   * @returns {number} Rounded value
-   */
-  Chartist.roundWithPrecision = function(value, digits) {
-    var precision = Math.pow(10, digits || Chartist.precision);
-    return Math.round(value * precision) / precision;
-  };
-
-  /**
-   * Precision level used internally in Chartist for rounding. If you require more decimal places you can increase this number.
-   *
-   * @memberof Chartist.Core
-   * @type {number}
-   */
-  Chartist.precision = 8;
-
-  /**
-   * A map with characters to escape for strings to be safely used as attribute values.
-   *
-   * @memberof Chartist.Core
-   * @type {Object}
-   */
-  Chartist.escapingMap = {
-    '&': '&amp;',
-    '<': '&lt;',
-    '>': '&gt;',
-    '"': '&quot;',
-    '\'': '&#039;'
-  };
-
-  /**
-   * This function serializes arbitrary data to a string. In case of data that can't be easily converted to a string, this function will create a wrapper object and serialize the data using JSON.stringify. The outcoming string will always be escaped using Chartist.escapingMap.
-   * If called with null or undefined the function will return immediately with null or undefined.
-   *
-   * @memberof Chartist.Core
-   * @param {Number|String|Object} data
-   * @return {String}
-   */
-  Chartist.serialize = function(data) {
-    if(data === null || data === undefined) {
-      return data;
-    } else if(typeof data === 'number') {
-      data = ''+data;
-    } else if(typeof data === 'object') {
-      data = JSON.stringify({data: data});
-    }
-
-    return Object.keys(Chartist.escapingMap).reduce(function(result, key) {
-      return Chartist.replaceAll(result, key, Chartist.escapingMap[key]);
-    }, data);
-  };
-
-  /**
-   * This function de-serializes a string previously serialized with Chartist.serialize. The string will always be unescaped using Chartist.escapingMap before it's returned. Based on the input value the return type can be Number, String or Object. JSON.parse is used with try / catch to see if the unescaped string can be parsed into an Object and this Object will be returned on success.
-   *
-   * @memberof Chartist.Core
-   * @param {String} data
-   * @return {String|Number|Object}
-   */
-  Chartist.deserialize = function(data) {
-    if(typeof data !== 'string') {
-      return data;
-    }
-
-    data = Object.keys(Chartist.escapingMap).reduce(function(result, key) {
-      return Chartist.replaceAll(result, Chartist.escapingMap[key], key);
-    }, data);
-
-    try {
-      data = JSON.parse(data);
-      data = data.data !== undefined ? data.data : data;
-    } catch(e) {}
-
-    return data;
-  };
-
-  /**
-   * Create or reinitialize the SVG element for the chart
-   *
-   * @memberof Chartist.Core
-   * @param {Node} container The containing DOM Node object that will be used to plant the SVG element
-   * @param {String} width Set the width of the SVG element. Default is 100%
-   * @param {String} height Set the height of the SVG element. Default is 100%
-   * @param {String} className Specify a class to be added to the SVG element
-   * @return {Object} The created/reinitialized SVG element
-   */
-  Chartist.createSvg = function (container, width, height, className) {
-    var svg;
-
-    width = width || '100%';
-    height = height || '100%';
-
-    // Check if there is a previous SVG element in the container that contains the Chartist XML namespace and remove it
-    // Since the DOM API does not support namespaces we need to manually search the returned list http://www.w3.org/TR/selectors-api/
-    Array.prototype.slice.call(container.querySelectorAll('svg')).filter(function filterChartistSvgObjects(svg) {
-      return svg.getAttributeNS('http://www.w3.org/2000/xmlns/', Chartist.xmlNs.prefix);
-    }).forEach(function removePreviousElement(svg) {
-      container.removeChild(svg);
-    });
-
-    // Create svg object with width and height or use 100% as default
-    svg = new Chartist.Svg('svg').attr({
-      width: width,
-      height: height
-    }).addClass(className).attr({
-      style: 'width: ' + width + '; height: ' + height + ';'
-    });
-
-    // Add the DOM node to our container
-    container.appendChild(svg._node);
-
-    return svg;
-  };
-
-
-  /**
-   * Reverses the series, labels and series data arrays.
-   *
-   * @memberof Chartist.Core
-   * @param data
-   */
-  Chartist.reverseData = function(data) {
-    data.labels.reverse();
-    data.series.reverse();
-    for (var i = 0; i < data.series.length; i++) {
-      if(typeof(data.series[i]) === 'object' && data.series[i].data !== undefined) {
-        data.series[i].data.reverse();
-      } else if(data.series[i] instanceof Array) {
-        data.series[i].reverse();
-      }
-    }
-  };
-
-  /**
-   * Convert data series into plain array
-   *
-   * @memberof Chartist.Core
-   * @param {Object} data The series object that contains the data to be visualized in the chart
-   * @param {Boolean} reverse If true the whole data is reversed by the getDataArray call. This will modify the data object passed as first parameter. The labels as well as the series order is reversed. The whole series data arrays are reversed too.
-   * @param {Boolean} multi Create a multi dimensional array from a series data array where a value object with `x` and `y` values will be created.
-   * @return {Array} A plain array that contains the data to be visualized in the chart
-   */
-  Chartist.getDataArray = function (data, reverse, multi) {
-    // If the data should be reversed but isn't we need to reverse it
-    // If it's reversed but it shouldn't we need to reverse it back
-    // That's required to handle data updates correctly and to reflect the responsive configurations
-    if(reverse && !data.reversed || !reverse && data.reversed) {
-      Chartist.reverseData(data);
-      data.reversed = !data.reversed;
-    }
-
-    // Recursively walks through nested arrays and convert string values to numbers and objects with value properties
-    // to values. Check the tests in data core -> data normalization for a detailed specification of expected values
-    function recursiveConvert(value) {
-      if(Chartist.isFalseyButZero(value)) {
-        // This is a hole in data and we should return undefined
-        return undefined;
-      } else if((value.data || value) instanceof Array) {
-        return (value.data || value).map(recursiveConvert);
-      } else if(value.hasOwnProperty('value')) {
-        return recursiveConvert(value.value);
-      } else {
-        if(multi) {
-          var multiValue = {};
-
-          // Single series value arrays are assumed to specify the Y-Axis value
-          // For example: [1, 2] => [{x: undefined, y: 1}, {x: undefined, y: 2}]
-          // If multi is a string then it's assumed that it specified which dimension should be filled as default
-          if(typeof multi === 'string') {
-            multiValue[multi] = Chartist.getNumberOrUndefined(value);
-          } else {
-            multiValue.y = Chartist.getNumberOrUndefined(value);
-          }
-
-          multiValue.x = value.hasOwnProperty('x') ? Chartist.getNumberOrUndefined(value.x) : multiValue.x;
-          multiValue.y = value.hasOwnProperty('y') ? Chartist.getNumberOrUndefined(value.y) : multiValue.y;
-
-          return multiValue;
-
-        } else {
-          return Chartist.getNumberOrUndefined(value);
-        }
-      }
-    }
-
-    return data.series.map(recursiveConvert);
-  };
-
-  /**
-   * Converts a number into a padding object.
-   *
-   * @memberof Chartist.Core
-   * @param {Object|Number} padding
-   * @param {Number} [fallback] This value is used to fill missing values if a incomplete padding object was passed
-   * @returns {Object} Returns a padding object containing top, right, bottom, left properties filled with the padding number passed in as argument. If the argument is something else than a number (presumably already a correct padding object) then this argument is directly returned.
-   */
-  Chartist.normalizePadding = function(padding, fallback) {
-    fallback = fallback || 0;
-
-    return typeof padding === 'number' ? {
-      top: padding,
-      right: padding,
-      bottom: padding,
-      left: padding
-    } : {
-      top: typeof padding.top === 'number' ? padding.top : fallback,
-      right: typeof padding.right === 'number' ? padding.right : fallback,
-      bottom: typeof padding.bottom === 'number' ? padding.bottom : fallback,
-      left: typeof padding.left === 'number' ? padding.left : fallback
-    };
-  };
-
-  Chartist.getMetaData = function(series, index) {
-    var value = series.data ? series.data[index] : series[index];
-    return value ? Chartist.serialize(value.meta) : undefined;
-  };
-
-  /**
-   * Calculate the order of magnitude for the chart scale
-   *
-   * @memberof Chartist.Core
-   * @param {Number} value The value Range of the chart
-   * @return {Number} The order of magnitude
-   */
-  Chartist.orderOfMagnitude = function (value) {
-    return Math.floor(Math.log(Math.abs(value)) / Math.LN10);
-  };
-
-  /**
-   * Project a data length into screen coordinates (pixels)
-   *
-   * @memberof Chartist.Core
-   * @param {Object} axisLength The svg element for the chart
-   * @param {Number} length Single data value from a series array
-   * @param {Object} bounds All the values to set the bounds of the chart
-   * @return {Number} The projected data length in pixels
-   */
-  Chartist.projectLength = function (axisLength, length, bounds) {
-    return length / bounds.range * axisLength;
-  };
-
-  /**
-   * Get the height of the area in the chart for the data series
-   *
-   * @memberof Chartist.Core
-   * @param {Object} svg The svg element for the chart
-   * @param {Object} options The Object that contains all the optional values for the chart
-   * @return {Number} The height of the area in the chart for the data series
-   */
-  Chartist.getAvailableHeight = function (svg, options) {
-    return Math.max((Chartist.stripUnit(options.height) || svg.height()) - (options.chartPadding.top +  options.chartPadding.bottom) - options.axisX.offset, 0);
-  };
-
-  /**
-   * Get highest and lowest value of data array. This Array contains the data that will be visualized in the chart.
-   *
-   * @memberof Chartist.Core
-   * @param {Array} data The array that contains the data to be visualized in the chart
-   * @param {Object} options The Object that contains the chart options
-   * @param {String} dimension Axis dimension 'x' or 'y' used to access the correct value and high / low configuration
-   * @return {Object} An object that contains the highest and lowest value that will be visualized on the chart.
-   */
-  Chartist.getHighLow = function (data, options, dimension) {
-    // TODO: Remove workaround for deprecated global high / low config. Axis high / low configuration is preferred
-    options = Chartist.extend({}, options, dimension ? options['axis' + dimension.toUpperCase()] : {});
-
-    var highLow = {
-        high: options.high === undefined ? -Number.MAX_VALUE : +options.high,
-        low: options.low === undefined ? Number.MAX_VALUE : +options.low
-      };
-    var findHigh = options.high === undefined;
-    var findLow = options.low === undefined;
-
-    // Function to recursively walk through arrays and find highest and lowest number
-    function recursiveHighLow(data) {
-      if(data === undefined) {
-        return undefined;
-      } else if(data instanceof Array) {
-        for (var i = 0; i < data.length; i++) {
-          recursiveHighLow(data[i]);
-        }
-      } else {
-        var value = dimension ? +data[dimension] : +data;
-
-        if (findHigh && value > highLow.high) {
-          highLow.high = value;
-        }
-
-        if (findLow && value < highLow.low) {
-          highLow.low = value;
-        }
-      }
-    }
-
-    // Start to find highest and lowest number recursively
-    if(findHigh || findLow) {
-      recursiveHighLow(data);
-    }
-
-    // Overrides of high / low based on reference value, it will make sure that the invisible reference value is
-    // used to generate the chart. This is useful when the chart always needs to contain the position of the
-    // invisible reference value in the view i.e. for bipolar scales.
-    if (options.referenceValue || options.referenceValue === 0) {
-      highLow.high = Math.max(options.referenceValue, highLow.high);
-      highLow.low = Math.min(options.referenceValue, highLow.low);
-    }
-
-    // If high and low are the same because of misconfiguration or flat data (only the same value) we need
-    // to set the high or low to 0 depending on the polarity
-    if (highLow.high <= highLow.low) {
-      // If both values are 0 we set high to 1
-      if (highLow.low === 0) {
-        highLow.high = 1;
-      } else if (highLow.low < 0) {
-        // If we have the same negative value for the bounds we set bounds.high to 0
-        highLow.high = 0;
-      } else {
-        // If we have the same positive value for the bounds we set bounds.low to 0
-        highLow.low = 0;
-      }
-    }
-
-    return highLow;
-  };
-
-  /**
-   * Checks if the value is a valid number or string with a number.
-   *
-   * @memberof Chartist.Core
-   * @param value
-   * @returns {Boolean}
-   */
-  Chartist.isNum = function(value) {
-    return !isNaN(value) && isFinite(value);
-  };
-
-  /**
-   * Returns true on all falsey values except the numeric value 0.
-   *
-   * @memberof Chartist.Core
-   * @param value
-   * @returns {boolean}
-   */
-  Chartist.isFalseyButZero = function(value) {
-    return !value && value !== 0;
-  };
-
-  /**
-   * Returns a number if the passed parameter is a valid number or the function will return undefined. On all other values than a valid number, this function will return undefined.
-   *
-   * @memberof Chartist.Core
-   * @param value
-   * @returns {*}
-   */
-  Chartist.getNumberOrUndefined = function(value) {
-    return isNaN(+value) ? undefined : +value;
-  };
-
-  /**
-   * Gets a value from a dimension `value.x` or `value.y` while returning value directly if it's a valid numeric value. If the value is not numeric and it's falsey this function will return undefined.
-   *
-   * @param value
-   * @param dimension
-   * @returns {*}
-   */
-  Chartist.getMultiValue = function(value, dimension) {
-    if(Chartist.isNum(value)) {
-      return +value;
-    } else if(value) {
-      return value[dimension || 'y'] || 0;
-    } else {
-      return 0;
-    }
-  };
-
-  /**
-   * Pollard Rho Algorithm to find smallest factor of an integer value. There are more efficient algorithms for factorization, but this one is quite efficient and not so complex.
-   *
-   * @memberof Chartist.Core
-   * @param {Number} num An integer number where the smallest factor should be searched for
-   * @returns {Number} The smallest integer factor of the parameter num.
-   */
-  Chartist.rho = function(num) {
-    if(num === 1) {
-      return num;
-    }
-
-    function gcd(p, q) {
-      if (p % q === 0) {
-        return q;
-      } else {
-        return gcd(q, p % q);
-      }
-    }
-
-    function f(x) {
-      return x * x + 1;
-    }
-
-    var x1 = 2, x2 = 2, divisor;
-    if (num % 2 === 0) {
-      return 2;
-    }
-
-    do {
-      x1 = f(x1) % num;
-      x2 = f(f(x2)) % num;
-      divisor = gcd(Math.abs(x1 - x2), num);
-    } while (divisor === 1);
-
-    return divisor;
-  };
-
-  /**
-   * Calculate and retrieve all the bounds for the chart and return them in one array
-   *
-   * @memberof Chartist.Core
-   * @param {Number} axisLength The length of the Axis used for
-   * @param {Object} highLow An object containing a high and low property indicating the value range of the chart.
-   * @param {Number} scaleMinSpace The minimum projected length a step should result in
-   * @param {Boolean} onlyInteger
-   * @return {Object} All the values to set the bounds of the chart
-   */
-  Chartist.getBounds = function (axisLength, highLow, scaleMinSpace, onlyInteger) {
-    var i,
-      optimizationCounter = 0,
-      newMin,
-      newMax,
-      bounds = {
-        high: highLow.high,
-        low: highLow.low
-      };
-
-    bounds.valueRange = bounds.high - bounds.low;
-    bounds.oom = Chartist.orderOfMagnitude(bounds.valueRange);
-    bounds.step = Math.pow(10, bounds.oom);
-    bounds.min = Math.floor(bounds.low / bounds.step) * bounds.step;
-    bounds.max = Math.ceil(bounds.high / bounds.step) * bounds.step;
-    bounds.range = bounds.max - bounds.min;
-    bounds.numberOfSteps = Math.round(bounds.range / bounds.step);
-
-    // Optimize scale step by checking if subdivision is possible based on horizontalGridMinSpace
-    // If we are already below the scaleMinSpace value we will scale up
-    var length = Chartist.projectLength(axisLength, bounds.step, bounds);
-    var scaleUp = length < scaleMinSpace;
-    var smallestFactor = onlyInteger ? Chartist.rho(bounds.range) : 0;
-
-    // First check if we should only use integer steps and if step 1 is still larger than scaleMinSpace so we can use 1
-    if(onlyInteger && Chartist.projectLength(axisLength, 1, bounds) >= scaleMinSpace) {
-      bounds.step = 1;
-    } else if(onlyInteger && smallestFactor < bounds.step && Chartist.projectLength(axisLength, smallestFactor, bounds) >= scaleMinSpace) {
-      // If step 1 was too small, we can try the smallest factor of range
-      // If the smallest factor is smaller than the current bounds.step and the projected length of smallest factor
-      // is larger than the scaleMinSpace we should go for it.
-      bounds.step = smallestFactor;
-    } else {
-      // Trying to divide or multiply by 2 and find the best step value
-      while (true) {
-        if (scaleUp && Chartist.projectLength(axisLength, bounds.step, bounds) <= scaleMinSpace) {
-          bounds.step *= 2;
-        } else if (!scaleUp && Chartist.projectLength(axisLength, bounds.step / 2, bounds) >= scaleMinSpace) {
-          bounds.step /= 2;
-          if(onlyInteger && bounds.step % 1 !== 0) {
-            bounds.step *= 2;
-            break;
-          }
-        } else {
-          break;
-        }
-
-        if(optimizationCounter++ > 1000) {
-          throw new Error('Exceeded maximum number of iterations while optimizing scale step!');
-        }
-      }
-    }
-
-    // Narrow min and max based on new step
-    newMin = bounds.min;
-    newMax = bounds.max;
-    while(newMin + bounds.step <= bounds.low) {
-      newMin += bounds.step;
-    }
-    while(newMax - bounds.step >= bounds.high) {
-      newMax -= bounds.step;
-    }
-    bounds.min = newMin;
-    bounds.max = newMax;
-    bounds.range = bounds.max - bounds.min;
-
-    bounds.values = [];
-    for (i = bounds.min; i <= bounds.max; i += bounds.step) {
-      bounds.values.push(Chartist.roundWithPrecision(i));
-    }
-
-    return bounds;
-  };
-
-  /**
-   * Calculate cartesian coordinates of polar coordinates
-   *
-   * @memberof Chartist.Core
-   * @param {Number} centerX X-axis coordinates of center point of circle segment
-   * @param {Number} centerY X-axis coordinates of center point of circle segment
-   * @param {Number} radius Radius of circle segment
-   * @param {Number} angleInDegrees Angle of circle segment in degrees
-   * @return {Number} Coordinates of point on circumference
-   */
-  Chartist.polarToCartesian = function (centerX, centerY, radius, angleInDegrees) {
-    var angleInRadians = (angleInDegrees - 90) * Math.PI / 180.0;
-
-    return {
-      x: centerX + (radius * Math.cos(angleInRadians)),
-      y: centerY + (radius * Math.sin(angleInRadians))
-    };
-  };
-
-  /**
-   * Initialize chart drawing rectangle (area where chart is drawn) x1,y1 = bottom left / x2,y2 = top right
-   *
-   * @memberof Chartist.Core
-   * @param {Object} svg The svg element for the chart
-   * @param {Object} options The Object that contains all the optional values for the chart
-   * @param {Number} [fallbackPadding] The fallback padding if partial padding objects are used
-   * @return {Object} The chart rectangles coordinates inside the svg element plus the rectangles measurements
-   */
-  Chartist.createChartRect = function (svg, options, fallbackPadding) {
-    var hasAxis = !!(options.axisX || options.axisY);
-    var yAxisOffset = hasAxis ? options.axisY.offset : 0;
-    var xAxisOffset = hasAxis ? options.axisX.offset : 0;
-    // If width or height results in invalid value (including 0) we fallback to the unitless settings or even 0
-    var width = svg.width() || Chartist.stripUnit(options.width) || 0;
-    var height = svg.height() || Chartist.stripUnit(options.height) || 0;
-    var normalizedPadding = Chartist.normalizePadding(options.chartPadding, fallbackPadding);
-
-    // If settings were to small to cope with offset (legacy) and padding, we'll adjust
-    width = Math.max(width, yAxisOffset + normalizedPadding.left + normalizedPadding.right);
-    height = Math.max(height, xAxisOffset + normalizedPadding.top + normalizedPadding.bottom);
-
-    var chartRect = {
-      padding: normalizedPadding,
-      width: function () {
-        return this.x2 - this.x1;
-      },
-      height: function () {
-        return this.y1 - this.y2;
-      }
-    };
-
-    if(hasAxis) {
-      if (options.axisX.position === 'start') {
-        chartRect.y2 = normalizedPadding.top + xAxisOffset;
-        chartRect.y1 = Math.max(height - normalizedPadding.bottom, chartRect.y2 + 1);
-      } else {
-        chartRect.y2 = normalizedPadding.top;
-        chartRect.y1 = Math.max(height - normalizedPadding.bottom - xAxisOffset, chartRect.y2 + 1);
-      }
-
-      if (options.axisY.position === 'start') {
-        chartRect.x1 = normalizedPadding.left + yAxisOffset;
-        chartRect.x2 = Math.max(width - normalizedPadding.right, chartRect.x1 + 1);
-      } else {
-        chartRect.x1 = normalizedPadding.left;
-        chartRect.x2 = Math.max(width - normalizedPadding.right - yAxisOffset, chartRect.x1 + 1);
-      }
-    } else {
-      chartRect.x1 = normalizedPadding.left;
-      chartRect.x2 = Math.max(width - normalizedPadding.right, chartRect.x1 + 1);
-      chartRect.y2 = normalizedPadding.top;
-      chartRect.y1 = Math.max(height - normalizedPadding.bottom, chartRect.y2 + 1);
-    }
-
-    return chartRect;
-  };
-
-  /**
-   * Creates a grid line based on a projected value.
-   *
-   * @memberof Chartist.Core
-   * @param position
-   * @param index
-   * @param axis
-   * @param offset
-   * @param length
-   * @param group
-   * @param classes
-   * @param eventEmitter
-   */
-  Chartist.createGrid = function(position, index, axis, offset, length, group, classes, eventEmitter) {
-    var positionalData = {};
-    positionalData[axis.units.pos + '1'] = position;
-    positionalData[axis.units.pos + '2'] = position;
-    positionalData[axis.counterUnits.pos + '1'] = offset;
-    positionalData[axis.counterUnits.pos + '2'] = offset + length;
-
-    var gridElement = group.elem('line', positionalData, classes.join(' '));
-
-    // Event for grid draw
-    eventEmitter.emit('draw',
-      Chartist.extend({
-        type: 'grid',
-        axis: axis,
-        index: index,
-        group: group,
-        element: gridElement
-      }, positionalData)
-    );
-  };
-
-  /**
-   * Creates a label based on a projected value and an axis.
-   *
-   * @memberof Chartist.Core
-   * @param position
-   * @param length
-   * @param index
-   * @param labels
-   * @param axis
-   * @param axisOffset
-   * @param labelOffset
-   * @param group
-   * @param classes
-   * @param useForeignObject
-   * @param eventEmitter
-   */
-  Chartist.createLabel = function(position, length, index, labels, axis, axisOffset, labelOffset, group, classes, useForeignObject, eventEmitter) {
-    var labelElement;
-    var positionalData = {};
-
-    positionalData[axis.units.pos] = position + labelOffset[axis.units.pos];
-    positionalData[axis.counterUnits.pos] = labelOffset[axis.counterUnits.pos];
-    positionalData[axis.units.len] = length;
-    positionalData[axis.counterUnits.len] = axisOffset - 10;
-
-    if(useForeignObject) {
-      // We need to set width and height explicitly to px as span will not expand with width and height being
-      // 100% in all browsers
-      var content = '<span class="' + classes.join(' ') + '" style="' +
-        axis.units.len + ': ' + Math.round(positionalData[axis.units.len]) + 'px; ' +
-        axis.counterUnits.len + ': ' + Math.round(positionalData[axis.counterUnits.len]) + 'px">' +
-        labels[index] + '</span>';
-
-      labelElement = group.foreignObject(content, Chartist.extend({
-        style: 'overflow: visible;'
-      }, positionalData));
-    } else {
-      labelElement = group.elem('text', positionalData, classes.join(' ')).text(labels[index]);
-    }
-
-    eventEmitter.emit('draw', Chartist.extend({
-      type: 'label',
-      axis: axis,
-      index: index,
-      group: group,
-      element: labelElement,
-      text: labels[index]
-    }, positionalData));
-  };
-
-  /**
-   * Helper to read series specific options from options object. It automatically falls back to the global option if
-   * there is no option in the series options.
-   *
-   * @param {Object} series Series object
-   * @param {Object} options Chartist options object
-   * @param {string} key The options key that should be used to obtain the options
-   * @returns {*}
-   */
-  Chartist.getSeriesOption = function(series, options, key) {
-    if(series.name && options.series && options.series[series.name]) {
-      var seriesOptions = options.series[series.name];
-      return seriesOptions.hasOwnProperty(key) ? seriesOptions[key] : options[key];
-    } else {
-      return options[key];
-    }
-  };
-
-  /**
-   * Provides options handling functionality with callback for options changes triggered by responsive options and media query matches
-   *
-   * @memberof Chartist.Core
-   * @param {Object} options Options set by user
-   * @param {Array} responsiveOptions Optional functions to add responsive behavior to chart
-   * @param {Object} eventEmitter The event emitter that will be used to emit the options changed events
-   * @return {Object} The consolidated options object from the defaults, base and matching responsive options
-   */
-  Chartist.optionsProvider = function (options, responsiveOptions, eventEmitter) {
-    var baseOptions = Chartist.extend({}, options),
-      currentOptions,
-      mediaQueryListeners = [],
-      i;
-
-    function updateCurrentOptions(preventChangedEvent) {
-      var previousOptions = currentOptions;
-      currentOptions = Chartist.extend({}, baseOptions);
-
-      if (responsiveOptions) {
-        for (i = 0; i < responsiveOptions.length; i++) {
-          var mql = window.matchMedia(responsiveOptions[i][0]);
-          if (mql.matches) {
-            currentOptions = Chartist.extend(currentOptions, responsiveOptions[i][1]);
-          }
-        }
-      }
-
-      if(eventEmitter && !preventChangedEvent) {
-        eventEmitter.emit('optionsChanged', {
-          previousOptions: previousOptions,
-          currentOptions: currentOptions
-        });
-      }
-    }
-
-    function removeMediaQueryListeners() {
-      mediaQueryListeners.forEach(function(mql) {
-        mql.removeListener(updateCurrentOptions);
-      });
-    }
-
-    if (!window.matchMedia) {
-      throw 'window.matchMedia not found! Make sure you\'re using a polyfill.';
-    } else if (responsiveOptions) {
-
-      for (i = 0; i < responsiveOptions.length; i++) {
-        var mql = window.matchMedia(responsiveOptions[i][0]);
-        mql.addListener(updateCurrentOptions);
-        mediaQueryListeners.push(mql);
-      }
-    }
-    // Execute initially so we get the correct options
-    updateCurrentOptions(true);
-
-    return {
-      removeMediaQueryListeners: removeMediaQueryListeners,
-      getCurrentOptions: function getCurrentOptions() {
-        return Chartist.extend({}, currentOptions);
-      }
-    };
-  };
-
-}(window, document, Chartist));
-;/**
- * Chartist path interpolation functions.
- *
- * @module Chartist.Interpolation
- */
-/* global Chartist */
-(function(window, document, Chartist) {
-  'use strict';
-
-  Chartist.Interpolation = {};
-
-  /**
-   * This interpolation function does not smooth the path and the result is only containing lines and no curves.
-   *
-   * @memberof Chartist.Interpolation
-   * @return {Function}
-   */
-  Chartist.Interpolation.none = function() {
-    return function none(pathCoordinates, valueData) {
-      var path = new Chartist.Svg.Path();
-      // We need to assume that the first value is a "hole"
-      var hole = true;
-
-      for(var i = 1; i < pathCoordinates.length; i += 2) {
-        var data = valueData[(i - 1) / 2];
-
-        // If the current value is undefined we should treat it as a hole start
-        if(data.value === undefined) {
-          hole = true;
-        } else {
-          // If this value is valid we need to check if we're coming out of a hole
-          if(hole) {
-            // If we are coming out of a hole we should first make a move and also reset the hole flag
-            path.move(pathCoordinates[i - 1], pathCoordinates[i], false, data);
-            hole = false;
-          } else {
-            path.line(pathCoordinates[i - 1], pathCoordinates[i], false, data);
-          }
-        }
-      }
-
-      return path;
-    };
-  };
-
-  /**
-   * Simple smoothing creates horizontal handles that are positioned with a fraction of the length between two data points. You can use the divisor option to specify the amount of smoothing.
-   *
-   * Simple smoothing can be used instead of `Chartist.Smoothing.cardinal` if you'd like to get rid of the artifacts it produces sometimes. Simple smoothing produces less flowing lines but is accurate by hitting the points and it also doesn't swing below or above the given data point.
-   *
-   * All smoothing functions within Chartist are factory functions that accept an options parameter. The simple interpolation function accepts one configuration parameter `divisor`, between 1 and ∞, which controls the smoothing characteristics.
-   *
-   * @example
-   * var chart = new Chartist.Line('.ct-chart', {
-   *   labels: [1, 2, 3, 4, 5],
-   *   series: [[1, 2, 8, 1, 7]]
-   * }, {
-   *   lineSmooth: Chartist.Interpolation.simple({
-   *     divisor: 2
-   *   })
-   * });
-   *
-   *
-   * @memberof Chartist.Interpolation
-   * @param {Object} options The options of the simple interpolation factory function.
-   * @return {Function}
-   */
-  Chartist.Interpolation.simple = function(options) {
-    var defaultOptions = {
-      divisor: 2
-    };
-    options = Chartist.extend({}, defaultOptions, options);
-
-    var d = 1 / Math.max(1, options.divisor);
-
-    return function simple(pathCoordinates, valueData) {
-      var path = new Chartist.Svg.Path();
-      var hole = true;
-
-      for(var i = 2; i < pathCoordinates.length; i += 2) {
-        var prevX = pathCoordinates[i - 2];
-        var prevY = pathCoordinates[i - 1];
-        var currX = pathCoordinates[i];
-        var currY = pathCoordinates[i + 1];
-        var length = (currX - prevX) * d;
-        var prevData = valueData[(i / 2) - 1];
-        var currData = valueData[i / 2];
-
-        if(prevData.value === undefined) {
-          hole = true;
-        } else {
-
-          if(hole) {
-            path.move(prevX, prevY, false, prevData);
-          }
-
-          if(currData.value !== undefined) {
-            path.curve(
-              prevX + length,
-              prevY,
-              currX - length,
-              currY,
-              currX,
-              currY,
-              false,
-              currData
-            );
-
-            hole = false;
-          }
-        }
-      }
-
-      return path;
-    };
-  };
-
-  /**
-   * Cardinal / Catmull-Rome spline interpolation is the default smoothing function in Chartist. It produces nice results where the splines will always meet the points. It produces some artifacts though when data values are increased or decreased rapidly. The line may not follow a very accurate path and if the line should be accurate this smoothing function does not produce the best results.
-   *
-   * Cardinal splines can only be created if there are more than two data points. If this is not the case this smoothing will fallback to `Chartist.Smoothing.none`.
-   *
-   * All smoothing functions within Chartist are factory functions that accept an options parameter. The cardinal interpolation function accepts one configuration parameter `tension`, between 0 and 1, which controls the smoothing intensity.
-   *
-   * @example
-   * var chart = new Chartist.Line('.ct-chart', {
-   *   labels: [1, 2, 3, 4, 5],
-   *   series: [[1, 2, 8, 1, 7]]
-   * }, {
-   *   lineSmooth: Chartist.Interpolation.cardinal({
-   *     tension: 1
-   *   })
-   * });
-   *
-   * @memberof Chartist.Interpolation
-   * @param {Object} options The options of the cardinal factory function.
-   * @return {Function}
-   */
-  Chartist.Interpolation.cardinal = function(options) {
-    var defaultOptions = {
-      tension: 1
-    };
-
-    options = Chartist.extend({}, defaultOptions, options);
-
-    var t = Math.min(1, Math.max(0, options.tension)),
-      c = 1 - t;
-
-    // This function will help us to split pathCoordinates and valueData into segments that also contain pathCoordinates
-    // and valueData. This way the existing functions can be reused and the segment paths can be joined afterwards.
-    // This functionality is necessary to treat "holes" in the line charts
-    function splitIntoSegments(pathCoordinates, valueData) {
-      var segments = [];
-      var hole = true;
-
-      for(var i = 0; i < pathCoordinates.length; i += 2) {
-        // If this value is a "hole" we set the hole flag
-        if(valueData[i / 2].value === undefined) {
-          hole = true;
-        } else {
-          // If it's a valid value we need to check if we're coming out of a hole and create a new empty segment
-          if(hole) {
-            segments.push({
-              pathCoordinates: [],
-              valueData: []
-            });
-            // As we have a valid value now, we are not in a "hole" anymore
-            hole = false;
-          }
-
-          // Add to the segment pathCoordinates and valueData
-          segments[segments.length - 1].pathCoordinates.push(pathCoordinates[i], pathCoordinates[i + 1]);
-          segments[segments.length - 1].valueData.push(valueData[i / 2]);
-        }
-      }
-
-      return segments;
-    }
-
-    return function cardinal(pathCoordinates, valueData) {
-      // First we try to split the coordinates into segments
-      // This is necessary to treat "holes" in line charts
-      var segments = splitIntoSegments(pathCoordinates, valueData);
-
-      // If the split resulted in more that one segment we need to interpolate each segment individually and join them
-      // afterwards together into a single path.
-      if(segments.length > 1) {
-        var paths = [];
-        // For each segment we will recurse the cardinal function
-        segments.forEach(function(segment) {
-          paths.push(cardinal(segment.pathCoordinates, segment.valueData));
-        });
-        // Join the segment path data into a single path and return
-        return Chartist.Svg.Path.join(paths);
-      } else {
-        // If there was only one segment we can proceed regularly by using pathCoordinates and valueData from the first
-        // segment
-        pathCoordinates = segments[0].pathCoordinates;
-        valueData = segments[0].valueData;
-
-        // If less than two points we need to fallback to no smoothing
-        if(pathCoordinates.length <= 4) {
-          return Chartist.Interpolation.none()(pathCoordinates, valueData);
-        }
-
-        var path = new Chartist.Svg.Path().move(pathCoordinates[0], pathCoordinates[1], false, valueData[0]),
-          z;
-
-        for (var i = 0, iLen = pathCoordinates.length; iLen - 2 * !z > i; i += 2) {
-          var p = [
-            {x: +pathCoordinates[i - 2], y: +pathCoordinates[i - 1]},
-            {x: +pathCoordinates[i], y: +pathCoordinates[i + 1]},
-            {x: +pathCoordinates[i + 2], y: +pathCoordinates[i + 3]},
-            {x: +pathCoordinates[i + 4], y: +pathCoordinates[i + 5]}
-          ];
-          if (z) {
-            if (!i) {
-              p[0] = {x: +pathCoordinates[iLen - 2], y: +pathCoordinates[iLen - 1]};
-            } else if (iLen - 4 === i) {
-              p[3] = {x: +pathCoordinates[0], y: +pathCoordinates[1]};
-            } else if (iLen - 2 === i) {
-              p[2] = {x: +pathCoordinates[0], y: +pathCoordinates[1]};
-              p[3] = {x: +pathCoordinates[2], y: +pathCoordinates[3]};
-            }
-          } else {
-            if (iLen - 4 === i) {
-              p[3] = p[2];
-            } else if (!i) {
-              p[0] = {x: +pathCoordinates[i], y: +pathCoordinates[i + 1]};
-            }
-          }
-
-          path.curve(
-            (t * (-p[0].x + 6 * p[1].x + p[2].x) / 6) + (c * p[2].x),
-            (t * (-p[0].y + 6 * p[1].y + p[2].y) / 6) + (c * p[2].y),
-            (t * (p[1].x + 6 * p[2].x - p[3].x) / 6) + (c * p[2].x),
-            (t * (p[1].y + 6 * p[2].y - p[3].y) / 6) + (c * p[2].y),
-            p[2].x,
-            p[2].y,
-            false,
-            valueData[(i + 2) / 2]
-          );
-        }
-
-        return path;
-      }
-    };
-  };
-
-  /**
-   * Step interpolation will cause the line chart to move in steps rather than diagonal or smoothed lines. This interpolation will create additional points that will also be drawn when the `showPoint` option is enabled.
-   *
-   * All smoothing functions within Chartist are factory functions that accept an options parameter. The step interpolation function accepts one configuration parameter `postpone`, that can be `true` or `false`. The default value is `true` and will cause the step to occur where the value actually changes. If a different behaviour is needed where the step is shifted to the left and happens before the actual value, this option can be set to `false`.
-   *
-   * @example
-   * var chart = new Chartist.Line('.ct-chart', {
-   *   labels: [1, 2, 3, 4, 5],
-   *   series: [[1, 2, 8, 1, 7]]
-   * }, {
-   *   lineSmooth: Chartist.Interpolation.step({
-   *     postpone: true
-   *   })
-   * });
-   *
-   * @memberof Chartist.Interpolation
-   * @param options
-   * @returns {Function}
-   */
-  Chartist.Interpolation.step = function(options) {
-    var defaultOptions = {
-      postpone: true
-    };
-
-    options = Chartist.extend({}, defaultOptions, options);
-
-    return function step(pathCoordinates, valueData) {
-      var path = new Chartist.Svg.Path();
-      var hole = true;
-
-      for (var i = 2; i < pathCoordinates.length; i += 2) {
-        var prevX = pathCoordinates[i - 2];
-        var prevY = pathCoordinates[i - 1];
-        var currX = pathCoordinates[i];
-        var currY = pathCoordinates[i + 1];
-        var prevData = valueData[(i / 2) - 1];
-        var currData = valueData[i / 2];
-
-        // If last point is a "hole"
-        if(prevData.value === undefined) {
-          hole = true;
-        } else {
-          // If last point is not a "hole" but we just came back out of a "hole" we need to move first
-          if(hole) {
-            path.move(prevX, prevY, false, prevData);
-          }
-
-          // If the current point is also not a hole we can draw the step lines
-          if(currData.value !== undefined) {
-            if(options.postpone) {
-              // If postponed we should draw the step line with the value of the previous value
-              path.line(currX, prevY, false, prevData);
-            } else {
-              // If not postponed we should draw the step line with the value of the current value
-              path.line(prevX, currY, false, currData);
-            }
-            // Line to the actual point (this should only be a Y-Axis movement
-            path.line(currX, currY, false, currData);
-            // Reset the "hole" flag as previous and current point have valid values
-            hole = false;
-          }
-        }
-      }
-
-      return path;
-    };
-  };
-
-}(window, document, Chartist));
-;/**
- * A very basic event module that helps to generate and catch events.
- *
- * @module Chartist.Event
- */
-/* global Chartist */
-(function (window, document, Chartist) {
-  'use strict';
-
-  Chartist.EventEmitter = function () {
-    var handlers = [];
-
-    /**
-     * Add an event handler for a specific event
-     *
-     * @memberof Chartist.Event
-     * @param {String} event The event name
-     * @param {Function} handler A event handler function
-     */
-    function addEventHandler(event, handler) {
-      handlers[event] = handlers[event] || [];
-      handlers[event].push(handler);
-    }
-
-    /**
-     * Remove an event handler of a specific event name or remove all event handlers for a specific event.
-     *
-     * @memberof Chartist.Event
-     * @param {String} event The event name where a specific or all handlers should be removed
-     * @param {Function} [handler] An optional event handler function. If specified only this specific handler will be removed and otherwise all handlers are removed.
-     */
-    function removeEventHandler(event, handler) {
-      // Only do something if there are event handlers with this name existing
-      if(handlers[event]) {
-        // If handler is set we will look for a specific handler and only remove this
-        if(handler) {
-          handlers[event].splice(handlers[event].indexOf(handler), 1);
-          if(handlers[event].length === 0) {
-            delete handlers[event];
-          }
-        } else {
-          // If no handler is specified we remove all handlers for this event
-          delete handlers[event];
-        }
-      }
-    }
-
-    /**
-     * Use this function to emit an event. All handlers that are listening for this event will be triggered with the data parameter.
-     *
-     * @memberof Chartist.Event
-     * @param {String} event The event name that should be triggered
-     * @param {*} data Arbitrary data that will be passed to the event handler callback functions
-     */
-    function emit(event, data) {
-      // Only do something if there are event handlers with this name existing
-      if(handlers[event]) {
-        handlers[event].forEach(function(handler) {
-          handler(data);
-        });
-      }
-
-      // Emit event to star event handlers
-      if(handlers['*']) {
-        handlers['*'].forEach(function(starHandler) {
-          starHandler(event, data);
-        });
-      }
-    }
-
-    return {
-      addEventHandler: addEventHandler,
-      removeEventHandler: removeEventHandler,
-      emit: emit
-    };
-  };
-
-}(window, document, Chartist));
-;/**
- * This module provides some basic prototype inheritance utilities.
- *
- * @module Chartist.Class
- */
-/* global Chartist */
-(function(window, document, Chartist) {
-  'use strict';
-
-  function listToArray(list) {
-    var arr = [];
-    if (list.length) {
-      for (var i = 0; i < list.length; i++) {
-        arr.push(list[i]);
-      }
-    }
-    return arr;
-  }
-
-  /**
-   * Method to extend from current prototype.
-   *
-   * @memberof Chartist.Class
-   * @param {Object} properties The object that serves as definition for the prototype that gets created for the new class. This object should always contain a constructor property that is the desired constructor for the newly created class.
-   * @param {Object} [superProtoOverride] By default extens will use the current class prototype or Chartist.class. With this parameter you can specify any super prototype that will be used.
-   * @return {Function} Constructor function of the new class
-   *
-   * @example
-   * var Fruit = Class.extend({
-     * color: undefined,
-     *   sugar: undefined,
-     *
-     *   constructor: function(color, sugar) {
-     *     this.color = color;
-     *     this.sugar = sugar;
-     *   },
-     *
-     *   eat: function() {
-     *     this.sugar = 0;
-     *     return this;
-     *   }
-     * });
-   *
-   * var Banana = Fruit.extend({
-     *   length: undefined,
-     *
-     *   constructor: function(length, sugar) {
-     *     Banana.super.constructor.call(this, 'Yellow', sugar);
-     *     this.length = length;
-     *   }
-     * });
-   *
-   * var banana = new Banana(20, 40);
-   * console.log('banana instanceof Fruit', banana instanceof Fruit);
-   * console.log('Fruit is prototype of banana', Fruit.prototype.isPrototypeOf(banana));
-   * console.log('bananas prototype is Fruit', Object.getPrototypeOf(banana) === Fruit.prototype);
-   * console.log(banana.sugar);
-   * console.log(banana.eat().sugar);
-   * console.log(banana.color);
-   */
-  function extend(properties, superProtoOverride) {
-    var superProto = superProtoOverride || this.prototype || Chartist.Class;
-    var proto = Object.create(superProto);
-
-    Chartist.Class.cloneDefinitions(proto, properties);
-
-    var constr = function() {
-      var fn = proto.constructor || function () {},
-        instance;
-
-      // If this is linked to the Chartist namespace the constructor was not called with new
-      // To provide a fallback we will instantiate here and return the instance
-      instance = this === Chartist ? Object.create(proto) : this;
-      fn.apply(instance, Array.prototype.slice.call(arguments, 0));
-
-      // If this constructor was not called with new we need to return the instance
-      // This will not harm when the constructor has been called with new as the returned value is ignored
-      return instance;
-    };
-
-    constr.prototype = proto;
-    constr.super = superProto;
-    constr.extend = this.extend;
-
-    return constr;
-  }
-
-  // Variable argument list clones args > 0 into args[0] and retruns modified args[0]
-  function cloneDefinitions() {
-    var args = listToArray(arguments);
-    var target = args[0];
-
-    args.splice(1, args.length - 1).forEach(function (source) {
-      Object.getOwnPropertyNames(source).forEach(function (propName) {
-        // If this property already exist in target we delete it first
-        delete target[propName];
-        // Define the property with the descriptor from source
-        Object.defineProperty(target, propName,
-          Object.getOwnPropertyDescriptor(source, propName));
-      });
-    });
-
-    return target;
-  }
-
-  Chartist.Class = {
-    extend: extend,
-    cloneDefinitions: cloneDefinitions
-  };
-
-}(window, document, Chartist));
-;/**
- * Base for all chart types. The methods in Chartist.Base are inherited to all chart types.
- *
- * @module Chartist.Base
- */
-/* global Chartist */
-(function(window, document, Chartist) {
-  'use strict';
-
-  // TODO: Currently we need to re-draw the chart on window resize. This is usually very bad and will affect performance.
-  // This is done because we can't work with relative coordinates when drawing the chart because SVG Path does not
-  // work with relative positions yet. We need to check if we can do a viewBox hack to switch to percentage.
-  // See http://mozilla.6506.n7.nabble.com/Specyfing-paths-with-percentages-unit-td247474.html
-  // Update: can be done using the above method tested here: http://codepen.io/gionkunz/pen/KDvLj
-  // The problem is with the label offsets that can't be converted into percentage and affecting the chart container
-  /**
-   * Updates the chart which currently does a full reconstruction of the SVG DOM
-   *
-   * @param {Object} [data] Optional data you'd like to set for the chart before it will update. If not specified the update method will use the data that is already configured with the chart.
-   * @param {Object} [options] Optional options you'd like to add to the previous options for the chart before it will update. If not specified the update method will use the options that have been already configured with the chart.
-   * @param {Boolean} [override] If set to true, the passed options will be used to extend the options that have been configured already. Otherwise the chart default options will be used as the base
-   * @memberof Chartist.Base
-   */
-  function update(data, options, override) {
-    if(data) {
-      this.data = data;
-      // Event for data transformation that allows to manipulate the data before it gets rendered in the charts
-      this.eventEmitter.emit('data', {
-        type: 'update',
-        data: this.data
-      });
-    }
-
-    if(options) {
-      this.options = Chartist.extend({}, override ? this.options : this.defaultOptions, options);
-
-      // If chartist was not initialized yet, we just set the options and leave the rest to the initialization
-      // Otherwise we re-create the optionsProvider at this point
-      if(!this.initializeTimeoutId) {
-        this.optionsProvider.removeMediaQueryListeners();
-        this.optionsProvider = Chartist.optionsProvider(this.options, this.responsiveOptions, this.eventEmitter);
-      }
-    }
-
-    // Only re-created the chart if it has been initialized yet
-    if(!this.initializeTimeoutId) {
-      this.createChart(this.optionsProvider.getCurrentOptions());
-    }
-
-    // Return a reference to the chart object to chain up calls
-    return this;
-  }
-
-  /**
-   * This method can be called on the API object of each chart and will un-register all event listeners that were added to other components. This currently includes a window.resize listener as well as media query listeners if any responsive options have been provided. Use this function if you need to destroy and recreate Chartist charts dynamically.
-   *
-   * @memberof Chartist.Base
-   */
-  function detach() {
-    // Only detach if initialization already occurred on this chart. If this chart still hasn't initialized (therefore
-    // the initializationTimeoutId is still a valid timeout reference, we will clear the timeout
-    if(!this.initializeTimeoutId) {
-      window.removeEventListener('resize', this.resizeListener);
-      this.optionsProvider.removeMediaQueryListeners();
-    } else {
-      window.clearTimeout(this.initializeTimeoutId);
-    }
-
-    return this;
-  }
-
-  /**
-   * Use this function to register event handlers. The handler callbacks are synchronous and will run in the main thread rather than the event loop.
-   *
-   * @memberof Chartist.Base
-   * @param {String} event Name of the event. Check the examples for supported events.
-   * @param {Function} handler The handler function that will be called when an event with the given name was emitted. This function will receive a data argument which contains event data. See the example for more details.
-   */
-  function on(event, handler) {
-    this.eventEmitter.addEventHandler(event, handler);
-    return this;
-  }
-
-  /**
-   * Use this function to un-register event handlers. If the handler function parameter is omitted all handlers for the given event will be un-registered.
-   *
-   * @memberof Chartist.Base
-   * @param {String} event Name of the event for which a handler should be removed
-   * @param {Function} [handler] The handler function that that was previously used to register a new event handler. This handler will be removed from the event handler list. If this parameter is omitted then all event handlers for the given event are removed from the list.
-   */
-  function off(event, handler) {
-    this.eventEmitter.removeEventHandler(event, handler);
-    return this;
-  }
-
-  function initialize() {
-    // Add window resize listener that re-creates the chart
-    window.addEventListener('resize', this.resizeListener);
-
-    // Obtain current options based on matching media queries (if responsive options are given)
-    // This will also register a listener that is re-creating the chart based on media changes
-    this.optionsProvider = Chartist.optionsProvider(this.options, this.responsiveOptions, this.eventEmitter);
-    // Register options change listener that will trigger a chart update
-    this.eventEmitter.addEventHandler('optionsChanged', function() {
-      this.update();
-    }.bind(this));
-
-    // Before the first chart creation we need to register us with all plugins that are configured
-    // Initialize all relevant plugins with our chart object and the plugin options specified in the config
-    if(this.options.plugins) {
-      this.options.plugins.forEach(function(plugin) {
-        if(plugin instanceof Array) {
-          plugin[0](this, plugin[1]);
-        } else {
-          plugin(this);
-        }
-      }.bind(this));
-    }
-
-    // Event for data transformation that allows to manipulate the data before it gets rendered in the charts
-    this.eventEmitter.emit('data', {
-      type: 'initial',
-      data: this.data
-    });
-
-    // Create the first chart
-    this.createChart(this.optionsProvider.getCurrentOptions());
-
-    // As chart is initialized from the event loop now we can reset our timeout reference
-    // This is important if the chart gets initialized on the same element twice
-    this.initializeTimeoutId = undefined;
-  }
-
-  /**
-   * Constructor of chart base class.
-   *
-   * @param query
-   * @param data
-   * @param defaultOptions
-   * @param options
-   * @param responsiveOptions
-   * @constructor
-   */
-  function Base(query, data, defaultOptions, options, responsiveOptions) {
-    this.container = Chartist.querySelector(query);
-    this.data = data;
-    this.defaultOptions = defaultOptions;
-    this.options = options;
-    this.responsiveOptions = responsiveOptions;
-    this.eventEmitter = Chartist.EventEmitter();
-    this.supportsForeignObject = Chartist.Svg.isSupported('Extensibility');
-    this.supportsAnimations = Chartist.Svg.isSupported('AnimationEventsAttribute');
-    this.resizeListener = function resizeListener(){
-      this.update();
-    }.bind(this);
-
-    if(this.container) {
-      // If chartist was already initialized in this container we are detaching all event listeners first
-      if(this.container.__chartist__) {
-        this.container.__chartist__.detach();
-      }
-
-      this.container.__chartist__ = this;
-    }
-
-    // Using event loop for first draw to make it possible to register event listeners in the same call stack where
-    // the chart was created.
-    this.initializeTimeoutId = setTimeout(initialize.bind(this), 0);
-  }
-
-  // Creating the chart base class
-  Chartist.Base = Chartist.Class.extend({
-    constructor: Base,
-    optionsProvider: undefined,
-    container: undefined,
-    svg: undefined,
-    eventEmitter: undefined,
-    createChart: function() {
-      throw new Error('Base chart type can\'t be instantiated!');
-    },
-    update: update,
-    detach: detach,
-    on: on,
-    off: off,
-    version: Chartist.version,
-    supportsForeignObject: false
-  });
-
-}(window, document, Chartist));
-;/**
- * Chartist SVG module for simple SVG DOM abstraction
- *
- * @module Chartist.Svg
- */
-/* global Chartist */
-(function(window, document, Chartist) {
-  'use strict';
-
-  var svgNs = 'http://www.w3.org/2000/svg',
-    xmlNs = 'http://www.w3.org/2000/xmlns/',
-    xhtmlNs = 'http://www.w3.org/1999/xhtml';
-
-  Chartist.xmlNs = {
-    qualifiedName: 'xmlns:ct',
-    prefix: 'ct',
-    uri: 'http://gionkunz.github.com/chartist-js/ct'
-  };
-
-  /**
-   * Chartist.Svg creates a new SVG object wrapper with a starting element. You can use the wrapper to fluently create sub-elements and modify them.
-   *
-   * @memberof Chartist.Svg
-   * @constructor
-   * @param {String|Element} name The name of the SVG element to create or an SVG dom element which should be wrapped into Chartist.Svg
-   * @param {Object} attributes An object with properties that will be added as attributes to the SVG element that is created. Attributes with undefined values will not be added.
-   * @param {String} className This class or class list will be added to the SVG element
-   * @param {Object} parent The parent SVG wrapper object where this newly created wrapper and it's element will be attached to as child
-   * @param {Boolean} insertFirst If this param is set to true in conjunction with a parent element the newly created element will be added as first child element in the parent element
-   */
-  function Svg(name, attributes, className, parent, insertFirst) {
-    // If Svg is getting called with an SVG element we just return the wrapper
-    if(name instanceof Element) {
-      this._node = name;
-    } else {
-      this._node = document.createElementNS(svgNs, name);
-
-      // If this is an SVG element created then custom namespace
-      if(name === 'svg') {
-        this._node.setAttributeNS(xmlNs, Chartist.xmlNs.qualifiedName, Chartist.xmlNs.uri);
-      }
-    }
-
-    if(attributes) {
-      this.attr(attributes);
-    }
-
-    if(className) {
-      this.addClass(className);
-    }
-
-    if(parent) {
-      if (insertFirst && parent._node.firstChild) {
-        parent._node.insertBefore(this._node, parent._node.firstChild);
-      } else {
-        parent._node.appendChild(this._node);
-      }
-    }
-  }
-
-  /**
-   * Set attributes on the current SVG element of the wrapper you're currently working on.
-   *
-   * @memberof Chartist.Svg
-   * @param {Object|String} attributes An object with properties that will be added as attributes to the SVG element that is created. Attributes with undefined values will not be added. If this parameter is a String then the function is used as a getter and will return the attribute value.
-   * @param {String} ns If specified, the attributes will be set as namespace attributes with ns as prefix.
-   * @return {Object|String} The current wrapper object will be returned so it can be used for chaining or the attribute value if used as getter function.
-   */
-  function attr(attributes, ns) {
-    if(typeof attributes === 'string') {
-      if(ns) {
-        return this._node.getAttributeNS(ns, attributes);
-      } else {
-        return this._node.getAttribute(attributes);
-      }
-    }
-
-    Object.keys(attributes).forEach(function(key) {
-      // If the attribute value is undefined we can skip this one
-      if(attributes[key] === undefined) {
-        return;
-      }
-
-      if(ns) {
-        this._node.setAttributeNS(ns, [Chartist.xmlNs.prefix, ':', key].join(''), attributes[key]);
-      } else {
-        this._node.setAttribute(key, attributes[key]);
-      }
-    }.bind(this));
-
-    return this;
-  }
-
-  /**
-   * Create a new SVG element whose wrapper object will be selected for further operations. This way you can also create nested groups easily.
-   *
-   * @memberof Chartist.Svg
-   * @param {String} name The name of the SVG element that should be created as child element of the currently selected element wrapper
-   * @param {Object} [attributes] An object with properties that will be added as attributes to the SVG element that is created. Attributes with undefined values will not be added.
-   * @param {String} [className] This class or class list will be added to the SVG element
-   * @param {Boolean} [insertFirst] If this param is set to true in conjunction with a parent element the newly created element will be added as first child element in the parent element
-   * @return {Chartist.Svg} Returns a Chartist.Svg wrapper object that can be used to modify the containing SVG data
-   */
-  function elem(name, attributes, className, insertFirst) {
-    return new Chartist.Svg(name, attributes, className, this, insertFirst);
-  }
-
-  /**
-   * Returns the parent Chartist.SVG wrapper object
-   *
-   * @memberof Chartist.Svg
-   * @return {Chartist.Svg} Returns a Chartist.Svg wrapper around the parent node of the current node. If the parent node is not existing or it's not an SVG node then this function will return null.
-   */
-  function parent() {
-    return this._node.parentNode instanceof SVGElement ? new Chartist.Svg(this._node.parentNode) : null;
-  }
-
-  /**
-   * This method returns a Chartist.Svg wrapper around the root SVG element of the current tree.
-   *
-   * @memberof Chartist.Svg
-   * @return {Chartist.Svg} The root SVG element wrapped in a Chartist.Svg element
-   */
-  function root() {
-    var node = this._node;
-    while(node.nodeName !== 'svg') {
-      node = node.parentNode;
-    }
-    return new Chartist.Svg(node);
-  }
-
-  /**
-   * Find the first child SVG element of the current element that matches a CSS selector. The returned object is a Chartist.Svg wrapper.
-   *
-   * @memberof Chartist.Svg
-   * @param {String} selector A CSS selector that is used to query for child SVG elements
-   * @return {Chartist.Svg} The SVG wrapper for the element found or null if no element was found
-   */
-  function querySelector(selector) {
-    var foundNode = this._node.querySelector(selector);
-    return foundNode ? new Chartist.Svg(foundNode) : null;
-  }
-
-  /**
-   * Find the all child SVG elements of the current element that match a CSS selector. The returned object is a Chartist.Svg.List wrapper.
-   *
-   * @memberof Chartist.Svg
-   * @param {String} selector A CSS selector that is used to query for child SVG elements
-   * @return {Chartist.Svg.List} The SVG wrapper list for the element found or null if no element was found
-   */
-  function querySelectorAll(selector) {
-    var foundNodes = this._node.querySelectorAll(selector);
-    return foundNodes.length ? new Chartist.Svg.List(foundNodes) : null;
-  }
-
-  /**
-   * This method creates a foreignObject (see https://developer.mozilla.org/en-US/docs/Web/SVG/Element/foreignObject) that allows to embed HTML content into a SVG graphic. With the help of foreignObjects you can enable the usage of regular HTML elements inside of SVG where they are subject for SVG positioning and transformation but the Browser will use the HTML rendering capabilities for the containing DOM.
-   *
-   * @memberof Chartist.Svg
-   * @param {Node|String} content The DOM Node, or HTML string that will be converted to a DOM Node, that is then placed into and wrapped by the foreignObject
-   * @param {String} [attributes] An object with properties that will be added as attributes to the foreignObject element that is created. Attributes with undefined values will not be added.
-   * @param {String} [className] This class or class list will be added to the SVG element
-   * @param {Boolean} [insertFirst] Specifies if the foreignObject should be inserted as first child
-   * @return {Chartist.Svg} New wrapper object that wraps the foreignObject element
-   */
-  function foreignObject(content, attributes, className, insertFirst) {
-    // If content is string then we convert it to DOM
-    // TODO: Handle case where content is not a string nor a DOM Node
-    if(typeof content === 'string') {
-      var container = document.createElement('div');
-      container.innerHTML = content;
-      content = container.firstChild;
-    }
-
-    // Adding namespace to content element
-    content.setAttribute('xmlns', xhtmlNs);
-
-    // Creating the foreignObject without required extension attribute (as described here
-    // http://www.w3.org/TR/SVG/extend.html#ForeignObjectElement)
-    var fnObj = this.elem('foreignObject', attributes, className, insertFirst);
-
-    // Add content to foreignObjectElement
-    fnObj._node.appendChild(content);
-
-    return fnObj;
-  }
-
-  /**
-   * This method adds a new text element to the current Chartist.Svg wrapper.
-   *
-   * @memberof Chartist.Svg
-   * @param {String} t The text that should be added to the text element that is created
-   * @return {Chartist.Svg} The same wrapper object that was used to add the newly created element
-   */
-  function text(t) {
-    this._node.appendChild(document.createTextNode(t));
-    return this;
-  }
-
-  /**
-   * This method will clear all child nodes of the current wrapper object.
-   *
-   * @memberof Chartist.Svg
-   * @return {Chartist.Svg} The same wrapper object that got emptied
-   */
-  function empty() {
-    while (this._node.firstChild) {
-      this._node.removeChild(this._node.firstChild);
-    }
-
-    return this;
-  }
-
-  /**
-   * This method will cause the current wrapper to remove itself from its parent wrapper. Use this method if you'd like to get rid of an element in a given DOM structure.
-   *
-   * @memberof Chartist.Svg
-   * @return {Chartist.Svg} The parent wrapper object of the element that got removed
-   */
-  function remove() {
-    this._node.parentNode.removeChild(this._node);
-    return this.parent();
-  }
-
-  /**
-   * This method will replace the element with a new element that can be created outside of the current DOM.
-   *
-   * @memberof Chartist.Svg
-   * @param {Chartist.Svg} newElement The new Chartist.Svg object that will be used to replace the current wrapper object
-   * @return {Chartist.Svg} The wrapper of the new element
-   */
-  function replace(newElement) {
-    this._node.parentNode.replaceChild(newElement._node, this._node);
-    return newElement;
-  }
-
-  /**
-   * This method will append an element to the current element as a child.
-   *
-   * @memberof Chartist.Svg
-   * @param {Chartist.Svg} element The Chartist.Svg element that should be added as a child
-   * @param {Boolean} [insertFirst] Specifies if the element should be inserted as first child
-   * @return {Chartist.Svg} The wrapper of the appended object
-   */
-  function append(element, insertFirst) {
-    if(insertFirst && this._node.firstChild) {
-      this._node.insertBefore(element._node, this._node.firstChild);
-    } else {
-      this._node.appendChild(element._node);
-    }
-
-    return this;
-  }
-
-  /**
-   * Returns an array of class names that are attached to the current wrapper element. This method can not be chained further.
-   *
-   * @memberof Chartist.Svg
-   * @return {Array} A list of classes or an empty array if there are no classes on the current element
-   */
-  function classes() {
-    return this._node.getAttribute('class') ? this._node.getAttribute('class').trim().split(/\s+/) : [];
-  }
-
-  /**
-   * Adds one or a space separated list of classes to the current element and ensures the classes are only existing once.
-   *
-   * @memberof Chartist.Svg
-   * @param {String} names A white space separated list of class names
-   * @return {Chartist.Svg} The wrapper of the current element
-   */
-  function addClass(names) {
-    this._node.setAttribute('class',
-      this.classes(this._node)
-        .concat(names.trim().split(/\s+/))
-        .filter(function(elem, pos, self) {
-          return self.indexOf(elem) === pos;
-        }).join(' ')
-    );
-
-    return this;
-  }
-
-  /**
-   * Removes one or a space separated list of classes from the current element.
-   *
-   * @memberof Chartist.Svg
-   * @param {String} names A white space separated list of class names
-   * @return {Chartist.Svg} The wrapper of the current element
-   */
-  function removeClass(names) {
-    var removedClasses = names.trim().split(/\s+/);
-
-    this._node.setAttribute('class', this.classes(this._node).filter(function(name) {
-      return removedClasses.indexOf(name) === -1;
-    }).join(' '));
-
-    return this;
-  }
-
-  /**
-   * Removes all classes from the current element.
-   *
-   * @memberof Chartist.Svg
-   * @return {Chartist.Svg} The wrapper of the current element
-   */
-  function removeAllClasses() {
-    this._node.setAttribute('class', '');
-
-    return this;
-  }
-
-  /**
-   * "Save" way to get property value from svg BoundingBox.
-   * This is a workaround. Firefox throws an NS_ERROR_FAILURE error if getBBox() is called on an invisible node.
-   * See [NS_ERROR_FAILURE: Component returned failure code: 0x80004005](http://jsfiddle.net/sym3tri/kWWDK/)
-   *
-   * @memberof Chartist.Svg
-   * @param {SVGElement} node The svg node to
-   * @param {String} prop The property to fetch (ex.: height, width, ...)
-   * @returns {Number} The value of the given bbox property
-   */
-  function getBBoxProperty(node, prop) {
-    try {
-      return node.getBBox()[prop];
-    } catch(e) {}
-
-    return 0;
-  }
-
-  /**
-   * Get element height with fallback to svg BoundingBox or parent container dimensions:
-   * See [bugzilla.mozilla.org](https://bugzilla.mozilla.org/show_bug.cgi?id=530985)
-   *
-   * @memberof Chartist.Svg
-   * @return {Number} The elements height in pixels
-   */
-  function height() {
-    return this._node.clientHeight || Math.round(getBBoxProperty(this._node, 'height')) || this._node.parentNode.clientHeight;
-  }
-
-  /**
-   * Get element width with fallback to svg BoundingBox or parent container dimensions:
-   * See [bugzilla.mozilla.org](https://bugzilla.mozilla.org/show_bug.cgi?id=530985)
-   *
-   * @memberof Chartist.Core
-   * @return {Number} The elements width in pixels
-   */
-  function width() {
-    return this._node.clientWidth || Math.round(getBBoxProperty(this._node, 'width')) || this._node.parentNode.clientWidth;
-  }
-
-  /**
-   * The animate function lets you animate the current element with SMIL animations. You can add animations for multiple attributes at the same time by using an animation definition object. This object should contain SMIL animation attributes. Please refer to http://www.w3.org/TR/SVG/animate.html for a detailed specification about the available animation attributes. Additionally an easing property can be passed in the animation definition object. This can be a string with a name of an easing function in `Chartist.Svg.Easing` or an array with four numbers specifying a cubic Bézier curve.
-   * **An animations object could look like this:**
-   * ```javascript
-   * element.animate({
-   *   opacity: {
-   *     dur: 1000,
-   *     from: 0,
-   *     to: 1
-   *   },
-   *   x1: {
-   *     dur: '1000ms',
-   *     from: 100,
-   *     to: 200,
-   *     easing: 'easeOutQuart'
-   *   },
-   *   y1: {
-   *     dur: '2s',
-   *     from: 0,
-   *     to: 100
-   *   }
-   * });
-   * ```
-   * **Automatic unit conversion**
-   * For the `dur` and the `begin` animate attribute you can also omit a unit by passing a number. The number will automatically be converted to milli seconds.
-   * **Guided mode**
-   * The default behavior of SMIL animations with offset using the `begin` attribute is that the attribute will keep it's original value until the animation starts. Mostly this behavior is not desired as you'd like to have your element attributes already initialized with the animation `from` value even before the animation starts. Also if you don't specify `fill="freeze"` on an animate element or if you delete the animation after it's done (which is done in guided mode) the attribute will switch back to the initial value. This behavior is also not desired when performing simple one-time animations. For one-time animations you'd want to trigger animations immediately instead of relative to the document begin time. That's why in guided mode Chartist.Svg will also use the `begin` property to schedule a timeout and manually start the animation after the timeout. If you're using multiple SMIL definition objects for an attribute (in an array), guided mode will be disabled for this attribute, even if you explicitly enabled it.
-   * If guided mode is enabled the following behavior is added:
-   * - Before the animation starts (even when delayed with `begin`) the animated attribute will be set already to the `from` value of the animation
-   * - `begin` is explicitly set to `indefinite` so it can be started manually without relying on document begin time (creation)
-   * - The animate element will be forced to use `fill="freeze"`
-   * - The animation will be triggered with `beginElement()` in a timeout where `begin` of the definition object is interpreted in milli seconds. If no `begin` was specified the timeout is triggered immediately.
-   * - After the animation the element attribute value will be set to the `to` value of the animation
-   * - The animate element is deleted from the DOM
-   *
-   * @memberof Chartist.Svg
-   * @param {Object} animations An animations object where the property keys are the attributes you'd like to animate. The properties should be objects again that contain the SMIL animation attributes (usually begin, dur, from, and to). The property begin and dur is auto converted (see Automatic unit conversion). You can also schedule multiple animations for the same attribute by passing an Array of SMIL definition objects. Attributes that contain an array of SMIL definition objects will not be executed in guided mode.
-   * @param {Boolean} guided Specify if guided mode should be activated for this animation (see Guided mode). If not otherwise specified, guided mode will be activated.
-   * @param {Object} eventEmitter If specified, this event emitter will be notified when an animation starts or ends.
-   * @return {Chartist.Svg} The current element where the animation was added
-   */
-  function animate(animations, guided, eventEmitter) {
-    if(guided === undefined) {
-      guided = true;
-    }
-
-    Object.keys(animations).forEach(function createAnimateForAttributes(attribute) {
-
-      function createAnimate(animationDefinition, guided) {
-        var attributeProperties = {},
-          animate,
-          timeout,
-          easing;
-
-        // Check if an easing is specified in the definition object and delete it from the object as it will not
-        // be part of the animate element attributes.
-        if(animationDefinition.easing) {
-          // If already an easing Bézier curve array we take it or we lookup a easing array in the Easing object
-          easing = animationDefinition.easing instanceof Array ?
-            animationDefinition.easing :
-            Chartist.Svg.Easing[animationDefinition.easing];
-          delete animationDefinition.easing;
-        }
-
-        // If numeric dur or begin was provided we assume milli seconds
-        animationDefinition.begin = Chartist.ensureUnit(animationDefinition.begin, 'ms');
-        animationDefinition.dur = Chartist.ensureUnit(animationDefinition.dur, 'ms');
-
-        if(easing) {
-          animationDefinition.calcMode = 'spline';
-          animationDefinition.keySplines = easing.join(' ');
-          animationDefinition.keyTimes = '0;1';
-        }
-
-        // Adding "fill: freeze" if we are in guided mode and set initial attribute values
-        if(guided) {
-          animationDefinition.fill = 'freeze';
-          // Animated property on our element should already be set to the animation from value in guided mode
-          attributeProperties[attribute] = animationDefinition.from;
-          this.attr(attributeProperties);
-
-          // In guided mode we also set begin to indefinite so we can trigger the start manually and put the begin
-          // which needs to be in ms aside
-          timeout = Chartist.stripUnit(animationDefinition.begin || 0);
-          animationDefinition.begin = 'indefinite';
-        }
-
-        animate = this.elem('animate', Chartist.extend({
-          attributeName: attribute
-        }, animationDefinition));
-
-        if(guided) {
-          // If guided we take the value that was put aside in timeout and trigger the animation manually with a timeout
-          setTimeout(function() {
-            // If beginElement fails we set the animated attribute to the end position and remove the animate element
-            // This happens if the SMIL ElementTimeControl interface is not supported or any other problems occured in
-            // the browser. (Currently FF 34 does not support animate elements in foreignObjects)
-            try {
-              animate._node.beginElement();
-            } catch(err) {
-              // Set animated attribute to current animated value
-              attributeProperties[attribute] = animationDefinition.to;
-              this.attr(attributeProperties);
-              // Remove the animate element as it's no longer required
-              animate.remove();
-            }
-          }.bind(this), timeout);
-        }
-
-        if(eventEmitter) {
-          animate._node.addEventListener('beginEvent', function handleBeginEvent() {
-            eventEmitter.emit('animationBegin', {
-              element: this,
-              animate: animate._node,
-              params: animationDefinition
-            });
-          }.bind(this));
-        }
-
-        animate._node.addEventListener('endEvent', function handleEndEvent() {
-          if(eventEmitter) {
-            eventEmitter.emit('animationEnd', {
-              element: this,
-              animate: animate._node,
-              params: animationDefinition
-            });
-          }
-
-          if(guided) {
-            // Set animated attribute to current animated value
-            attributeProperties[attribute] = animationDefinition.to;
-            this.attr(attributeProperties);
-            // Remove the animate element as it's no longer required
-            animate.remove();
-          }
-        }.bind(this));
-      }
-
-      // If current attribute is an array of definition objects we create an animate for each and disable guided mode
-      if(animations[attribute] instanceof Array) {
-        animations[attribute].forEach(function(animationDefinition) {
-          createAnimate.bind(this)(animationDefinition, false);
-        }.bind(this));
-      } else {
-        createAnimate.bind(this)(animations[attribute], guided);
-      }
-
-    }.bind(this));
-
-    return this;
-  }
-
-  Chartist.Svg = Chartist.Class.extend({
-    constructor: Svg,
-    attr: attr,
-    elem: elem,
-    parent: parent,
-    root: root,
-    querySelector: querySelector,
-    querySelectorAll: querySelectorAll,
-    foreignObject: foreignObject,
-    text: text,
-    empty: empty,
-    remove: remove,
-    replace: replace,
-    append: append,
-    classes: classes,
-    addClass: addClass,
-    removeClass: removeClass,
-    removeAllClasses: removeAllClasses,
-    height: height,
-    width: width,
-    animate: animate
-  });
-
-  /**
-   * This method checks for support of a given SVG feature like Extensibility, SVG-animation or the like. Check http://www.w3.org/TR/SVG11/feature for a detailed list.
-   *
-   * @memberof Chartist.Svg
-   * @param {String} feature The SVG 1.1 feature that should be checked for support.
-   * @return {Boolean} True of false if the feature is supported or not
-   */
-  Chartist.Svg.isSupported = function(feature) {
-    return document.implementation.hasFeature('http://www.w3.org/TR/SVG11/feature#' + feature, '1.1');
-  };
-
-  /**
-   * This Object contains some standard easing cubic bezier curves. Then can be used with their name in the `Chartist.Svg.animate`. You can also extend the list and use your own name in the `animate` function. Click the show code button to see the available bezier functions.
-   *
-   * @memberof Chartist.Svg
-   */
-  var easingCubicBeziers = {
-    easeInSine: [0.47, 0, 0.745, 0.715],
-    easeOutSine: [0.39, 0.575, 0.565, 1],
-    easeInOutSine: [0.445, 0.05, 0.55, 0.95],
-    easeInQuad: [0.55, 0.085, 0.68, 0.53],
-    easeOutQuad: [0.25, 0.46, 0.45, 0.94],
-    easeInOutQuad: [0.455, 0.03, 0.515, 0.955],
-    easeInCubic: [0.55, 0.055, 0.675, 0.19],
-    easeOutCubic: [0.215, 0.61, 0.355, 1],
-    easeInOutCubic: [0.645, 0.045, 0.355, 1],
-    easeInQuart: [0.895, 0.03, 0.685, 0.22],
-    easeOutQuart: [0.165, 0.84, 0.44, 1],
-    easeInOutQuart: [0.77, 0, 0.175, 1],
-    easeInQuint: [0.755, 0.05, 0.855, 0.06],
-    easeOutQuint: [0.23, 1, 0.32, 1],
-    easeInOutQuint: [0.86, 0, 0.07, 1],
-    easeInExpo: [0.95, 0.05, 0.795, 0.035],
-    easeOutExpo: [0.19, 1, 0.22, 1],
-    easeInOutExpo: [1, 0, 0, 1],
-    easeInCirc: [0.6, 0.04, 0.98, 0.335],
-    easeOutCirc: [0.075, 0.82, 0.165, 1],
-    easeInOutCirc: [0.785, 0.135, 0.15, 0.86],
-    easeInBack: [0.6, -0.28, 0.735, 0.045],
-    easeOutBack: [0.175, 0.885, 0.32, 1.275],
-    easeInOutBack: [0.68, -0.55, 0.265, 1.55]
-  };
-
-  Chartist.Svg.Easing = easingCubicBeziers;
-
-  /**
-   * This helper class is to wrap multiple `Chartist.Svg` elements into a list where you can call the `Chartist.Svg` functions on all elements in the list with one call. This is helpful when you'd like to perform calls with `Chartist.Svg` on multiple elements.
-   * An instance of this class is also returned by `Chartist.Svg.querySelectorAll`.
-   *
-   * @memberof Chartist.Svg
-   * @param {Array<Node>|NodeList} nodeList An Array of SVG DOM nodes or a SVG DOM NodeList (as returned by document.querySelectorAll)
-   * @constructor
-   */
-  function SvgList(nodeList) {
-    var list = this;
-
-    this.svgElements = [];
-    for(var i = 0; i < nodeList.length; i++) {
-      this.svgElements.push(new Chartist.Svg(nodeList[i]));
-    }
-
-    // Add delegation methods for Chartist.Svg
-    Object.keys(Chartist.Svg.prototype).filter(function(prototypeProperty) {
-      return ['constructor',
-          'parent',
-          'querySelector',
-          'querySelectorAll',
-          'replace',
-          'append',
-          'classes',
-          'height',
-          'width'].indexOf(prototypeProperty) === -1;
-    }).forEach(function(prototypeProperty) {
-      list[prototypeProperty] = function() {
-        var args = Array.prototype.slice.call(arguments, 0);
-        list.svgElements.forEach(function(element) {
-          Chartist.Svg.prototype[prototypeProperty].apply(element, args);
-        });
-        return list;
-      };
-    });
-  }
-
-  Chartist.Svg.List = Chartist.Class.extend({
-    constructor: SvgList
-  });
-}(window, document, Chartist));
-;/**
- * Chartist SVG path module for SVG path description creation and modification.
- *
- * @module Chartist.Svg.Path
- */
-/* global Chartist */
-(function(window, document, Chartist) {
-  'use strict';
-
-  /**
-   * Contains the descriptors of supported element types in a SVG path. Currently only move, line and curve are supported.
-   *
-   * @memberof Chartist.Svg.Path
-   * @type {Object}
-   */
-  var elementDescriptions = {
-    m: ['x', 'y'],
-    l: ['x', 'y'],
-    c: ['x1', 'y1', 'x2', 'y2', 'x', 'y'],
-    a: ['rx', 'ry', 'xAr', 'lAf', 'sf', 'x', 'y']
-  };
-
-  /**
-   * Default options for newly created SVG path objects.
-   *
-   * @memberof Chartist.Svg.Path
-   * @type {Object}
-   */
-  var defaultOptions = {
-    // The accuracy in digit count after the decimal point. This will be used to round numbers in the SVG path. If this option is set to false then no rounding will be performed.
-    accuracy: 3
-  };
-
-  function element(command, params, pathElements, pos, relative, data) {
-    var pathElement = Chartist.extend({
-      command: relative ? command.toLowerCase() : command.toUpperCase()
-    }, params, data ? { data: data } : {} );
-
-    pathElements.splice(pos, 0, pathElement);
-  }
-
-  function forEachParam(pathElements, cb) {
-    pathElements.forEach(function(pathElement, pathElementIndex) {
-      elementDescriptions[pathElement.command.toLowerCase()].forEach(function(paramName, paramIndex) {
-        cb(pathElement, paramName, pathElementIndex, paramIndex, pathElements);
-      });
-    });
-  }
-
-  /**
-   * Used to construct a new path object.
-   *
-   * @memberof Chartist.Svg.Path
-   * @param {Boolean} close If set to true then this path will be closed when stringified (with a Z at the end)
-   * @param {Object} options Options object that overrides the default objects. See default options for more details.
-   * @constructor
-   */
-  function SvgPath(close, options) {
-    this.pathElements = [];
-    this.pos = 0;
-    this.close = close;
-    this.options = Chartist.extend({}, defaultOptions, options);
-  }
-
-  /**
-   * Gets or sets the current position (cursor) inside of the path. You can move around the cursor freely but limited to 0 or the count of existing elements. All modifications with element functions will insert new elements at the position of this cursor.
-   *
-   * @memberof Chartist.Svg.Path
-   * @param {Number} [pos] If a number is passed then the cursor is set to this position in the path element array.
-   * @return {Chartist.Svg.Path|Number} If the position parameter was passed then the return value will be the path object for easy call chaining. If no position parameter was passed then the current position is returned.
-   */
-  function position(pos) {
-    if(pos !== undefined) {
-      this.pos = Math.max(0, Math.min(this.pathElements.length, pos));
-      return this;
-    } else {
-      return this.pos;
-    }
-  }
-
-  /**
-   * Removes elements from the path starting at the current position.
-   *
-   * @memberof Chartist.Svg.Path
-   * @param {Number} count Number of path elements that should be removed from the current position.
-   * @return {Chartist.Svg.Path} The current path object for easy call chaining.
-   */
-  function remove(count) {
-    this.pathElements.splice(this.pos, count);
-    return this;
-  }
-
-  /**
-   * Use this function to add a new move SVG path element.
-   *
-   * @memberof Chartist.Svg.Path
-   * @param {Number} x The x coordinate for the move element.
-   * @param {Number} y The y coordinate for the move element.
-   * @param {Boolean} [relative] If set to true the move element will be created with relative coordinates (lowercase letter)
-   * @param {*} [data] Any data that should be stored with the element object that will be accessible in pathElement
-   * @return {Chartist.Svg.Path} The current path object for easy call chaining.
-   */
-  function move(x, y, relative, data) {
-    element('M', {
-      x: +x,
-      y: +y
-    }, this.pathElements, this.pos++, relative, data);
-    return this;
-  }
-
-  /**
-   * Use this function to add a new line SVG path element.
-   *
-   * @memberof Chartist.Svg.Path
-   * @param {Number} x The x coordinate for the line element.
-   * @param {Number} y The y coordinate for the line element.
-   * @param {Boolean} [relative] If set to true the line element will be created with relative coordinates (lowercase letter)
-   * @param {*} [data] Any data that should be stored with the element object that will be accessible in pathElement
-   * @return {Chartist.Svg.Path} The current path object for easy call chaining.
-   */
-  function line(x, y, relative, data) {
-    element('L', {
-      x: +x,
-      y: +y
-    }, this.pathElements, this.pos++, relative, data);
-    return this;
-  }
-
-  /**
-   * Use this function to add a new curve SVG path element.
-   *
-   * @memberof Chartist.Svg.Path
-   * @param {Number} x1 The x coordinate for the first control point of the bezier curve.
-   * @param {Number} y1 The y coordinate for the first control point of the bezier curve.
-   * @param {Number} x2 The x coordinate for the second control point of the bezier curve.
-   * @param {Number} y2 The y coordinate for the second control point of the bezier curve.
-   * @param {Number} x The x coordinate for the target point of the curve element.
-   * @param {Number} y The y coordinate for the target point of the curve element.
-   * @param {Boolean} [relative] If set to true the curve element will be created with relative coordinates (lowercase letter)
-   * @param {*} [data] Any data that should be stored with the element object that will be accessible in pathElement
-   * @return {Chartist.Svg.Path} The current path object for easy call chaining.
-   */
-  function curve(x1, y1, x2, y2, x, y, relative, data) {
-    element('C', {
-      x1: +x1,
-      y1: +y1,
-      x2: +x2,
-      y2: +y2,
-      x: +x,
-      y: +y
-    }, this.pathElements, this.pos++, relative, data);
-    return this;
-  }
-
-  /**
-   * Use this function to add a new non-bezier curve SVG path element.
-   *
-   * @memberof Chartist.Svg.Path
-   * @param {Number} rx The radius to be used for the x-axis of the arc.
-   * @param {Number} ry The radius to be used for the y-axis of the arc.
-   * @param {Number} xAr Defines the orientation of the arc
-   * @param {Number} lAf Large arc flag
-   * @param {Number} sf Sweep flag
-   * @param {Number} x The x coordinate for the target point of the curve element.
-   * @param {Number} y The y coordinate for the target point of the curve element.
-   * @param {Boolean} [relative] If set to true the curve element will be created with relative coordinates (lowercase letter)
-   * @param {*} [data] Any data that should be stored with the element object that will be accessible in pathElement
-   * @return {Chartist.Svg.Path} The current path object for easy call chaining.
-   */
-  function arc(rx, ry, xAr, lAf, sf, x, y, relative, data) {
-    element('A', {
-      rx: +rx,
-      ry: +ry,
-      xAr: +xAr,
-      lAf: +lAf,
-      sf: +sf,
-      x: +x,
-      y: +y
-    }, this.pathElements, this.pos++, relative, data);
-    return this;
-  }
-
-  /**
-   * Parses an SVG path seen in the d attribute of path elements, and inserts the parsed elements into the existing path object at the current cursor position. Any closing path indicators (Z at the end of the path) will be ignored by the parser as this is provided by the close option in the options of the path object.
-   *
-   * @memberof Chartist.Svg.Path
-   * @param {String} path Any SVG path that contains move (m), line (l) or curve (c) components.
-   * @return {Chartist.Svg.Path} The current path object for easy call chaining.
-   */
-  function parse(path) {
-    // Parsing the SVG path string into an array of arrays [['M', '10', '10'], ['L', '100', '100']]
-    var chunks = path.replace(/([A-Za-z])([0-9])/g, '$1 $2')
-      .replace(/([0-9])([A-Za-z])/g, '$1 $2')
-      .split(/[\s,]+/)
-      .reduce(function(result, element) {
-        if(element.match(/[A-Za-z]/)) {
-          result.push([]);
-        }
-
-        result[result.length - 1].push(element);
-        return result;
-      }, []);
-
-    // If this is a closed path we remove the Z at the end because this is determined by the close option
-    if(chunks[chunks.length - 1][0].toUpperCase() === 'Z') {
-      chunks.pop();
-    }
-
-    // Using svgPathElementDescriptions to map raw path arrays into objects that contain the command and the parameters
-    // For example {command: 'M', x: '10', y: '10'}
-    var elements = chunks.map(function(chunk) {
-        var command = chunk.shift(),
-          description = elementDescriptions[command.toLowerCase()];
-
-        return Chartist.extend({
-          command: command
-        }, description.reduce(function(result, paramName, index) {
-          result[paramName] = +chunk[index];
-          return result;
-        }, {}));
-      });
-
-    // Preparing a splice call with the elements array as var arg params and insert the parsed elements at the current position
-    var spliceArgs = [this.pos, 0];
-    Array.prototype.push.apply(spliceArgs, elements);
-    Array.prototype.splice.apply(this.pathElements, spliceArgs);
-    // Increase the internal position by the element count
-    this.pos += elements.length;
-
-    return this;
-  }
-
-  /**
-   * This function renders to current SVG path object into a final SVG string that can be used in the d attribute of SVG path elements. It uses the accuracy option to round big decimals. If the close parameter was set in the constructor of this path object then a path closing Z will be appended to the output string.
-   *
-   * @memberof Chartist.Svg.Path
-   * @return {String}
-   */
-  function stringify() {
-    var accuracyMultiplier = Math.pow(10, this.options.accuracy);
-
-    return this.pathElements.reduce(function(path, pathElement) {
-        var params = elementDescriptions[pathElement.command.toLowerCase()].map(function(paramName) {
-          return this.options.accuracy ?
-            (Math.round(pathElement[paramName] * accuracyMultiplier) / accuracyMultiplier) :
-            pathElement[paramName];
-        }.bind(this));
-
-        return path + pathElement.command + params.join(',');
-      }.bind(this), '') + (this.close ? 'Z' : '');
-  }
-
-  /**
-   * Scales all elements in the current SVG path object. There is an individual parameter for each coordinate. Scaling will also be done for control points of curves, affecting the given coordinate.
-   *
-   * @memberof Chartist.Svg.Path
-   * @param {Number} x The number which will be used to scale the x, x1 and x2 of all path elements.
-   * @param {Number} y The number which will be used to scale the y, y1 and y2 of all path elements.
-   * @return {Chartist.Svg.Path} The current path object for easy call chaining.
-   */
-  function scale(x, y) {
-    forEachParam(this.pathElements, function(pathElement, paramName) {
-      pathElement[paramName] *= paramName[0] === 'x' ? x : y;
-    });
-    return this;
-  }
-
-  /**
-   * Translates all elements in the current SVG path object. The translation is relative and there is an individual parameter for each coordinate. Translation will also be done for control points of curves, affecting the given coordinate.
-   *
-   * @memberof Chartist.Svg.Path
-   * @param {Number} x The number which will be used to translate the x, x1 and x2 of all path elements.
-   * @param {Number} y The number which will be used to translate the y, y1 and y2 of all path elements.
-   * @return {Chartist.Svg.Path} The current path object for easy call chaining.
-   */
-  function translate(x, y) {
-    forEachParam(this.pathElements, function(pathElement, paramName) {
-      pathElement[paramName] += paramName[0] === 'x' ? x : y;
-    });
-    return this;
-  }
-
-  /**
-   * This function will run over all existing path elements and then loop over their attributes. The callback function will be called for every path element attribute that exists in the current path.
-   * The method signature of the callback function looks like this:
-   * ```javascript
-   * function(pathElement, paramName, pathElementIndex, paramIndex, pathElements)
-   * ```
-   * If something else than undefined is returned by the callback function, this value will be used to replace the old value. This allows you to build custom transformations of path objects that can't be achieved using the basic transformation functions scale and translate.
-   *
-   * @memberof Chartist.Svg.Path
-   * @param {Function} transformFnc The callback function for the transformation. Check the signature in the function description.
-   * @return {Chartist.Svg.Path} The current path object for easy call chaining.
-   */
-  function transform(transformFnc) {
-    forEachParam(this.pathElements, function(pathElement, paramName, pathElementIndex, paramIndex, pathElements) {
-      var transformed = transformFnc(pathElement, paramName, pathElementIndex, paramIndex, pathElements);
-      if(transformed || transformed === 0) {
-        pathElement[paramName] = transformed;
-      }
-    });
-    return this;
-  }
-
-  /**
-   * This function clones a whole path object with all its properties. This is a deep clone and path element objects will also be cloned.
-   *
-   * @memberof Chartist.Svg.Path
-   * @param {Boolean} [close] Optional option to set the new cloned path to closed. If not specified or false, the original path close option will be used.
-   * @return {Chartist.Svg.Path}
-   */
-  function clone(close) {
-    var c = new Chartist.Svg.Path(close || this.close);
-    c.pos = this.pos;
-    c.pathElements = this.pathElements.slice().map(function cloneElements(pathElement) {
-      return Chartist.extend({}, pathElement);
-    });
-    c.options = Chartist.extend({}, this.options);
-    return c;
-  }
-
-  /**
-   * Split a Svg.Path object by a specific command in the path chain. The path chain will be split and an array of newly created paths objects will be returned. This is useful if you'd like to split an SVG path by it's move commands, for example, in order to isolate chunks of drawings.
-   *
-   * @memberof Chartist.Svg.Path
-   * @param {String} command The command you'd like to use to split the path
-   * @return {Array<Chartist.Svg.Path>}
-   */
-  function splitByCommand(command) {
-    var split = [
-      new Chartist.Svg.Path()
-    ];
-
-    this.pathElements.forEach(function(pathElement) {
-      if(pathElement.command === command.toUpperCase() && split[split.length - 1].pathElements.length !== 0) {
-        split.push(new Chartist.Svg.Path());
-      }
-
-      split[split.length - 1].pathElements.push(pathElement);
-    });
-
-    return split;
-  }
-
-  /**
-   * This static function on `Chartist.Svg.Path` is joining multiple paths together into one paths.
-   *
-   * @memberof Chartist.Svg.Path
-   * @param {Array<Chartist.Svg.Path>} paths A list of paths to be joined together. The order is important.
-   * @param {boolean} close If the newly created path should be a closed path
-   * @param {Object} options Path options for the newly created path.
-   * @return {Chartist.Svg.Path}
-   */
-
-  function join(paths, close, options) {
-    var joinedPath = new Chartist.Svg.Path(close, options);
-    for(var i = 0; i < paths.length; i++) {
-      var path = paths[i];
-      for(var j = 0; j < path.pathElements.length; j++) {
-        joinedPath.pathElements.push(path.pathElements[j]);
-      }
-    }
-    return joinedPath;
-  }
-
-  Chartist.Svg.Path = Chartist.Class.extend({
-    constructor: SvgPath,
-    position: position,
-    remove: remove,
-    move: move,
-    line: line,
-    curve: curve,
-    arc: arc,
-    scale: scale,
-    translate: translate,
-    transform: transform,
-    parse: parse,
-    stringify: stringify,
-    clone: clone,
-    splitByCommand: splitByCommand
-  });
-
-  Chartist.Svg.Path.elementDescriptions = elementDescriptions;
-  Chartist.Svg.Path.join = join;
-}(window, document, Chartist));
-;/* global Chartist */
-(function (window, document, Chartist) {
-  'use strict';
-
-  var axisUnits = {
-    x: {
-      pos: 'x',
-      len: 'width',
-      dir: 'horizontal',
-      rectStart: 'x1',
-      rectEnd: 'x2',
-      rectOffset: 'y2'
-    },
-    y: {
-      pos: 'y',
-      len: 'height',
-      dir: 'vertical',
-      rectStart: 'y2',
-      rectEnd: 'y1',
-      rectOffset: 'x1'
-    }
-  };
-
-  function Axis(units, chartRect, ticks, options) {
-    this.units = units;
-    this.counterUnits = units === axisUnits.x ? axisUnits.y : axisUnits.x;
-    this.chartRect = chartRect;
-    this.axisLength = chartRect[units.rectEnd] - chartRect[units.rectStart];
-    this.gridOffset = chartRect[units.rectOffset];
-    this.ticks = ticks;
-    this.options = options;
-  }
-
-  function createGridAndLabels(gridGroup, labelGroup, useForeignObject, chartOptions, eventEmitter) {
-    var axisOptions = chartOptions['axis' + this.units.pos.toUpperCase()];
-    var projectedValues = this.ticks.map(this.projectValue.bind(this));
-    var labelValues = this.ticks.map(axisOptions.labelInterpolationFnc);
-
-    projectedValues.forEach(function(projectedValue, index) {
-      var labelOffset = {
-        x: 0,
-        y: 0
-      };
-
-      // TODO: Find better solution for solving this problem
-      // Calculate how much space we have available for the label
-      var labelLength;
-      if(projectedValues[index + 1]) {
-        // If we still have one label ahead, we can calculate the distance to the next tick / label
-        labelLength = projectedValues[index + 1] - projectedValue;
-      } else {
-        // If we don't have a label ahead and we have only two labels in total, we just take the remaining distance to
-        // on the whole axis length. We limit that to a minimum of 30 pixel, so that labels close to the border will
-        // still be visible inside of the chart padding.
-        labelLength = Math.max(this.axisLength - projectedValue, 30);
-      }
-
-      // Skip grid lines and labels where interpolated label values are falsey (execpt for 0)
-      if(!labelValues[index] && labelValues[index] !== 0) {
-        return;
-      }
-
-      // Transform to global coordinates using the chartRect
-      // We also need to set the label offset for the createLabel function
-      if(this.units.pos === 'x') {
-        projectedValue = this.chartRect.x1 + projectedValue;
-        labelOffset.x = chartOptions.axisX.labelOffset.x;
-
-        // If the labels should be positioned in start position (top side for vertical axis) we need to set a
-        // different offset as for positioned with end (bottom)
-        if(chartOptions.axisX.position === 'start') {
-          labelOffset.y = this.chartRect.padding.top + chartOptions.axisX.labelOffset.y + (useForeignObject ? 5 : 20);
-        } else {
-          labelOffset.y = this.chartRect.y1 + chartOptions.axisX.labelOffset.y + (useForeignObject ? 5 : 20);
-        }
-      } else {
-        projectedValue = this.chartRect.y1 - projectedValue;
-        labelOffset.y = chartOptions.axisY.labelOffset.y - (useForeignObject ? labelLength : 0);
-
-        // If the labels should be positioned in start position (left side for horizontal axis) we need to set a
-        // different offset as for positioned with end (right side)
-        if(chartOptions.axisY.position === 'start') {
-          labelOffset.x = useForeignObject ? this.chartRect.padding.left + chartOptions.axisY.labelOffset.x : this.chartRect.x1 - 10;
-        } else {
-          labelOffset.x = this.chartRect.x2 + chartOptions.axisY.labelOffset.x + 10;
-        }
-      }
-
-      if(axisOptions.showGrid) {
-        Chartist.createGrid(projectedValue, index, this, this.gridOffset, this.chartRect[this.counterUnits.len](), gridGroup, [
-          chartOptions.classNames.grid,
-          chartOptions.classNames[this.units.dir]
-        ], eventEmitter);
-      }
-
-      if(axisOptions.showLabel) {
-        Chartist.createLabel(projectedValue, labelLength, index, labelValues, this, axisOptions.offset, labelOffset, labelGroup, [
-          chartOptions.classNames.label,
-          chartOptions.classNames[this.units.dir],
-          chartOptions.classNames[axisOptions.position]
-        ], useForeignObject, eventEmitter);
-      }
-    }.bind(this));
-  }
-
-  Chartist.Axis = Chartist.Class.extend({
-    constructor: Axis,
-    createGridAndLabels: createGridAndLabels,
-    projectValue: function(value, index, data) {
-      throw new Error('Base axis can\'t be instantiated!');
-    }
-  });
-
-  Chartist.Axis.units = axisUnits;
-
-}(window, document, Chartist));
-;/**
- * The auto scale axis uses standard linear scale projection of values along an axis. It uses order of magnitude to find a scale automatically and evaluates the available space in order to find the perfect amount of ticks for your chart.
- * **Options**
- * The following options are used by this axis in addition to the default axis options outlined in the axis configuration of the chart default settings.
- * ```javascript
- * var options = {
- *   // If high is specified then the axis will display values explicitly up to this value and the computed maximum from the data is ignored
- *   high: 100,
- *   // If low is specified then the axis will display values explicitly down to this value and the computed minimum from the data is ignored
- *   low: 0,
- *   // This option will be used when finding the right scale division settings. The amount of ticks on the scale will be determined so that as many ticks as possible will be displayed, while not violating this minimum required space (in pixel).
- *   scaleMinSpace: 20,
- *   // Can be set to true or false. If set to true, the scale will be generated with whole numbers only.
- *   onlyInteger: true,
- *   // The reference value can be used to make sure that this value will always be on the chart. This is especially useful on bipolar charts where the bipolar center always needs to be part of the chart.
- *   referenceValue: 5
- * };
- * ```
- *
- * @module Chartist.AutoScaleAxis
- */
-/* global Chartist */
-(function (window, document, Chartist) {
-  'use strict';
-
-  function AutoScaleAxis(axisUnit, data, chartRect, options) {
-    // Usually we calculate highLow based on the data but this can be overriden by a highLow object in the options
-    var highLow = options.highLow || Chartist.getHighLow(data.normalized, options, axisUnit.pos);
-    this.bounds = Chartist.getBounds(chartRect[axisUnit.rectEnd] - chartRect[axisUnit.rectStart], highLow, options.scaleMinSpace || 20, options.onlyInteger);
-    this.range = {
-      min: this.bounds.min,
-      max: this.bounds.max
-    };
-
-    Chartist.AutoScaleAxis.super.constructor.call(this,
-      axisUnit,
-      chartRect,
-      this.bounds.values,
-      options);
-  }
-
-  function projectValue(value) {
-    return this.axisLength * (+Chartist.getMultiValue(value, this.units.pos) - this.bounds.min) / this.bounds.range;
-  }
-
-  Chartist.AutoScaleAxis = Chartist.Axis.extend({
-    constructor: AutoScaleAxis,
-    projectValue: projectValue
-  });
-
-}(window, document, Chartist));
-;/**
- * The fixed scale axis uses standard linear projection of values along an axis. It makes use of a divisor option to divide the range provided from the minimum and maximum value or the options high and low that will override the computed minimum and maximum.
- * **Options**
- * The following options are used by this axis in addition to the default axis options outlined in the axis configuration of the chart default settings.
- * ```javascript
- * var options = {
- *   // If high is specified then the axis will display values explicitly up to this value and the computed maximum from the data is ignored
- *   high: 100,
- *   // If low is specified then the axis will display values explicitly down to this value and the computed minimum from the data is ignored
- *   low: 0,
- *   // If specified then the value range determined from minimum to maximum (or low and high) will be divided by this number and ticks will be generated at those division points. The default divisor is 1.
- *   divisor: 4,
- *   // If ticks is explicitly set, then the axis will not compute the ticks with the divisor, but directly use the data in ticks to determine at what points on the axis a tick need to be generated.
- *   ticks: [1, 10, 20, 30]
- * };
- * ```
- *
- * @module Chartist.FixedScaleAxis
- */
-/* global Chartist */
-(function (window, document, Chartist) {
-  'use strict';
-
-  function FixedScaleAxis(axisUnit, data, chartRect, options) {
-    var highLow = options.highLow || Chartist.getHighLow(data.normalized, options, axisUnit.pos);
-    this.divisor = options.divisor || 1;
-    this.ticks = options.ticks || Chartist.times(this.divisor).map(function(value, index) {
-      return highLow.low + (highLow.high - highLow.low) / this.divisor * index;
-    }.bind(this));
-    this.range = {
-      min: highLow.low,
-      max: highLow.high
-    };
-
-    Chartist.FixedScaleAxis.super.constructor.call(this,
-      axisUnit,
-      chartRect,
-      this.ticks,
-      options);
-
-    this.stepLength = this.axisLength / this.divisor;
-  }
-
-  function projectValue(value) {
-    return this.axisLength * (+Chartist.getMultiValue(value, this.units.pos) - this.range.min) / (this.range.max - this.range.min);
-  }
-
-  Chartist.FixedScaleAxis = Chartist.Axis.extend({
-    constructor: FixedScaleAxis,
-    projectValue: projectValue
-  });
-
-}(window, document, Chartist));
-;/**
- * The step axis for step based charts like bar chart or step based line charts. It uses a fixed amount of ticks that will be equally distributed across the whole axis length. The projection is done using the index of the data value rather than the value itself and therefore it's only useful for distribution purpose.
- * **Options**
- * The following options are used by this axis in addition to the default axis options outlined in the axis configuration of the chart default settings.
- * ```javascript
- * var options = {
- *   // Ticks to be used to distribute across the axis length. As this axis type relies on the index of the value rather than the value, arbitrary data that can be converted to a string can be used as ticks.
- *   ticks: ['One', 'Two', 'Three'],
- *   // If set to true the full width will be used to distribute the values where the last value will be at the maximum of the axis length. If false the spaces between the ticks will be evenly distributed instead.
- *   stretch: true
- * };
- * ```
- *
- * @module Chartist.StepAxis
- */
-/* global Chartist */
-(function (window, document, Chartist) {
-  'use strict';
-
-  function StepAxis(axisUnit, data, chartRect, options) {
-    Chartist.StepAxis.super.constructor.call(this,
-      axisUnit,
-      chartRect,
-      options.ticks,
-      options);
-
-    this.stepLength = this.axisLength / (options.ticks.length - (options.stretch ? 1 : 0));
-  }
-
-  function projectValue(value, index) {
-    return this.stepLength * index;
-  }
-
-  Chartist.StepAxis = Chartist.Axis.extend({
-    constructor: StepAxis,
-    projectValue: projectValue
-  });
-
-}(window, document, Chartist));
-;/**
- * The Chartist line chart can be used to draw Line or Scatter charts. If used in the browser you can access the global `Chartist` namespace where you find the `Line` function as a main entry point.
- *
- * For examples on how to use the line chart please check the examples of the `Chartist.Line` method.
- *
- * @module Chartist.Line
- */
-/* global Chartist */
-(function(window, document, Chartist){
-  'use strict';
-
-  /**
-   * Default options in line charts. Expand the code view to see a detailed list of options with comments.
-   *
-   * @memberof Chartist.Line
-   */
-  var defaultOptions = {
-    // Options for X-Axis
-    axisX: {
-      // The offset of the labels to the chart area
-      offset: 30,
-      // Position where labels are placed. Can be set to `start` or `end` where `start` is equivalent to left or top on vertical axis and `end` is equivalent to right or bottom on horizontal axis.
-      position: 'end',
-      // Allows you to correct label positioning on this axis by positive or negative x and y offset.
-      labelOffset: {
-        x: 0,
-        y: 0
-      },
-      // If labels should be shown or not
-      showLabel: true,
-      // If the axis grid should be drawn or not
-      showGrid: true,
-      // Interpolation function that allows you to intercept the value from the axis label
-      labelInterpolationFnc: Chartist.noop,
-      // Set the axis type to be used to project values on this axis. If not defined, Chartist.StepAxis will be used for the X-Axis, where the ticks option will be set to the labels in the data and the stretch option will be set to the global fullWidth option. This type can be changed to any axis constructor available (e.g. Chartist.FixedScaleAxis), where all axis options should be present here.
-      type: undefined
-    },
-    // Options for Y-Axis
-    axisY: {
-      // The offset of the labels to the chart area
-      offset: 40,
-      // Position where labels are placed. Can be set to `start` or `end` where `start` is equivalent to left or top on vertical axis and `end` is equivalent to right or bottom on horizontal axis.
-      position: 'start',
-      // Allows you to correct label positioning on this axis by positive or negative x and y offset.
-      labelOffset: {
-        x: 0,
-        y: 0
-      },
-      // If labels should be shown or not
-      showLabel: true,
-      // If the axis grid should be drawn or not
-      showGrid: true,
-      // Interpolation function that allows you to intercept the value from the axis label
-      labelInterpolationFnc: Chartist.noop,
-      // Set the axis type to be used to project values on this axis. If not defined, Chartist.AutoScaleAxis will be used for the Y-Axis, where the high and low options will be set to the global high and low options. This type can be changed to any axis constructor available (e.g. Chartist.FixedScaleAxis), where all axis options should be present here.
-      type: undefined,
-      // This value specifies the minimum height in pixel of the scale steps
-      scaleMinSpace: 20,
-      // Use only integer values (whole numbers) for the scale steps
-      onlyInteger: false
-    },
-    // Specify a fixed width for the chart as a string (i.e. '100px' or '50%')
-    width: undefined,
-    // Specify a fixed height for the chart as a string (i.e. '100px' or '50%')
-    height: undefined,
-    // If the line should be drawn or not
-    showLine: true,
-    // If dots should be drawn or not
-    showPoint: true,
-    // If the line chart should draw an area
-    showArea: false,
-    // The base for the area chart that will be used to close the area shape (is normally 0)
-    areaBase: 0,
-    // Specify if the lines should be smoothed. This value can be true or false where true will result in smoothing using the default smoothing interpolation function Chartist.Interpolation.cardinal and false results in Chartist.Interpolation.none. You can also choose other smoothing / interpolation functions available in the Chartist.Interpolation module, or write your own interpolation function. Check the examples for a brief description.
-    lineSmooth: true,
-    // Overriding the natural low of the chart allows you to zoom in or limit the charts lowest displayed value
-    low: undefined,
-    // Overriding the natural high of the chart allows you to zoom in or limit the charts highest displayed value
-    high: undefined,
-    // Padding of the chart drawing area to the container element and labels as a number or padding object {top: 5, right: 5, bottom: 5, left: 5}
-    chartPadding: {
-      top: 15,
-      right: 15,
-      bottom: 5,
-      left: 10
-    },
-    // When set to true, the last grid line on the x-axis is not drawn and the chart elements will expand to the full available width of the chart. For the last label to be drawn correctly you might need to add chart padding or offset the last label with a draw event handler.
-    fullWidth: false,
-    // If true the whole data is reversed including labels, the series order as well as the whole series data arrays.
-    reverseData: false,
-    // Override the class names that get used to generate the SVG structure of the chart
-    classNames: {
-      chart: 'ct-chart-line',
-      label: 'ct-label',
-      labelGroup: 'ct-labels',
-      series: 'ct-series',
-      line: 'ct-line',
-      point: 'ct-point',
-      area: 'ct-area',
-      grid: 'ct-grid',
-      gridGroup: 'ct-grids',
-      vertical: 'ct-vertical',
-      horizontal: 'ct-horizontal',
-      start: 'ct-start',
-      end: 'ct-end'
-    }
-  };
-
-  /**
-   * Creates a new chart
-   *
-   */
-  function createChart(options) {
-    var data = {
-      raw: this.data,
-      normalized: Chartist.getDataArray(this.data, options.reverseData, true)
-    };
-
-    // Create new svg object
-    this.svg = Chartist.createSvg(this.container, options.width, options.height, options.classNames.chart);
-    // Create groups for labels, grid and series
-    var gridGroup = this.svg.elem('g').addClass(options.classNames.gridGroup);
-    var seriesGroup = this.svg.elem('g');
-    var labelGroup = this.svg.elem('g').addClass(options.classNames.labelGroup);
-
-    var chartRect = Chartist.createChartRect(this.svg, options, defaultOptions.padding);
-    var axisX, axisY;
-
-    if(options.axisX.type === undefined) {
-      axisX = new Chartist.StepAxis(Chartist.Axis.units.x, data, chartRect, Chartist.extend({}, options.axisX, {
-        ticks: data.raw.labels,
-        stretch: options.fullWidth
-      }));
-    } else {
-      axisX = options.axisX.type.call(Chartist, Chartist.Axis.units.x, data, chartRect, options.axisX);
-    }
-
-    if(options.axisY.type === undefined) {
-      axisY = new Chartist.AutoScaleAxis(Chartist.Axis.units.y, data, chartRect, Chartist.extend({}, options.axisY, {
-        high: Chartist.isNum(options.high) ? options.high : options.axisY.high,
-        low: Chartist.isNum(options.low) ? options.low : options.axisY.low
-      }));
-    } else {
-      axisY = options.axisY.type.call(Chartist, Chartist.Axis.units.y, data, chartRect, options.axisY);
-    }
-
-    axisX.createGridAndLabels(gridGroup, labelGroup, this.supportsForeignObject, options, this.eventEmitter);
-    axisY.createGridAndLabels(gridGroup, labelGroup, this.supportsForeignObject, options, this.eventEmitter);
-
-    // Draw the series
-    data.raw.series.forEach(function(series, seriesIndex) {
-      var seriesElement = seriesGroup.elem('g');
-
-      // Write attributes to series group element. If series name or meta is undefined the attributes will not be written
-      seriesElement.attr({
-        'series-name': series.name,
-        'meta': Chartist.serialize(series.meta)
-      }, Chartist.xmlNs.uri);
-
-      // Use series class from series data or if not set generate one
-      seriesElement.addClass([
-        options.classNames.series,
-        (series.className || options.classNames.series + '-' + Chartist.alphaNumerate(seriesIndex))
-      ].join(' '));
-
-      var pathCoordinates = [],
-        pathData = [];
-
-      data.normalized[seriesIndex].forEach(function(value, valueIndex) {
-        var p = {
-          x: chartRect.x1 + axisX.projectValue(value, valueIndex, data.normalized[seriesIndex]),
-          y: chartRect.y1 - axisY.projectValue(value, valueIndex, data.normalized[seriesIndex])
-        };
-        pathCoordinates.push(p.x, p.y);
-        pathData.push({
-          value: value,
-          valueIndex: valueIndex,
-          meta: Chartist.getMetaData(series, valueIndex)
-        });
-      }.bind(this));
-
-      var seriesOptions = {
-        lineSmooth: Chartist.getSeriesOption(series, options, 'lineSmooth'),
-        showPoint: Chartist.getSeriesOption(series, options, 'showPoint'),
-        showLine: Chartist.getSeriesOption(series, options, 'showLine'),
-        showArea: Chartist.getSeriesOption(series, options, 'showArea'),
-        areaBase: Chartist.getSeriesOption(series, options, 'areaBase')
-      };
-
-      var smoothing = typeof seriesOptions.lineSmooth === 'function' ?
-        seriesOptions.lineSmooth : (seriesOptions.lineSmooth ? Chartist.Interpolation.cardinal() : Chartist.Interpolation.none());
-      // Interpolating path where pathData will be used to annotate each path element so we can trace back the original
-      // index, value and meta data
-      var path = smoothing(pathCoordinates, pathData);
-
-      // If we should show points we need to create them now to avoid secondary loop
-      // Points are drawn from the pathElements returned by the interpolation function
-      // Small offset for Firefox to render squares correctly
-      if (seriesOptions.showPoint) {
-
-        path.pathElements.forEach(function(pathElement) {
-          var point = seriesElement.elem('line', {
-            x1: pathElement.x,
-            y1: pathElement.y,
-            x2: pathElement.x + 0.01,
-            y2: pathElement.y
-          }, options.classNames.point).attr({
-            'value': [pathElement.data.value.x, pathElement.data.value.y].filter(function(v) {
-                return v;
-              }).join(','),
-            'meta': pathElement.data.meta
-          }, Chartist.xmlNs.uri);
-
-          this.eventEmitter.emit('draw', {
-            type: 'point',
-            value: pathElement.data.value,
-            index: pathElement.data.valueIndex,
-            meta: pathElement.data.meta,
-            series: series,
-            seriesIndex: seriesIndex,
-            axisX: axisX,
-            axisY: axisY,
-            group: seriesElement,
-            element: point,
-            x: pathElement.x,
-            y: pathElement.y
-          });
-        }.bind(this));
-      }
-
-      if(seriesOptions.showLine) {
-        var line = seriesElement.elem('path', {
-          d: path.stringify()
-        }, options.classNames.line, true);
-
-        this.eventEmitter.emit('draw', {
-          type: 'line',
-          values: data.normalized[seriesIndex],
-          path: path.clone(),
-          chartRect: chartRect,
-          index: seriesIndex,
-          series: series,
-          seriesIndex: seriesIndex,
-          axisX: axisX,
-          axisY: axisY,
-          group: seriesElement,
-          element: line
-        });
-      }
-
-      // Area currently only works with axes that support a range!
-      if(seriesOptions.showArea && axisY.range) {
-        // If areaBase is outside the chart area (< min or > max) we need to set it respectively so that
-        // the area is not drawn outside the chart area.
-        var areaBase = Math.max(Math.min(seriesOptions.areaBase, axisY.range.max), axisY.range.min);
-
-        // We project the areaBase value into screen coordinates
-        var areaBaseProjected = chartRect.y1 - axisY.projectValue(areaBase);
-
-        // In order to form the area we'll first split the path by move commands so we can chunk it up into segments
-        path.splitByCommand('M').filter(function onlySolidSegments(pathSegment) {
-          // We filter only "solid" segments that contain more than one point. Otherwise there's no need for an area
-          return pathSegment.pathElements.length > 1;
-        }).map(function convertToArea(solidPathSegments) {
-          // Receiving the filtered solid path segments we can now convert those segments into fill areas
-          var firstElement = solidPathSegments.pathElements[0];
-          var lastElement = solidPathSegments.pathElements[solidPathSegments.pathElements.length - 1];
-
-          // Cloning the solid path segment with closing option and removing the first move command from the clone
-          // We then insert a new move that should start at the area base and draw a straight line up or down
-          // at the end of the path we add an additional straight line to the projected area base value
-          // As the closing option is set our path will be automatically closed
-          return solidPathSegments.clone(true)
-            .position(0)
-            .remove(1)
-            .move(firstElement.x, areaBaseProjected)
-            .line(firstElement.x, firstElement.y)
-            .position(solidPathSegments.pathElements.length + 1)
-            .line(lastElement.x, areaBaseProjected);
-
-        }).forEach(function createArea(areaPath) {
-          // For each of our newly created area paths, we'll now create path elements by stringifying our path objects
-          // and adding the created DOM elements to the correct series group
-          var area = seriesElement.elem('path', {
-            d: areaPath.stringify()
-          }, options.classNames.area, true).attr({
-            'values': data.normalized[seriesIndex]
-          }, Chartist.xmlNs.uri);
-
-          // Emit an event for each area that was drawn
-          this.eventEmitter.emit('draw', {
-            type: 'area',
-            values: data.normalized[seriesIndex],
-            path: areaPath.clone(),
-            series: series,
-            seriesIndex: seriesIndex,
-            axisX: axisX,
-            axisY: axisY,
-            chartRect: chartRect,
-            index: seriesIndex,
-            group: seriesElement,
-            element: area
-          });
-        }.bind(this));
-      }
-    }.bind(this));
-
-    this.eventEmitter.emit('created', {
-      bounds: axisY.bounds,
-      chartRect: chartRect,
-      axisX: axisX,
-      axisY: axisY,
-      svg: this.svg,
-      options: options
-    });
-  }
-
-  /**
-   * This method creates a new line chart.
-   *
-   * @memberof Chartist.Line
-   * @param {String|Node} query A selector query string or directly a DOM element
-   * @param {Object} data The data object that needs to consist of a labels and a series array
-   * @param {Object} [options] The options object with options that override the default options. Check the examples for a detailed list.
-   * @param {Array} [responsiveOptions] Specify an array of responsive option arrays which are a media query and options object pair => [[mediaQueryString, optionsObject],[more...]]
-   * @return {Object} An object which exposes the API for the created chart
-   *
-   * @example
-   * // Create a simple line chart
-   * var data = {
-   *   // A labels array that can contain any sort of values
-   *   labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
-   *   // Our series array that contains series objects or in this case series data arrays
-   *   series: [
-   *     [5, 2, 4, 2, 0]
-   *   ]
-   * };
-   *
-   * // As options we currently only set a static size of 300x200 px
-   * var options = {
-   *   width: '300px',
-   *   height: '200px'
-   * };
-   *
-   * // In the global name space Chartist we call the Line function to initialize a line chart. As a first parameter we pass in a selector where we would like to get our chart created. Second parameter is the actual data object and as a third parameter we pass in our options
-   * new Chartist.Line('.ct-chart', data, options);
-   *
-   * @example
-   * // Use specific interpolation function with configuration from the Chartist.Interpolation module
-   *
-   * var chart = new Chartist.Line('.ct-chart', {
-   *   labels: [1, 2, 3, 4, 5],
-   *   series: [
-   *     [1, 1, 8, 1, 7]
-   *   ]
-   * }, {
-   *   lineSmooth: Chartist.Interpolation.cardinal({
-   *     tension: 0.2
-   *   })
-   * });
-   *
-   * @example
-   * // Create a line chart with responsive options
-   *
-   * var data = {
-   *   // A labels array that can contain any sort of values
-   *   labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
-   *   // Our series array that contains series objects or in this case series data arrays
-   *   series: [
-   *     [5, 2, 4, 2, 0]
-   *   ]
-   * };
-   *
-   * // In adition to the regular options we specify responsive option overrides that will override the default configutation based on the matching media queries.
-   * var responsiveOptions = [
-   *   ['screen and (min-width: 641px) and (max-width: 1024px)', {
-   *     showPoint: false,
-   *     axisX: {
-   *       labelInterpolationFnc: function(value) {
-   *         // Will return Mon, Tue, Wed etc. on medium screens
-   *         return value.slice(0, 3);
-   *       }
-   *     }
-   *   }],
-   *   ['screen and (max-width: 640px)', {
-   *     showLine: false,
-   *     axisX: {
-   *       labelInterpolationFnc: function(value) {
-   *         // Will return M, T, W etc. on small screens
-   *         return value[0];
-   *       }
-   *     }
-   *   }]
-   * ];
-   *
-   * new Chartist.Line('.ct-chart', data, null, responsiveOptions);
-   *
-   */
-  function Line(query, data, options, responsiveOptions) {
-    Chartist.Line.super.constructor.call(this,
-      query,
-      data,
-      defaultOptions,
-      Chartist.extend({}, defaultOptions, options),
-      responsiveOptions);
-  }
-
-  // Creating line chart type in Chartist namespace
-  Chartist.Line = Chartist.Base.extend({
-    constructor: Line,
-    createChart: createChart
-  });
-
-}(window, document, Chartist));
-;/**
- * The bar chart module of Chartist that can be used to draw unipolar or bipolar bar and grouped bar charts.
- *
- * @module Chartist.Bar
- */
-/* global Chartist */
-(function(window, document, Chartist){
-  'use strict';
-
-  /**
-   * Default options in bar charts. Expand the code view to see a detailed list of options with comments.
-   *
-   * @memberof Chartist.Bar
-   */
-  var defaultOptions = {
-    // Options for X-Axis
-    axisX: {
-      // The offset of the chart drawing area to the border of the container
-      offset: 30,
-      // Position where labels are placed. Can be set to `start` or `end` where `start` is equivalent to left or top on vertical axis and `end` is equivalent to right or bottom on horizontal axis.
-      position: 'end',
-      // Allows you to correct label positioning on this axis by positive or negative x and y offset.
-      labelOffset: {
-        x: 0,
-        y: 0
-      },
-      // If labels should be shown or not
-      showLabel: true,
-      // If the axis grid should be drawn or not
-      showGrid: true,
-      // Interpolation function that allows you to intercept the value from the axis label
-      labelInterpolationFnc: Chartist.noop,
-      // This value specifies the minimum width in pixel of the scale steps
-      scaleMinSpace: 30,
-      // Use only integer values (whole numbers) for the scale steps
-      onlyInteger: false
-    },
-    // Options for Y-Axis
-    axisY: {
-      // The offset of the chart drawing area to the border of the container
-      offset: 40,
-      // Position where labels are placed. Can be set to `start` or `end` where `start` is equivalent to left or top on vertical axis and `end` is equivalent to right or bottom on horizontal axis.
-      position: 'start',
-      // Allows you to correct label positioning on this axis by positive or negative x and y offset.
-      labelOffset: {
-        x: 0,
-        y: 0
-      },
-      // If labels should be shown or not
-      showLabel: true,
-      // If the axis grid should be drawn or not
-      showGrid: true,
-      // Interpolation function that allows you to intercept the value from the axis label
-      labelInterpolationFnc: Chartist.noop,
-      // This value specifies the minimum height in pixel of the scale steps
-      scaleMinSpace: 20,
-      // Use only integer values (whole numbers) for the scale steps
-      onlyInteger: false
-    },
-    // Specify a fixed width for the chart as a string (i.e. '100px' or '50%')
-    width: undefined,
-    // Specify a fixed height for the chart as a string (i.e. '100px' or '50%')
-    height: undefined,
-    // Overriding the natural high of the chart allows you to zoom in or limit the charts highest displayed value
-    high: undefined,
-    // Overriding the natural low of the chart allows you to zoom in or limit the charts lowest displayed value
-    low: undefined,
-    // Use only integer values (whole numbers) for the scale steps
-    onlyInteger: false,
-    // Padding of the chart drawing area to the container element and labels as a number or padding object {top: 5, right: 5, bottom: 5, left: 5}
-    chartPadding: {
-      top: 15,
-      right: 15,
-      bottom: 5,
-      left: 10
-    },
-    // Specify the distance in pixel of bars in a group
-    seriesBarDistance: 15,
-    // If set to true this property will cause the series bars to be stacked and form a total for each series point. This will also influence the y-axis and the overall bounds of the chart. In stacked mode the seriesBarDistance property will have no effect.
-    stackBars: false,
-    // Inverts the axes of the bar chart in order to draw a horizontal bar chart. Be aware that you also need to invert your axis settings as the Y Axis will now display the labels and the X Axis the values.
-    horizontalBars: false,
-    // If set to true then each bar will represent a series and the data array is expected to be a one dimensional array of data values rather than a series array of series. This is useful if the bar chart should represent a profile rather than some data over time.
-    distributeSeries: false,
-    // If true the whole data is reversed including labels, the series order as well as the whole series data arrays.
-    reverseData: false,
-    // Override the class names that get used to generate the SVG structure of the chart
-    classNames: {
-      chart: 'ct-chart-bar',
-      horizontalBars: 'ct-horizontal-bars',
-      label: 'ct-label',
-      labelGroup: 'ct-labels',
-      series: 'ct-series',
-      bar: 'ct-bar',
-      grid: 'ct-grid',
-      gridGroup: 'ct-grids',
-      vertical: 'ct-vertical',
-      horizontal: 'ct-horizontal',
-      start: 'ct-start',
-      end: 'ct-end'
-    }
-  };
-
-  /**
-   * Creates a new chart
-   *
-   */
-  function createChart(options) {
-    var data = {
-      raw: this.data,
-      normalized: options.distributeSeries ? Chartist.getDataArray(this.data, options.reverseData, options.horizontalBars ? 'x' : 'y').map(function(value) {
-        return [value];
-      }) : Chartist.getDataArray(this.data, options.reverseData, options.horizontalBars ? 'x' : 'y')
-    };
-
-    var highLow;
-
-    // Create new svg element
-    this.svg = Chartist.createSvg(
-      this.container,
-      options.width,
-      options.height,
-      options.classNames.chart + (options.horizontalBars ? ' ' + options.classNames.horizontalBars : '')
-    );
-
-    // Drawing groups in correct order
-    var gridGroup = this.svg.elem('g').addClass(options.classNames.gridGroup);
-    var seriesGroup = this.svg.elem('g');
-    var labelGroup = this.svg.elem('g').addClass(options.classNames.labelGroup);
-
-    if(options.stackBars) {
-      // If stacked bars we need to calculate the high low from stacked values from each series
-      var serialSums = Chartist.serialMap(data.normalized, function serialSums() {
-        return Array.prototype.slice.call(arguments).map(function(value) {
-          return value;
-        }).reduce(function(prev, curr) {
-          return {
-            x: prev.x + curr.x || 0,
-            y: prev.y + curr.y || 0
-          };
-        }, {x: 0, y: 0});
-      });
-
-      highLow = Chartist.getHighLow([serialSums], Chartist.extend({}, options, {
-        referenceValue: 0
-      }), options.horizontalBars ? 'x' : 'y');
-    } else {
-      highLow = Chartist.getHighLow(data.normalized, Chartist.extend({}, options, {
-        referenceValue: 0
-      }), options.horizontalBars ? 'x' : 'y');
-    }
-    // Overrides of high / low from settings
-    highLow.high = +options.high || (options.high === 0 ? 0 : highLow.high);
-    highLow.low = +options.low || (options.low === 0 ? 0 : highLow.low);
-
-    var chartRect = Chartist.createChartRect(this.svg, options, defaultOptions.padding);
-
-    var valueAxis,
-      labelAxisTicks,
-      labelAxis,
-      axisX,
-      axisY;
-
-    // We need to set step count based on some options combinations
-    if(options.distributeSeries && options.stackBars) {
-      // If distributed series are enabled and bars need to be stacked, we'll only have one bar and therefore should
-      // use only the first label for the step axis
-      labelAxisTicks = data.raw.labels.slice(0, 1);
-    } else {
-      // If distributed series are enabled but stacked bars aren't, we should use the series labels
-      // If we are drawing a regular bar chart with two dimensional series data, we just use the labels array
-      // as the bars are normalized
-      labelAxisTicks = data.raw.labels;
-    }
-
-    // Set labelAxis and valueAxis based on the horizontalBars setting. This setting will flip the axes if necessary.
-    if(options.horizontalBars) {
-      if(options.axisX.type === undefined) {
-        valueAxis = axisX = new Chartist.AutoScaleAxis(Chartist.Axis.units.x, data, chartRect, Chartist.extend({}, options.axisX, {
-          highLow: highLow,
-          referenceValue: 0
-        }));
-      } else {
-        valueAxis = axisX = options.axisX.type.call(Chartist, Chartist.Axis.units.x, data, chartRect, Chartist.extend({}, options.axisX, {
-          highLow: highLow,
-          referenceValue: 0
-        }));
-      }
-
-      if(options.axisY.type === undefined) {
-        labelAxis = axisY = new Chartist.StepAxis(Chartist.Axis.units.y, data, chartRect, {
-          ticks: labelAxisTicks
-        });
-      } else {
-        labelAxis = axisY = options.axisY.type.call(Chartist, Chartist.Axis.units.y, data, chartRect, options.axisY);
-      }
-    } else {
-      if(options.axisX.type === undefined) {
-        labelAxis = axisX = new Chartist.StepAxis(Chartist.Axis.units.x, data, chartRect, {
-          ticks: labelAxisTicks
-        });
-      } else {
-        labelAxis = axisX = options.axisX.type.call(Chartist, Chartist.Axis.units.x, data, chartRect, options.axisX);
-      }
-
-      if(options.axisY.type === undefined) {
-        valueAxis = axisY = new Chartist.AutoScaleAxis(Chartist.Axis.units.y, data, chartRect, Chartist.extend({}, options.axisY, {
-          highLow: highLow,
-          referenceValue: 0
-        }));
-      } else {
-        valueAxis = axisY = options.axisY.type.call(Chartist, Chartist.Axis.units.y, data, chartRect, Chartist.extend({}, options.axisY, {
-          highLow: highLow,
-          referenceValue: 0
-        }));
-      }
-    }
-
-    // Projected 0 point
-    var zeroPoint = options.horizontalBars ? (chartRect.x1 + valueAxis.projectValue(0)) : (chartRect.y1 - valueAxis.projectValue(0));
-    // Used to track the screen coordinates of stacked bars
-    var stackedBarValues = [];
-
-    labelAxis.createGridAndLabels(gridGroup, labelGroup, this.supportsForeignObject, options, this.eventEmitter);
-    valueAxis.createGridAndLabels(gridGroup, labelGroup, this.supportsForeignObject, options, this.eventEmitter);
-
-    // Draw the series
-    data.raw.series.forEach(function(series, seriesIndex) {
-      // Calculating bi-polar value of index for seriesOffset. For i = 0..4 biPol will be -1.5, -0.5, 0.5, 1.5 etc.
-      var biPol = seriesIndex - (data.raw.series.length - 1) / 2;
-      // Half of the period width between vertical grid lines used to position bars
-      var periodHalfLength;
-      // Current series SVG element
-      var seriesElement;
-
-      // We need to set periodHalfLength based on some options combinations
-      if(options.distributeSeries && !options.stackBars) {
-        // If distributed series are enabled but stacked bars aren't, we need to use the length of the normaizedData array
-        // which is the series count and divide by 2
-        periodHalfLength = labelAxis.axisLength / data.normalized.length / 2;
-      } else if(options.distributeSeries && options.stackBars) {
-        // If distributed series and stacked bars are enabled we'll only get one bar so we should just divide the axis
-        // length by 2
-        periodHalfLength = labelAxis.axisLength / 2;
-      } else {
-        // On regular bar charts we should just use the series length
-        periodHalfLength = labelAxis.axisLength / data.normalized[seriesIndex].length / 2;
-      }
-
-      // Adding the series group to the series element
-      seriesElement = seriesGroup.elem('g');
-
-      // Write attributes to series group element. If series name or meta is undefined the attributes will not be written
-      seriesElement.attr({
-        'series-name': series.name,
-        'meta': Chartist.serialize(series.meta)
-      }, Chartist.xmlNs.uri);
-
-      // Use series class from series data or if not set generate one
-      seriesElement.addClass([
-        options.classNames.series,
-        (series.className || options.classNames.series + '-' + Chartist.alphaNumerate(seriesIndex))
-      ].join(' '));
-
-      data.normalized[seriesIndex].forEach(function(value, valueIndex) {
-        var projected,
-          bar,
-          previousStack,
-          labelAxisValueIndex;
-
-        // We need to set labelAxisValueIndex based on some options combinations
-        if(options.distributeSeries && !options.stackBars) {
-          // If distributed series are enabled but stacked bars aren't, we can use the seriesIndex for later projection
-          // on the step axis for label positioning
-          labelAxisValueIndex = seriesIndex;
-        } else if(options.distributeSeries && options.stackBars) {
-          // If distributed series and stacked bars are enabled, we will only get one bar and therefore always use
-          // 0 for projection on the label step axis
-          labelAxisValueIndex = 0;
-        } else {
-          // On regular bar charts we just use the value index to project on the label step axis
-          labelAxisValueIndex = valueIndex;
-        }
-
-        // We need to transform coordinates differently based on the chart layout
-        if(options.horizontalBars) {
-          projected = {
-            x: chartRect.x1 + valueAxis.projectValue(value && value.x ? value.x : 0, valueIndex, data.normalized[seriesIndex]),
-            y: chartRect.y1 - labelAxis.projectValue(value && value.y ? value.y : 0, labelAxisValueIndex, data.normalized[seriesIndex])
-          };
-        } else {
-          projected = {
-            x: chartRect.x1 + labelAxis.projectValue(value && value.x ? value.x : 0, labelAxisValueIndex, data.normalized[seriesIndex]),
-            y: chartRect.y1 - valueAxis.projectValue(value && value.y ? value.y : 0, valueIndex, data.normalized[seriesIndex])
-          }
-        }
-
-        // If the label axis is a step based axis we will offset the bar into the middle of between two steps using
-        // the periodHalfLength value. Also we do arrange the different series so that they align up to each other using
-        // the seriesBarDistance. If we don't have a step axis, the bar positions can be chosen freely so we should not
-        // add any automated positioning.
-        if(labelAxis instanceof Chartist.StepAxis) {
-          // Offset to center bar between grid lines, but only if the step axis is not stretched
-          if(!labelAxis.options.stretch) {
-            projected[labelAxis.units.pos] += periodHalfLength * (options.horizontalBars ? -1 : 1);
-          }
-          // Using bi-polar offset for multiple series if no stacked bars or series distribution is used
-          projected[labelAxis.units.pos] += (options.stackBars || options.distributeSeries) ? 0 : biPol * options.seriesBarDistance * (options.horizontalBars ? -1 : 1);
-        }
-
-        // Enter value in stacked bar values used to remember previous screen value for stacking up bars
-        previousStack = stackedBarValues[valueIndex] || zeroPoint;
-        stackedBarValues[valueIndex] = previousStack - (zeroPoint - projected[labelAxis.counterUnits.pos]);
-
-        // Skip if value is undefined
-        if(value === undefined) {
-          return;
-        }
-
-        var positions = {};
-        positions[labelAxis.units.pos + '1'] = projected[labelAxis.units.pos];
-        positions[labelAxis.units.pos + '2'] = projected[labelAxis.units.pos];
-        // If bars are stacked we use the stackedBarValues reference and otherwise base all bars off the zero line
-        positions[labelAxis.counterUnits.pos + '1'] = options.stackBars ? previousStack : zeroPoint;
-        positions[labelAxis.counterUnits.pos + '2'] = options.stackBars ? stackedBarValues[valueIndex] : projected[labelAxis.counterUnits.pos];
-
-        // Limit x and y so that they are within the chart rect
-        positions.x1 = Math.min(Math.max(positions.x1, chartRect.x1), chartRect.x2);
-        positions.x2 = Math.min(Math.max(positions.x2, chartRect.x1), chartRect.x2);
-        positions.y1 = Math.min(Math.max(positions.y1, chartRect.y2), chartRect.y1);
-        positions.y2 = Math.min(Math.max(positions.y2, chartRect.y2), chartRect.y1);
-
-        // Create bar element
-        bar = seriesElement.elem('line', positions, options.classNames.bar).attr({
-          'value': [value.x, value.y].filter(function(v) {
-            return v;
-          }).join(','),
-          'meta': Chartist.getMetaData(series, valueIndex)
-        }, Chartist.xmlNs.uri);
-
-        this.eventEmitter.emit('draw', Chartist.extend({
-          type: 'bar',
-          value: value,
-          index: valueIndex,
-          meta: Chartist.getMetaData(series, valueIndex),
-          series: series,
-          seriesIndex: seriesIndex,
-          axisX: axisX,
-          axisY: axisY,
-          chartRect: chartRect,
-          group: seriesElement,
-          element: bar
-        }, positions));
-      }.bind(this));
-    }.bind(this));
-
-    this.eventEmitter.emit('created', {
-      bounds: valueAxis.bounds,
-      chartRect: chartRect,
-      axisX: axisX,
-      axisY: axisY,
-      svg: this.svg,
-      options: options
-    });
-  }
-
-  /**
-   * This method creates a new bar chart and returns API object that you can use for later changes.
-   *
-   * @memberof Chartist.Bar
-   * @param {String|Node} query A selector query string or directly a DOM element
-   * @param {Object} data The data object that needs to consist of a labels and a series array
-   * @param {Object} [options] The options object with options that override the default options. Check the examples for a detailed list.
-   * @param {Array} [responsiveOptions] Specify an array of responsive option arrays which are a media query and options object pair => [[mediaQueryString, optionsObject],[more...]]
-   * @return {Object} An object which exposes the API for the created chart
-   *
-   * @example
-   * // Create a simple bar chart
-   * var data = {
-   *   labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
-   *   series: [
-   *     [5, 2, 4, 2, 0]
-   *   ]
-   * };
-   *
-   * // In the global name space Chartist we call the Bar function to initialize a bar chart. As a first parameter we pass in a selector where we would like to get our chart created and as a second parameter we pass our data object.
-   * new Chartist.Bar('.ct-chart', data);
-   *
-   * @example
-   * // This example creates a bipolar grouped bar chart where the boundaries are limitted to -10 and 10
-   * new Chartist.Bar('.ct-chart', {
-   *   labels: [1, 2, 3, 4, 5, 6, 7],
-   *   series: [
-   *     [1, 3, 2, -5, -3, 1, -6],
-   *     [-5, -2, -4, -1, 2, -3, 1]
-   *   ]
-   * }, {
-   *   seriesBarDistance: 12,
-   *   low: -10,
-   *   high: 10
-   * });
-   *
-   */
-  function Bar(query, data, options, responsiveOptions) {
-    Chartist.Bar.super.constructor.call(this,
-      query,
-      data,
-      defaultOptions,
-      Chartist.extend({}, defaultOptions, options),
-      responsiveOptions);
-  }
-
-  // Creating bar chart type in Chartist namespace
-  Chartist.Bar = Chartist.Base.extend({
-    constructor: Bar,
-    createChart: createChart
-  });
-
-}(window, document, Chartist));
-;/**
- * The pie chart module of Chartist that can be used to draw pie, donut or gauge charts
- *
- * @module Chartist.Pie
- */
-/* global Chartist */
-(function(window, document, Chartist) {
-  'use strict';
-
-  /**
-   * Default options in line charts. Expand the code view to see a detailed list of options with comments.
-   *
-   * @memberof Chartist.Pie
-   */
-  var defaultOptions = {
-    // Specify a fixed width for the chart as a string (i.e. '100px' or '50%')
-    width: undefined,
-    // Specify a fixed height for the chart as a string (i.e. '100px' or '50%')
-    height: undefined,
-    // Padding of the chart drawing area to the container element and labels as a number or padding object {top: 5, right: 5, bottom: 5, left: 5}
-    chartPadding: 5,
-    // Override the class names that are used to generate the SVG structure of the chart
-    classNames: {
-      chartPie: 'ct-chart-pie',
-      chartDonut: 'ct-chart-donut',
-      series: 'ct-series',
-      slicePie: 'ct-slice-pie',
-      sliceDonut: 'ct-slice-donut',
-      label: 'ct-label'
-    },
-    // The start angle of the pie chart in degrees where 0 points north. A higher value offsets the start angle clockwise.
-    startAngle: 0,
-    // An optional total you can specify. By specifying a total value, the sum of the values in the series must be this total in order to draw a full pie. You can use this parameter to draw only parts of a pie or gauge charts.
-    total: undefined,
-    // If specified the donut CSS classes will be used and strokes will be drawn instead of pie slices.
-    donut: false,
-    // Specify the donut stroke width, currently done in javascript for convenience. May move to CSS styles in the future.
-    donutWidth: 60,
-    // If a label should be shown or not
-    showLabel: true,
-    // Label position offset from the standard position which is half distance of the radius. This value can be either positive or negative. Positive values will position the label away from the center.
-    labelOffset: 0,
-    // This option can be set to 'inside', 'outside' or 'center'. Positioned with 'inside' the labels will be placed on half the distance of the radius to the border of the Pie by respecting the 'labelOffset'. The 'outside' option will place the labels at the border of the pie and 'center' will place the labels in the absolute center point of the chart. The 'center' option only makes sense in conjunction with the 'labelOffset' option.
-    labelPosition: 'inside',
-    // An interpolation function for the label value
-    labelInterpolationFnc: Chartist.noop,
-    // Label direction can be 'neutral', 'explode' or 'implode'. The labels anchor will be positioned based on those settings as well as the fact if the labels are on the right or left side of the center of the chart. Usually explode is useful when labels are positioned far away from the center.
-    labelDirection: 'neutral',
-    // If true the whole data is reversed including labels, the series order as well as the whole series data arrays.
-    reverseData: false
-  };
-
-  /**
-   * Determines SVG anchor position based on direction and center parameter
-   *
-   * @param center
-   * @param label
-   * @param direction
-   * @return {string}
-   */
-  function determineAnchorPosition(center, label, direction) {
-    var toTheRight = label.x > center.x;
-
-    if(toTheRight && direction === 'explode' ||
-      !toTheRight && direction === 'implode') {
-      return 'start';
-    } else if(toTheRight && direction === 'implode' ||
-      !toTheRight && direction === 'explode') {
-      return 'end';
-    } else {
-      return 'middle';
-    }
-  }
-
-  /**
-   * Creates the pie chart
-   *
-   * @param options
-   */
-  function createChart(options) {
-    var seriesGroups = [],
-      labelsGroup,
-      chartRect,
-      radius,
-      labelRadius,
-      totalDataSum,
-      startAngle = options.startAngle,
-      dataArray = Chartist.getDataArray(this.data, options.reverseData);
-
-    // Create SVG.js draw
-    this.svg = Chartist.createSvg(this.container, options.width, options.height,options.donut ? options.classNames.chartDonut : options.classNames.chartPie);
-    // Calculate charting rect
-    chartRect = Chartist.createChartRect(this.svg, options, defaultOptions.padding);
-    // Get biggest circle radius possible within chartRect
-    radius = Math.min(chartRect.width() / 2, chartRect.height() / 2);
-    // Calculate total of all series to get reference value or use total reference from optional options
-    totalDataSum = options.total || dataArray.reduce(function(previousValue, currentValue) {
-      return previousValue + currentValue;
-    }, 0);
-
-    // If this is a donut chart we need to adjust our radius to enable strokes to be drawn inside
-    // Unfortunately this is not possible with the current SVG Spec
-    // See this proposal for more details: http://lists.w3.org/Archives/Public/www-svg/2003Oct/0000.html
-    radius -= options.donut ? options.donutWidth / 2  : 0;
-
-    // If labelPosition is set to `outside` or a donut chart is drawn then the label position is at the radius,
-    // if regular pie chart it's half of the radius
-    if(options.labelPosition === 'outside' || options.donut) {
-      labelRadius = radius;
-    } else if(options.labelPosition === 'center') {
-      // If labelPosition is center we start with 0 and will later wait for the labelOffset
-      labelRadius = 0;
-    } else {
-      // Default option is 'inside' where we use half the radius so the label will be placed in the center of the pie
-      // slice
-      labelRadius = radius / 2;
-    }
-    // Add the offset to the labelRadius where a negative offset means closed to the center of the chart
-    labelRadius += options.labelOffset;
-
-    // Calculate end angle based on total sum and current data value and offset with padding
-    var center = {
-      x: chartRect.x1 + chartRect.width() / 2,
-      y: chartRect.y2 + chartRect.height() / 2
-    };
-
-    // Check if there is only one non-zero value in the series array.
-    var hasSingleValInSeries = this.data.series.filter(function(val) {
-      return val.hasOwnProperty('value') ? val.value !== 0 : val !== 0;
-    }).length === 1;
-
-    //if we need to show labels we create the label group now
-    if(options.showLabel) {
-      labelsGroup = this.svg.elem('g', null, null, true);
-    }
-
-    // Draw the series
-    // initialize series groups
-    for (var i = 0; i < this.data.series.length; i++) {
-      var series = this.data.series[i];
-      seriesGroups[i] = this.svg.elem('g', null, null, true);
-
-      // If the series is an object and contains a name or meta data we add a custom attribute
-      seriesGroups[i].attr({
-        'series-name': series.name
-      }, Chartist.xmlNs.uri);
-
-      // Use series class from series data or if not set generate one
-      seriesGroups[i].addClass([
-        options.classNames.series,
-        (series.className || options.classNames.series + '-' + Chartist.alphaNumerate(i))
-      ].join(' '));
-
-      var endAngle = startAngle + dataArray[i] / totalDataSum * 360;
-      // If we need to draw the arc for all 360 degrees we need to add a hack where we close the circle
-      // with Z and use 359.99 degrees
-      if(endAngle - startAngle === 360) {
-        endAngle -= 0.01;
-      }
-
-      var start = Chartist.polarToCartesian(center.x, center.y, radius, startAngle - (i === 0 || hasSingleValInSeries ? 0 : 0.2)),
-        end = Chartist.polarToCartesian(center.x, center.y, radius, endAngle);
-
-      // Create a new path element for the pie chart. If this isn't a donut chart we should close the path for a correct stroke
-      var path = new Chartist.Svg.Path(!options.donut)
-        .move(end.x, end.y)
-        .arc(radius, radius, 0, endAngle - startAngle > 180, 0, start.x, start.y);
-
-      // If regular pie chart (no donut) we add a line to the center of the circle for completing the pie
-      if(!options.donut) {
-        path.line(center.x, center.y);
-      }
-
-      // Create the SVG path
-      // If this is a donut chart we add the donut class, otherwise just a regular slice
-      var pathElement = seriesGroups[i].elem('path', {
-        d: path.stringify()
-      }, options.donut ? options.classNames.sliceDonut : options.classNames.slicePie);
-
-      // Adding the pie series value to the path
-      pathElement.attr({
-        'value': dataArray[i],
-        'meta': Chartist.serialize(series.meta)
-      }, Chartist.xmlNs.uri);
-
-      // If this is a donut, we add the stroke-width as style attribute
-      if(options.donut) {
-        pathElement.attr({
-          'style': 'stroke-width: ' + (+options.donutWidth) + 'px'
-        });
-      }
-
-      // Fire off draw event
-      this.eventEmitter.emit('draw', {
-        type: 'slice',
-        value: dataArray[i],
-        totalDataSum: totalDataSum,
-        index: i,
-        meta: series.meta,
-        series: series,
-        group: seriesGroups[i],
-        element: pathElement,
-        path: path.clone(),
-        center: center,
-        radius: radius,
-        startAngle: startAngle,
-        endAngle: endAngle
-      });
-
-      // If we need to show labels we need to add the label for this slice now
-      if(options.showLabel) {
-        // Position at the labelRadius distance from center and between start and end angle
-        var labelPosition = Chartist.polarToCartesian(center.x, center.y, labelRadius, startAngle + (endAngle - startAngle) / 2),
-          interpolatedValue = options.labelInterpolationFnc(this.data.labels ? this.data.labels[i] : dataArray[i], i);
-
-        if(interpolatedValue || interpolatedValue === 0) {
-          var labelElement = labelsGroup.elem('text', {
-            dx: labelPosition.x,
-            dy: labelPosition.y,
-            'text-anchor': determineAnchorPosition(center, labelPosition, options.labelDirection)
-          }, options.classNames.label).text('' + interpolatedValue);
-
-          // Fire off draw event
-          this.eventEmitter.emit('draw', {
-            type: 'label',
-            index: i,
-            group: labelsGroup,
-            element: labelElement,
-            text: '' + interpolatedValue,
-            x: labelPosition.x,
-            y: labelPosition.y
-          });
-        }
-      }
-
-      // Set next startAngle to current endAngle. Use slight offset so there are no transparent hairline issues
-      // (except for last slice)
-      startAngle = endAngle;
-    }
-
-    this.eventEmitter.emit('created', {
-      chartRect: chartRect,
-      svg: this.svg,
-      options: options
-    });
-  }
-
-  /**
-   * This method creates a new pie chart and returns an object that can be used to redraw the chart.
-   *
-   * @memberof Chartist.Pie
-   * @param {String|Node} query A selector query string or directly a DOM element
-   * @param {Object} data The data object in the pie chart needs to have a series property with a one dimensional data array. The values will be normalized against each other and don't necessarily need to be in percentage. The series property can also be an array of value objects that contain a value property and a className property to override the CSS class name for the series group.
-   * @param {Object} [options] The options object with options that override the default options. Check the examples for a detailed list.
-   * @param {Array} [responsiveOptions] Specify an array of responsive option arrays which are a media query and options object pair => [[mediaQueryString, optionsObject],[more...]]
-   * @return {Object} An object with a version and an update method to manually redraw the chart
-   *
-   * @example
-   * // Simple pie chart example with four series
-   * new Chartist.Pie('.ct-chart', {
-   *   series: [10, 2, 4, 3]
-   * });
-   *
-   * @example
-   * // Drawing a donut chart
-   * new Chartist.Pie('.ct-chart', {
-   *   series: [10, 2, 4, 3]
-   * }, {
-   *   donut: true
-   * });
-   *
-   * @example
-   * // Using donut, startAngle and total to draw a gauge chart
-   * new Chartist.Pie('.ct-chart', {
-   *   series: [20, 10, 30, 40]
-   * }, {
-   *   donut: true,
-   *   donutWidth: 20,
-   *   startAngle: 270,
-   *   total: 200
-   * });
-   *
-   * @example
-   * // Drawing a pie chart with padding and labels that are outside the pie
-   * new Chartist.Pie('.ct-chart', {
-   *   series: [20, 10, 30, 40]
-   * }, {
-   *   chartPadding: 30,
-   *   labelOffset: 50,
-   *   labelDirection: 'explode'
-   * });
-   *
-   * @example
-   * // Overriding the class names for individual series as well as a name and meta data.
-   * // The name will be written as ct:series-name attribute and the meta data will be serialized and written
-   * // to a ct:meta attribute.
-   * new Chartist.Pie('.ct-chart', {
-   *   series: [{
-   *     value: 20,
-   *     name: 'Series 1',
-   *     className: 'my-custom-class-one',
-   *     meta: 'Meta One'
-   *   }, {
-   *     value: 10,
-   *     name: 'Series 2',
-   *     className: 'my-custom-class-two',
-   *     meta: 'Meta Two'
-   *   }, {
-   *     value: 70,
-   *     name: 'Series 3',
-   *     className: 'my-custom-class-three',
-   *     meta: 'Meta Three'
-   *   }]
-   * });
-   */
-  function Pie(query, data, options, responsiveOptions) {
-    Chartist.Pie.super.constructor.call(this,
-      query,
-      data,
-      defaultOptions,
-      Chartist.extend({}, defaultOptions, options),
-      responsiveOptions);
-  }
-
-  // Creating pie chart type in Chartist namespace
-  Chartist.Pie = Chartist.Base.extend({
-    constructor: Pie,
-    createChart: createChart,
-    determineAnchorPosition: determineAnchorPosition
-  });
-
-}(window, document, Chartist));
-
-return Chartist;
-
-}));
-
-},{}],8:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 /*! DataTables 1.10.8
  * ©2008-2014 SpryMedia Ltd - datatables.net/license
  */
@@ -23042,7 +19407,7 @@ return Chartist;
 }(window, document));
 
 
-},{"jquery":9}],9:[function(require,module,exports){
+},{"jquery":10}],10:[function(require,module,exports){
 /*!
  * jQuery JavaScript Library v2.1.4
  * http://jquery.com/
@@ -32254,7 +28619,7 @@ return jQuery;
 
 }));
 
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 (function (Buffer){
 // Generated by CoffeeScript 1.9.3
 (function() {
@@ -32790,7 +29155,7 @@ return jQuery;
 }).call(this);
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":3,"eventemitter2":11,"superagent":12}],11:[function(require,module,exports){
+},{"buffer":5,"eventemitter2":12,"superagent":13}],12:[function(require,module,exports){
 /*!
  * EventEmitter2
  * https://github.com/hij1nx/EventEmitter2
@@ -33365,7 +29730,7 @@ return jQuery;
   }
 }();
 
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 /**
  * Module dependencies.
  */
@@ -34448,7 +30813,7 @@ request.put = function(url, data, fn){
 
 module.exports = request;
 
-},{"emitter":13,"reduce":14}],13:[function(require,module,exports){
+},{"emitter":14,"reduce":15}],14:[function(require,module,exports){
 
 /**
  * Expose `Emitter`.
@@ -34614,7 +30979,7 @@ Emitter.prototype.hasListeners = function(event){
   return !! this.listeners(event).length;
 };
 
-},{}],14:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 
 /**
  * Reduce `arr` with `fn`.
@@ -34639,7 +31004,7 @@ module.exports = function(arr, fn, initial){
   
   return curr;
 };
-},{}],15:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 //     Underscore.js 1.8.3
 //     http://underscorejs.org
 //     (c) 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
@@ -36189,7 +32554,7 @@ module.exports = function(arr, fn, initial){
   }
 }.call(this));
 
-},{}],16:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 var $ = require('jquery'),
 	_ = require('underscore'),
 	Backbone = require('backbone'),
@@ -36231,7 +32596,7 @@ module.exports = Backbone.Collection.extend({
 		return query.getURL();
 	}
 })
-},{"backbone":2,"jquery":9,"soda-js":10,"underscore":15}],17:[function(require,module,exports){
+},{"backbone":4,"jquery":10,"soda-js":11,"underscore":16}],18:[function(require,module,exports){
 var $ = require('jquery'),
 	_ = require('underscore'),
 	Backbone = require('backbone'),
@@ -36267,7 +32632,7 @@ $('.card').each(function(index, el) {
 			break;
 	}
 });
-},{"./collections/socrata":16,"./views/bar":19,"./views/table":20,"backbone":2,"jquery":9,"underscore":15}],18:[function(require,module,exports){
+},{"./collections/socrata":17,"./views/bar":20,"./views/table":21,"backbone":4,"jquery":10,"underscore":16}],19:[function(require,module,exports){
 module.exports = function(num) {
     isNegative = false
     if (num < 0) {
@@ -36286,12 +32651,13 @@ module.exports = function(num) {
     if(isNegative) { formattedNumber = '-' + formattedNumber }
     return formattedNumber;
 }
-},{}],19:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 var $ = require('jquery'),
 	_ = require('underscore'),
 	Backbone = require('backbone'),
-	Chartist = require('chartist'),
 	numberFormatter = require('../util/number-formatter');
+require('amcharts/dist/amcharts/amcharts');
+require('amcharts/dist/amcharts/serial');
 	
 module.exports = Backbone.View.extend({
 	initialize: function(options) {
@@ -36312,68 +32678,74 @@ module.exports = Backbone.View.extend({
 		// Fetch collection
 		this.collection.fetch();
 	},
-	events: {
-		'click .ct-bar': 'onClick'
-	},
 	render: function() {
 		var self = this,
-			chartData = [], defaultSeries = [], formattedSeries = [],
+			chartData = [];
 		
-			// Get the first 10 from the collection (TODO: Add a "remainder" bucket?)
-			subset = new Backbone.Collection(this.collection.slice(0, 10)),
-			labels = subset.pluck(this.collection.groupBy);
+		// Get the first 10 from the collection (TODO: Add a "remainder" bucket?)
+		var subset = new Backbone.Collection(this.collection.slice(0, 10));
+			
+		var graphs = [{
+			title: 'Data',
+			type: 'column',
+			valueField: 'count',
+			fillAlphas: 1,
+			clustered: false,
+			lineColor: '#97bbcd',
+			balloonText: '<b>[[category]]</b><br>Total: [[value]]'
+		}];
+			
+		if(this.filteredCollection.length) {
+			graphs[0].lineColor = '#ddd';
+			graphs.push({
+				title: 'Filtered Data',
+				type: 'column',
+				valueField: 'filteredCount',
+				fillAlphas: 0.8,
+				clustered: false,
+				lineColor: '#97bbcd',
+				balloonText: '<b>[[category]]</b><br>Total: [[count]]<br>Filtered Amount: [[value]]'
+			});
+		}
+		console.log('graphs', graphs)
 		
 		// Map collection(s) into format expected by chart library
 		subset.forEach(function(model) {
-			var label = model.get(self.collection.groupBy);
-			defaultSeries.push({
-				value: model.get(self.collection.countProperty),
-				meta: {
-					// Store the name of the bar (chartist doesn't do this by default)
-					label: label
-				}
-			});
-			
+			var label = model.get(self.collection.groupBy),
+				data = {
+					label: label,
+					count: model.get(self.collection.countProperty)
+				};
 			// If the filtered collection has been fetched, find the corresponding record and put it in another series
 			if(self.filteredCollection.length) {
 				var match = self.filteredCollection.get(label);
 				// Push a record even if there's no match so we don't align w/ the wrong bar in the other collection
-				formattedSeries.push({
-					value: match ? match.get(self.collection.countProperty) : 0,
-					meta: {
-						label: label
-					}
-				});
+				data.filteredCount = match ? match.get(self.collection.countProperty) : 0;
+			}
+					
+			chartData.push(data);
+		});
+		
+		// TODO: Initialize chart with chartData
+		this.chart = AmCharts.makeChart(this.el, {
+			type: 'serial',
+			categoryField: 'label',
+			graphs: graphs,
+			dataProvider: chartData,
+			valueAxes: [{
+				labelFunction: numberFormatter
+			}],
+			categoryAxis: {
+				autoWrap: true
 			}
 		});
 		
-		// Push series into an array of arrays for the chart
-		chartData.push(defaultSeries);
-		if(formattedSeries.length) {
-			chartData.push(formattedSeries);
-		}
-		
-		// Initialize/reinitialize chart
-		this.chart = new Chartist.Bar(this.el, {
-			labels: labels,
-			series: chartData
-		}, {
-			// Stack bars on top of one another
-			seriesBarDistance: 0,
-			
-			axisY: {
-				// Print labels as 12k, 1M, etc.
-				labelInterpolationFnc: numberFormatter
-			}
-		});
+		this.chart.addListener('clickGraphItem', this.onClick);
 	},
 	// When the user clicks on a bar in this chart
 	onClick: function(e) {
-		// Deserialize meta attribute, which contains the bar's label
-		var label = Chartist.deserialize($(e.currentTarget).attr('ct:meta')).label;
-		
 		// Trigger the global event handler with this filter
-		this.vent.trigger('filter', this.collection.groupBy, label);
+		this.vent.trigger('filter', this.collection.groupBy, e.item.category);
 	},
 	// When a chart has been filtered
 	onFilter: function(key, value) {
@@ -36385,7 +32757,7 @@ module.exports = Backbone.View.extend({
 		}
 	}
 })
-},{"../util/number-formatter":18,"backbone":2,"chartist":7,"jquery":9,"underscore":15}],20:[function(require,module,exports){
+},{"../util/number-formatter":19,"amcharts/dist/amcharts/amcharts":2,"amcharts/dist/amcharts/serial":3,"backbone":4,"jquery":10,"underscore":16}],21:[function(require,module,exports){
 var $ = require('jquery'),
 	_ = require('underscore'),
 	Backbone = require('backbone');
@@ -36468,4 +32840,4 @@ module.exports = Backbone.View.extend({
 		this.table.ajax.reload();
 	}
 });
-},{"../../assets/js/datatables/dataTables.bootstrap":1,"backbone":2,"datatables":8,"jquery":9,"underscore":15}]},{},[17]);
+},{"../../assets/js/datatables/dataTables.bootstrap":1,"backbone":4,"datatables":9,"jquery":10,"underscore":16}]},{},[18]);

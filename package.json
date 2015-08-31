@@ -13,27 +13,20 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "Chart.StackedBar.js": "regaddi/Chart.StackedBar.js",
+    "amcharts": "^3.14.5",
     "backbone": "^1.2.2",
-    "backgrid": "ryno1234/backgrid",
-    "backgrid-paginator": "^0.3.7",
-    "browserify": "^11.0.1",
-    "chart.js": "^1.0.2",
-    "chartist": "^0.9.4",
-    "chartist-plugin-accessibility": "0.0.4",
-    "chartist-plugin-tooltip": "globegitter/chartist-plugin-tooltip",
     "datatables": "^1.10.8",
-    "dc": "dc-js/dc.js",
     "jquery": "^2.1.4",
-    "node-sass": "^3.2.0",
     "soda-js": "timwis/soda-js#timwis",
-    "underscore": "^1.8.3",
-    "watchify": "^3.3.1"
+    "underscore": "^1.8.3"
   },
   "devDependencies": {
     "browserify-shim": "^3.8.10",
     "livereloadify": "^2.0.0",
-    "node-static": "^0.7.7"
+    "node-static": "^0.7.7",
+    "node-sass": "^3.2.0",
+    "browserify": "^11.0.1",
+    "watchify": "^3.3.1"
   },
   "browserify": {
     "transform": [
