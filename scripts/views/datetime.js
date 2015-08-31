@@ -4,6 +4,7 @@ var $ = require('jquery'),
 	numberFormatter = require('../util/number-formatter');
 require('amcharts/dist/amcharts/amcharts');
 require('amcharts/dist/amcharts/serial');
+require('amcharts/dist/amcharts/themes/light');
 	
 module.exports = Backbone.View.extend({
 	initialize: function(options) {
@@ -22,6 +23,7 @@ module.exports = Backbone.View.extend({
 		this.listenTo(this.filteredCollection, 'sync', this.render);
 		
 		// Fetch collection
+		this.collection.order = 'label';
 		this.collection.fetch();
 	},
 	render: function() {
@@ -29,11 +31,10 @@ module.exports = Backbone.View.extend({
 			chartData = [];
 		
 		// Get the first 10 from the collection (TODO: Add a "remainder" bucket?)
-		var subset = new Backbone.Collection(this.collection.slice(0, 10));
+		//var subset = new Backbone.Collection(this.collection.slice(0, 10));
 			
 		var graphs = [{
 			title: 'Data',
-			type: 'column',
 			valueField: 'count',
 			fillAlphas: 1,
 			clustered: false,
@@ -45,18 +46,17 @@ module.exports = Backbone.View.extend({
 			graphs[0].lineColor = '#ddd';
 			graphs.push({
 				title: 'Filtered Data',
-				type: 'column',
 				valueField: 'filteredCount',
 				fillAlphas: 0.8,
 				clustered: false,
 				lineColor: '#97bbcd',
-				balloonText: '<b>[[category]]</b><br>Total: [[count]]<br>Filtered Amount: [[value]]'
+				balloonText: '<b>[[category]]</b><br>Filtered Amount: [[value]]'
 			});
 		}
 		console.log('graphs', graphs)
 		
 		// Map collection(s) into format expected by chart library
-		subset.forEach(function(model) {
+		this.collection.forEach(function(model) {
 			var label = model.get('label'),
 				data = {
 					label: label,
@@ -76,6 +76,7 @@ module.exports = Backbone.View.extend({
 		// TODO: Initialize chart with chartData
 		this.chart = AmCharts.makeChart(this.el, {
 			type: 'serial',
+			theme: 'light',
 			categoryField: 'label',
 			graphs: graphs,
 			dataProvider: chartData,
@@ -83,16 +84,26 @@ module.exports = Backbone.View.extend({
 				labelFunction: numberFormatter
 			}],
 			categoryAxis: {
-				autoWrap: true
+				autoWrap: true,
+				parseDates: true,
+				minPeriod: 'MM'
+			},
+			dataDateFormat: 'YYYY-MM-DDT00:00:00.000', //"2015-04-07T16:21:00.000"
+			chartCursor: {
+				categoryBalloonDateFormat: "MMM D YYYY",
+				cursorPosition: "mouse",
+				selectWithoutZooming: true
 			}
 		});
 		
-		this.chart.addListener('clickGraphItem', this.onClick);
+		this.chart.chartCursor.addListener('selected', this.onClick);
 	},
 	// When the user clicks on a bar in this chart
 	onClick: function(e) {
+		console.log('Filtered by', (new Date(e.start)).toISOString(), (new Date(e.end)).toISOString());
+		
 		// Trigger the global event handler with this filter
-		this.vent.trigger('filter', this.collection.groupBy, e.item.category);
+		//this.vent.trigger('filter', this.collection.groupBy, e.item.category);
 	},
 	// When a chart has been filtered
 	onFilter: function(key, value) {

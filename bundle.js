@@ -186,7 +186,7 @@ else if ( jQuery ) {
 })(window, document);
 
 
-},{"datatables":9,"jquery":10}],2:[function(require,module,exports){
+},{"datatables":10,"jquery":11}],2:[function(require,module,exports){
 (function(){var d;window.AmCharts?d=window.AmCharts:(d={},window.AmCharts=d,d.themes={},d.maps={},d.inheriting={},d.charts=[],d.onReadyArray=[],d.useUTC=!1,d.updateRate=30,d.uid=0,d.lang={},d.translations={},d.mapTranslations={},d.windows={},d.initHandlers=[]);d.Class=function(a){var b=function(){arguments[0]!==d.inheriting&&(this.events={},this.construct.apply(this,arguments))};a.inherits?(b.prototype=new a.inherits(d.inheriting),b.base=a.inherits.prototype,delete a.inherits):(b.prototype.createEvents=
 function(){for(var a=0,b=arguments.length;a<b;a++)this.events[arguments[a]]=[]},b.prototype.listenTo=function(a,b,c){this.removeListener(a,b,c);a.events[b].push({handler:c,scope:this})},b.prototype.addListener=function(a,b,c){this.removeListener(this,a,b);this.events[a].push({handler:b,scope:c})},b.prototype.removeListener=function(a,b,c){if(a&&a.events)for(a=a.events[b],b=a.length-1;0<=b;b--)a[b].handler===c&&a.splice(b,1)},b.prototype.fire=function(a,b){for(var c=this.events[a],d=0,k=c.length;d<
 k;d++){var l=c[d];l.handler.call(l.scope,b)}});for(var c in a)b.prototype[c]=a[c];return b};d.addChart=function(a){d.updateInt||(d.updateInt=setInterval(function(){d.update()},Math.round(1E3/d.updateRate)));d.charts.push(a)};d.removeChart=function(a){for(var b=d.charts,c=b.length-1;0<=c;c--)b[c]==a&&b.splice(c,1);0===b.length&&d.updateInt&&(clearInterval(d.updateInt),d.updateInt=NaN)};d.isModern=!0;d.getIEVersion=function(){var a=0,b,c;"Microsoft Internet Explorer"==navigator.appName&&(b=navigator.userAgent,
@@ -632,6 +632,206 @@ g=this.stepWidth;this.parseDates&&!this.equalSpacing?(a=this.startTime+Math.roun
 this.equalSpacing?(a=this.chart.getClosestIndex(this.data,"time",a.getTime(),!1,0,this.data.length-1),this.getCoordinate(a-this.start)):NaN},categoryToCoordinate:function(a){return this.chart?(a=this.chart.getCategoryIndexByValue(a),this.getCoordinate(a-this.start)):NaN},coordinateToDate:function(a){return this.equalSpacing?(a=this.xToIndex(a),new Date(this.data[a].time)):new Date(this.startTime+a/this.stepWidth)},getCoordinate:function(a){a*=this.stepWidth;this.startOnAxis||(a+=this.stepWidth/2);
 return Math.round(a)}})})();
 },{}],4:[function(require,module,exports){
+AmCharts.themes.light = {
+
+	themeName:"light",
+
+	AmChart: {
+		color: "#000000", backgroundColor: "#FFFFFF"
+	},
+
+	AmCoordinateChart: {
+		colors: ["#67b7dc", "#fdd400", "#84b761", "#cc4748", "#cd82ad", "#2f4074", "#448e4d", "#b7b83f", "#b9783f", "#b93e3d", "#913167"]
+	},
+
+	AmStockChart: {
+		colors: ["#67b7dc", "#fdd400", "#84b761", "#cc4748", "#cd82ad", "#2f4074", "#448e4d", "#b7b83f", "#b9783f", "#b93e3d", "#913167"]
+	},
+
+	AmSlicedChart: {
+		colors: ["#67b7dc", "#fdd400", "#84b761", "#cc4748", "#cd82ad", "#2f4074", "#448e4d", "#b7b83f", "#b9783f", "#b93e3d", "#913167"],
+		outlineAlpha: 1,
+		outlineThickness: 2,
+		labelTickColor: "#000000",
+		labelTickAlpha: 0.3
+	},
+
+	AmRectangularChart: {
+		zoomOutButtonColor: '#000000',
+		zoomOutButtonRollOverAlpha: 0.15,
+		zoomOutButtonImage: "lens.png"
+	},
+
+	AxisBase: {
+		axisColor: "#000000",
+		axisAlpha: 0.3,
+		gridAlpha: 0.1,
+		gridColor: "#000000"
+	},
+
+	ChartScrollbar: {
+		backgroundColor: "#000000",
+		backgroundAlpha: 0.12,
+		graphFillAlpha: 0.5,
+		graphLineAlpha: 0,
+		selectedBackgroundColor: "#FFFFFF",
+		selectedBackgroundAlpha: 0.4,
+		gridAlpha: 0.15
+	},
+
+	ChartCursor: {
+		cursorColor: "#000000",
+		color: "#FFFFFF",
+		cursorAlpha: 0.5
+	},
+
+	AmLegend: {
+		color: "#000000"
+	},
+
+	AmGraph: {
+		lineAlpha: 0.9
+	},
+	GaugeArrow: {
+		color: "#000000",
+		alpha: 0.8,
+		nailAlpha: 0,
+		innerRadius: "40%",
+		nailRadius: 15,
+		startWidth: 15,
+		borderAlpha: 0.8,
+		nailBorderAlpha: 0
+	},
+
+	GaugeAxis: {
+		tickColor: "#000000",
+		tickAlpha: 1,
+		tickLength: 15,
+		minorTickLength: 8,
+		axisThickness: 3,
+		axisColor: '#000000',
+		axisAlpha: 1,
+		bandAlpha: 0.8
+	},
+
+	TrendLine: {
+		lineColor: "#c03246",
+		lineAlpha: 0.8
+	},
+
+	// ammap
+	AreasSettings: {
+		alpha: 0.8,
+		color: "#67b7dc",
+		colorSolid: "#003767",
+		unlistedAreasAlpha: 0.4,
+		unlistedAreasColor: "#000000",
+		outlineColor: "#FFFFFF",
+		outlineAlpha: 0.5,
+		outlineThickness: 0.5,
+		rollOverColor: "#3c5bdc",
+		rollOverOutlineColor: "#FFFFFF",
+		selectedOutlineColor: "#FFFFFF",
+		selectedColor: "#f15135",
+		unlistedAreasOutlineColor: "#FFFFFF",
+		unlistedAreasOutlineAlpha: 0.5
+	},
+
+	LinesSettings: {
+		color: "#000000",
+		alpha: 0.8
+	},
+
+	ImagesSettings: {
+		alpha: 0.8,
+		labelColor: "#000000",
+		color: "#000000",
+		labelRollOverColor: "#3c5bdc"
+	},
+
+	ZoomControl: {
+		buttonRollOverColor: "#3c5bdc",
+		buttonFillColor: "#3994e2",
+		buttonBorderColor: "#3994e2",
+		buttonFillAlpha: 0.8,
+		gridBackgroundColor: "#FFFFFF",
+		buttonBorderAlpha:0,
+		buttonCornerRadius:2,
+		gridColor:"#FFFFFF",
+		gridBackgroundColor:"#000000",
+		buttonIconAlpha:0.6,
+		gridAlpha: 0.6,
+		buttonSize:20
+	},
+
+	SmallMap: {
+		mapColor: "#000000",
+		rectangleColor: "#f15135",
+		backgroundColor: "#FFFFFF",
+		backgroundAlpha: 0.7,
+		borderThickness: 1,
+		borderAlpha: 0.8
+	},
+
+	// the defaults below are set using CSS syntax, you can use any existing css property
+	// if you don't use Stock chart, you can delete lines below
+	PeriodSelector: {
+		color: "#000000"
+	},
+
+	PeriodButton: {
+		color: "#000000",
+		background: "transparent",
+		opacity: 0.7,
+		border: "1px solid rgba(0, 0, 0, .3)",
+		MozBorderRadius: "5px",
+		borderRadius: "5px",
+		margin: "1px",
+		outline: "none",
+		boxSizing: "border-box"
+	},
+
+	PeriodButtonSelected: {
+		color: "#000000",
+		backgroundColor: "#b9cdf5",
+		border: "1px solid rgba(0, 0, 0, .3)",
+		MozBorderRadius: "5px",
+		borderRadius: "5px",
+		margin: "1px",
+		outline: "none",
+		opacity: 1,
+		boxSizing: "border-box"
+	},
+
+	PeriodInputField: {
+		color: "#000000",
+		background: "transparent",
+		border: "1px solid rgba(0, 0, 0, .3)",
+		outline: "none"
+	},
+
+	DataSetSelector: {
+
+		color: "#000000",
+		selectedBackgroundColor: "#b9cdf5",
+		rollOverBackgroundColor: "#a8b0e4"
+	},
+
+	DataSetCompareList: {
+		color: "#000000",
+		lineHeight: "100%",
+		boxSizing: "initial",
+		webkitBoxSizing: "initial",
+		border: "1px solid rgba(0, 0, 0, .3)"
+	},
+
+	DataSetSelect: {
+		border: "1px solid rgba(0, 0, 0, .3)",
+		outline: "none"
+	}
+
+};
+},{}],5:[function(require,module,exports){
 (function (global){
 //     Backbone.js 1.2.2
 
@@ -2528,7 +2728,7 @@ return Math.round(a)}})})();
 }));
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"jquery":10,"underscore":16}],5:[function(require,module,exports){
+},{"jquery":11,"underscore":17}],6:[function(require,module,exports){
 /*!
  * The buffer module from node.js, for the browser.
  *
@@ -4063,7 +4263,7 @@ function blitBuffer (src, dst, offset, length) {
   return i
 }
 
-},{"base64-js":6,"ieee754":7,"is-array":8}],6:[function(require,module,exports){
+},{"base64-js":7,"ieee754":8,"is-array":9}],7:[function(require,module,exports){
 var lookup = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 
 ;(function (exports) {
@@ -4189,7 +4389,7 @@ var lookup = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 	exports.fromByteArray = uint8ToBase64
 }(typeof exports === 'undefined' ? (this.base64js = {}) : exports))
 
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 exports.read = function (buffer, offset, isLE, mLen, nBytes) {
   var e, m
   var eLen = nBytes * 8 - mLen - 1
@@ -4275,7 +4475,7 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
   buffer[offset + i - d] |= s * 128
 }
 
-},{}],8:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 
 /**
  * isArray
@@ -4310,7 +4510,7 @@ module.exports = isArray || function (val) {
   return !! val && '[object Array]' == str.call(val);
 };
 
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 /*! DataTables 1.10.8
  * ©2008-2014 SpryMedia Ltd - datatables.net/license
  */
@@ -19407,7 +19607,7 @@ module.exports = isArray || function (val) {
 }(window, document));
 
 
-},{"jquery":10}],10:[function(require,module,exports){
+},{"jquery":11}],11:[function(require,module,exports){
 /*!
  * jQuery JavaScript Library v2.1.4
  * http://jquery.com/
@@ -28619,7 +28819,7 @@ return jQuery;
 
 }));
 
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 (function (Buffer){
 // Generated by CoffeeScript 1.9.3
 (function() {
@@ -29155,7 +29355,7 @@ return jQuery;
 }).call(this);
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":5,"eventemitter2":12,"superagent":13}],12:[function(require,module,exports){
+},{"buffer":6,"eventemitter2":13,"superagent":14}],13:[function(require,module,exports){
 /*!
  * EventEmitter2
  * https://github.com/hij1nx/EventEmitter2
@@ -29730,7 +29930,7 @@ return jQuery;
   }
 }();
 
-},{}],13:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 /**
  * Module dependencies.
  */
@@ -30813,7 +31013,7 @@ request.put = function(url, data, fn){
 
 module.exports = request;
 
-},{"emitter":14,"reduce":15}],14:[function(require,module,exports){
+},{"emitter":15,"reduce":16}],15:[function(require,module,exports){
 
 /**
  * Expose `Emitter`.
@@ -30979,7 +31179,7 @@ Emitter.prototype.hasListeners = function(event){
   return !! this.listeners(event).length;
 };
 
-},{}],15:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 
 /**
  * Reduce `arr` with `fn`.
@@ -31004,7 +31204,7 @@ module.exports = function(arr, fn, initial){
   
   return curr;
 };
-},{}],16:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 //     Underscore.js 1.8.3
 //     http://underscorejs.org
 //     (c) 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
@@ -32554,7 +32754,7 @@ module.exports = function(arr, fn, initial){
   }
 }.call(this));
 
-},{}],17:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 var $ = require('jquery'),
 	_ = require('underscore'),
 	Backbone = require('backbone'),
@@ -32565,9 +32765,14 @@ var modelFactory = function(idAttribute) {
 		idAttribute: idAttribute
 	});
 };
+
+var model = Backbone.Model.extend({
+	idAttribute: 'label'
+});
 	
 module.exports = Backbone.Collection.extend({
 	countProperty: 'count',
+	model: model,
 	initialize: function(models, options) {
 		// Save config to collection
 		options = options || {};
@@ -32577,16 +32782,16 @@ module.exports = Backbone.Collection.extend({
 		this.groupBy = options.groupBy || null;
 		this.filter = options.filter || {};
 		
-		this.model = modelFactory(options.groupBy);
+		//this.model = modelFactory(options.groupBy);
 	},
 	url: function() {
 		var query = this.consumer.query()
 			.withDataset(this.dataset)
 			.where(this.filter);
 		if(this.groupBy) {
-			query.select('count(*), ' + this.groupBy)
+			query.select('count(*), ' + this.groupBy + ' as label')
 			.group(this.groupBy)
-			.order('count desc');
+			.order(this.order || 'count desc');
 		} else {
 			query.order(this.order || ':id');
 		}
@@ -32596,14 +32801,15 @@ module.exports = Backbone.Collection.extend({
 		return query.getURL();
 	}
 })
-},{"backbone":4,"jquery":10,"soda-js":11,"underscore":16}],18:[function(require,module,exports){
+},{"backbone":5,"jquery":11,"soda-js":12,"underscore":17}],19:[function(require,module,exports){
 var $ = require('jquery'),
 	_ = require('underscore'),
 	Backbone = require('backbone'),
 	
 	Socrata = require('./collections/socrata'),
 	Bar = require('./views/bar'),
-	Table = require('./views/table');
+	Table = require('./views/table'),
+	DateTime = require('./views/datetime');
 	
 var vent = _.clone(Backbone.Events);
 
@@ -32623,6 +32829,14 @@ $('.card').each(function(index, el) {
 				vent: vent
 			});
 			break;
+		case 'datetime':
+			new DateTime({
+				el: el,
+				collection: collection,
+				filteredCollection: filteredCollection,
+				vent: vent
+			});
+			break;
 		case 'table':
 			new Table({
 				el: el,
@@ -32632,7 +32846,7 @@ $('.card').each(function(index, el) {
 			break;
 	}
 });
-},{"./collections/socrata":17,"./views/bar":20,"./views/table":21,"backbone":4,"jquery":10,"underscore":16}],19:[function(require,module,exports){
+},{"./collections/socrata":18,"./views/bar":21,"./views/datetime":22,"./views/table":23,"backbone":5,"jquery":11,"underscore":17}],20:[function(require,module,exports){
 module.exports = function(num) {
     isNegative = false
     if (num < 0) {
@@ -32651,7 +32865,7 @@ module.exports = function(num) {
     if(isNegative) { formattedNumber = '-' + formattedNumber }
     return formattedNumber;
 }
-},{}],20:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 var $ = require('jquery'),
 	_ = require('underscore'),
 	Backbone = require('backbone'),
@@ -32711,7 +32925,7 @@ module.exports = Backbone.View.extend({
 		
 		// Map collection(s) into format expected by chart library
 		subset.forEach(function(model) {
-			var label = model.get(self.collection.groupBy),
+			var label = model.get('label'),
 				data = {
 					label: label,
 					count: model.get(self.collection.countProperty)
@@ -32719,6 +32933,7 @@ module.exports = Backbone.View.extend({
 			// If the filtered collection has been fetched, find the corresponding record and put it in another series
 			if(self.filteredCollection.length) {
 				var match = self.filteredCollection.get(label);
+				console.log(label, match)
 				// Push a record even if there's no match so we don't align w/ the wrong bar in the other collection
 				data.filteredCount = match ? match.get(self.collection.countProperty) : 0;
 			}
@@ -32757,7 +32972,125 @@ module.exports = Backbone.View.extend({
 		}
 	}
 })
-},{"../util/number-formatter":19,"amcharts/dist/amcharts/amcharts":2,"amcharts/dist/amcharts/serial":3,"backbone":4,"jquery":10,"underscore":16}],21:[function(require,module,exports){
+},{"../util/number-formatter":20,"amcharts/dist/amcharts/amcharts":2,"amcharts/dist/amcharts/serial":3,"backbone":5,"jquery":11,"underscore":17}],22:[function(require,module,exports){
+var $ = require('jquery'),
+	_ = require('underscore'),
+	Backbone = require('backbone'),
+	numberFormatter = require('../util/number-formatter');
+require('amcharts/dist/amcharts/amcharts');
+require('amcharts/dist/amcharts/serial');
+require('amcharts/dist/amcharts/themes/light');
+	
+module.exports = Backbone.View.extend({
+	initialize: function(options) {
+		// Save options to view
+		options = options || {};
+		this.vent = options.vent || null;
+		this.filteredCollection = options.filteredCollection || null;
+		
+		_.bindAll(this, 'onClick');
+		
+		// Listen to vent filters
+		this.listenTo(this.vent, 'filter', this.onFilter);
+		
+		// Listen to collection
+		this.listenTo(this.collection, 'sync', this.render);
+		this.listenTo(this.filteredCollection, 'sync', this.render);
+		
+		// Fetch collection
+		this.collection.order = 'label';
+		this.collection.fetch();
+	},
+	render: function() {
+		var self = this,
+			chartData = [];
+		
+		// Get the first 10 from the collection (TODO: Add a "remainder" bucket?)
+		//var subset = new Backbone.Collection(this.collection.slice(0, 10));
+			
+		var graphs = [{
+			title: 'Data',
+			valueField: 'count',
+			fillAlphas: 1,
+			clustered: false,
+			lineColor: '#97bbcd',
+			balloonText: '<b>[[category]]</b><br>Total: [[value]]'
+		}];
+			
+		if(this.filteredCollection.length) {
+			graphs[0].lineColor = '#ddd';
+			graphs.push({
+				title: 'Filtered Data',
+				valueField: 'filteredCount',
+				fillAlphas: 0.8,
+				clustered: false,
+				lineColor: '#97bbcd',
+				balloonText: '<b>[[category]]</b><br>Filtered Amount: [[value]]'
+			});
+		}
+		console.log('graphs', graphs)
+		
+		// Map collection(s) into format expected by chart library
+		this.collection.forEach(function(model) {
+			var label = model.get('label'),
+				data = {
+					label: label,
+					count: model.get(self.collection.countProperty)
+				};
+			// If the filtered collection has been fetched, find the corresponding record and put it in another series
+			if(self.filteredCollection.length) {
+				var match = self.filteredCollection.get(label);
+				console.log(label, match)
+				// Push a record even if there's no match so we don't align w/ the wrong bar in the other collection
+				data.filteredCount = match ? match.get(self.collection.countProperty) : 0;
+			}
+					
+			chartData.push(data);
+		});
+		
+		// TODO: Initialize chart with chartData
+		this.chart = AmCharts.makeChart(this.el, {
+			type: 'serial',
+			theme: 'light',
+			categoryField: 'label',
+			graphs: graphs,
+			dataProvider: chartData,
+			valueAxes: [{
+				labelFunction: numberFormatter
+			}],
+			categoryAxis: {
+				autoWrap: true,
+				parseDates: true,
+				minPeriod: 'MM'
+			},
+			dataDateFormat: 'YYYY-MM-DDT00:00:00.000', //"2015-04-07T16:21:00.000"
+			chartCursor: {
+				categoryBalloonDateFormat: "MMM D YYYY",
+				cursorPosition: "mouse",
+				selectWithoutZooming: true
+			}
+		});
+		
+		this.chart.chartCursor.addListener('selected', this.onClick);
+	},
+	// When the user clicks on a bar in this chart
+	onClick: function(e) {
+		console.log('Filtered by', (new Date(e.start)).toISOString(), (new Date(e.end)).toISOString());
+		
+		// Trigger the global event handler with this filter
+		//this.vent.trigger('filter', this.collection.groupBy, e.item.category);
+	},
+	// When a chart has been filtered
+	onFilter: function(key, value) {
+		// Only listen to other charts
+		if(key !== this.filteredCollection.groupBy) {
+			// Add the filter to the filtered collection and fetch it with the filter
+			this.filteredCollection.filter[key] = value;
+			this.filteredCollection.fetch();
+		}
+	}
+})
+},{"../util/number-formatter":20,"amcharts/dist/amcharts/amcharts":2,"amcharts/dist/amcharts/serial":3,"amcharts/dist/amcharts/themes/light":4,"backbone":5,"jquery":11,"underscore":17}],23:[function(require,module,exports){
 var $ = require('jquery'),
 	_ = require('underscore'),
 	Backbone = require('backbone');
@@ -32840,4 +33173,4 @@ module.exports = Backbone.View.extend({
 		this.table.ajax.reload();
 	}
 });
-},{"../../assets/js/datatables/dataTables.bootstrap":1,"backbone":4,"datatables":9,"jquery":10,"underscore":16}]},{},[18]);
+},{"../../assets/js/datatables/dataTables.bootstrap":1,"backbone":5,"datatables":10,"jquery":11,"underscore":17}]},{},[19]);

@@ -4,7 +4,8 @@ var $ = require('jquery'),
 	
 	Socrata = require('./collections/socrata'),
 	Bar = require('./views/bar'),
-	Table = require('./views/table');
+	Table = require('./views/table'),
+	DateTime = require('./views/datetime');
 	
 var vent = _.clone(Backbone.Events);
 
@@ -18,6 +19,14 @@ $('.card').each(function(index, el) {
 	switch(config.chartType) {
 		case 'bar':
 			new Bar({
+				el: el,
+				collection: collection,
+				filteredCollection: filteredCollection,
+				vent: vent
+			});
+			break;
+		case 'datetime':
+			new DateTime({
 				el: el,
 				collection: collection,
 				filteredCollection: filteredCollection,

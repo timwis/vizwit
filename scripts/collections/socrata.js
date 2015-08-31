@@ -8,9 +8,14 @@ var modelFactory = function(idAttribute) {
 		idAttribute: idAttribute
 	});
 };
+
+var model = Backbone.Model.extend({
+	idAttribute: 'label'
+});
 	
 module.exports = Backbone.Collection.extend({
 	countProperty: 'count',
+	model: model,
 	initialize: function(models, options) {
 		// Save config to collection
 		options = options || {};
@@ -20,16 +25,16 @@ module.exports = Backbone.Collection.extend({
 		this.groupBy = options.groupBy || null;
 		this.filter = options.filter || {};
 		
-		this.model = modelFactory(options.groupBy);
+		//this.model = modelFactory(options.groupBy);
 	},
 	url: function() {
 		var query = this.consumer.query()
 			.withDataset(this.dataset)
 			.where(this.filter);
 		if(this.groupBy) {
-			query.select('count(*), ' + this.groupBy)
+			query.select('count(*), ' + this.groupBy + ' as label')
 			.group(this.groupBy)
-			.order('count desc');
+			.order(this.order || 'count desc');
 		} else {
 			query.order(this.order || ':id');
 		}
