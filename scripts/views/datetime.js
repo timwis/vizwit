@@ -39,9 +39,9 @@ module.exports = BaseChart.extend({
 			},
 			dataDateFormat: 'YYYY-MM-DDT00:00:00.000', //"2015-04-07T16:21:00.000"
 			chartCursor: {
-				categoryBalloonDateFormat: "MMM D YYYY",
-				cursorPosition: "mouse",
-				selectWithoutZooming: true
+				categoryBalloonDateFormat: "MMM YYYY",
+				cursorPosition: "mouse"/*,
+				selectWithoutZooming: true*/
 			}
 		}
 	},
