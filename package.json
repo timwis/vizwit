@@ -17,6 +17,7 @@
     "backbone": "^1.2.2",
     "datatables": "^1.10.8",
     "jquery": "^2.1.4",
+    "leaflet": "^0.7.3",
     "soda-js": "timwis/soda-js#timwis",
     "underscore": "^1.8.3"
   },

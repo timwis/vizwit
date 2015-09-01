@@ -3,9 +3,11 @@ var $ = require('jquery'),
 	Backbone = require('backbone'),
 	
 	Socrata = require('./collections/socrata'),
+	GeoJSON = require('./collections/geojson'),
 	Bar = require('./views/bar'),
 	Table = require('./views/table'),
-	DateTime = require('./views/datetime');
+	DateTime = require('./views/datetime'),
+	DensityMap = require('./views/density-map');
 	
 var vent = _.clone(Backbone.Events);
 
@@ -40,5 +42,12 @@ $('.card').each(function(index, el) {
 				vent: vent
 			});
 			break;
+		case 'density-map':
+			new DensityMap({
+				el: el,
+				collection: collection,
+				boundaries: new GeoJSON(null, {url: config.boundaries}),
+				vent: vent
+			});
 	}
 });
