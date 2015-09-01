@@ -55,12 +55,10 @@ module.exports = Backbone.View.extend({
 			}*/
 			
 			// Initialize the table
-			console.log('initializing table')
 			this.table = this.$el.DataTable({
 				columns: sampleColumns,
 				serverSide: true,
 				ajax: function(data, callback, settings) {
-					console.log('ajax', arguments)
 					self.collection.offset = data.start || 0;
 					self.collection.limit = data.length || 25;
 					self.collection.order = data.columns[data.order[0].column].data + ' ' + data.order[0].dir;
