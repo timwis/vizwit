@@ -5,10 +5,10 @@
   "main": "index.js",
   "scripts": {
     "start": "npm run watch & npm run livereload & npm run static",
-    "watch": "./node_modules/watchify/bin/cmd.js scripts/main.js -o bundle.js",
+    "watch": "./node_modules/watchify/bin/cmd.js scripts/main.js -o dist/bundle.js",
     "livereload": "./node_modules/livereloadify/cli.js ./",
     "static": "./node_modules/node-static/bin/cli.js ./",
-    "styles": "./node_modules/node-sass/bin/node-sass styles/scss/ -o styles"
+    "styles": "./node_modules/npm-css/bin/npm-css styles/main.css -o dist/bundle.css"
   },
   "author": "",
   "license": "MIT",
@@ -22,11 +22,12 @@
     "underscore": "^1.8.3"
   },
   "devDependencies": {
+    "browserify": "^11.0.1",
     "browserify-shim": "^3.8.10",
     "livereloadify": "^2.0.0",
-    "node-static": "^0.7.7",
     "node-sass": "^3.2.0",
-    "browserify": "^11.0.1",
+    "node-static": "^0.7.7",
+    "npm-css": "^0.2.3",
     "watchify": "^3.3.1"
   },
   "browserify": {
