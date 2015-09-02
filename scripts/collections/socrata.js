@@ -1,7 +1,7 @@
-var $ = require('jquery'),
-	_ = require('underscore'),
-	Backbone = require('backbone'),
-	soda = require('soda-js');
+var $ = require('jquery');
+var _ = require('underscore');
+var Backbone = require('backbone');
+var soda = require('soda-js');
 	
 var modelFactory = function(idAttribute) {
 	return Backbone.Model.extend({
