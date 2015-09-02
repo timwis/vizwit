@@ -1,8 +1,8 @@
-var $ = require('jquery'),
-	_ = require('underscore'),
-	Backbone = require('backbone'),
-	L = require('mapbox.js'),
-	geocolor = require('geocolor');
+var $ = require('jquery');
+var _ = require('underscore');
+var Backbone = require('backbone');
+var L = require('mapbox.js');
+var geocolor = require('geocolor');
 //L.Icon.Default.imagePath = 'node_modules/leaflet/dist/images/'; // necessary w/browserify
 	
 module.exports = Backbone.View.extend({

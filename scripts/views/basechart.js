@@ -1,7 +1,7 @@
-var $ = require('jquery'),
-	_ = require('underscore'),
-	Backbone = require('backbone'),
-	numberFormatter = require('../util/number-formatter');
+var $ = require('jquery');
+var _ = require('underscore');
+var Backbone = require('backbone');
+var numberFormatter = require('../util/number-formatter');
 require('amcharts/dist/amcharts/amcharts');
 require('amcharts/dist/amcharts/serial');
 require('amcharts/dist/amcharts/themes/light');
@@ -81,17 +81,17 @@ module.exports = Backbone.View.extend({
 		this.chart = AmCharts.makeChart(this.el, config);
 	},
 	formatChartData: function(limit) {
-		var self = this,
-			chartData = [],
-			records = limit ? new Backbone.Collection(this.collection.slice(0, limit)) : this.collection;
+		var self = this;
+		var chartData = [];
+		var records = limit ? new Backbone.Collection(this.collection.slice(0, limit)) : this.collection;
 		
 		// Map collection(s) into format expected by chart library
 		records.forEach(function(model) {
-			var label = model.get('label'),
-				data = {
-					label: label,
-					count: model.get(self.collection.countProperty)
-				};
+			var label = model.get('label');
+			var data = {
+				label: label,
+				count: model.get(self.collection.countProperty)
+			};
 			// If the filtered collection has been fetched, find the corresponding record and put it in another series
 			if(self.filteredCollection.length) {
 				var match = self.filteredCollection.get(label);

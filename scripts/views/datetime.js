@@ -1,8 +1,8 @@
-var $ = require('jquery'),
-	_ = require('underscore'),
-	Backbone = require('backbone'),
-	BaseChart = require('./basechart'),
-	numberFormatter = require('../util/number-formatter');
+var $ = require('jquery');
+var _ = require('underscore');
+var Backbone = require('backbone');
+var BaseChart = require('./basechart');
+var numberFormatter = require('../util/number-formatter');
 	
 var trimLastCharacter = function(str) {
 	return str.substr(0, str.length - 1);
@@ -62,11 +62,10 @@ module.exports = BaseChart.extend({
 	},
 	// When the user clicks on a bar in this chart
 	onClick: function(e) {
-		console.log('Filtered by', (new Date(e.start)).toISOString(), (new Date(e.end)).toISOString());
-		var field = this.collection.triggerField,
-			start = trimLastCharacter((new Date(e.start)).toISOString()),
-			end = trimLastCharacter((new Date(e.end)).toISOString());
-		
+		//console.log('Filtered by', (new Date(e.start)).toISOString(), (new Date(e.end)).toISOString());
+		var field = this.collection.triggerField;
+		var start = trimLastCharacter((new Date(e.start)).toISOString());
+		var end = trimLastCharacter((new Date(e.end)).toISOString());
 		
 		// Trigger the global event handler with this filter
 		this.vent.trigger('filter', field, field + ' >= \'' + start + '\' and ' + field + ' <= \'' + end + '\'');

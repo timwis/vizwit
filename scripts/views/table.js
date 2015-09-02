@@ -1,6 +1,6 @@
-var $ = require('jquery'),
-	_ = require('underscore'),
-	Backbone = require('backbone');
+var $ = require('jquery');
+var _ = require('underscore');
+var Backbone = require('backbone');
 require('datatables');
 require('../../assets/js/datatables/dataTables.bootstrap');
 

@@ -1,13 +1,13 @@
-var $ = require('jquery'),
-	_ = require('underscore'),
-	Backbone = require('backbone'),
+var $ = require('jquery');
+var _ = require('underscore');
+var Backbone = require('backbone');
 	
-	Socrata = require('./collections/socrata'),
-	GeoJSON = require('./collections/geojson'),
-	Bar = require('./views/bar'),
-	Table = require('./views/table'),
-	DateTime = require('./views/datetime'),
-	Choropleth = require('./views/choropleth');
+var Socrata = require('./collections/socrata');
+var GeoJSON = require('./collections/geojson');
+var Bar = require('./views/bar');
+var Table = require('./views/table');
+var DateTime = require('./views/datetime');
+var Choropleth = require('./views/choropleth');
 	
 var vent = _.clone(Backbone.Events);
 

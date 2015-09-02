@@ -1,8 +1,8 @@
-var $ = require('jquery'),
-	_ = require('underscore'),
-	Backbone = require('backbone'),
-	BaseChart = require('./basechart'),
-	numberFormatter = require('../util/number-formatter');
+var $ = require('jquery');
+var _ = require('underscore');
+var Backbone = require('backbone');
+var BaseChart = require('./basechart');
+var numberFormatter = require('../util/number-formatter');
 	
 module.exports = BaseChart.extend({
 	settings: {
