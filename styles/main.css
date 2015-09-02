@@ -3,13 +3,15 @@
 	min-height: 350px;
 }
 
-/*.scroll-y {
+.scroll-x {
 	overflow-x: scroll;
-}*/
+}
 
 .card.table {
 	font-size: 13px;
-	white-space: nowrap;
+	/*white-space: nowrap;*/
+	word-wrap: break-word;
+	word-break: keep-all;
 }
 
 .ct-label {
