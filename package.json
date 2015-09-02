@@ -16,8 +16,9 @@
     "amcharts": "^3.14.5",
     "backbone": "^1.2.2",
     "datatables": "^1.10.8",
+    "geocolor": "0.0.16",
     "jquery": "^2.1.4",
-    "leaflet": "^0.7.3",
+    "mapbox.js": "^2.2.1",
     "soda-js": "timwis/soda-js#timwis",
     "underscore": "^1.8.3"
   },

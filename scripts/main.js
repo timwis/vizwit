@@ -7,7 +7,7 @@ var $ = require('jquery'),
 	Bar = require('./views/bar'),
 	Table = require('./views/table'),
 	DateTime = require('./views/datetime'),
-	DensityMap = require('./views/density-map');
+	Choropleth = require('./views/choropleth');
 	
 var vent = _.clone(Backbone.Events);
 
@@ -42,11 +42,11 @@ $('.card').each(function(index, el) {
 				vent: vent
 			});
 			break;
-		case 'density-map':
-			new DensityMap({
+		case 'choropleth':
+			new Choropleth({
 				el: el,
 				collection: collection,
-				boundaries: new GeoJSON(null, {url: config.boundaries}),
+				boundaries: new GeoJSON(null, config),
 				vent: vent
 			});
 	}
