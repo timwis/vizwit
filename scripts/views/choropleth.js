@@ -8,12 +8,14 @@ var geocolor = require('geocolor');
 module.exports = Backbone.View.extend({
 	initialize: function(options) {
 		options = options || {};
-		this.boundaries = options.boundaries || null;
 		this.vent = options.vent || null;
+		this.boundaries = options.boundaries || null;
+		this.filteredCollection = options.filteredCollection || null;
 		
 		// Listen to boundaries & collection
 		this.listenTo(this.boundaries, 'sync', this.addBoundaries);
 		this.listenTo(this.collection, 'sync', this.addBoundaries);
+		this.listenTo(this.filteredCollection, 'sync', this.addBoundaries);
 		
 		// Listen to vent filters
 		this.listenTo(this.vent, 'filter', this.onFilter);
@@ -30,6 +32,15 @@ module.exports = Backbone.View.extend({
 		// Render map at load
 		this.render();
 	},
+	// When a chart has been filtered
+	onFilter: function(key, expression) {
+		// Only listen to other charts
+		if(key !== this.filteredCollection.triggerField) {
+			// Add the filter to the filtered collection and fetch it with the filter
+			this.filteredCollection.filter[key] = expression;
+			this.filteredCollection.fetch();
+		}
+	},
 	render: function() {
 		this.map = L.map(this.el).setView([39.95, -75.1667], 11);
 		L.tileLayer('http://stamen-tiles-{s}.a.ssl.fastly.net/toner-lite/{z}/{x}/{y}.png', {
@@ -43,7 +54,7 @@ module.exports = Backbone.View.extend({
 	addBoundaries: function() {
 		var self = this;
 		if(this.boundaries.length && this.collection.length) {
-			this.datasetInFeatures(this.boundaries, this.collection, 'count');
+			this.datasetInFeatures();
 			
 			var style = {
 				stroke: '#fff',
@@ -51,8 +62,8 @@ module.exports = Backbone.View.extend({
 				fillOpacity: 0.7
 			};
 			
-			var colorized = geocolor.quantiles(this.boundaries.toGeoJSON(), 'count', 15, ['#eff3ff', '#bdd7e7', '#6baed6', '#3182bd', '#08519c'], style);
-			console.log(colorized)
+			var colorizeField = this.filteredCollection.length ? 'filteredCount' : 'count';
+			var colorized = geocolor.quantiles(this.boundaries.toGeoJSON(), colorizeField, 15, ['#eff3ff', '#bdd7e7', '#6baed6', '#3182bd', '#08519c'], style);
 			
 			this.layer = L.geoJson(colorized, {
 				style: L.mapbox.simplestyle.style,
@@ -70,20 +81,39 @@ module.exports = Backbone.View.extend({
 	 * Loop through features, find the matching dataset record, and put the specific field into the feature
 	 * Done via reference
 	 */
-	datasetInFeatures: function(featuresCollection, datasetCollection, valueField) {
-		featuresCollection.forEach(function(featureModel) {
+	datasetInFeatures: function() {
+		var self = this;
+		this.boundaries.forEach(function(featureModel) {
 			var featureProperties = featureModel.get('properties');
-			var datasetMatch = datasetCollection.get(featureProperties[featuresCollection.idAttribute]);
 			
-			featureProperties.count = datasetMatch ? +datasetMatch.get(valueField) : 0;
+			// Find match in collection
+			var collectionMatch = self.collection.get(featureProperties[self.boundaries.idAttribute]);
+			featureProperties.count = collectionMatch ? +collectionMatch.get(self.collection.countProperty) : 0;
+			
+			// If filteredCollection has any records, find match there too
+			if(self.filteredCollection.length) {
+				var filteredCollectionMatch = self.filteredCollection.get(featureProperties[self.boundaries.idAttribute]);
+				featureProperties.filteredCount = filteredCollectionMatch ? +filteredCollectionMatch.get(self.filteredCollection.countProperty) : 0;
+			}
+			
 			featureModel.set('properties', featureProperties);
 		});
 	},
 	onMousemove: function(e) {
 		var layer = e.target;
+		
+		// Construct popup HTML (TODO: Move to template)
+		var popupContent = '\
+			<div class="marker-title">\
+			<h2>' + layer.feature.properties[this.boundaries.label] + '</h2>\
+			Total: ' + layer.feature.properties.count;
+		if(layer.feature.properties.filteredCount !== undefined) {
+			popupContent += '<br>Filtered Amount: ' + layer.feature.properties.filteredCount;
+		}
+		popupContent += '</div>';
 	
 		this.popup.setLatLng(e.latlng);
-		this.popup.setContent('<div class="marker-title"><h2>' + layer.feature.properties[this.boundaries.label] + '</h2>Total: ' + layer.feature.properties.count + '</div>');
+		this.popup.setContent(popupContent);
 	
 		if ( ! this.popup._map) this.popup.openOn(this.map);
 		window.clearTimeout(this.closeTooltip);
@@ -109,7 +139,6 @@ module.exports = Backbone.View.extend({
 	},
 	onClick: function(e) {
 		var clicked = e.target.feature.properties[this.boundaries.idAttribute];
-		console.log('clicked', clicked)
 		// Trigger the global event handler with this filter
 		this.vent.trigger('filter', this.collection.triggerField, this.collection.triggerField + ' = \'' + clicked + '\'');
 	}

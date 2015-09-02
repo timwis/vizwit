@@ -57086,9 +57086,9 @@ module.exports = function(arr, fn, initial){
 }.call(this));
 
 },{}],53:[function(require,module,exports){
-var $ = require('jquery'),
-	_ = require('underscore'),
-	Backbone = require('backbone');
+var $ = require('jquery');
+var _ = require('underscore');
+var Backbone = require('backbone');
 	
 module.exports = Backbone.Collection.extend({
 	initialize: function(models, options) {
@@ -57108,10 +57108,10 @@ module.exports = Backbone.Collection.extend({
 	}
 });
 },{"backbone":5,"jquery":16,"underscore":52}],54:[function(require,module,exports){
-var $ = require('jquery'),
-	_ = require('underscore'),
-	Backbone = require('backbone'),
-	soda = require('soda-js');
+var $ = require('jquery');
+var _ = require('underscore');
+var Backbone = require('backbone');
+var soda = require('soda-js');
 	
 var modelFactory = function(idAttribute) {
 	return Backbone.Model.extend({
@@ -57159,16 +57159,16 @@ module.exports = Backbone.Collection.extend({
 	}
 })
 },{"backbone":5,"jquery":16,"soda-js":47,"underscore":52}],55:[function(require,module,exports){
-var $ = require('jquery'),
-	_ = require('underscore'),
-	Backbone = require('backbone'),
+var $ = require('jquery');
+var _ = require('underscore');
+var Backbone = require('backbone');
 	
-	Socrata = require('./collections/socrata'),
-	GeoJSON = require('./collections/geojson'),
-	Bar = require('./views/bar'),
-	Table = require('./views/table'),
-	DateTime = require('./views/datetime'),
-	Choropleth = require('./views/choropleth');
+var Socrata = require('./collections/socrata');
+var GeoJSON = require('./collections/geojson');
+var Bar = require('./views/bar');
+var Table = require('./views/table');
+var DateTime = require('./views/datetime');
+var Choropleth = require('./views/choropleth');
 	
 var vent = _.clone(Backbone.Events);
 
@@ -57208,6 +57208,7 @@ $('.card').each(function(index, el) {
 				el: el,
 				collection: collection,
 				boundaries: new GeoJSON(null, config),
+				filteredCollection: filteredCollection,
 				vent: vent
 			});
 	}
@@ -57232,11 +57233,11 @@ module.exports = function(num) {
     return formattedNumber;
 }
 },{}],57:[function(require,module,exports){
-var $ = require('jquery'),
-	_ = require('underscore'),
-	Backbone = require('backbone'),
-	BaseChart = require('./basechart'),
-	numberFormatter = require('../util/number-formatter');
+var $ = require('jquery');
+var _ = require('underscore');
+var Backbone = require('backbone');
+var BaseChart = require('./basechart');
+var numberFormatter = require('../util/number-formatter');
 	
 module.exports = BaseChart.extend({
 	settings: {
@@ -57290,10 +57291,10 @@ module.exports = BaseChart.extend({
 	}
 })
 },{"../util/number-formatter":56,"./basechart":58,"backbone":5,"jquery":16,"underscore":52}],58:[function(require,module,exports){
-var $ = require('jquery'),
-	_ = require('underscore'),
-	Backbone = require('backbone'),
-	numberFormatter = require('../util/number-formatter');
+var $ = require('jquery');
+var _ = require('underscore');
+var Backbone = require('backbone');
+var numberFormatter = require('../util/number-formatter');
 require('amcharts/dist/amcharts/amcharts');
 require('amcharts/dist/amcharts/serial');
 require('amcharts/dist/amcharts/themes/light');
@@ -57373,17 +57374,17 @@ module.exports = Backbone.View.extend({
 		this.chart = AmCharts.makeChart(this.el, config);
 	},
 	formatChartData: function(limit) {
-		var self = this,
-			chartData = [],
-			records = limit ? new Backbone.Collection(this.collection.slice(0, limit)) : this.collection;
+		var self = this;
+		var chartData = [];
+		var records = limit ? new Backbone.Collection(this.collection.slice(0, limit)) : this.collection;
 		
 		// Map collection(s) into format expected by chart library
 		records.forEach(function(model) {
-			var label = model.get('label'),
-				data = {
-					label: label,
-					count: model.get(self.collection.countProperty)
-				};
+			var label = model.get('label');
+			var data = {
+				label: label,
+				count: model.get(self.collection.countProperty)
+			};
 			// If the filtered collection has been fetched, find the corresponding record and put it in another series
 			if(self.filteredCollection.length) {
 				var match = self.filteredCollection.get(label);
@@ -57406,22 +57407,24 @@ module.exports = Backbone.View.extend({
 	}
 })
 },{"../util/number-formatter":56,"amcharts/dist/amcharts/amcharts":2,"amcharts/dist/amcharts/serial":3,"amcharts/dist/amcharts/themes/light":4,"backbone":5,"jquery":16,"underscore":52}],59:[function(require,module,exports){
-var $ = require('jquery'),
-	_ = require('underscore'),
-	Backbone = require('backbone'),
-	L = require('mapbox.js'),
-	geocolor = require('geocolor');
+var $ = require('jquery');
+var _ = require('underscore');
+var Backbone = require('backbone');
+var L = require('mapbox.js');
+var geocolor = require('geocolor');
 //L.Icon.Default.imagePath = 'node_modules/leaflet/dist/images/'; // necessary w/browserify
 	
 module.exports = Backbone.View.extend({
 	initialize: function(options) {
 		options = options || {};
-		this.boundaries = options.boundaries || null;
 		this.vent = options.vent || null;
+		this.boundaries = options.boundaries || null;
+		this.filteredCollection = options.filteredCollection || null;
 		
 		// Listen to boundaries & collection
 		this.listenTo(this.boundaries, 'sync', this.addBoundaries);
 		this.listenTo(this.collection, 'sync', this.addBoundaries);
+		this.listenTo(this.filteredCollection, 'sync', this.addBoundaries);
 		
 		// Listen to vent filters
 		this.listenTo(this.vent, 'filter', this.onFilter);
@@ -57438,6 +57441,15 @@ module.exports = Backbone.View.extend({
 		// Render map at load
 		this.render();
 	},
+	// When a chart has been filtered
+	onFilter: function(key, expression) {
+		// Only listen to other charts
+		if(key !== this.filteredCollection.triggerField) {
+			// Add the filter to the filtered collection and fetch it with the filter
+			this.filteredCollection.filter[key] = expression;
+			this.filteredCollection.fetch();
+		}
+	},
 	render: function() {
 		this.map = L.map(this.el).setView([39.95, -75.1667], 11);
 		L.tileLayer('http://stamen-tiles-{s}.a.ssl.fastly.net/toner-lite/{z}/{x}/{y}.png', {
@@ -57451,7 +57463,7 @@ module.exports = Backbone.View.extend({
 	addBoundaries: function() {
 		var self = this;
 		if(this.boundaries.length && this.collection.length) {
-			this.datasetInFeatures(this.boundaries, this.collection, 'count');
+			this.datasetInFeatures();
 			
 			var style = {
 				stroke: '#fff',
@@ -57459,8 +57471,8 @@ module.exports = Backbone.View.extend({
 				fillOpacity: 0.7
 			};
 			
-			var colorized = geocolor.quantiles(this.boundaries.toGeoJSON(), 'count', 15, ['#eff3ff', '#bdd7e7', '#6baed6', '#3182bd', '#08519c'], style);
-			console.log(colorized)
+			var colorizeField = this.filteredCollection.length ? 'filteredCount' : 'count';
+			var colorized = geocolor.quantiles(this.boundaries.toGeoJSON(), colorizeField, 15, ['#eff3ff', '#bdd7e7', '#6baed6', '#3182bd', '#08519c'], style);
 			
 			this.layer = L.geoJson(colorized, {
 				style: L.mapbox.simplestyle.style,
@@ -57478,20 +57490,39 @@ module.exports = Backbone.View.extend({
 	 * Loop through features, find the matching dataset record, and put the specific field into the feature
 	 * Done via reference
 	 */
-	datasetInFeatures: function(featuresCollection, datasetCollection, valueField) {
-		featuresCollection.forEach(function(featureModel) {
+	datasetInFeatures: function() {
+		var self = this;
+		this.boundaries.forEach(function(featureModel) {
 			var featureProperties = featureModel.get('properties');
-			var datasetMatch = datasetCollection.get(featureProperties[featuresCollection.idAttribute]);
 			
-			featureProperties.count = datasetMatch ? +datasetMatch.get(valueField) : 0;
+			// Find match in collection
+			var collectionMatch = self.collection.get(featureProperties[self.boundaries.idAttribute]);
+			featureProperties.count = collectionMatch ? +collectionMatch.get(self.collection.countProperty) : 0;
+			
+			// If filteredCollection has any records, find match there too
+			if(self.filteredCollection.length) {
+				var filteredCollectionMatch = self.filteredCollection.get(featureProperties[self.boundaries.idAttribute]);
+				featureProperties.filteredCount = filteredCollectionMatch ? +filteredCollectionMatch.get(self.filteredCollection.countProperty) : 0;
+			}
+			
 			featureModel.set('properties', featureProperties);
 		});
 	},
 	onMousemove: function(e) {
 		var layer = e.target;
+		
+		// Construct popup HTML (TODO: Move to template)
+		var popupContent = '\
+			<div class="marker-title">\
+			<h2>' + layer.feature.properties[this.boundaries.label] + '</h2>\
+			Total: ' + layer.feature.properties.count;
+		if(layer.feature.properties.filteredCount !== undefined) {
+			popupContent += '<br>Filtered Amount: ' + layer.feature.properties.filteredCount;
+		}
+		popupContent += '</div>';
 	
 		this.popup.setLatLng(e.latlng);
-		this.popup.setContent('<div class="marker-title"><h2>' + layer.feature.properties[this.boundaries.label] + '</h2>Total: ' + layer.feature.properties.count + '</div>');
+		this.popup.setContent(popupContent);
 	
 		if ( ! this.popup._map) this.popup.openOn(this.map);
 		window.clearTimeout(this.closeTooltip);
@@ -57517,18 +57548,17 @@ module.exports = Backbone.View.extend({
 	},
 	onClick: function(e) {
 		var clicked = e.target.feature.properties[this.boundaries.idAttribute];
-		console.log('clicked', clicked)
 		// Trigger the global event handler with this filter
 		this.vent.trigger('filter', this.collection.triggerField, this.collection.triggerField + ' = \'' + clicked + '\'');
 	}
 });
 
 },{"backbone":5,"geocolor":11,"jquery":16,"mapbox.js":32,"underscore":52}],60:[function(require,module,exports){
-var $ = require('jquery'),
-	_ = require('underscore'),
-	Backbone = require('backbone'),
-	BaseChart = require('./basechart'),
-	numberFormatter = require('../util/number-formatter');
+var $ = require('jquery');
+var _ = require('underscore');
+var Backbone = require('backbone');
+var BaseChart = require('./basechart');
+var numberFormatter = require('../util/number-formatter');
 	
 var trimLastCharacter = function(str) {
 	return str.substr(0, str.length - 1);
@@ -57588,20 +57618,19 @@ module.exports = BaseChart.extend({
 	},
 	// When the user clicks on a bar in this chart
 	onClick: function(e) {
-		console.log('Filtered by', (new Date(e.start)).toISOString(), (new Date(e.end)).toISOString());
-		var field = this.collection.triggerField,
-			start = trimLastCharacter((new Date(e.start)).toISOString()),
-			end = trimLastCharacter((new Date(e.end)).toISOString());
-		
+		//console.log('Filtered by', (new Date(e.start)).toISOString(), (new Date(e.end)).toISOString());
+		var field = this.collection.triggerField;
+		var start = trimLastCharacter((new Date(e.start)).toISOString());
+		var end = trimLastCharacter((new Date(e.end)).toISOString());
 		
 		// Trigger the global event handler with this filter
 		this.vent.trigger('filter', field, field + ' >= \'' + start + '\' and ' + field + ' <= \'' + end + '\'');
 	}
 })
 },{"../util/number-formatter":56,"./basechart":58,"backbone":5,"jquery":16,"underscore":52}],61:[function(require,module,exports){
-var $ = require('jquery'),
-	_ = require('underscore'),
-	Backbone = require('backbone');
+var $ = require('jquery');
+var _ = require('underscore');
+var Backbone = require('backbone');
 require('datatables');
 require('../../assets/js/datatables/dataTables.bootstrap');
 

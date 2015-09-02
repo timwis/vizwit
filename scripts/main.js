@@ -47,6 +47,7 @@ $('.card').each(function(index, el) {
 				el: el,
 				collection: collection,
 				boundaries: new GeoJSON(null, config),
+				filteredCollection: filteredCollection,
 				vent: vent
 			});
 	}
