@@ -3,11 +3,13 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 var L = require('mapbox.js');
 var geocolor = require('geocolor');
+var Template = require('../templates/panel.html');
 //L.Icon.Default.imagePath = 'node_modules/leaflet/dist/images/'; // necessary w/browserify
 	
 module.exports = Backbone.View.extend({
 	initialize: function(options) {
 		options = options || {};
+		this.config = options.config || {};
 		this.vent = options.vent || null;
 		this.boundaries = options.boundaries || null;
 		this.filteredCollection = options.filteredCollection || null;
@@ -27,10 +29,11 @@ module.exports = Backbone.View.extend({
 		// Create a popup object
 		this.popup = new L.Popup({ autoPan: false });
 		
-		_.bindAll(this, 'onMousemove', 'onMouseout', 'onClick');
+		_.bindAll(this, 'onMousemove', 'onMouseout', 'onClick', 'render');
 		
-		// Render map at load
-		this.render();
+		// Render template & map at load
+		this.renderTemplate();
+		setTimeout(this.render, 100);
 	},
 	// When a chart has been filtered
 	onFilter: function(key, expression) {
@@ -41,8 +44,11 @@ module.exports = Backbone.View.extend({
 			this.filteredCollection.fetch();
 		}
 	},
+	renderTemplate: function() {
+		this.$el.empty().append(Template(this.config));
+	},
 	render: function() {
-		this.map = L.map(this.el).setView([39.95, -75.1667], 11);
+		this.map = L.map(this.$('.card').get(0)).setView([39.95, -75.1667], 11);
 		L.tileLayer('http://stamen-tiles-{s}.a.ssl.fastly.net/toner-lite/{z}/{x}/{y}.png', {
 			attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
 			subdomains: 'abcd',

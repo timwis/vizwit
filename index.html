@@ -26,57 +26,7 @@
 			</div>
 		</div>
 		
-		<div class="container-fluid">
-			
-			<div class="row">
-				<div class="col-md-6">
-					<div class="panel panel-default">
-						<div class="panel-heading">
-							Issue Date and Time
-						</div>
-						<div id="chart" class="card ct-chart ct-perfect-fourth" data-domain="data.phila.gov" data-dataset="2pfz-fnns" data-group-by="date_trunc_ym(issue_date_and_time)" data-trigger-field="issue_date_and_time" data-chart-type="datetime"></div>
-					</div>
-				</div>
-				<div class="col-md-6">
-					<div class="panel panel-default">
-						<div class="panel-heading">
-							Zipcodes
-						</div>
-						<div id="chart" class="card ct-chart ct-perfect-fourth" data-domain="data.phila.gov" data-dataset="2pfz-fnns" data-group-by=":@computed_region_8tb6_tjh9" data-chart-type="choropleth" data-boundaries="https://data.phila.gov/resource/8tb6-tjh9.geojson" data-boundaries-label="code" data-boundaries-id="_feature_id"></div>
-					</div>
-				</div>
-			</div>
-		
-			<div class="row">
-				<div class="col-md-6">
-					<div class="panel panel-default">
-						<div class="panel-heading">
-							Violation Description
-						</div>
-						<div id="chart" class="card ct-chart ct-perfect-fourth" data-domain="data.phila.gov" data-dataset="2pfz-fnns" data-group-by="violation_description" data-chart-type="bar"></div>
-					</div>
-				</div>
-				<div class="col-md-6">
-					<div class="panel panel-default">
-						<div class="panel-heading">
-							Issuing Agency
-						</div>
-						<div id="chart" class="card ct-chart ct-perfect-fourth" data-domain="data.phila.gov" data-dataset="2pfz-fnns" data-group-by="issuing_agency" data-chart-type="bar"></div>
-					</div>
-				</div>
-			</div>
-			
-			<div class="row">
-				<div class="col-md-12">
-					<div class="panel panel-default">
-						<div class="panel-body">
-							<table class="card table table-striped" data-domain="data.phila.gov" data-dataset="2pfz-fnns" data-chart-type="table"></table>
-						</div>
-					</div>
-				</div>
-			</div>
-				
-		</div>
+		<div class="container-fluid" id="page-content"></div>
 		
 		<script src="dist/bundle.js"></script>
 	</body>

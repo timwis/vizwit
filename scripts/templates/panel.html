@@ -1,0 +1,21 @@
+<div class="panel panel-default">
+	<% if(data.title) { %>
+	<div class="panel-heading">
+		<%= data.title %>
+	</div>
+	<% } %>
+		
+	<% if(data.padded) { %>
+	<div class="panel-body">
+	<% } %>
+		
+		<% if(data.chartType === 'table') { %>
+		<table class="card table table-striped"></table>
+		<% } else { %>
+		<div class="card"></div>
+		<% } %>
+	
+	<% if(data.padded) { %>
+	</div>
+	<% } %>
+</div>

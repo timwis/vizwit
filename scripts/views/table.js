@@ -1,6 +1,7 @@
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
+var Template = require('../templates/panel.html');
 require('datatables');
 require('../../assets/js/datatables/dataTables.bootstrap');
 
@@ -18,6 +19,7 @@ var sampleColumns = [
 module.exports = Backbone.View.extend({
 	initialize: function(options) {
 		options = options || {};
+		this.config = options.config || {};
 		this.vent = options.vent || null;
 		
 		// Listen to collection
@@ -28,7 +30,11 @@ module.exports = Backbone.View.extend({
 		
 		// Fetch collection
 		//this.collection.fetch();
+		this.renderTemplate();
 		this.render();
+	},
+	renderTemplate: function() {
+		this.$el.empty().append(Template(this.config));
 	},
 	render: function() {
 		var self = this;
@@ -55,7 +61,7 @@ module.exports = Backbone.View.extend({
 			}*/
 			
 			// Initialize the table
-			this.table = this.$el.DataTable({
+			this.table = this.$('.card').DataTable({
 				columns: sampleColumns,
 				scrollX: true,
 				serverSide: true,

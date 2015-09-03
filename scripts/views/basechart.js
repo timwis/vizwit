@@ -1,6 +1,7 @@
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
+var Template = require('../templates/panel.html');
 var numberFormatter = require('../util/number-formatter');
 require('../../amcharts/amcharts');
 require('../../amcharts/serial');
@@ -49,6 +50,7 @@ module.exports = Backbone.View.extend({
 	initialize: function(options) {
 		// Save options to view
 		options = options || {};
+		this.config = options.config || {};
 		this.vent = options.vent || null;
 		this.filteredCollection = options.filteredCollection || null;
 		
@@ -64,8 +66,14 @@ module.exports = Backbone.View.extend({
 		
 		// Fetch collection
 		this.collection.fetch();
+		
+		// Render template
+		this.renderTemplate();
 	},
-	render: function() {
+	renderTemplate: function() {
+		this.$el.empty().append(Template(this.config));
+	},
+	render: function() {		
 		// Map collection to expected format
 		var chartData = this.formatChartData(this.settings.limit);
 		
@@ -84,7 +92,7 @@ module.exports = Backbone.View.extend({
 		var config = $.extend(true, {}, this.settings.chart);
 		config.graphs = graphs;
 		config.dataProvider = chartData;
-		this.chart = AmCharts.makeChart(this.el, config);
+		this.chart = AmCharts.makeChart(this.$('.card').get(0), config);
 	},
 	formatChartData: function(limit) {
 		var self = this;

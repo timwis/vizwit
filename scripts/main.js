@@ -8,47 +8,64 @@ var Bar = require('./views/bar');
 var Table = require('./views/table');
 var DateTime = require('./views/datetime');
 var Choropleth = require('./views/choropleth');
-	
-var vent = _.clone(Backbone.Events);
 
-// Find cards
-$('.card').each(function(index, el) {
-	var config = $(el).data();
+var vent = _.clone(Backbone.Events);
+var config = require('../config');
+
+var container = $('#page-content');
+
+config.panels.forEach(function(columns) {
+	var width = Math.round(12 / columns.length);
+	var rowEl = $('<div/>').addClass('row');
 	
-	var collection = new Socrata(null, config);
-	var filteredCollection = new Socrata(null, config);
-	
-	switch(config.chartType) {
-		case 'bar':
-			new Bar({
-				el: el,
-				collection: collection,
-				filteredCollection: filteredCollection,
-				vent: vent
-			});
-			break;
-		case 'datetime':
-			new DateTime({
-				el: el,
-				collection: collection,
-				filteredCollection: filteredCollection,
-				vent: vent
-			});
-			break;
-		case 'table':
-			new Table({
-				el: el,
-				collection: collection,
-				vent: vent
-			});
-			break;
-		case 'choropleth':
-			new Choropleth({
-				el: el,
-				collection: collection,
-				boundaries: new GeoJSON(null, config),
-				filteredCollection: filteredCollection,
-				vent: vent
-			});
-	}
+	// Loop through columns in this row
+	columns.forEach(function(column) {
+		// Add column element to row
+		var columnEl = $('<div/>').addClass('col-md-' + width);
+		rowEl.append(columnEl);
+		
+		// Initialize view
+		var collection = new Socrata(null, column);
+		var filteredCollection = new Socrata(null, column);
+		
+		switch(column.chartType) {
+			case 'bar':
+				new Bar({
+					config: column,
+					el: columnEl.get(0),
+					collection: collection,
+					filteredCollection: filteredCollection,
+					vent: vent
+				});
+				break;
+			case 'datetime':
+				new DateTime({
+					config: column,
+					el: columnEl,
+					collection: collection,
+					filteredCollection: filteredCollection,
+					vent: vent
+				});
+				break;
+			case 'table':
+				new Table({
+					config: column,
+					el: columnEl,
+					collection: collection,
+					vent: vent
+				});
+				break;
+			case 'choropleth':
+				new Choropleth({
+					config: column,
+					el: columnEl,
+					collection: collection,
+					boundaries: new GeoJSON(null, column),
+					filteredCollection: filteredCollection,
+					vent: vent
+				});
+		}
+	});
+	// Add new row w/columns to DOM
+	container.append(rowEl);
 });
