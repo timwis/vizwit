@@ -4,6 +4,8 @@ var Backbone = require('backbone');
 	
 var Socrata = require('./collections/socrata');
 var GeoJSON = require('./collections/geojson');
+
+var Header = require('./views/header');
 var Bar = require('./views/bar');
 var Table = require('./views/table');
 var DateTime = require('./views/datetime');
@@ -11,6 +13,13 @@ var Choropleth = require('./views/choropleth');
 
 var vent = _.clone(Backbone.Events);
 var config = require('../config');
+
+// Render header
+if(config.header) {
+	console.log('rendering')
+	var header = new Header(config.header);
+	$('#page-header').append(header.render().el);
+}
 
 var container = $('#page-content');
 

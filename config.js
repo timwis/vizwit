@@ -1,4 +1,8 @@
 module.exports = {
+	header: {
+		title: 'Parking Violations',
+		description: 'This data set reflects parking violations reported by authorized agencies in Philadelphia.  The data represented below is a sample of parking violations occurring between 2012-2015 with license plate numbers anonymized for privacy.'
+	},
 	panels: [
 		// First row
 		[

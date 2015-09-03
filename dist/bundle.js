@@ -829,6 +829,10 @@ else if ( jQuery ) {
 
 },{"datatables":11,"jquery":17}],5:[function(require,module,exports){
 module.exports = {
+	header: {
+		title: 'Parking Violations',
+		description: 'This data set reflects parking violations reported by authorized agencies in Philadelphia.  The data represented below is a sample of parking violations occurring between 2012-2015 with license plate numbers anonymized for privacy.'
+	},
 	panels: [
 		// First row
 		[
@@ -57216,6 +57220,8 @@ var Backbone = require('backbone');
 	
 var Socrata = require('./collections/socrata');
 var GeoJSON = require('./collections/geojson');
+
+var Header = require('./views/header');
 var Bar = require('./views/bar');
 var Table = require('./views/table');
 var DateTime = require('./views/datetime');
@@ -57223,6 +57229,13 @@ var Choropleth = require('./views/choropleth');
 
 var vent = _.clone(Backbone.Events);
 var config = require('../config');
+
+// Render header
+if(config.header) {
+	console.log('rendering')
+	var header = new Header(config.header);
+	$('#page-header').append(header.render().el);
+}
 
 var container = $('#page-content');
 
@@ -57281,7 +57294,22 @@ config.panels.forEach(function(columns) {
 	// Add new row w/columns to DOM
 	container.append(rowEl);
 });
-},{"../config":5,"./collections/geojson":54,"./collections/socrata":55,"./views/bar":59,"./views/choropleth":61,"./views/datetime":62,"./views/table":63,"backbone":6,"jquery":17,"underscore":53}],57:[function(require,module,exports){
+},{"../config":5,"./collections/geojson":54,"./collections/socrata":55,"./views/bar":60,"./views/choropleth":62,"./views/datetime":63,"./views/header":64,"./views/table":65,"backbone":6,"jquery":17,"underscore":53}],57:[function(require,module,exports){
+module.exports = function(data){
+var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
+__p+='<h1 class="title">'+
+((__t=( data.title ))==null?'':__t)+
+'</h1>\n\n';
+ if(data.description) { 
+__p+='\n<p class="description">'+
+((__t=( data.description ))==null?'':__t)+
+'</p>\n';
+ } 
+__p+='';
+return __p;
+};
+
+},{}],58:[function(require,module,exports){
 module.exports = function(data){
 var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
 __p+='<div class="panel panel-default">\n\t';
@@ -57308,7 +57336,7 @@ __p+='\n</div>';
 return __p;
 };
 
-},{}],58:[function(require,module,exports){
+},{}],59:[function(require,module,exports){
 module.exports = function(num) {
     isNegative = false
     if (num < 0) {
@@ -57327,7 +57355,7 @@ module.exports = function(num) {
     if(isNegative) { formattedNumber = '-' + formattedNumber }
     return formattedNumber;
 }
-},{}],59:[function(require,module,exports){
+},{}],60:[function(require,module,exports){
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
@@ -57394,7 +57422,7 @@ module.exports = BaseChart.extend({
 		this.vent.trigger('filter', this.collection.triggerField, this.collection.triggerField + ' = \'' + e.item.category + '\'');
 	}
 })
-},{"../util/number-formatter":58,"./basechart":60,"backbone":6,"jquery":17,"underscore":53}],60:[function(require,module,exports){
+},{"../util/number-formatter":59,"./basechart":61,"backbone":6,"jquery":17,"underscore":53}],61:[function(require,module,exports){
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
@@ -57524,7 +57552,7 @@ module.exports = Backbone.View.extend({
 		}
 	}
 })
-},{"../../amcharts/amcharts":1,"../../amcharts/serial":2,"../../amcharts/themes/light":3,"../templates/panel.html":57,"../util/number-formatter":58,"backbone":6,"jquery":17,"underscore":53}],61:[function(require,module,exports){
+},{"../../amcharts/amcharts":1,"../../amcharts/serial":2,"../../amcharts/themes/light":3,"../templates/panel.html":58,"../util/number-formatter":59,"backbone":6,"jquery":17,"underscore":53}],62:[function(require,module,exports){
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
@@ -57677,7 +57705,7 @@ module.exports = Backbone.View.extend({
 	}
 });
 
-},{"../templates/panel.html":57,"backbone":6,"geocolor":12,"jquery":17,"mapbox.js":33,"underscore":53}],62:[function(require,module,exports){
+},{"../templates/panel.html":58,"backbone":6,"geocolor":12,"jquery":17,"mapbox.js":33,"underscore":53}],63:[function(require,module,exports){
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
@@ -57760,7 +57788,22 @@ module.exports = BaseChart.extend({
 		this.vent.trigger('filter', field, field + ' >= \'' + start + '\' and ' + field + ' <= \'' + end + '\'');
 	}
 })
-},{"../util/number-formatter":58,"./basechart":60,"backbone":6,"jquery":17,"underscore":53}],63:[function(require,module,exports){
+},{"../util/number-formatter":59,"./basechart":61,"backbone":6,"jquery":17,"underscore":53}],64:[function(require,module,exports){
+var $ = require('jquery');
+var _ = require('underscore');
+var Backbone = require('backbone');
+var Template = require('../templates/header.html');
+	
+module.exports = Backbone.View.extend({
+	initialize: function(options) {
+		this.options = options || {};
+	},
+	render: function() {
+		this.$el.append(Template(this.options));
+		return this;
+	}
+});
+},{"../templates/header.html":57,"backbone":6,"jquery":17,"underscore":53}],65:[function(require,module,exports){
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
@@ -57848,4 +57891,4 @@ module.exports = Backbone.View.extend({
 		this.table.ajax.reload();
 	}
 });
-},{"../../assets/js/datatables/dataTables.bootstrap":4,"../templates/panel.html":57,"backbone":6,"datatables":11,"jquery":17,"underscore":53}]},{},[56]);
+},{"../../assets/js/datatables/dataTables.bootstrap":4,"../templates/panel.html":58,"backbone":6,"datatables":11,"jquery":17,"underscore":53}]},{},[56]);

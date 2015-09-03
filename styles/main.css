@@ -3,13 +3,13 @@ body {
 	font-family: Arimo,"Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 
-.page-title {
+.header-container {
 	background-color: #f8f8f8;
 	margin-bottom: 30px;
 }
 
-.page-title .title { font-size: 27px; }
-.page-title .description {
+.header-container .title { font-size: 27px; }
+.header-container .description {
 	color: #979898;
 	font-size: 13px;
 }
