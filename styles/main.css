@@ -1,10 +1,22 @@
+body {
+	background-color: #eee;
+	font-family: Arimo,"Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+
+.page-title {
+	background-color: #f8f8f8;
+	margin-bottom: 30px;
+}
+
+.page-title .title { font-size: 27px; }
+.page-title .description {
+	color: #979898;
+	font-size: 13px;
+}
+
 .card {
 	width: 100%;
 	min-height: 350px;
-}
-
-.scroll-x {
-	overflow-x: scroll;
 }
 
 .card.table {

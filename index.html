@@ -8,14 +8,8 @@
 		<meta name="description" content="">
 		
 		<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Arimo:400,700,400italic">
-		<link rel="stylesheet" href="assets/css/fonts/linecons/css/linecons.css">
-		<link rel="stylesheet" href="assets/css/fonts/fontawesome/css/font-awesome.min.css">
-		<link rel="stylesheet" href="assets/css/bootstrap.css">
-		<link rel="stylesheet" href="assets/css/xenon-core.css">
-		<link rel="stylesheet" href="assets/css/xenon-forms.css">
-		<link rel="stylesheet" href="assets/css/xenon-components.css">
-		<link rel="stylesheet" href="assets/css/xenon-skins.css">
-		<link rel="stylesheet" href="assets/css/custom.css">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+		<link rel="stylesheet" href="https://cdn.datatables.net/1.10.9/css/dataTables.bootstrap.min.css">
 		<link rel="stylesheet" href="https://api.mapbox.com/mapbox.js/v2.2.1/mapbox.css">
 		<link rel="stylesheet" href="styles/main.css">
 		
@@ -24,73 +18,72 @@
 		<script src="//cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.js"></script>
 	</head>
 	
-	<body class="page-body">
-		<div class="page-container">
-			<div class="main-content">
-				<div class="page-title">
-					<div class="title-env">
-						<h1 class="title">Parking Violations</h1>
-						<p class="description">This data set reflects parking violations reported by authorized agencies in Philadelphia.  The data represented below is a sample of parking violations occurring between 2012-2015 with license plate numbers anonymized for privacy.</p>
-					</div>
-				</div>
-				
-				<div class="row">
-					<div class="col-md-6">
-						<div class="panel panel-default panel-border">
-							<div class="panel-heading">
-								Issue Date and Time
-							</div>
-							<div class="panel-body panel-no-padding">
-								<div id="chart" class="card ct-chart ct-perfect-fourth" data-domain="data.phila.gov" data-dataset="2pfz-fnns" data-group-by="date_trunc_ym(issue_date_and_time)" data-trigger-field="issue_date_and_time" data-chart-type="datetime"></div>
-							</div>
-						</div>
-					</div>
-					<div class="col-md-6">
-						<div class="panel panel-default panel-border">
-							<div class="panel-heading">
-								Zipcodes
-							</div>
-							<div class="panel-body panel-no-padding">
-								<div id="chart" class="card ct-chart ct-perfect-fourth" data-domain="data.phila.gov" data-dataset="2pfz-fnns" data-group-by=":@computed_region_8tb6_tjh9" data-chart-type="choropleth" data-boundaries="https://data.phila.gov/resource/8tb6-tjh9.geojson" data-boundaries-label="code" data-boundaries-id="_feature_id"></div>
-							</div>
-						</div>
-					</div>
-				</div>
-			
-				<div class="row">
-					<div class="col-md-6">
-						<div class="panel panel-default panel-border">
-							<div class="panel-heading">
-								Violation Description
-							</div>
-							<div class="panel-body">
-								<div id="chart" class="card ct-chart ct-perfect-fourth" data-domain="data.phila.gov" data-dataset="2pfz-fnns" data-group-by="violation_description" data-chart-type="bar"></div>
-							</div>
-						</div>
-					</div>
-					<div class="col-md-6">
-						<div class="panel panel-default panel-border">
-							<div class="panel-heading">
-								Issuing Agency
-							</div>
-							<div class="panel-body panel-no-padding">
-								<div id="chart" class="card ct-chart ct-perfect-fourth" data-domain="data.phila.gov" data-dataset="2pfz-fnns" data-group-by="issuing_agency" data-chart-type="bar"></div>
-							</div>
-						</div>
-					</div>
-				</div>
-				
-				<div class="row">
-					<div class="col-md-12">
-						<div class="panel panel-default panel-border">
-							<div class="panel-body scroll-x">
-								<table class="card table table-striped" data-domain="data.phila.gov" data-dataset="2pfz-fnns" data-chart-type="table"></table>
-							</div>
-						</div>
-					</div>
-				</div>
-				
+	<body>
+		<div class="page-title">
+			<div class="container-fluid">
+				<h1 class="title">Parking Violations</h1>
+				<p class="description">This data set reflects parking violations reported by authorized agencies in Philadelphia.  The data represented below is a sample of parking violations occurring between 2012-2015 with license plate numbers anonymized for privacy.</p>
 			</div>
+		</div>
+		
+		<div class="container-fluid">
+			
+			<div class="row">
+				<div class="col-md-6">
+					<div class="panel panel-default panel-border">
+						<div class="panel-heading">
+							Issue Date and Time
+						</div>
+						<div class="panel-body panel-no-padding">
+							<div id="chart" class="card ct-chart ct-perfect-fourth" data-domain="data.phila.gov" data-dataset="2pfz-fnns" data-group-by="date_trunc_ym(issue_date_and_time)" data-trigger-field="issue_date_and_time" data-chart-type="datetime"></div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="panel panel-default panel-border">
+						<div class="panel-heading">
+							Zipcodes
+						</div>
+						<div class="panel-body panel-no-padding">
+							<div id="chart" class="card ct-chart ct-perfect-fourth" data-domain="data.phila.gov" data-dataset="2pfz-fnns" data-group-by=":@computed_region_8tb6_tjh9" data-chart-type="choropleth" data-boundaries="https://data.phila.gov/resource/8tb6-tjh9.geojson" data-boundaries-label="code" data-boundaries-id="_feature_id"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		
+			<div class="row">
+				<div class="col-md-6">
+					<div class="panel panel-default panel-border">
+						<div class="panel-heading">
+							Violation Description
+						</div>
+						<div class="panel-body">
+							<div id="chart" class="card ct-chart ct-perfect-fourth" data-domain="data.phila.gov" data-dataset="2pfz-fnns" data-group-by="violation_description" data-chart-type="bar"></div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="panel panel-default panel-border">
+						<div class="panel-heading">
+							Issuing Agency
+						</div>
+						<div class="panel-body panel-no-padding">
+							<div id="chart" class="card ct-chart ct-perfect-fourth" data-domain="data.phila.gov" data-dataset="2pfz-fnns" data-group-by="issuing_agency" data-chart-type="bar"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<div class="row">
+				<div class="col-md-12">
+					<div class="panel panel-default panel-border">
+						<div class="panel-body">
+							<table class="card table table-striped" data-domain="data.phila.gov" data-dataset="2pfz-fnns" data-chart-type="table"></table>
+						</div>
+					</div>
+				</div>
+			</div>
+				
 		</div>
 		
 		<script src="dist/bundle.js"></script>

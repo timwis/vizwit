@@ -57,6 +57,7 @@ module.exports = Backbone.View.extend({
 			// Initialize the table
 			this.table = this.$el.DataTable({
 				columns: sampleColumns,
+				scrollX: true,
 				serverSide: true,
 				ajax: function(data, callback, settings) {
 					self.collection.offset = data.start || 0;
