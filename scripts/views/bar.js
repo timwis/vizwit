@@ -6,7 +6,6 @@ var numberFormatter = require('../util/number-formatter');
 	
 module.exports = BaseChart.extend({
 	settings: {
-		limit: 10,
 		graphs: [
 			{
 				'type': 'column',
@@ -43,6 +42,11 @@ module.exports = BaseChart.extend({
 				tickLength: 0,
 				ignoreAxisWidth: true
 			}],
+			chartScrollbar: {
+			},
+			maxSelectedSeries: 7,
+			zoomOutText: '',
+			mouseWheelScrollEnabled: true,
 			categoryAxis: {
 				autoWrap: true
 			}
@@ -55,6 +59,11 @@ module.exports = BaseChart.extend({
 	},
 	render: function() {		
 		BaseChart.prototype.render.apply(this, arguments);
+		
+		// If there are greater than 10 bars, zoom to the first bar (ideally this would be done by configuration)
+		if(this.collection.length > this.settings.chart.maxSelectedSeries) {
+			this.chart.zoomToIndexes(0, this.settings.chart.maxSelectedSeries);
+		}
 		
 		this.chart.addListener('clickGraphItem', this.onClick);
 	},

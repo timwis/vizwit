@@ -57228,7 +57228,7 @@ var DateTime = require('./views/datetime');
 var Choropleth = require('./views/choropleth');
 
 var vent = _.clone(Backbone.Events);
-var config = require('../config');
+var config = require('../config/parking-violations');
 
 // Render header
 if(config.header) {
@@ -57294,7 +57294,7 @@ config.panels.forEach(function(columns) {
 	// Add new row w/columns to DOM
 	container.append(rowEl);
 });
-},{"../config":5,"./collections/geojson":54,"./collections/socrata":55,"./views/bar":60,"./views/choropleth":62,"./views/datetime":63,"./views/header":64,"./views/table":65,"backbone":6,"jquery":17,"underscore":53}],57:[function(require,module,exports){
+},{"../config/parking-violations":5,"./collections/geojson":54,"./collections/socrata":55,"./views/bar":60,"./views/choropleth":62,"./views/datetime":63,"./views/header":64,"./views/table":65,"backbone":6,"jquery":17,"underscore":53}],57:[function(require,module,exports){
 module.exports = function(data){
 var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
 __p+='<h1 class="title">'+
@@ -57364,7 +57364,6 @@ var numberFormatter = require('../util/number-formatter');
 	
 module.exports = BaseChart.extend({
 	settings: {
-		limit: 10,
 		graphs: [
 			{
 				'type': 'column',
@@ -57401,6 +57400,11 @@ module.exports = BaseChart.extend({
 				tickLength: 0,
 				ignoreAxisWidth: true
 			}],
+			chartScrollbar: {
+			},
+			maxSelectedSeries: 7,
+			zoomOutText: '',
+			mouseWheelScrollEnabled: true,
 			categoryAxis: {
 				autoWrap: true
 			}
@@ -57413,6 +57417,11 @@ module.exports = BaseChart.extend({
 	},
 	render: function() {		
 		BaseChart.prototype.render.apply(this, arguments);
+		
+		// If there are greater than 10 bars, zoom to the first bar (ideally this would be done by configuration)
+		if(this.collection.length > this.settings.chart.maxSelectedSeries) {
+			this.chart.zoomToIndexes(0, this.settings.chart.maxSelectedSeries);
+		}
 		
 		this.chart.addListener('clickGraphItem', this.onClick);
 	},
