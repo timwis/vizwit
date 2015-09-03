@@ -2,9 +2,9 @@ var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var numberFormatter = require('../util/number-formatter');
-require('amcharts/dist/amcharts/amcharts');
-require('amcharts/dist/amcharts/serial');
-require('amcharts/dist/amcharts/themes/light');
+require('../../amcharts/amcharts');
+require('../../amcharts/serial');
+require('../../amcharts/themes/light');
 	
 module.exports = Backbone.View.extend({
 	settings: {
