@@ -13,7 +13,6 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "amcharts": "^3.14.5",
     "backbone": "^1.2.2",
     "datatables": "^1.10.8",
     "geocolor": "0.0.16",

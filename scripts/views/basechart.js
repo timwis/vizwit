@@ -33,7 +33,13 @@ module.exports = Backbone.View.extend({
 			theme: 'light',
 			categoryField: 'label',
 			valueAxes: [{
-				labelFunction: numberFormatter
+				labelFunction: numberFormatter,
+				position: 'right',
+				inside: true,
+				axisThickness: 0,
+				axisAlpha: 0,
+				tickLength: 0,
+				ignoreAxisWidth: true
 			}],
 			categoryAxis: {
 				autoWrap: true

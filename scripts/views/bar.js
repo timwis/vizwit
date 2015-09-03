@@ -31,13 +31,20 @@ module.exports = BaseChart.extend({
 			'type': 'serial',
 			theme: 'light',
 			categoryField: 'label',
+			marginLeft: 5,
+			marginRight: 5,
+			marginTop: 5,
 			valueAxes: [{
-				labelFunction: numberFormatter
+				labelFunction: numberFormatter,
+				position: 'right',
+				inside: true,
+				axisThickness: 0,
+				axisAlpha: 0,
+				tickLength: 0,
+				ignoreAxisWidth: true
 			}],
 			categoryAxis: {
-				autoWrap: true,
-				//minHorizontalGap: 100
-				gridPosition: 'start'
+				autoWrap: true
 			}
 		}
 	},
