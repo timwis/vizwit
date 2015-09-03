@@ -35,7 +35,9 @@ module.exports = BaseChart.extend({
 				labelFunction: numberFormatter
 			}],
 			categoryAxis: {
-				autoWrap: true
+				autoWrap: true,
+				//minHorizontalGap: 100
+				gridPosition: 'start'
 			}
 		}
 	},
