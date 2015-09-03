@@ -12,7 +12,7 @@ var DateTime = require('./views/datetime');
 var Choropleth = require('./views/choropleth');
 
 var vent = _.clone(Backbone.Events);
-var config = require('../config');
+var config = require('../config/parking-violations');
 
 // Render header
 if(config.header) {
