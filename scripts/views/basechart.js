@@ -73,6 +73,10 @@ module.exports = Backbone.View.extend({
 	renderTemplate: function() {
 		this.$el.empty().append(Template(this.config));
 	},
+	renderFilters: function() {
+		var filters = this.filteredCollection.getFriendlyFilters();
+		this.$('.filters').text(filters).parent().toggle(filters ? true : false);
+	},
 	render: function() {		
 		// Map collection to expected format
 		var chartData = this.formatChartData(this.settings.limit);
@@ -118,12 +122,13 @@ module.exports = Backbone.View.extend({
 		return chartData;
 	},
 	// When a chart has been filtered
-	onFilter: function(key, expression) {
+	onFilter: function(data) {
 		// Only listen to other charts
-		if(key !== this.filteredCollection.triggerField) {
+		if(data.field !== this.filteredCollection.triggerField) {
 			// Add the filter to the filtered collection and fetch it with the filter
-			this.filteredCollection.filter[key] = expression;
+			this.filteredCollection.filter[data.field] = data;
 			this.filteredCollection.fetch();
+			this.renderFilters();
 		}
 	}
 })

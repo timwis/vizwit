@@ -36,16 +36,21 @@ module.exports = Backbone.View.extend({
 		setTimeout(this.render, 100);
 	},
 	// When a chart has been filtered
-	onFilter: function(key, expression) {
+	onFilter: function(data) {
 		// Only listen to other charts
-		if(key !== this.filteredCollection.triggerField) {
+		if(data.field !== this.filteredCollection.triggerField) {
 			// Add the filter to the filtered collection and fetch it with the filter
-			this.filteredCollection.filter[key] = expression;
+			this.filteredCollection.filter[data.field] = data;
 			this.filteredCollection.fetch();
+			this.renderFilters();
 		}
 	},
 	renderTemplate: function() {
 		this.$el.empty().append(Template(this.config));
+	},
+	renderFilters: function() {
+		var filters = this.filteredCollection.getFriendlyFilters();
+		this.$('.filters').text(filters).parent().toggle(filters ? true : false);
 	},
 	render: function() {
 		this.map = L.map(this.$('.card').get(0)).setView([39.95, -75.1667], 11);
@@ -144,8 +149,13 @@ module.exports = Backbone.View.extend({
 		}, 100);
 	},
 	onClick: function(e) {
-		var clicked = e.target.feature.properties[this.boundaries.idAttribute];
+		var clickedId = e.target.feature.properties[this.boundaries.idAttribute];
+		var clickedLabel = e.target.feature.properties[this.boundaries.label];
 		// Trigger the global event handler with this filter
-		this.vent.trigger('filter', this.collection.triggerField, this.collection.triggerField + ' = \'' + clicked + '\'');
+		this.vent.trigger('filter', {
+			field: this.collection.triggerField,
+			expression: this.collection.triggerField + ' = \'' + clickedId + '\'',
+			friendlyExpression: this.config.title + ' is ' + clickedLabel
+		})
 	}
 });

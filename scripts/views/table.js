@@ -21,6 +21,10 @@ module.exports = Backbone.View.extend({
 	renderTemplate: function() {
 		this.$el.empty().append(Template(this.config));
 	},
+	renderFilters: function() {
+		var filters = this.collection.getFriendlyFilters();
+		this.$('.filters').text(filters).parent().toggle(filters ? true : false);
+	},
 	render: function() {
 		var self = this;
 		// If table is already initialized, clear it and add the collection to it
@@ -58,8 +62,9 @@ module.exports = Backbone.View.extend({
 		}
 	},
 	// When another chart is filtered, filter this collection
-	onFilter: function(key, expression) {
-		this.collection.filter[key] = expression;
+	onFilter: function(data) {
+		this.collection.filter[data.field] = data;
 		this.table.ajax.reload();
+		this.renderFilters();
 	}
 });

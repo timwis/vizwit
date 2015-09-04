@@ -70,6 +70,10 @@ module.exports = BaseChart.extend({
 	// When the user clicks on a bar in this chart
 	onClick: function(e) {
 		// Trigger the global event handler with this filter
-		this.vent.trigger('filter', this.collection.triggerField, this.collection.triggerField + ' = \'' + e.item.category + '\'');
+		this.vent.trigger('filter', {
+			field: this.collection.triggerField,
+			expression: this.collection.triggerField + ' = \'' + e.item.category + '\'',
+			friendlyExpression: this.collection.triggerField + ' is ' + e.item.category
+		});
 	}
 })

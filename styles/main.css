@@ -33,3 +33,9 @@ body {
 .info {
 	background: white;
 }
+
+.filters-container {
+	display: none;
+	margin-bottom: 0;
+	padding: 10px;
+}

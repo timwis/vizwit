@@ -29,7 +29,7 @@ module.exports = Backbone.Collection.extend({
 		//this.model = modelFactory(options.groupBy);
 	},
 	url: function() {
-		var filter = _.values(this.filter).join(' and ');
+		var filter = _.pluck(this.filter, 'expression').join(' and ');
 		var query = this.consumer.query()
 			.withDataset(this.dataset);
 		if(filter) {
@@ -46,5 +46,8 @@ module.exports = Backbone.Collection.extend({
 		if(this.offset) query.offset(this.offset);
 		if(this.q) { query.q(this.q); console.log(this.q) }
 		return query.getURL();
+	},
+	getFriendlyFilters: function() {
+		return _.pluck(this.filter, 'friendlyExpression').join(' and ');
 	}
 })

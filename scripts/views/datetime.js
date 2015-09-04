@@ -76,10 +76,20 @@ module.exports = BaseChart.extend({
 	onClick: function(e) {
 		//console.log('Filtered by', (new Date(e.start)).toISOString(), (new Date(e.end)).toISOString());
 		var field = this.collection.triggerField;
-		var start = trimLastCharacter((new Date(e.start)).toISOString());
-		var end = trimLastCharacter((new Date(e.end)).toISOString());
+		
+		var start = new Date(e.start);
+		var startIso = trimLastCharacter(start.toISOString());
+		var startFriendly = start.toLocaleDateString();
+		
+		var end = new Date(e.end);
+		var endIso = trimLastCharacter(end.toISOString());
+		var endFriendly = end.toLocaleDateString();
 		
 		// Trigger the global event handler with this filter
-		this.vent.trigger('filter', field, field + ' >= \'' + start + '\' and ' + field + ' <= \'' + end + '\'');
+		this.vent.trigger('filter', {
+			field: field,
+			expression: field + ' >= \'' + startIso + '\' and ' + field + ' <= \'' + endIso + '\'',
+			friendlyExpression: field + ' is ' + startFriendly + ' to ' + endFriendly
+		})
 	}
 })
