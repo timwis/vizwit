@@ -4,17 +4,6 @@ var Backbone = require('backbone');
 var Template = require('../templates/panel.html');
 require('datatables');
 require('../../assets/js/datatables/dataTables.bootstrap');
-
-var sampleColumns = [
-	{data: 'division', title: 'division', defaultContent: ''},
-	{data: 'fine', title: 'fine', defaultContent: ''},
-	{data: 'issue_date_and_time', title: 'issue_date_and_time', defaultContent: ''},
-	{data: 'issuing_agency', title: 'issuing_agency', defaultContent: ''},
-	{data: 'location', title: 'location', defaultContent: ''},
-	{data: 'plate_id', title: 'plate_id', defaultContent: ''},
-	{data: 'state', title: 'state', defaultContent: ''},
-	{data: 'violation_description', title: 'violation_description', defaultContent: ''}
-];
 	
 module.exports = Backbone.View.extend({
 	initialize: function(options) {
@@ -22,14 +11,10 @@ module.exports = Backbone.View.extend({
 		this.config = options.config || {};
 		this.vent = options.vent || null;
 		
-		// Listen to collection
-		//this.listenTo(this.collection, 'sync', this.render);
-		
 		// Listen to vent filters
 		this.listenTo(this.vent, 'filter', this.onFilter);
 		
 		// Fetch collection
-		//this.collection.fetch();
 		this.renderTemplate();
 		this.render();
 	},
@@ -44,25 +29,18 @@ module.exports = Backbone.View.extend({
 		}
 		// Otherwise, initialize the table
 		else {
-			// Define the columns from the first model in the collection
-			// This is dangerous as the first model may not contain every property
-			// This should be done either in a config file or with a metadata request at page init
-			/*var columns = [];
-			if(this.collection.length) {
-				this.collection.at(0).keys().forEach(function(key) {
-					columns.push({
-						data: key,
-						title: key,
-						defaultContent: ''
-					});
-				});
-			} else {
-				columns = sampleColumns;
-			}*/
+			// Map the array of columns to the expected format
+			var columns = this.config.columns.map(function(column) {
+				return {
+					data: column,
+					title: column,
+					defaultContent: ''
+				};
+			});
 			
 			// Initialize the table
 			this.table = this.$('.card').DataTable({
-				columns: sampleColumns,
+				columns: columns,
 				scrollX: true,
 				serverSide: true,
 				ajax: function(data, callback, settings) {
