@@ -12,7 +12,7 @@
 				"dataset": "tqtk-pmbv",
 				"groupBy": ":@computed_region_6tz8_nbrg",
 				
-				"boundaries": "https://data.phila.gov/resource/6tz8-nbrg.geojson",
+				"boundaries": "https://data.phila.gov/resource/6tz8-nbrg.geojson?$limit=5000",
 				"boundariesLabel": "geoid10",
 				"boundariesId": "_feature_id"
 			}
