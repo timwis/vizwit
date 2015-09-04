@@ -1,0 +1,51 @@
+{
+	"header": {
+		"title": "OPA Property Records",
+		"description": "Records of buildings and parcel data from the Office of Property Assessment. All maps and charts are interactive: click on an area to filter the visualization by that dimension, and scroll down to view the filtered results as a table."
+	},
+	"panels": [
+		[
+			{
+				"title": "Census Block Groups (2010)",
+				"chartType": "choropleth",
+				"domain": "data.phila.gov",
+				"dataset": "tqtk-pmbv",
+				"groupBy": ":@computed_region_6tz8_nbrg",
+				
+				"boundaries": "https://data.phila.gov/resource/6tz8-nbrg.geojson",
+				"boundariesLabel": "geoid10",
+				"boundariesId": "_feature_id"
+			}
+		],
+		[
+			{
+				"title": "Zoning",
+				"chartType": "bar",
+				"domain": "data.phila.gov",
+				"dataset": "tqtk-pmbv",
+				"groupBy": "zoning"
+			},
+			{
+				"title": "Category Code Description",
+				"chartType": "bar",
+				"domain": "data.phila.gov",
+				"dataset": "tqtk-pmbv",
+				"groupBy": "category_code_description"
+			}
+		],
+		[
+			{
+				"chartType": "table",
+				"domain": "data.phila.gov",
+				"dataset": "tqtk-pmbv",
+				"padded": true,
+				"columns": [
+					"parcel_number",
+					"location",
+					"owner_1",
+					"owner_2"
+				]
+			}
+		]
+	]
+}

@@ -1,0 +1,63 @@
+{
+	"header": {
+		"title": "Parking Violations",
+		"description": "This data set reflects parking violations reported by authorized agencies in Philadelphia.  The data represented below is a sample of parking violations occurring between 2012-2015 with license plate numbers anonymized for privacy."
+	},
+	"panels": [
+		[
+			{
+				"title": "Issue Date & Time",
+				"chartType": "datetime",
+				"domain": "data.phila.gov",
+				"dataset": "2pfz-fnns",
+				"groupBy": "date_trunc_ym(issue_date_and_time)",
+				"triggerField": "issue_date_and_time"
+			},
+			{
+				"title": "Zipcodes",
+				"chartType": "choropleth",
+				"domain": "data.phila.gov",
+				"dataset": "2pfz-fnns",
+				"groupBy": ":@computed_region_8tb6_tjh9",
+				
+				"boundaries": "https://data.phila.gov/resource/8tb6-tjh9.geojson",
+				"boundariesLabel": "code",
+				"boundariesId": "_feature_id"
+			}
+		],
+		[
+			{
+				"title": "Violation Description",
+				"chartType": "bar",
+				"domain": "data.phila.gov",
+				"dataset": "2pfz-fnns",
+				"groupBy": "violation_description"
+			},
+			{
+				"title": "Issuing Agency",
+				"chartType": "bar",
+				"domain": "data.phila.gov",
+				"dataset": "2pfz-fnns",
+				"groupBy": "issuing_agency"
+			}
+		],
+		[
+			{
+				"chartType": "table",
+				"domain": "data.phila.gov",
+				"dataset": "2pfz-fnns",
+				"padded": true,
+				"columns": [
+					"division",
+					"fine",
+					"issue_date_and_time",
+					"issuing_agency",
+					"location",
+					"plate_id",
+					"state",
+					"violation_description"
+				]
+			}
+		]
+	]
+}
