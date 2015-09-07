@@ -3,7 +3,7 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 var Template = require('../templates/panel.html');
 require('datatables');
-require('../../assets/js/datatables/dataTables.bootstrap');
+require('datatables/media/js/dataTables.bootstrap');
 	
 module.exports = Backbone.View.extend({
 	initialize: function(options) {
@@ -46,6 +46,7 @@ module.exports = Backbone.View.extend({
 			this.table = this.$('.card').DataTable({
 				columns: columns,
 				scrollX: true,
+				pagingType: 'numbers',
 				serverSide: true,
 				ajax: function(data, callback, settings) {
 					self.collection.offset = data.start || 0;

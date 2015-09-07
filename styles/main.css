@@ -39,3 +39,8 @@ body {
 	margin-bottom: 0;
 	padding: 10px;
 }
+
+/* By default, this is set to nowrap, making it oversized on small screens */
+div.dataTables_wrapper div.dataTables_info {
+	white-space: normal;
+}
