@@ -640,194 +640,6 @@ AmCharts.themes.light = {
 
 };
 },{}],4:[function(require,module,exports){
-/*! DataTables Bootstrap integration
- * ©2011-2014 SpryMedia Ltd - datatables.net/license
- */
-
-/**
- * DataTables integration for Bootstrap 3. This requires Bootstrap 3 and
- * DataTables 1.10 or newer.
- *
- * This file sets the defaults and adds options to DataTables to style its
- * controls using Bootstrap. See http://datatables.net/manual/styling/bootstrap
- * for further information.
- */
-(function(window, document, undefined){
-
-var factory = function( $, DataTable ) {
-"use strict";
-
-
-/* Set the defaults for DataTables initialisation */
-$.extend( true, DataTable.defaults, {
-	dom:
-		"<'row'<'col-xs-6'l><'col-xs-6'f>r>"+
-		"t"+
-		"<'row'<'col-xs-6'i><'col-xs-6'p>>",
-	renderer: 'bootstrap'
-} );
-
-
-/* Default class modification */
-$.extend( DataTable.ext.classes, {
-	sWrapper:      "dataTables_wrapper form-inline dt-bootstrap",
-	sFilterInput:  "form-control input-sm",
-	sLengthSelect: "form-control input-sm"
-} );
-
-
-/* Bootstrap paging button renderer */
-DataTable.ext.renderer.pageButton.bootstrap = function ( settings, host, idx, buttons, page, pages ) {
-	var api     = new DataTable.Api( settings );
-	var classes = settings.oClasses;
-	var lang    = settings.oLanguage.oPaginate;
-	var btnDisplay, btnClass;
-
-	var attach = function( container, buttons ) {
-		var i, ien, node, button;
-		var clickHandler = function ( e ) {
-			e.preventDefault();
-			if ( e.data.action !== 'ellipsis' ) {
-				api.page( e.data.action ).draw( false );
-			}
-		};
-
-		for ( i=0, ien=buttons.length ; i<ien ; i++ ) {
-			button = buttons[i];
-
-			if ( $.isArray( button ) ) {
-				attach( container, button );
-			}
-			else {
-				btnDisplay = '';
-				btnClass = '';
-
-				switch ( button ) {
-					case 'ellipsis':
-						btnDisplay = '&hellip;';
-						btnClass = 'disabled';
-						break;
-
-					case 'first':
-						btnDisplay = lang.sFirst;
-						btnClass = button + (page > 0 ?
-							'' : ' disabled');
-						break;
-
-					case 'previous':
-						btnDisplay = lang.sPrevious;
-						btnClass = button + (page > 0 ?
-							'' : ' disabled');
-						break;
-
-					case 'next':
-						btnDisplay = lang.sNext;
-						btnClass = button + (page < pages-1 ?
-							'' : ' disabled');
-						break;
-
-					case 'last':
-						btnDisplay = lang.sLast;
-						btnClass = button + (page < pages-1 ?
-							'' : ' disabled');
-						break;
-
-					default:
-						btnDisplay = button + 1;
-						btnClass = page === button ?
-							'active' : '';
-						break;
-				}
-
-				if ( btnDisplay ) {
-					node = $('<li>', {
-							'class': classes.sPageButton+' '+btnClass,
-							'aria-controls': settings.sTableId,
-							'tabindex': settings.iTabIndex,
-							'id': idx === 0 && typeof button === 'string' ?
-								settings.sTableId +'_'+ button :
-								null
-						} )
-						.append( $('<a>', {
-								'href': '#'
-							} )
-							.html( btnDisplay )
-						)
-						.appendTo( container );
-
-					settings.oApi._fnBindAction(
-						node, {action: button}, clickHandler
-					);
-				}
-			}
-		}
-	};
-
-	attach(
-		$(host).empty().html('<ul class="pagination"/>').children('ul'),
-		buttons
-	);
-};
-
-
-/*
- * TableTools Bootstrap compatibility
- * Required TableTools 2.1+
- */
-if ( DataTable.TableTools ) {
-	// Set the classes that TableTools uses to something suitable for Bootstrap
-	$.extend( true, DataTable.TableTools.classes, {
-		"container": "DTTT btn-group",
-		"buttons": {
-			"normal": "btn btn-default",
-			"disabled": "disabled"
-		},
-		"collection": {
-			"container": "DTTT_dropdown dropdown-menu",
-			"buttons": {
-				"normal": "",
-				"disabled": "disabled"
-			}
-		},
-		"print": {
-			"info": "DTTT_print_info modal"
-		},
-		"select": {
-			"row": "active"
-		}
-	} );
-
-	// Have the collection use a bootstrap compatible drop down
-	$.extend( true, DataTable.TableTools.DEFAULTS.oTags, {
-		"collection": {
-			"container": "ul",
-			"button": "li",
-			"liner": "a"
-		}
-	} );
-}
-
-}; // /factory
-
-
-// Define as an AMD module if possible
-if ( typeof define === 'function' && define.amd ) {
-	define( ['jquery', 'datatables'], factory );
-}
-else if ( typeof exports === 'object' ) {
-    // Node/CommonJS
-    factory( require('jquery'), require('datatables') );
-}
-else if ( jQuery ) {
-	// Otherwise simply initialise as normal, stopping multiple evaluation
-	factory( jQuery, jQuery.fn.dataTable );
-}
-
-
-})(window, document);
-
-
-},{"datatables":10,"jquery":16}],5:[function(require,module,exports){
 (function (global){
 //     Backbone.js 1.2.2
 
@@ -2724,7 +2536,7 @@ else if ( jQuery ) {
 }));
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"jquery":16,"underscore":52}],6:[function(require,module,exports){
+},{"jquery":16,"underscore":52}],5:[function(require,module,exports){
 /*!
  * The buffer module from node.js, for the browser.
  *
@@ -4259,7 +4071,7 @@ function blitBuffer (src, dst, offset, length) {
   return i
 }
 
-},{"base64-js":7,"ieee754":8,"is-array":9}],7:[function(require,module,exports){
+},{"base64-js":6,"ieee754":7,"is-array":8}],6:[function(require,module,exports){
 var lookup = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 
 ;(function (exports) {
@@ -4385,7 +4197,7 @@ var lookup = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 	exports.fromByteArray = uint8ToBase64
 }(typeof exports === 'undefined' ? (this.base64js = {}) : exports))
 
-},{}],8:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 exports.read = function (buffer, offset, isLE, mLen, nBytes) {
   var e, m
   var eLen = nBytes * 8 - mLen - 1
@@ -4471,7 +4283,7 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
   buffer[offset + i - d] |= s * 128
 }
 
-},{}],9:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 
 /**
  * isArray
@@ -4506,19 +4318,227 @@ module.exports = isArray || function (val) {
   return !! val && '[object Array]' == str.call(val);
 };
 
-},{}],10:[function(require,module,exports){
-/*! DataTables 1.10.8
- * ©2008-2014 SpryMedia Ltd - datatables.net/license
+},{}],9:[function(require,module,exports){
+/*! DataTables Bootstrap 3 integration
+ * ©2011-2014 SpryMedia Ltd - datatables.net/license
+ */
+
+/**
+ * DataTables integration for Bootstrap 3. This requires Bootstrap 3 and
+ * DataTables 1.10 or newer.
+ *
+ * This file sets the defaults and adds options to DataTables to style its
+ * controls using Bootstrap. See http://datatables.net/manual/styling/bootstrap
+ * for further information.
+ */
+(function(window, document, undefined){
+
+var factory = function( $, DataTable ) {
+"use strict";
+
+
+/* Set the defaults for DataTables initialisation */
+$.extend( true, DataTable.defaults, {
+	dom:
+		"<'row'<'col-sm-6'l><'col-sm-6'f>>" +
+		"<'row'<'col-sm-12'tr>>" +
+		"<'row'<'col-sm-5'i><'col-sm-7'p>>",
+	renderer: 'bootstrap'
+} );
+
+
+/* Default class modification */
+$.extend( DataTable.ext.classes, {
+	sWrapper:      "dataTables_wrapper form-inline dt-bootstrap",
+	sFilterInput:  "form-control input-sm",
+	sLengthSelect: "form-control input-sm"
+} );
+
+
+/* Bootstrap paging button renderer */
+DataTable.ext.renderer.pageButton.bootstrap = function ( settings, host, idx, buttons, page, pages ) {
+	var api     = new DataTable.Api( settings );
+	var classes = settings.oClasses;
+	var lang    = settings.oLanguage.oPaginate;
+	var btnDisplay, btnClass, counter=0;
+
+	var attach = function( container, buttons ) {
+		var i, ien, node, button;
+		var clickHandler = function ( e ) {
+			e.preventDefault();
+			if ( !$(e.currentTarget).hasClass('disabled') ) {
+				api.page( e.data.action ).draw( 'page' );
+			}
+		};
+
+		for ( i=0, ien=buttons.length ; i<ien ; i++ ) {
+			button = buttons[i];
+
+			if ( $.isArray( button ) ) {
+				attach( container, button );
+			}
+			else {
+				btnDisplay = '';
+				btnClass = '';
+
+				switch ( button ) {
+					case 'ellipsis':
+						btnDisplay = '&hellip;';
+						btnClass = 'disabled';
+						break;
+
+					case 'first':
+						btnDisplay = lang.sFirst;
+						btnClass = button + (page > 0 ?
+							'' : ' disabled');
+						break;
+
+					case 'previous':
+						btnDisplay = lang.sPrevious;
+						btnClass = button + (page > 0 ?
+							'' : ' disabled');
+						break;
+
+					case 'next':
+						btnDisplay = lang.sNext;
+						btnClass = button + (page < pages-1 ?
+							'' : ' disabled');
+						break;
+
+					case 'last':
+						btnDisplay = lang.sLast;
+						btnClass = button + (page < pages-1 ?
+							'' : ' disabled');
+						break;
+
+					default:
+						btnDisplay = button + 1;
+						btnClass = page === button ?
+							'active' : '';
+						break;
+				}
+
+				if ( btnDisplay ) {
+					node = $('<li>', {
+							'class': classes.sPageButton+' '+btnClass,
+							'id': idx === 0 && typeof button === 'string' ?
+								settings.sTableId +'_'+ button :
+								null
+						} )
+						.append( $('<a>', {
+								'href': '#',
+								'aria-controls': settings.sTableId,
+								'data-dt-idx': counter,
+								'tabindex': settings.iTabIndex
+							} )
+							.html( btnDisplay )
+						)
+						.appendTo( container );
+
+					settings.oApi._fnBindAction(
+						node, {action: button}, clickHandler
+					);
+
+					counter++;
+				}
+			}
+		}
+	};
+
+	// IE9 throws an 'unknown error' if document.activeElement is used
+	// inside an iframe or frame. 
+	var activeEl;
+
+	try {
+		// Because this approach is destroying and recreating the paging
+		// elements, focus is lost on the select button which is bad for
+		// accessibility. So we want to restore focus once the draw has
+		// completed
+		activeEl = $(host).find(document.activeElement).data('dt-idx');
+	}
+	catch (e) {}
+
+	attach(
+		$(host).empty().html('<ul class="pagination"/>').children('ul'),
+		buttons
+	);
+
+	if ( activeEl ) {
+		$(host).find( '[data-dt-idx='+activeEl+']' ).focus();
+	}
+};
+
+
+/*
+ * TableTools Bootstrap compatibility
+ * Required TableTools 2.1+
+ */
+if ( DataTable.TableTools ) {
+	// Set the classes that TableTools uses to something suitable for Bootstrap
+	$.extend( true, DataTable.TableTools.classes, {
+		"container": "DTTT btn-group",
+		"buttons": {
+			"normal": "btn btn-default",
+			"disabled": "disabled"
+		},
+		"collection": {
+			"container": "DTTT_dropdown dropdown-menu",
+			"buttons": {
+				"normal": "",
+				"disabled": "disabled"
+			}
+		},
+		"print": {
+			"info": "DTTT_print_info"
+		},
+		"select": {
+			"row": "active"
+		}
+	} );
+
+	// Have the collection use a bootstrap compatible drop down
+	$.extend( true, DataTable.TableTools.DEFAULTS.oTags, {
+		"collection": {
+			"container": "ul",
+			"button": "li",
+			"liner": "a"
+		}
+	} );
+}
+
+}; // /factory
+
+
+// Define as an AMD module if possible
+if ( typeof define === 'function' && define.amd ) {
+	define( ['jquery', 'datatables'], factory );
+}
+else if ( typeof exports === 'object' ) {
+    // Node/CommonJS
+    factory( require('jquery'), require('datatables') );
+}
+else if ( jQuery ) {
+	// Otherwise simply initialise as normal, stopping multiple evaluation
+	factory( jQuery, jQuery.fn.dataTable );
+}
+
+
+})(window, document);
+
+
+},{"datatables":10,"jquery":16}],10:[function(require,module,exports){
+/*! DataTables 1.10.9
+ * ©2008-2015 SpryMedia Ltd - datatables.net/license
  */
 
 /**
  * @summary     DataTables
  * @description Paginate, search and order HTML tables
- * @version     1.10.8
+ * @version     1.10.9
  * @file        jquery.dataTables.js
  * @author      SpryMedia Ltd (www.sprymedia.co.uk)
  * @contact     www.sprymedia.co.uk/contact
- * @copyright   Copyright 2008-2014 SpryMedia Ltd.
+ * @copyright   Copyright 2008-2015 SpryMedia Ltd.
  *
  * This source file is free software, available under the following license:
  *   MIT license - http://datatables.net/license
@@ -4531,7 +4551,7 @@ module.exports = isArray || function (val) {
  */
 
 /*jslint evil: true, undef: true, browser: true */
-/*globals $,require,jQuery,define,_selector_run,_selector_opts,_selector_first,_selector_row_indexes,_ext,_Api,_api_register,_api_registerPlural,_re_new_lines,_re_html,_re_formatted_numeric,_re_escape_regex,_empty,_intVal,_numToDecimal,_isNumber,_isHtml,_htmlNumeric,_pluck,_pluck_order,_range,_stripHtml,_unique,_fnBuildAjax,_fnAjaxUpdate,_fnAjaxParameters,_fnAjaxUpdateDraw,_fnAjaxDataSrc,_fnAddColumn,_fnColumnOptions,_fnAdjustColumnSizing,_fnVisibleToColumnIndex,_fnColumnIndexToVisible,_fnVisbleColumns,_fnGetColumns,_fnColumnTypes,_fnApplyColumnDefs,_fnHungarianMap,_fnCamelToHungarian,_fnLanguageCompat,_fnBrowserDetect,_fnAddData,_fnAddTr,_fnNodeToDataIndex,_fnNodeToColumnIndex,_fnGetCellData,_fnSetCellData,_fnSplitObjNotation,_fnGetObjectDataFn,_fnSetObjectDataFn,_fnGetDataMaster,_fnClearTable,_fnDeleteIndex,_fnInvalidate,_fnGetRowElements,_fnCreateTr,_fnBuildHead,_fnDrawHead,_fnDraw,_fnReDraw,_fnAddOptionsHtml,_fnDetectHeader,_fnGetUniqueThs,_fnFeatureHtmlFilter,_fnFilterComplete,_fnFilterCustom,_fnFilterColumn,_fnFilter,_fnFilterCreateSearch,_fnEscapeRegex,_fnFilterData,_fnFeatureHtmlInfo,_fnUpdateInfo,_fnInfoMacros,_fnInitialise,_fnInitComplete,_fnLengthChange,_fnFeatureHtmlLength,_fnFeatureHtmlPaginate,_fnPageChange,_fnFeatureHtmlProcessing,_fnProcessingDisplay,_fnFeatureHtmlTable,_fnScrollDraw,_fnApplyToChildren,_fnCalculateColumnWidths,_fnThrottle,_fnConvertToWidth,_fnGetWidestNode,_fnGetMaxLenString,_fnStringToCss,_fnScrollBarWidth,_fnSortFlatten,_fnSort,_fnSortAria,_fnSortListener,_fnSortAttachListener,_fnSortingClasses,_fnSortData,_fnSaveState,_fnLoadState,_fnSettingsFromNode,_fnLog,_fnMap,_fnBindAction,_fnCallbackReg,_fnCallbackFire,_fnLengthOverflow,_fnRenderer,_fnDataSource,_fnRowAttributes*/
+/*globals $,require,jQuery,define,_selector_run,_selector_opts,_selector_first,_selector_row_indexes,_ext,_Api,_api_register,_api_registerPlural,_re_new_lines,_re_html,_re_formatted_numeric,_re_escape_regex,_empty,_intVal,_numToDecimal,_isNumber,_isHtml,_htmlNumeric,_pluck,_pluck_order,_range,_stripHtml,_unique,_fnBuildAjax,_fnAjaxUpdate,_fnAjaxParameters,_fnAjaxUpdateDraw,_fnAjaxDataSrc,_fnAddColumn,_fnColumnOptions,_fnAdjustColumnSizing,_fnVisibleToColumnIndex,_fnColumnIndexToVisible,_fnVisbleColumns,_fnGetColumns,_fnColumnTypes,_fnApplyColumnDefs,_fnHungarianMap,_fnCamelToHungarian,_fnLanguageCompat,_fnBrowserDetect,_fnAddData,_fnAddTr,_fnNodeToDataIndex,_fnNodeToColumnIndex,_fnGetCellData,_fnSetCellData,_fnSplitObjNotation,_fnGetObjectDataFn,_fnSetObjectDataFn,_fnGetDataMaster,_fnClearTable,_fnDeleteIndex,_fnInvalidate,_fnGetRowElements,_fnCreateTr,_fnBuildHead,_fnDrawHead,_fnDraw,_fnReDraw,_fnAddOptionsHtml,_fnDetectHeader,_fnGetUniqueThs,_fnFeatureHtmlFilter,_fnFilterComplete,_fnFilterCustom,_fnFilterColumn,_fnFilter,_fnFilterCreateSearch,_fnEscapeRegex,_fnFilterData,_fnFeatureHtmlInfo,_fnUpdateInfo,_fnInfoMacros,_fnInitialise,_fnInitComplete,_fnLengthChange,_fnFeatureHtmlLength,_fnFeatureHtmlPaginate,_fnPageChange,_fnFeatureHtmlProcessing,_fnProcessingDisplay,_fnFeatureHtmlTable,_fnScrollDraw,_fnApplyToChildren,_fnCalculateColumnWidths,_fnThrottle,_fnConvertToWidth,_fnGetWidestNode,_fnGetMaxLenString,_fnStringToCss,_fnSortFlatten,_fnSort,_fnSortAria,_fnSortListener,_fnSortAttachListener,_fnSortingClasses,_fnSortData,_fnSaveState,_fnLoadState,_fnSettingsFromNode,_fnLog,_fnMap,_fnBindAction,_fnCallbackReg,_fnCallbackFire,_fnLengthOverflow,_fnRenderer,_fnDataSource,_fnRowAttributes*/
 
 (/** @lends <global> */function( window, document, undefined ) {
 
@@ -5023,52 +5043,76 @@ module.exports = isArray || function (val) {
 	 */
 	function _fnBrowserDetect( settings )
 	{
-		var browser = settings.oBrowser;
+		// We don't need to do this every time DataTables is constructed, the values
+		// calculated are specific to the browser and OS configuration which we
+		// don't expect to change between initialisations
+		if ( ! DataTable.__browser ) {
+			var browser = {};
+			DataTable.__browser = browser;
 	
-		// Scrolling feature / quirks detection
-		var n = $('<div/>')
-			.css( {
-				position: 'fixed',
-				top: 0,
-				left: 0,
-				height: 1,
-				width: 1,
-				overflow: 'hidden'
-			} )
-			.append(
-				$('<div/>')
-					.css( {
-						position: 'absolute',
-						top: 1,
-						left: 1,
-						width: 100,
-						overflow: 'scroll'
-					} )
-					.append(
-						$('<div class="test"/>')
-							.css( {
-								width: '100%',
-								height: 10
-							} )
-					)
-			)
-			.appendTo( 'body' );
+			// Scrolling feature / quirks detection
+			var n = $('<div/>')
+				.css( {
+					position: 'fixed',
+					top: 0,
+					left: 0,
+					height: 1,
+					width: 1,
+					overflow: 'hidden'
+				} )
+				.append(
+					$('<div/>')
+						.css( {
+							position: 'absolute',
+							top: 1,
+							left: 1,
+							width: 100,
+							overflow: 'scroll'
+						} )
+						.append(
+							$('<div/>')
+								.css( {
+									width: '100%',
+									height: 10
+								} )
+						)
+				)
+				.appendTo( 'body' );
 	
-		var test = n.find('.test');
+			var outer = n.children();
+			var inner = outer.children();
 	
-		// IE6/7 will oversize a width 100% element inside a scrolling element, to
-		// include the width of the scrollbar, while other browsers ensure the inner
-		// element is contained without forcing scrolling
-		browser.bScrollOversize = test[0].offsetWidth === 100;
+			// Numbers below, in order, are:
+			// inner.offsetWidth, inner.clientWidth, outer.offsetWidth, outer.clientWidth
+			//
+			// IE6 XP:                           100 100 100  83
+			// IE7 Vista:                        100 100 100  83
+			// IE 8+ Windows:                     83  83 100  83
+			// Evergreen Windows:                 83  83 100  83
+			// Evergreen Mac with scrollbars:     85  85 100  85
+			// Evergreen Mac without scrollbars: 100 100 100 100
 	
-		// In rtl text layout, some browsers (most, but not all) will place the
-		// scrollbar on the left, rather than the right.
-		browser.bScrollbarLeft = Math.round( test.offset().left ) !== 1;
+			// Get scrollbar width
+			browser.barWidth = outer[0].offsetWidth - outer[0].clientWidth;
 	
-		// IE8- don't provide height and width for getBoundingClientRect
-		browser.bBounding = n[0].getBoundingClientRect().width ? true : false;
+			// IE6/7 will oversize a width 100% element inside a scrolling element, to
+			// include the width of the scrollbar, while other browsers ensure the inner
+			// element is contained without forcing scrolling
+			//console.log( inner.offsetWidth );
+			browser.bScrollOversize = inner[0].offsetWidth === 100 && outer[0].clientWidth !== 100;
 	
-		n.remove();
+			// In rtl text layout, some browsers (most, but not all) will place the
+			// scrollbar on the left, rather than the right.
+			browser.bScrollbarLeft = Math.round( inner.offset().left ) !== 1;
+	
+			// IE8- don't provide height and width for getBoundingClientRect
+			browser.bBounding = n[0].getBoundingClientRect().width ? true : false;
+	
+			n.remove();
+		}
+	
+		$.extend( settings.oBrowser, DataTable.__browser );
+		settings.oScroll.iBarWidth = DataTable.__browser.barWidth;
 	}
 	
 	
@@ -5535,14 +5579,10 @@ module.exports = isArray || function (val) {
 		/* Create the cells */
 		var nTd, sThisType;
 		var columns = oSettings.aoColumns;
+	
+		// Invalidate the column types as the new data needs to be revalidated
 		for ( var i=0, iLen=columns.length ; i<iLen ; i++ )
 		{
-			// When working with a row, the data source object must be populated. In
-			// all other cases, the data source object is already populated, so we
-			// don't overwrite it, which might break bindings etc
-			if ( nTr ) {
-				_fnSetCellData( oSettings, iRow, i, _fnGetCellData( oSettings, iRow, i ) );
-			}
 			columns[i].sType = null;
 		}
 	
@@ -5780,8 +5820,10 @@ module.exports = isArray || function (val) {
 							innerSrc = a.join('.');
 	
 							// Traverse each entry in the array getting the properties requested
-							for ( var j=0, jLen=data.length ; j<jLen ; j++ ) {
-								out.push( fetchData( data[j], type, innerSrc ) );
+							if ( $.isArray( data ) ) {
+								for ( var j=0, jLen=data.length ; j<jLen ; j++ ) {
+									out.push( fetchData( data[j], type, innerSrc ) );
+								}
 							}
 	
 							// If a string is given in between the array notation indicators, that
@@ -5881,11 +5923,21 @@ module.exports = isArray || function (val) {
 						innerSrc = b.join('.');
 	
 						// Traverse each entry in the array setting the properties requested
-						for ( var j=0, jLen=val.length ; j<jLen ; j++ )
+						if ( $.isArray( val ) )
 						{
-							o = {};
-							setData( o, val[j], innerSrc );
-							data[ a[i] ].push( o );
+							for ( var j=0, jLen=val.length ; j<jLen ; j++ )
+							{
+								o = {};
+								setData( o, val[j], innerSrc );
+								data[ a[i] ].push( o );
+							}
+						}
+						else
+						{
+							// We've been asked to save data to an array, but it
+							// isn't array data to be saved. Best that can be done
+							// is to just save the value.
+							data[ a[i] ] = val;
 						}
 	
 						// The inner call to setData has already traversed through the remainder
@@ -5958,6 +6010,7 @@ module.exports = isArray || function (val) {
 		settings.aoData.length = 0;
 		settings.aiDisplayMaster.length = 0;
 		settings.aiDisplay.length = 0;
+		settings.aIds = {};
 	}
 	
 	
@@ -6095,7 +6148,11 @@ module.exports = isArray || function (val) {
 			objectRead = settings._rowReadObject;
 	
 		// Allow the data object to be passed in, or construct
-		d = d || objectRead ? {} : [];
+		d = d !== undefined ?
+			d :
+			objectRead ?
+				{} :
+				[];
 	
 		var attr = function ( str, td  ) {
 			if ( typeof str === 'string' ) {
@@ -6165,9 +6222,14 @@ module.exports = isArray || function (val) {
 		}
 	
 		// Read the ID from the DOM if present
-		var id = row.getAttribute( 'id' );
-		if ( id ) {
-			_fnSetObjectDataFn( settings.rowId )( d, id );
+		var rowNode = td ? row : row.nTr;
+	
+		if ( rowNode ) {
+			var id = rowNode.getAttribute( 'id' );
+	
+			if ( id ) {
+				_fnSetObjectDataFn( settings.rowId )( d, id );
+			}
 		}
 	
 		return {
@@ -7442,7 +7504,7 @@ module.exports = isArray || function (val) {
 			// So the array reference doesn't break set the results into the
 			// existing array
 			displayRows.length = 0;
-			displayRows.push.apply( displayRows, rows );
+			$.merge( displayRows, rows );
 		}
 	}
 	
@@ -8645,7 +8707,11 @@ module.exports = isArray || function (val) {
 		     columnCount == headerCells.length
 		) {
 			for ( i=0 ; i<columnCount ; i++ ) {
-				columns[i].sWidth = _fnStringToCss( headerCells.eq(i).width() );
+				var colIdx = _fnVisibleToColumnIndex( oSettings, i );
+	
+				if ( colIdx ) {
+					columns[ colIdx ].sWidth = _fnStringToCss( headerCells.eq(i).width() );
+				}
 			}
 		}
 		else
@@ -8939,40 +9005,6 @@ module.exports = isArray || function (val) {
 	}
 	
 	
-	/**
-	 * Get the width of a scroll bar in this browser being used
-	 *  @returns {int} width in pixels
-	 *  @memberof DataTable#oApi
-	 */
-	function _fnScrollBarWidth ()
-	{
-		// On first run a static variable is set, since this is only needed once.
-		// Subsequent runs will just use the previously calculated value
-		var width = DataTable.__scrollbarWidth;
-	
-		if ( width === undefined ) {
-			var sizer = $('<p/>').css( {
-					position: 'absolute',
-					top: 0,
-					left: 0,
-					width: '100%',
-					height: 150,
-					padding: 0,
-					overflow: 'scroll',
-					visibility: 'hidden'
-				} )
-				.appendTo('body');
-	
-			width = sizer[0].offsetWidth - sizer[0].clientWidth;
-			DataTable.__scrollbarWidth = width;
-	
-			sizer.remove();
-		}
-	
-		return width;
-	}
-	
-	
 	
 	function _fnSortFlatten ( settings )
 	{
@@ -8992,7 +9024,7 @@ module.exports = isArray || function (val) {
 				}
 				else {
 					// 2D array
-					nestedSort.push.apply( nestedSort, a );
+					$.merge( nestedSort, a );
 				}
 			};
 	
@@ -10788,6 +10820,9 @@ module.exports = isArray || function (val) {
 			
 			oSettings.rowIdFn = _fnGetObjectDataFn( oInit.rowId );
 			
+			/* Browser support detection */
+			_fnBrowserDetect( oSettings );
+			
 			var oClasses = oSettings.oClasses;
 			
 			// @todo Remove in 1.11
@@ -10817,11 +10852,6 @@ module.exports = isArray || function (val) {
 			}
 			$this.addClass( oClasses.sTable );
 			
-			/* Calculate the scroll bar width and cache it for use later on */
-			if ( oSettings.oScroll.sX !== "" || oSettings.oScroll.sY !== "" )
-			{
-				oSettings.oScroll.iBarWidth = _fnScrollBarWidth();
-			}
 			
 			if ( oSettings.iInitDisplayStart === undefined )
 			{
@@ -10932,7 +10962,7 @@ module.exports = isArray || function (val) {
 					return cell.getAttribute( 'data-'+name ) !== null ? name : null;
 				};
 			
-				$.each( _fnGetRowElements( oSettings, rowOne[0] ).cells, function (i, cell) {
+				$( rowOne[0] ).children('th, td').each( function (i, cell) {
 					var col = oSettings.aoColumns[i];
 			
 					if ( col.mData === i ) {
@@ -11013,9 +11043,6 @@ module.exports = isArray || function (val) {
 			 * Final init
 			 * Cache the header, body and footer as required, creating them if needed
 			 */
-			
-			/* Browser support detection */
-			_fnBrowserDetect( oSettings );
 			
 			// Work around for Webkit bug 83867 - store the caption-side before removing from doc
 			var captions = $this.children('caption').each( function () {
@@ -11262,7 +11289,7 @@ module.exports = isArray || function (val) {
 		var ctxSettings = function ( o ) {
 			var a = _toSettings( o );
 			if ( a ) {
-				settings.push.apply( settings, a );
+				settings = settings.concat( a );
 			}
 		};
 	
@@ -11280,7 +11307,7 @@ module.exports = isArray || function (val) {
 	
 		// Initial data
 		if ( data ) {
-			this.push.apply( this, data.toArray ? data.toArray() : data );
+			$.merge( this, data );
 		}
 	
 		// selector
@@ -11295,7 +11322,9 @@ module.exports = isArray || function (val) {
 	
 	DataTable.Api = _Api;
 	
-	_Api.prototype = /** @lends DataTables.Api */{
+	// Don't destroy the existing prototype, just extend it. Required for jQuery 2's
+	// isPlainObject.
+	$.extend( _Api.prototype, {
 		any: function ()
 		{
 			return this.count() !== 0;
@@ -11541,7 +11570,7 @@ module.exports = isArray || function (val) {
 	
 	
 		unshift: __arrayProto.unshift
-	};
+	} );
 	
 	
 	_Api.extend = function ( scope, obj, ext )
@@ -12091,7 +12120,7 @@ module.exports = isArray || function (val) {
 				res = selectFn( typeof a[j] === 'string' ? $.trim(a[j]) : a[j] );
 	
 				if ( res && res.length ) {
-					out.push.apply( out, res );
+					out = out.concat( res );
 				}
 			}
 		}
@@ -12104,7 +12133,7 @@ module.exports = isArray || function (val) {
 			}
 		}
 	
-		return out;
+		return _unique( out );
 	};
 	
 	
@@ -12375,6 +12404,7 @@ module.exports = isArray || function (val) {
 	
 		this.iterator( 'row', function ( settings, row, thatIdx ) {
 			var data = settings.aoData;
+			var rowData = data[ row ];
 	
 			data.splice( row, 1 );
 	
@@ -12392,6 +12422,12 @@ module.exports = isArray || function (val) {
 	
 			// Check for an 'overflow' they case for displaying the table
 			_fnLengthOverflow( settings );
+	
+			// Remove the row's ID reference if there is one
+			var id = settings.rowIdFn( rowData._aData );
+			if ( id !== undefined ) {
+				delete settings.aIds[ id ];
+			}
 		} );
 	
 		this.iterator( 'table', function ( settings ) {
@@ -12426,7 +12462,7 @@ module.exports = isArray || function (val) {
 		// Return an Api.rows() extended instance, so rows().nodes() etc can be used
 		var modRows = this.rows( -1 );
 		modRows.pop();
-		modRows.push.apply( modRows, newRows.toArray() );
+		$.merge( modRows, newRows );
 	
 		return modRows;
 	} );
@@ -13008,7 +13044,7 @@ module.exports = isArray || function (val) {
 	
 						if ( fnSelector ) {
 							// Selector - function
-							host = settings.aoData[ row ];
+							host = data[ row ];
 	
 							if ( s( o, _fnGetCellData(settings, row, j), host.anCells ? host.anCells[j] : null ) ) {
 								a.push( o );
@@ -13033,7 +13069,19 @@ module.exports = isArray || function (val) {
 			return allCells
 				.filter( s )
 				.map( function (i, el) {
-					row = el.parentNode._DT_RowIndex;
+					if ( el.parentNode ) {
+						row = el.parentNode._DT_RowIndex;
+					}
+					else {
+						// If no parent node, then the cell is hidden and we'll need
+						// to traverse the array to find it
+						for ( i=0, ien=data.length ; i<ien ; i++ ) {
+							if ( $.inArray( el, data[i].anCells ) !== -1 ) {
+								row = i;
+								break;
+							}
+						}
+					}
 	
 					return {
 						row: row,
@@ -13733,7 +13781,7 @@ module.exports = isArray || function (val) {
 	 *  @type string
 	 *  @default Version number
 	 */
-	DataTable.version = "1.10.8";
+	DataTable.version = "1.10.9";
 
 	/**
 	 * Private data store, containing all of the settings objects that are
@@ -17452,7 +17500,14 @@ module.exports = isArray || function (val) {
 			 *  @type boolean
 			 *  @default false
 			 */
-			"bBounding": false
+			"bBounding": false,
+	
+			/**
+			 * Browser scrollbar width
+			 *  @type integer
+			 *  @default 0
+			 */
+			"barWidth": 0
 		},
 	
 	
@@ -19389,7 +19444,6 @@ module.exports = isArray || function (val) {
 		_fnGetWidestNode: _fnGetWidestNode,
 		_fnGetMaxLenString: _fnGetMaxLenString,
 		_fnStringToCss: _fnStringToCss,
-		_fnScrollBarWidth: _fnScrollBarWidth,
 		_fnSortFlatten: _fnSortFlatten,
 		_fnSort: _fnSort,
 		_fnSortAria: _fnSortAria,
@@ -53682,7 +53736,7 @@ module.exports = {
 }).call(this);
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":6,"eventemitter2":48,"superagent":49}],48:[function(require,module,exports){
+},{"buffer":5,"eventemitter2":48,"superagent":49}],48:[function(require,module,exports){
 /*!
  * EventEmitter2
  * https://github.com/hij1nx/EventEmitter2
@@ -57103,7 +57157,7 @@ module.exports = Backbone.Collection.extend({
 		};
 	}
 });
-},{"backbone":5,"jquery":16,"underscore":52}],54:[function(require,module,exports){
+},{"backbone":4,"jquery":16,"underscore":52}],54:[function(require,module,exports){
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
@@ -57157,7 +57211,7 @@ module.exports = Backbone.Collection.extend({
 		return _.pluck(this.filter, 'friendlyExpression').join(' and ');
 	}
 })
-},{"backbone":5,"jquery":16,"soda-js":47,"underscore":52}],55:[function(require,module,exports){
+},{"backbone":4,"jquery":16,"soda-js":47,"underscore":52}],55:[function(require,module,exports){
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
@@ -57245,7 +57299,7 @@ $.getJSON('config/' + dataset + '.json')
 .fail(function() {
 	console.error('Dataset %s not found', dataset);
 })
-},{"./collections/geojson":53,"./collections/socrata":54,"./views/bar":59,"./views/choropleth":61,"./views/datetime":62,"./views/header":63,"./views/table":64,"backbone":5,"jquery":16,"underscore":52}],56:[function(require,module,exports){
+},{"./collections/geojson":53,"./collections/socrata":54,"./views/bar":59,"./views/choropleth":61,"./views/datetime":62,"./views/header":63,"./views/table":64,"backbone":4,"jquery":16,"underscore":52}],56:[function(require,module,exports){
 module.exports = function(data){
 var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
 __p+='<h1 class="title">'+
@@ -57397,7 +57451,7 @@ module.exports = BaseChart.extend({
 		});
 	}
 })
-},{"../util/number-formatter":58,"./basechart":60,"backbone":5,"jquery":16,"underscore":52}],60:[function(require,module,exports){
+},{"../util/number-formatter":58,"./basechart":60,"backbone":4,"jquery":16,"underscore":52}],60:[function(require,module,exports){
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
@@ -57555,7 +57609,7 @@ module.exports = Backbone.View.extend({
 		this.renderFilters();
 	}
 })
-},{"../../amcharts/amcharts":1,"../../amcharts/serial":2,"../../amcharts/themes/light":3,"../templates/panel.html":57,"../util/number-formatter":58,"backbone":5,"jquery":16,"underscore":52}],61:[function(require,module,exports){
+},{"../../amcharts/amcharts":1,"../../amcharts/serial":2,"../../amcharts/themes/light":3,"../templates/panel.html":57,"../util/number-formatter":58,"backbone":4,"jquery":16,"underscore":52}],61:[function(require,module,exports){
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
@@ -57729,7 +57783,7 @@ module.exports = Backbone.View.extend({
 	}
 });
 
-},{"../templates/panel.html":57,"backbone":5,"geocolor":11,"jquery":16,"mapbox.js":32,"underscore":52}],62:[function(require,module,exports){
+},{"../templates/panel.html":57,"backbone":4,"geocolor":11,"jquery":16,"mapbox.js":32,"underscore":52}],62:[function(require,module,exports){
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
@@ -57839,7 +57893,7 @@ module.exports = BaseChart.extend({
 		}
 	}
 })
-},{"../util/number-formatter":58,"./basechart":60,"backbone":5,"jquery":16,"underscore":52}],63:[function(require,module,exports){
+},{"../util/number-formatter":58,"./basechart":60,"backbone":4,"jquery":16,"underscore":52}],63:[function(require,module,exports){
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
@@ -57854,13 +57908,13 @@ module.exports = Backbone.View.extend({
 		return this;
 	}
 });
-},{"../templates/header.html":56,"backbone":5,"jquery":16,"underscore":52}],64:[function(require,module,exports){
+},{"../templates/header.html":56,"backbone":4,"jquery":16,"underscore":52}],64:[function(require,module,exports){
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var Template = require('../templates/panel.html');
 require('datatables');
-require('../../assets/js/datatables/dataTables.bootstrap');
+require('datatables/media/js/dataTables.bootstrap');
 	
 module.exports = Backbone.View.extend({
 	initialize: function(options) {
@@ -57903,6 +57957,7 @@ module.exports = Backbone.View.extend({
 			this.table = this.$('.card').DataTable({
 				columns: columns,
 				scrollX: true,
+				pagingType: 'numbers',
 				serverSide: true,
 				ajax: function(data, callback, settings) {
 					self.collection.offset = data.start || 0;
@@ -57925,4 +57980,4 @@ module.exports = Backbone.View.extend({
 		this.renderFilters();
 	}
 });
-},{"../../assets/js/datatables/dataTables.bootstrap":4,"../templates/panel.html":57,"backbone":5,"datatables":10,"jquery":16,"underscore":52}]},{},[55]);
+},{"../templates/panel.html":57,"backbone":4,"datatables":10,"datatables/media/js/dataTables.bootstrap":9,"jquery":16,"underscore":52}]},{},[55]);
