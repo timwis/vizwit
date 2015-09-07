@@ -48,7 +48,10 @@ module.exports = BaseChart.extend({
 			zoomOutText: '',
 			mouseWheelScrollEnabled: true,
 			categoryAxis: {
-				autoWrap: true
+				autoWrap: true,
+				labelFunction: function(label) {
+					return label.length > 10 ? label.substr(0, 10) + '…' : label;
+				}
 			}
 		}
 	},
