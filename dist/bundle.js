@@ -57608,7 +57608,7 @@ module.exports = Backbone.View.extend({
 		this.$('.filters').text(filters).parent().toggle(filters ? true : false);
 	},
 	render: function() {
-		this.map = L.map(this.$('.card').get(0)).setView([39.95, -75.1667], 11);
+		this.map = L.map(this.$('.card').get(0));//.setView([39.95, -75.1667], 13);
 		L.tileLayer('http://stamen-tiles-{s}.a.ssl.fastly.net/toner-lite/{z}/{x}/{y}.png', {
 			attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
 			subdomains: 'abcd',
@@ -57652,6 +57652,9 @@ module.exports = Backbone.View.extend({
 					});
 				}
 			}).addTo(this.map);
+			
+			// Zoom to boundaries of new layer
+			this.map.fitBounds((L.featureGroup([this.layer])).getBounds());
 		}
 	},
 	/**
