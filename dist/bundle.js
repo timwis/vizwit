@@ -57323,6 +57323,8 @@ module.exports = BaseChart.extend({
 				fillAlphas: 1,
 				clustered: false,
 				lineColor: '#97bbcd',
+				colorField: 'color',
+				alphaField: 'alpha',
 				balloonText: '<b>[[category]]</b><br>Total: [[value]]'
 			},
 			{
@@ -57332,6 +57334,7 @@ module.exports = BaseChart.extend({
 				fillAlphas: 0.8,
 				clustered: false,
 				lineColor: '#97bbcd',
+				colorField: 'color',
 				balloonText: '<b>[[category]]</b><br>Filtered Amount: [[value]]'
 			}
 		],
@@ -57353,11 +57356,20 @@ module.exports = BaseChart.extend({
 			}],
 			chartScrollbar: {
 			},
+			chartCursor: {
+				fullWidth: true,
+				cursorAlpha: 0.1,
+				zoomable: false
+			},
 			maxSelectedSeries: 7,
 			zoomOutText: '',
 			mouseWheelScrollEnabled: true,
 			categoryAxis: {
-				autoWrap: true
+				autoWrap: true,
+				gridAlpha: 0,
+				labelFunction: function(label) {
+					return label.length > 10 ? label.substr(0, 10) + '…' : label;
+				}
 			}
 		}
 	},
@@ -57378,6 +57390,8 @@ module.exports = BaseChart.extend({
 	},
 	// When the user clicks on a bar in this chart
 	onClick: function(e) {
+		this.collection.selected = e.item.category;
+		
 		// Trigger the global event handler with this filter
 		this.vent.trigger('filter', {
 			field: this.collection.triggerField,
@@ -57499,6 +57513,10 @@ module.exports = Backbone.View.extend({
 				label: label,
 				count: model.get(self.collection.countProperty)
 			};
+			if(self.collection.selected === label) {
+				data.color = '#ddd64b';
+				data.alpha = 0.5; // tells the 'original amount' graph to be faded
+			}
 			// If the filtered collection has been fetched, find the corresponding record and put it in another series
 			if(self.filteredCollection.length) {
 				var match = self.filteredCollection.get(label);
@@ -57512,13 +57530,10 @@ module.exports = Backbone.View.extend({
 	},
 	// When a chart has been filtered
 	onFilter: function(data) {
-		// Only listen to other charts
-		if(data.field !== this.filteredCollection.triggerField) {
-			// Add the filter to the filtered collection and fetch it with the filter
-			this.filteredCollection.filter[data.field] = data;
-			this.filteredCollection.fetch();
-			this.renderFilters();
-		}
+		// Add the filter to the filtered collection and fetch it with the filter
+		this.filteredCollection.filter[data.field] = data;
+		this.filteredCollection.fetch();
+		this.renderFilters();
 	}
 })
 },{"../../amcharts/amcharts":1,"../../amcharts/serial":2,"../../amcharts/themes/light":3,"../templates/panel.html":57,"../util/number-formatter":58,"backbone":5,"jquery":16,"underscore":52}],61:[function(require,module,exports){
@@ -57757,11 +57772,27 @@ module.exports = BaseChart.extend({
 		// Listen to when the user selects a range
 		setTimeout(function() {
 			self.chart.chartCursor.addListener('selected', self.onClick);
+				
+			if(self.collection.selected && self.collection.selected.length) {
+				self.chart.categoryAxis.addGuide({
+					date: self.collection.selected[0],
+					toDate: self.collection.selected[1],
+					lineThickness: 2,
+					color: '#ddd64b',
+					lineColor: '#ddd64b',
+					fillColor: '#ddd64b',
+					fillAlpha: 0.6,
+					//label: 'foo',
+					above: true
+				});
+				self.chart.validateData();
+			}
 		}, 100);
 	},
 	// When the user clicks on a bar in this chart
 	onClick: function(e) {
 		//console.log('Filtered by', (new Date(e.start)).toISOString(), (new Date(e.end)).toISOString());
+		this.collection.selected = [new Date(e.start), new Date(e.end)];
 		var field = this.collection.triggerField;
 		
 		var start = new Date(e.start);
@@ -57778,6 +57809,19 @@ module.exports = BaseChart.extend({
 			expression: field + ' >= \'' + startIso + '\' and ' + field + ' <= \'' + endIso + '\'',
 			friendlyExpression: field + ' is ' + startFriendly + ' to ' + endFriendly
 		})
+	},
+	// When a chart has been filtered
+	onFilter: function(data) {
+		// Only listen to other charts
+		if(data.field !== this.filteredCollection.triggerField) {
+			// Add the filter to the filtered collection and fetch it with the filter
+			this.filteredCollection.filter[data.field] = data;
+			this.filteredCollection.fetch();
+			this.renderFilters();
+		} else {
+			// Re-render to show the guides when they're initially set
+			this.render();
+		}
 	}
 })
 },{"../util/number-formatter":58,"./basechart":60,"backbone":5,"jquery":16,"underscore":52}],63:[function(require,module,exports){
