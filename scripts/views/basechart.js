@@ -101,11 +101,13 @@ module.exports = Backbone.View.extend({
 		if(this.collection.selected) {
 			var guide = {
 				lineThickness: 2,
-				color: '#ddd64b',
 				lineColor: '#ddd64b',
 				fillColor: '#ddd64b',
 				fillAlpha: 0.4,
-				//label: 'foo',
+				//label: 'Filtered',
+				//inside: true,
+				//color: '#000',
+				balloonText: 'Currently filtered',
 				expand: true,
 				above: true
 			};

@@ -57323,8 +57323,6 @@ module.exports = BaseChart.extend({
 				fillAlphas: 1,
 				clustered: false,
 				lineColor: '#97bbcd',
-				colorField: 'color',
-				alphaField: 'alpha',
 				balloonText: '<b>[[category]]</b><br>Total: [[value]]'
 			},
 			{
@@ -57334,7 +57332,6 @@ module.exports = BaseChart.extend({
 				fillAlphas: 0.8,
 				clustered: false,
 				lineColor: '#97bbcd',
-				colorField: 'color',
 				balloonText: '<b>[[category]]</b><br>Filtered Amount: [[value]]'
 			}
 		],
@@ -57366,7 +57363,7 @@ module.exports = BaseChart.extend({
 			mouseWheelScrollEnabled: true,
 			categoryAxis: {
 				autoWrap: true,
-				gridAlpha: 0,
+				//gridAlpha: 0,
 				labelFunction: function(label) {
 					return label.length > 10 ? label.substr(0, 10) + '…' : label;
 				}
@@ -57499,6 +57496,32 @@ module.exports = Backbone.View.extend({
 		var config = $.extend(true, {}, this.settings.chart);
 		config.graphs = graphs;
 		config.dataProvider = chartData;
+		
+		// Show guide on selected item
+		if(this.collection.selected) {
+			var guide = {
+				lineThickness: 2,
+				lineColor: '#ddd64b',
+				fillColor: '#ddd64b',
+				fillAlpha: 0.4,
+				//label: 'Filtered',
+				//inside: true,
+				//color: '#000',
+				balloonText: 'Currently filtered',
+				expand: true,
+				above: true
+			};
+			if(config.categoryAxis.parseDates) {
+				guide.date = this.collection.selected[0];
+				guide.toDate = this.collection.selected[1];
+			} else {
+				guide.category = guide.toCategory = this.collection.selected;
+			}
+			
+			config.categoryAxis.guides = config.categoryAxis.guides || [];
+			config.categoryAxis.guides.push(guide);
+		}
+		
 		this.chart = AmCharts.makeChart(this.$('.card').get(0), config);
 	},
 	formatChartData: function(limit) {
@@ -57513,10 +57536,6 @@ module.exports = Backbone.View.extend({
 				label: label,
 				count: model.get(self.collection.countProperty)
 			};
-			if(self.collection.selected === label) {
-				data.color = '#ddd64b';
-				data.alpha = 0.5; // tells the 'original amount' graph to be faded
-			}
 			// If the filtered collection has been fetched, find the corresponding record and put it in another series
 			if(self.filteredCollection.length) {
 				var match = self.filteredCollection.get(label);
@@ -57576,13 +57595,10 @@ module.exports = Backbone.View.extend({
 	},
 	// When a chart has been filtered
 	onFilter: function(data) {
-		// Only listen to other charts
-		if(data.field !== this.filteredCollection.triggerField) {
-			// Add the filter to the filtered collection and fetch it with the filter
-			this.filteredCollection.filter[data.field] = data;
-			this.filteredCollection.fetch();
-			this.renderFilters();
-		}
+		// Add the filter to the filtered collection and fetch it with the filter
+		this.filteredCollection.filter[data.field] = data;
+		this.filteredCollection.fetch();
+		this.renderFilters();
 	},
 	renderTemplate: function() {
 		this.$el.empty().append(Template(this.config));
@@ -57613,7 +57629,18 @@ module.exports = Backbone.View.extend({
 			};
 			
 			var colorizeField = this.filteredCollection.length ? 'filteredCount' : 'count';
-			var colorized = geocolor.quantiles(this.boundaries.toGeoJSON(), colorizeField, 15, ['#eff3ff', '#bdd7e7', '#6baed6', '#3182bd', '#08519c'], style);
+			var colorized;
+			
+			if(this.collection.selected) {
+				colorized = geocolor.equalIntervals(this.boundaries.toGeoJSON(), colorizeField, 2, ['#eee', '#08519c'], style);
+			} else {
+				colorized = geocolor.quantiles(this.boundaries.toGeoJSON(), colorizeField, 15, ['#eff3ff', '#bdd7e7', '#6baed6', '#3182bd', '#08519c'], style);
+			}
+			
+			// Remove any existing layers
+			if(this.layer) {
+				this.map.removeLayer(this.layer);
+			}
 			
 			this.layer = L.geoJson(colorized, {
 				style: L.mapbox.simplestyle.style,
@@ -57688,7 +57715,7 @@ module.exports = Backbone.View.extend({
 		}, 100);
 	},
 	onClick: function(e) {
-		var clickedId = e.target.feature.properties[this.boundaries.idAttribute];
+		var clickedId = this.collection.selected = e.target.feature.properties[this.boundaries.idAttribute];
 		var clickedLabel = e.target.feature.properties[this.boundaries.label];
 		// Trigger the global event handler with this filter
 		this.vent.trigger('filter', {
@@ -57772,21 +57799,6 @@ module.exports = BaseChart.extend({
 		// Listen to when the user selects a range
 		setTimeout(function() {
 			self.chart.chartCursor.addListener('selected', self.onClick);
-				
-			if(self.collection.selected && self.collection.selected.length) {
-				self.chart.categoryAxis.addGuide({
-					date: self.collection.selected[0],
-					toDate: self.collection.selected[1],
-					lineThickness: 2,
-					color: '#ddd64b',
-					lineColor: '#ddd64b',
-					fillColor: '#ddd64b',
-					fillAlpha: 0.6,
-					//label: 'foo',
-					above: true
-				});
-				self.chart.validateData();
-			}
 		}, 100);
 	},
 	// When the user clicks on a bar in this chart
