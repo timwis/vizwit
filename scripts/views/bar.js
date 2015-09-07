@@ -14,7 +14,8 @@ module.exports = BaseChart.extend({
 				fillAlphas: 1,
 				clustered: false,
 				lineColor: '#97bbcd',
-				balloonText: '<b>[[category]]</b><br>Total: [[value]]'
+				balloonText: '<b>[[category]]</b><br>Total: [[value]]',
+				showHandOnHover: true
 			},
 			{
 				'type': 'column',
@@ -23,7 +24,8 @@ module.exports = BaseChart.extend({
 				fillAlphas: 0.8,
 				clustered: false,
 				lineColor: '#97bbcd',
-				balloonText: '<b>[[category]]</b><br>Filtered Amount: [[value]]'
+				balloonText: '<b>[[category]]</b><br>Filtered Amount: [[value]]',
+				showHandOnHover: true
 			}
 		],
 		chart: {
@@ -75,16 +77,17 @@ module.exports = BaseChart.extend({
 		}
 		
 		this.chart.addListener('clickGraphItem', this.onClick);
+		this.chart.categoryAxis.addListener('clickItem', this.onClick);
 	},
 	// When the user clicks on a bar in this chart
 	onClick: function(e) {
-		this.collection.selected = e.item.category;
+		var category = this.collection.selected = e.value || e.item.category;
 		
 		// Trigger the global event handler with this filter
 		this.vent.trigger('filter', {
 			field: this.collection.triggerField,
-			expression: this.collection.triggerField + ' = \'' + e.item.category + '\'',
-			friendlyExpression: this.collection.triggerField + ' is ' + e.item.category
+			expression: this.collection.triggerField + ' = \'' + category + '\'',
+			friendlyExpression: this.collection.triggerField + ' is ' + category
 		});
 	}
 })
