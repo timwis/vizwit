@@ -37,13 +37,10 @@ module.exports = Backbone.View.extend({
 	},
 	// When a chart has been filtered
 	onFilter: function(data) {
-		// Only listen to other charts
-		if(data.field !== this.filteredCollection.triggerField) {
-			// Add the filter to the filtered collection and fetch it with the filter
-			this.filteredCollection.filter[data.field] = data;
-			this.filteredCollection.fetch();
-			this.renderFilters();
-		}
+		// Add the filter to the filtered collection and fetch it with the filter
+		this.filteredCollection.filter[data.field] = data;
+		this.filteredCollection.fetch();
+		this.renderFilters();
 	},
 	renderTemplate: function() {
 		this.$el.empty().append(Template(this.config));
@@ -74,7 +71,18 @@ module.exports = Backbone.View.extend({
 			};
 			
 			var colorizeField = this.filteredCollection.length ? 'filteredCount' : 'count';
-			var colorized = geocolor.quantiles(this.boundaries.toGeoJSON(), colorizeField, 15, ['#eff3ff', '#bdd7e7', '#6baed6', '#3182bd', '#08519c'], style);
+			var colorized;
+			
+			if(this.collection.selected) {
+				colorized = geocolor.equalIntervals(this.boundaries.toGeoJSON(), colorizeField, 2, ['#eee', '#08519c'], style);
+			} else {
+				colorized = geocolor.quantiles(this.boundaries.toGeoJSON(), colorizeField, 15, ['#eff3ff', '#bdd7e7', '#6baed6', '#3182bd', '#08519c'], style);
+			}
+			
+			// Remove any existing layers
+			if(this.layer) {
+				this.map.removeLayer(this.layer);
+			}
 			
 			this.layer = L.geoJson(colorized, {
 				style: L.mapbox.simplestyle.style,
@@ -149,7 +157,7 @@ module.exports = Backbone.View.extend({
 		}, 100);
 	},
 	onClick: function(e) {
-		var clickedId = e.target.feature.properties[this.boundaries.idAttribute];
+		var clickedId = this.collection.selected = e.target.feature.properties[this.boundaries.idAttribute];
 		var clickedLabel = e.target.feature.properties[this.boundaries.label];
 		// Trigger the global event handler with this filter
 		this.vent.trigger('filter', {
