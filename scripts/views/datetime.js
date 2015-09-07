@@ -70,21 +70,6 @@ module.exports = BaseChart.extend({
 		// Listen to when the user selects a range
 		setTimeout(function() {
 			self.chart.chartCursor.addListener('selected', self.onClick);
-				
-			if(self.collection.selected && self.collection.selected.length) {
-				self.chart.categoryAxis.addGuide({
-					date: self.collection.selected[0],
-					toDate: self.collection.selected[1],
-					lineThickness: 2,
-					color: '#ddd64b',
-					lineColor: '#ddd64b',
-					fillColor: '#ddd64b',
-					fillAlpha: 0.6,
-					//label: 'foo',
-					above: true
-				});
-				self.chart.validateData();
-			}
 		}, 100);
 	},
 	// When the user clicks on a bar in this chart

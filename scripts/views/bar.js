@@ -14,8 +14,6 @@ module.exports = BaseChart.extend({
 				fillAlphas: 1,
 				clustered: false,
 				lineColor: '#97bbcd',
-				colorField: 'color',
-				alphaField: 'alpha',
 				balloonText: '<b>[[category]]</b><br>Total: [[value]]'
 			},
 			{
@@ -25,7 +23,6 @@ module.exports = BaseChart.extend({
 				fillAlphas: 0.8,
 				clustered: false,
 				lineColor: '#97bbcd',
-				colorField: 'color',
 				balloonText: '<b>[[category]]</b><br>Filtered Amount: [[value]]'
 			}
 		],
@@ -57,7 +54,7 @@ module.exports = BaseChart.extend({
 			mouseWheelScrollEnabled: true,
 			categoryAxis: {
 				autoWrap: true,
-				gridAlpha: 0,
+				//gridAlpha: 0,
 				labelFunction: function(label) {
 					return label.length > 10 ? label.substr(0, 10) + '…' : label;
 				}

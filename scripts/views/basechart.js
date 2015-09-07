@@ -96,6 +96,30 @@ module.exports = Backbone.View.extend({
 		var config = $.extend(true, {}, this.settings.chart);
 		config.graphs = graphs;
 		config.dataProvider = chartData;
+		
+		// Show guide on selected item
+		if(this.collection.selected) {
+			var guide = {
+				lineThickness: 2,
+				color: '#ddd64b',
+				lineColor: '#ddd64b',
+				fillColor: '#ddd64b',
+				fillAlpha: 0.4,
+				//label: 'foo',
+				expand: true,
+				above: true
+			};
+			if(config.categoryAxis.parseDates) {
+				guide.date = this.collection.selected[0];
+				guide.toDate = this.collection.selected[1];
+			} else {
+				guide.category = guide.toCategory = this.collection.selected;
+			}
+			
+			config.categoryAxis.guides = config.categoryAxis.guides || [];
+			config.categoryAxis.guides.push(guide);
+		}
+		
 		this.chart = AmCharts.makeChart(this.$('.card').get(0), config);
 	},
 	formatChartData: function(limit) {
@@ -110,10 +134,6 @@ module.exports = Backbone.View.extend({
 				label: label,
 				count: model.get(self.collection.countProperty)
 			};
-			if(self.collection.selected === label) {
-				data.color = '#ddd64b';
-				data.alpha = 0.5; // tells the 'original amount' graph to be faded
-			}
 			// If the filtered collection has been fetched, find the corresponding record and put it in another series
 			if(self.filteredCollection.length) {
 				var match = self.filteredCollection.get(label);
