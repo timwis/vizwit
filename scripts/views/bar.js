@@ -14,6 +14,8 @@ module.exports = BaseChart.extend({
 				fillAlphas: 1,
 				clustered: false,
 				lineColor: '#97bbcd',
+				colorField: 'color',
+				alphaField: 'alpha',
 				balloonText: '<b>[[category]]</b><br>Total: [[value]]'
 			},
 			{
@@ -23,6 +25,7 @@ module.exports = BaseChart.extend({
 				fillAlphas: 0.8,
 				clustered: false,
 				lineColor: '#97bbcd',
+				colorField: 'color',
 				balloonText: '<b>[[category]]</b><br>Filtered Amount: [[value]]'
 			}
 		],
@@ -72,6 +75,8 @@ module.exports = BaseChart.extend({
 	},
 	// When the user clicks on a bar in this chart
 	onClick: function(e) {
+		this.collection.selected = e.item.category;
+		
 		// Trigger the global event handler with this filter
 		this.vent.trigger('filter', {
 			field: this.collection.triggerField,

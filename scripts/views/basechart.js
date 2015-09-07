@@ -110,6 +110,10 @@ module.exports = Backbone.View.extend({
 				label: label,
 				count: model.get(self.collection.countProperty)
 			};
+			if(self.collection.selected === label) {
+				data.color = '#ddd64b';
+				data.alpha = 0.5; // tells the 'original amount' graph to be faded
+			}
 			// If the filtered collection has been fetched, find the corresponding record and put it in another series
 			if(self.filteredCollection.length) {
 				var match = self.filteredCollection.get(label);
@@ -123,12 +127,9 @@ module.exports = Backbone.View.extend({
 	},
 	// When a chart has been filtered
 	onFilter: function(data) {
-		// Only listen to other charts
-		if(data.field !== this.filteredCollection.triggerField) {
-			// Add the filter to the filtered collection and fetch it with the filter
-			this.filteredCollection.filter[data.field] = data;
-			this.filteredCollection.fetch();
-			this.renderFilters();
-		}
+		// Add the filter to the filtered collection and fetch it with the filter
+		this.filteredCollection.filter[data.field] = data;
+		this.filteredCollection.fetch();
+		this.renderFilters();
 	}
 })
