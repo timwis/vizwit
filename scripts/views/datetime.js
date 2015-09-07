@@ -70,11 +70,27 @@ module.exports = BaseChart.extend({
 		// Listen to when the user selects a range
 		setTimeout(function() {
 			self.chart.chartCursor.addListener('selected', self.onClick);
+				
+			if(self.collection.selected && self.collection.selected.length) {
+				self.chart.categoryAxis.addGuide({
+					date: self.collection.selected[0],
+					toDate: self.collection.selected[1],
+					lineThickness: 2,
+					color: '#ddd64b',
+					lineColor: '#ddd64b',
+					fillColor: '#ddd64b',
+					fillAlpha: 0.6,
+					//label: 'foo',
+					above: true
+				});
+				self.chart.validateData();
+			}
 		}, 100);
 	},
 	// When the user clicks on a bar in this chart
 	onClick: function(e) {
 		//console.log('Filtered by', (new Date(e.start)).toISOString(), (new Date(e.end)).toISOString());
+		this.collection.selected = [new Date(e.start), new Date(e.end)];
 		var field = this.collection.triggerField;
 		
 		var start = new Date(e.start);
@@ -91,5 +107,18 @@ module.exports = BaseChart.extend({
 			expression: field + ' >= \'' + startIso + '\' and ' + field + ' <= \'' + endIso + '\'',
 			friendlyExpression: field + ' is ' + startFriendly + ' to ' + endFriendly
 		})
+	},
+	// When a chart has been filtered
+	onFilter: function(data) {
+		// Only listen to other charts
+		if(data.field !== this.filteredCollection.triggerField) {
+			// Add the filter to the filtered collection and fetch it with the filter
+			this.filteredCollection.filter[data.field] = data;
+			this.filteredCollection.fetch();
+			this.renderFilters();
+		} else {
+			// Re-render to show the guides when they're initially set
+			this.render();
+		}
 	}
 })
