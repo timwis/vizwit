@@ -47,11 +47,17 @@ module.exports = BaseChart.extend({
 			}],
 			chartScrollbar: {
 			},
+			chartCursor: {
+				fullWidth: true,
+				cursorAlpha: 0.1,
+				zoomable: false
+			},
 			maxSelectedSeries: 7,
 			zoomOutText: '',
 			mouseWheelScrollEnabled: true,
 			categoryAxis: {
 				autoWrap: true,
+				gridAlpha: 0,
 				labelFunction: function(label) {
 					return label.length > 10 ? label.substr(0, 10) + '…' : label;
 				}
