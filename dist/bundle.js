@@ -57247,6 +57247,9 @@ $.getJSON('config/' + dataset + '.json')
 		var width = Math.round(12 / columns.length);
 		var rowEl = $('<div/>').addClass('row');
 		
+		// Add new row to DOM
+		container.append(rowEl);
+		
 		// Loop through columns in this row
 		columns.forEach(function(column) {
 			// Add column element to row
@@ -57295,8 +57298,6 @@ $.getJSON('config/' + dataset + '.json')
 					});
 			}
 		});
-		// Add new row w/columns to DOM
-		container.append(rowEl);
 	});
 })
 .fail(function() {
@@ -57681,7 +57682,7 @@ module.exports = Backbone.View.extend({
 		
 		// Render template & map at load
 		this.renderTemplate();
-		setTimeout(this.render, 100);
+		this.render();
 	},
 	// When a chart has been filtered
 	onFilter: function(data) {
