@@ -33,7 +33,7 @@ module.exports = Backbone.View.extend({
 		
 		// Render template & map at load
 		this.renderTemplate();
-		setTimeout(this.render, 100);
+		this.render();
 	},
 	// When a chart has been filtered
 	onFilter: function(data) {
