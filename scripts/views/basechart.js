@@ -77,25 +77,26 @@ module.exports = Backbone.View.extend({
 		var filters = this.filteredCollection.getFriendlyFilters();
 		this.$('.filters').text(filters).parent().toggle(filters ? true : false);
 	},
-	render: function() {		
-		// Map collection to expected format
-		var chartData = this.formatChartData(this.settings.limit);
+	render: function() {
+		// Initialize chart
+		var config = $.extend(true, {}, this.settings.chart);
+		config.dataProvider = this.formatChartData(this.settings.limit);
 		
 		// Define the series/graph for the original amount
-		var graphs = [$.extend(true, {}, this.settings.graphs[0])];
+		config.graphs = [$.extend(true, {}, this.settings.graphs[0])];
 		
 		// If there's a filtered amount, define the series/graph for it
 		if(this.filteredCollection.length) {
 			// Change color of original graph to subdued
-			graphs[0].lineColor = '#ddd';
+			config.graphs[0].lineColor = '#ddd';
 			
-			graphs.push($.extend(true, {}, this.settings.graphs[1]));
+			config.graphs.push($.extend(true, {}, this.settings.graphs[1]));
+			
+			// Keep chart minimum pegged to original graph's minimum so legend doesn't change
+			if(this.chart) {
+				config.valueAxes[0].minimum = this.chart.valueAxes[0].min;
+			}
 		}
-		
-		// Initialize chart
-		var config = $.extend(true, {}, this.settings.chart);
-		config.graphs = graphs;
-		config.dataProvider = chartData;
 		
 		// Show guide on selected item
 		if(this.collection.selected) {
