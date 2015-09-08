@@ -57230,7 +57230,7 @@ var Choropleth = require('./views/choropleth');
 
 var vent = _.clone(Backbone.Events);
 
-var dataset = window.location.hash.substr(1) || 'parking-violations';
+var dataset = window.location.search.substr(1) || 'parking-violations';
 //var config = require('../config/parking-violations');
 $.getJSON('config/' + dataset + '.json')
 .done(function(config) {
@@ -57305,15 +57305,27 @@ $.getJSON('config/' + dataset + '.json')
 },{"./collections/geojson":53,"./collections/socrata":54,"./views/bar":59,"./views/choropleth":61,"./views/datetime":62,"./views/header":63,"./views/table":64,"backbone":4,"jquery":16,"underscore":52}],56:[function(require,module,exports){
 module.exports = function(data){
 var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
-__p+='<h1 class="title">'+
+__p+='<div class="row">\n\t<div class="col-md-6">\n\t\t\n\t\t<h1 class="title">'+
 ((__t=( data.title ))==null?'':__t)+
-'</h1>\n\n';
+'</h1>\n\t\t\n\t\t';
  if(data.description) { 
-__p+='\n<p class="description">'+
+__p+='\n\t\t<p class="description">'+
 ((__t=( data.description ))==null?'':__t)+
-'</p>\n';
+'</p>\n\t\t';
  } 
-__p+='';
+__p+='\n\t\t\t\n\t</div>\n\t<div class="col-md-6">\n\t\t\n\t\t';
+ if(data.navigation) { 
+__p+='\n\t\t<div class="btn-group pull-right navigation" role="group" aria-label="Pages">\n\t\t\t';
+ data.navigation.forEach(function(nav) { 
+__p+='\n\t\t\t<a href="'+
+((__t=( nav.url ))==null?'':__t)+
+'" class="btn btn-default">'+
+((__t=( nav.label ))==null?'':__t)+
+'</a>\n\t\t\t';
+ }) 
+__p+='\n\t\t</div>\n\t\t';
+ } 
+__p+='\n\t\t\t\n\t</div>\n</div>';
 return __p;
 };
 
