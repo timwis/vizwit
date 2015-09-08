@@ -1,7 +1,13 @@
 {
 	"header": {
 		"title": "OPA Property Records",
-		"description": "Records of buildings and parcel data from the Office of Property Assessment. All maps and charts are interactive: click on an area to filter the visualization by that dimension, and scroll down to view the filtered results as a table."
+		"description": "Records of buildings and parcel data from the Office of Property Assessment. All maps and charts are interactive: click on an area to filter the visualization by that dimension, and scroll down to view the filtered results as a table.",
+		"navigation": [
+			{
+				"label": "Parking Violations",
+				"url": "?parking-violations"
+			}
+		]
 	},
 	"panels": [
 		[
