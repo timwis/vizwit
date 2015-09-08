@@ -13,7 +13,7 @@ var Choropleth = require('./views/choropleth');
 
 var vent = _.clone(Backbone.Events);
 
-var dataset = window.location.hash.substr(1) || 'parking-violations';
+var dataset = window.location.search.substr(1) || 'parking-violations';
 //var config = require('../config/parking-violations');
 $.getJSON('config/' + dataset + '.json')
 .done(function(config) {
