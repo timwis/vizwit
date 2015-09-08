@@ -13,6 +13,7 @@
   "author": "timwis",
   "license": "MIT",
   "dependencies": {
+    "amcharts3": "amcharts/amcharts3",
     "backbone": "^1.2.2",
     "datatables": "https://github.com/DataTables/DataTables/archive/1.10.9.tar.gz",
     "geocolor": "0.0.16",

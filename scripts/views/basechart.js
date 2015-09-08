@@ -3,9 +3,10 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 var Template = require('../templates/panel.html');
 var numberFormatter = require('../util/number-formatter');
-require('../../amcharts/amcharts');
-require('../../amcharts/serial');
-require('../../amcharts/themes/light');
+//window.AmCharts_path = 'node_modules/amcharts3/amcharts';
+require('amcharts3/amcharts/amcharts');
+require('amcharts3/amcharts/serial');
+require('amcharts3/amcharts/themes/light');
 	
 module.exports = Backbone.View.extend({
 	settings: {

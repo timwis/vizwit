@@ -45,6 +45,8 @@ module.exports = BaseChart.extend({
 				ignoreAxisWidth: true
 			}],
 			chartScrollbar: {
+				resizeEnabled: false,
+				dragIcon: ''
 			},
 			chartCursor: {
 				fullWidth: true,
