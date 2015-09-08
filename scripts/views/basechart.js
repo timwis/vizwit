@@ -100,27 +100,13 @@ module.exports = Backbone.View.extend({
 		
 		// Show guide on selected item
 		if(this.collection.selected) {
-			var guide = {
-				lineThickness: 2,
-				lineColor: '#ddd64b',
-				fillColor: '#ddd64b',
-				fillAlpha: 0.4,
-				//label: 'Filtered',
-				//inside: true,
-				//color: '#000',
-				balloonText: 'Currently filtered',
-				expand: true,
-				above: true
-			};
+			var guide = config.categoryAxis.guides[0];
 			if(config.categoryAxis.parseDates) {
 				guide.date = this.collection.selected[0];
 				guide.toDate = this.collection.selected[1];
 			} else {
 				guide.category = guide.toCategory = this.collection.selected;
 			}
-			
-			config.categoryAxis.guides = config.categoryAxis.guides || [];
-			config.categoryAxis.guides.push(guide);
 		}
 		
 		this.chart = AmCharts.makeChart(this.$('.card').get(0), config);

@@ -59,7 +59,19 @@ module.exports = BaseChart.extend({
 				//gridAlpha: 0,
 				labelFunction: function(label) {
 					return label.length > 10 ? label.substr(0, 10) + '…' : label;
-				}
+				},
+				guides: [{
+					lineThickness: 2,
+					lineColor: '#ddd64b',
+					fillColor: '#ddd64b',
+					fillAlpha: 0.4,
+					//label: 'Filtered',
+					//inside: true,
+					//color: '#000',
+					balloonText: 'Currently filtered',
+					expand: true,
+					above: false
+				}]
 			}
 		}
 	},

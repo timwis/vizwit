@@ -48,7 +48,19 @@ module.exports = BaseChart.extend({
 			categoryAxis: {
 				autoWrap: true,
 				parseDates: true,
-				minPeriod: 'MM'
+				minPeriod: 'MM',
+				guides: [{
+					lineThickness: 2,
+					lineColor: '#ddd64b',
+					fillColor: '#ddd64b',
+					fillAlpha: 0.4,
+					//label: 'Filtered',
+					//inside: true,
+					//color: '#000',
+					balloonText: 'Currently filtered',
+					expand: true,
+					above: true
+				}]
 			},
 			dataDateFormat: 'YYYY-MM-DDT00:00:00.000', //"2015-04-07T16:21:00.000"
 			chartCursor: {
