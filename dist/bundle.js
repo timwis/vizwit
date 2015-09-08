@@ -57422,7 +57422,19 @@ module.exports = BaseChart.extend({
 				//gridAlpha: 0,
 				labelFunction: function(label) {
 					return label.length > 10 ? label.substr(0, 10) + '…' : label;
-				}
+				},
+				guides: [{
+					lineThickness: 2,
+					lineColor: '#ddd64b',
+					fillColor: '#ddd64b',
+					fillAlpha: 0.4,
+					//label: 'Filtered',
+					//inside: true,
+					//color: '#000',
+					balloonText: 'Currently filtered',
+					expand: true,
+					above: false
+				}]
 			}
 		}
 	},
@@ -57444,14 +57456,26 @@ module.exports = BaseChart.extend({
 	},
 	// When the user clicks on a bar in this chart
 	onClick: function(e) {
-		var category = this.collection.selected = e.value || e.item.category;
+		var category = e.value || e.item.category;
 		
-		// Trigger the global event handler with this filter
-		this.vent.trigger('filter', {
-			field: this.collection.triggerField,
-			expression: this.collection.triggerField + ' = \'' + category + '\'',
-			friendlyExpression: this.collection.triggerField + ' is ' + category
-		});
+		// If already selected, clear the filter
+		if(this.collection.selected === category) {
+			this.collection.selected = null;
+			this.vent.trigger('filter', {
+				field: this.collection.triggerField
+			})
+		}
+		// Otherwise, add the filter
+		else {
+			this.collection.selected = category;
+			
+			// Trigger the global event handler with this filter
+			this.vent.trigger('filter', {
+				field: this.collection.triggerField,
+				expression: this.collection.triggerField + ' = \'' + category + '\'',
+				friendlyExpression: this.collection.triggerField + ' is ' + category
+			});
+		}
 	}
 })
 },{"../util/number-formatter":58,"./basechart":60,"backbone":4,"jquery":16,"underscore":52}],60:[function(require,module,exports){
@@ -57557,27 +57581,13 @@ module.exports = Backbone.View.extend({
 		
 		// Show guide on selected item
 		if(this.collection.selected) {
-			var guide = {
-				lineThickness: 2,
-				lineColor: '#ddd64b',
-				fillColor: '#ddd64b',
-				fillAlpha: 0.4,
-				//label: 'Filtered',
-				//inside: true,
-				//color: '#000',
-				balloonText: 'Currently filtered',
-				expand: true,
-				above: true
-			};
+			var guide = config.categoryAxis.guides[0];
 			if(config.categoryAxis.parseDates) {
 				guide.date = this.collection.selected[0];
 				guide.toDate = this.collection.selected[1];
 			} else {
 				guide.category = guide.toCategory = this.collection.selected;
 			}
-			
-			config.categoryAxis.guides = config.categoryAxis.guides || [];
-			config.categoryAxis.guides.push(guide);
 		}
 		
 		this.chart = AmCharts.makeChart(this.$('.card').get(0), config);
@@ -57608,7 +57618,11 @@ module.exports = Backbone.View.extend({
 	// When a chart has been filtered
 	onFilter: function(data) {
 		// Add the filter to the filtered collection and fetch it with the filter
-		this.filteredCollection.filter[data.field] = data;
+		if(data.expression) {
+			this.filteredCollection.filter[data.field] = data;
+		} else {
+			delete this.filteredCollection.filter[data.field];
+		}
 		this.filteredCollection.fetch();
 		this.renderFilters();
 	}
@@ -57654,7 +57668,11 @@ module.exports = Backbone.View.extend({
 	// When a chart has been filtered
 	onFilter: function(data) {
 		// Add the filter to the filtered collection and fetch it with the filter
-		this.filteredCollection.filter[data.field] = data;
+		if(data.expression) {
+			this.filteredCollection.filter[data.field] = data;
+		} else {
+			delete this.filteredCollection.filter[data.field];
+		}
 		this.filteredCollection.fetch();
 		this.renderFilters();
 	},
@@ -57776,14 +57794,27 @@ module.exports = Backbone.View.extend({
 		}, 100);
 	},
 	onClick: function(e) {
-		var clickedId = this.collection.selected = e.target.feature.properties[this.boundaries.idAttribute];
+		var clickedId = e.target.feature.properties[this.boundaries.idAttribute];
 		var clickedLabel = e.target.feature.properties[this.boundaries.label];
-		// Trigger the global event handler with this filter
-		this.vent.trigger('filter', {
-			field: this.collection.triggerField,
-			expression: this.collection.triggerField + ' = \'' + clickedId + '\'',
-			friendlyExpression: this.config.title + ' is ' + clickedLabel
-		})
+		
+		// If already selected, clear the filter
+		if(this.collection.selected === clickedId) {
+			this.collection.selected = null;
+			this.vent.trigger('filter', {
+				field: this.collection.triggerField
+			})
+		}
+		// Otherwise, add the filter
+		else {
+			this.collection.selected = clickedId;
+			
+			// Trigger the global event handler with this filter
+			this.vent.trigger('filter', {
+				field: this.collection.triggerField,
+				expression: this.collection.triggerField + ' = \'' + clickedId + '\'',
+				friendlyExpression: this.config.title + ' is ' + clickedLabel
+			})
+		}
 	}
 });
 
@@ -57838,7 +57869,19 @@ module.exports = BaseChart.extend({
 			categoryAxis: {
 				autoWrap: true,
 				parseDates: true,
-				minPeriod: 'MM'
+				minPeriod: 'MM',
+				guides: [{
+					lineThickness: 2,
+					lineColor: '#ddd64b',
+					fillColor: '#ddd64b',
+					fillAlpha: 0.4,
+					//label: 'Filtered',
+					//inside: true,
+					//color: '#000',
+					balloonText: 'Currently filtered',
+					expand: true,
+					above: true
+				}]
 			},
 			dataDateFormat: 'YYYY-MM-DDT00:00:00.000', //"2015-04-07T16:21:00.000"
 			chartCursor: {
@@ -57888,7 +57931,11 @@ module.exports = BaseChart.extend({
 		// Only listen to other charts
 		if(data.field !== this.filteredCollection.triggerField) {
 			// Add the filter to the filtered collection and fetch it with the filter
-			this.filteredCollection.filter[data.field] = data;
+			if(data.expression) {
+				this.filteredCollection.filter[data.field] = data;
+			} else {
+				delete this.filteredCollection.filter[data.field];
+			}
 			this.filteredCollection.fetch();
 			this.renderFilters();
 		} else {
@@ -57979,7 +58026,11 @@ module.exports = Backbone.View.extend({
 	},
 	// When another chart is filtered, filter this collection
 	onFilter: function(data) {
-		this.collection.filter[data.field] = data;
+		if(data.expression) {
+			this.collection.filter[data.field] = data;
+		} else {
+			delete this.collection.filter[data.field];
+		}
 		this.table.ajax.reload();
 		this.renderFilters();
 	}
