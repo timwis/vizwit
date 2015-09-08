@@ -64,7 +64,11 @@ module.exports = Backbone.View.extend({
 	},
 	// When another chart is filtered, filter this collection
 	onFilter: function(data) {
-		this.collection.filter[data.field] = data;
+		if(data.expression) {
+			this.collection.filter[data.field] = data;
+		} else {
+			delete this.collection.filter[data.field];
+		}
 		this.table.ajax.reload();
 		this.renderFilters();
 	}

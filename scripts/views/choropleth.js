@@ -38,7 +38,11 @@ module.exports = Backbone.View.extend({
 	// When a chart has been filtered
 	onFilter: function(data) {
 		// Add the filter to the filtered collection and fetch it with the filter
-		this.filteredCollection.filter[data.field] = data;
+		if(data.expression) {
+			this.filteredCollection.filter[data.field] = data;
+		} else {
+			delete this.filteredCollection.filter[data.field];
+		}
 		this.filteredCollection.fetch();
 		this.renderFilters();
 	},
@@ -160,13 +164,26 @@ module.exports = Backbone.View.extend({
 		}, 100);
 	},
 	onClick: function(e) {
-		var clickedId = this.collection.selected = e.target.feature.properties[this.boundaries.idAttribute];
+		var clickedId = e.target.feature.properties[this.boundaries.idAttribute];
 		var clickedLabel = e.target.feature.properties[this.boundaries.label];
-		// Trigger the global event handler with this filter
-		this.vent.trigger('filter', {
-			field: this.collection.triggerField,
-			expression: this.collection.triggerField + ' = \'' + clickedId + '\'',
-			friendlyExpression: this.config.title + ' is ' + clickedLabel
-		})
+		
+		// If already selected, clear the filter
+		if(this.collection.selected === clickedId) {
+			this.collection.selected = null;
+			this.vent.trigger('filter', {
+				field: this.collection.triggerField
+			})
+		}
+		// Otherwise, add the filter
+		else {
+			this.collection.selected = clickedId;
+			
+			// Trigger the global event handler with this filter
+			this.vent.trigger('filter', {
+				field: this.collection.triggerField,
+				expression: this.collection.triggerField + ' = \'' + clickedId + '\'',
+				friendlyExpression: this.config.title + ' is ' + clickedLabel
+			})
+		}
 	}
 });

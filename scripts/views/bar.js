@@ -81,13 +81,25 @@ module.exports = BaseChart.extend({
 	},
 	// When the user clicks on a bar in this chart
 	onClick: function(e) {
-		var category = this.collection.selected = e.value || e.item.category;
+		var category = e.value || e.item.category;
 		
-		// Trigger the global event handler with this filter
-		this.vent.trigger('filter', {
-			field: this.collection.triggerField,
-			expression: this.collection.triggerField + ' = \'' + category + '\'',
-			friendlyExpression: this.collection.triggerField + ' is ' + category
-		});
+		// If already selected, clear the filter
+		if(this.collection.selected === category) {
+			this.collection.selected = null;
+			this.vent.trigger('filter', {
+				field: this.collection.triggerField
+			})
+		}
+		// Otherwise, add the filter
+		else {
+			this.collection.selected = category;
+			
+			// Trigger the global event handler with this filter
+			this.vent.trigger('filter', {
+				field: this.collection.triggerField,
+				expression: this.collection.triggerField + ' = \'' + category + '\'',
+				friendlyExpression: this.collection.triggerField + ' is ' + category
+			});
+		}
 	}
 })

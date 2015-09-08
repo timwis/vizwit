@@ -98,7 +98,11 @@ module.exports = BaseChart.extend({
 		// Only listen to other charts
 		if(data.field !== this.filteredCollection.triggerField) {
 			// Add the filter to the filtered collection and fetch it with the filter
-			this.filteredCollection.filter[data.field] = data;
+			if(data.expression) {
+				this.filteredCollection.filter[data.field] = data;
+			} else {
+				delete this.filteredCollection.filter[data.field];
+			}
 			this.filteredCollection.fetch();
 			this.renderFilters();
 		} else {
