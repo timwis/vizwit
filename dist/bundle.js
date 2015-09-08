@@ -58015,6 +58015,7 @@ module.exports = Backbone.View.extend({
 				columns: columns,
 				scrollX: true,
 				pagingType: 'numbers',
+				info: false,
 				serverSide: true,
 				ajax: function(data, callback, settings) {
 					self.collection.offset = data.start || 0;
