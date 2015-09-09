@@ -3,7 +3,7 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 var Template = require('../templates/panel.html');
 var numberFormatter = require('../util/number-formatter');
-//window.AmCharts_path = 'node_modules/amcharts3/amcharts';
+window.AmCharts_path = './';
 require('amcharts3/amcharts/amcharts');
 require('amcharts3/amcharts/serial');
 require('amcharts3/amcharts/themes/light');
