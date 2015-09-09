@@ -87,7 +87,7 @@ module.exports = Backbone.View.extend({
 		config.graphs = [$.extend(true, {}, this.settings.graphs[0])];
 		
 		// If there's a filtered amount, define the series/graph for it
-		if(this.filteredCollection.length) {
+		if( ! _.isEmpty(this.filteredCollection.filter)) {
 			// Change color of original graph to subdued
 			config.graphs[0].lineColor = '#ddd';
 			

@@ -74,7 +74,7 @@ module.exports = Backbone.View.extend({
 				fillOpacity: 0.7
 			};
 			
-			var colorizeField = this.filteredCollection.length ? 'filteredCount' : 'count';
+			var colorizeField =  _.isEmpty(this.filteredCollection.filter) ? 'count' : 'filteredCount';
 			var colorized;
 			
 			if(this.collection.selected) {
@@ -117,8 +117,8 @@ module.exports = Backbone.View.extend({
 			featureProperties.count = collectionMatch ? +collectionMatch.get(self.collection.countProperty) : 0;
 			
 			// If filteredCollection has any records, find match there too
-			if(self.filteredCollection.length) {
-				var filteredCollectionMatch = self.filteredCollection.get(featureProperties[self.boundaries.idAttribute]);
+			if( ! _.isEmpty(self.filteredCollection.filter)) {
+				var filteredCollectionMatch = self.filteredCollection.length ? self.filteredCollection.get(featureProperties[self.boundaries.idAttribute]) : null;
 				featureProperties.filteredCount = filteredCollectionMatch ? +filteredCollectionMatch.get(self.filteredCollection.countProperty) : 0;
 			}
 			
