@@ -3,6 +3,8 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 var Template = require('../templates/panel.html');
 var numberFormatter = require('../util/number-formatter');
+var LoaderOn = require('../util/loader').on;
+var LoaderOff = require('../util/loader').off;
 window.AmCharts_path = './';
 require('amcharts3/amcharts/amcharts');
 require('amcharts3/amcharts/serial');
@@ -61,6 +63,12 @@ module.exports = Backbone.View.extend({
 		// Listen to collection
 		this.listenTo(this.collection, 'sync', this.render);
 		this.listenTo(this.filteredCollection, 'sync', this.render);
+		
+		// Loading indicators
+		this.listenTo(this.collection, 'request', LoaderOn);
+		this.listenTo(this.collection, 'sync', LoaderOff);
+		this.listenTo(this.filteredCollection, 'request', LoaderOn);
+		this.listenTo(this.filteredCollection, 'sync', LoaderOff);
 		
 		// Set collection order if specified (necessary for datetime chart)
 		if(this.settings.collectionOrder) this.collection.order = this.settings.collectionOrder;

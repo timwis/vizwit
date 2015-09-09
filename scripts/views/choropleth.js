@@ -4,6 +4,8 @@ var Backbone = require('backbone');
 var L = require('mapbox.js');
 var geocolor = require('geocolor');
 var Template = require('../templates/panel.html');
+var LoaderOn = require('../util/loader').on;
+var LoaderOff = require('../util/loader').off;
 //L.Icon.Default.imagePath = 'node_modules/leaflet/dist/images/'; // necessary w/browserify
 	
 module.exports = Backbone.View.extend({
@@ -18,6 +20,12 @@ module.exports = Backbone.View.extend({
 		this.listenTo(this.boundaries, 'sync', this.addBoundaries);
 		this.listenTo(this.collection, 'sync', this.addBoundaries);
 		this.listenTo(this.filteredCollection, 'sync', this.addBoundaries);
+		
+		// Loading indicators
+		this.listenTo(this.collection, 'request', LoaderOn);
+		this.listenTo(this.collection, 'sync', LoaderOff);
+		this.listenTo(this.filteredCollection, 'request', LoaderOn);
+		this.listenTo(this.filteredCollection, 'sync', LoaderOff);
 		
 		// Listen to vent filters
 		this.listenTo(this.vent, 'filter', this.onFilter);

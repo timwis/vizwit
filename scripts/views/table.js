@@ -2,6 +2,8 @@ var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var Template = require('../templates/panel.html');
+var LoaderOn = require('../util/loader').on;
+var LoaderOff = require('../util/loader').off;
 require('datatables');
 require('datatables/media/js/dataTables.bootstrap');
 	
@@ -13,6 +15,10 @@ module.exports = Backbone.View.extend({
 		
 		// Listen to vent filters
 		this.listenTo(this.vent, 'filter', this.onFilter);
+		
+		// Loading indicators
+		this.listenTo(this.collection, 'request', LoaderOn);
+		this.listenTo(this.collection, 'sync', LoaderOff);
 		
 		// Fetch collection
 		this.renderTemplate();
