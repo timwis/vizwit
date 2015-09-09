@@ -57451,7 +57451,7 @@ module.exports = BaseChart.extend({
 					//color: '#000',
 					balloonText: 'Currently filtered',
 					expand: true,
-					above: false
+					above: true
 				}]
 			}
 		}
@@ -57459,9 +57459,9 @@ module.exports = BaseChart.extend({
 	initialize: function(options) {
 		BaseChart.prototype.initialize.apply(this, arguments);
 		
-		_.bindAll(this, 'onClick');
+		_.bindAll(this, 'onClick', 'onHover');
 	},
-	render: function() {		
+	render: function() {
 		BaseChart.prototype.render.apply(this, arguments);
 		
 		// If there are greater than 10 bars, zoom to the first bar (ideally this would be done by configuration)
@@ -57469,30 +57469,40 @@ module.exports = BaseChart.extend({
 			this.chart.zoomToIndexes(0, this.settings.chart.maxSelectedSeries);
 		}
 		
-		this.chart.addListener('clickGraphItem', this.onClick);
-		this.chart.categoryAxis.addListener('clickItem', this.onClick);
+		this.chart.chartCursor.addListener('changed', this.onHover);
+		this.chart.div.onclick = this.onClick;
+	},
+	// Keep track of which column the cursor is hovered over
+	onHover: function(e) {
+		if(e.index == null) {
+			this.hovering = null;
+		} else {
+			this.hovering = this.chart.categoryAxis.data[e.index];
+		}
 	},
 	// When the user clicks on a bar in this chart
 	onClick: function(e) {
-		var category = e.value || e.item.category;
-		
-		// If already selected, clear the filter
-		if(this.collection.selected === category) {
-			this.collection.selected = null;
-			this.vent.trigger('filter', {
-				field: this.collection.triggerField
-			})
-		}
-		// Otherwise, add the filter
-		else {
-			this.collection.selected = category;
+		if(this.hovering !== null) {
+			var category = this.hovering.category;
 			
-			// Trigger the global event handler with this filter
-			this.vent.trigger('filter', {
-				field: this.collection.triggerField,
-				expression: this.collection.triggerField + ' = \'' + category + '\'',
-				friendlyExpression: this.collection.triggerField + ' is ' + category
-			});
+			// If already selected, clear the filter
+			if(this.collection.selected === category) {
+				this.collection.selected = null;
+				this.vent.trigger('filter', {
+					field: this.collection.triggerField
+				})
+			}
+			// Otherwise, add the filter
+			else {
+				this.collection.selected = category;
+				
+				// Trigger the global event handler with this filter
+				this.vent.trigger('filter', {
+					field: this.collection.triggerField,
+					expression: this.collection.triggerField + ' = \'' + category + '\'',
+					friendlyExpression: this.collection.triggerField + ' is ' + category
+				});
+			}
 		}
 	}
 })
