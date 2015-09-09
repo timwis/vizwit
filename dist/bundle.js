@@ -57303,7 +57303,7 @@ $.getJSON('config/' + dataset + '.json')
 .fail(function() {
 	console.error('Dataset %s not found', dataset);
 })
-},{"./collections/geojson":53,"./collections/socrata":54,"./views/bar":59,"./views/choropleth":61,"./views/datetime":62,"./views/header":63,"./views/table":64,"backbone":4,"jquery":16,"underscore":52}],56:[function(require,module,exports){
+},{"./collections/geojson":53,"./collections/socrata":54,"./views/bar":60,"./views/choropleth":62,"./views/datetime":63,"./views/header":64,"./views/table":65,"backbone":4,"jquery":16,"underscore":52}],56:[function(require,module,exports){
 module.exports = function(data){
 var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
 __p+='<div class="row">\n\t<div class="col-md-6">\n\t\t\n\t\t<h1 class="title">'+
@@ -57358,6 +57358,14 @@ return __p;
 };
 
 },{}],58:[function(require,module,exports){
+exports.on = function() {
+	this.$('.card').fadeTo(1, 0.4);
+};
+
+exports.off = function() {
+	this.$('.card').fadeTo(1, 1);
+}
+},{}],59:[function(require,module,exports){
 module.exports = function(num) {
     isNegative = false
     if (num < 0) {
@@ -57376,7 +57384,7 @@ module.exports = function(num) {
     if(isNegative) { formattedNumber = '-' + formattedNumber }
     return formattedNumber;
 }
-},{}],59:[function(require,module,exports){
+},{}],60:[function(require,module,exports){
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
@@ -57506,12 +57514,14 @@ module.exports = BaseChart.extend({
 		}
 	}
 })
-},{"../util/number-formatter":58,"./basechart":60,"backbone":4,"jquery":16,"underscore":52}],60:[function(require,module,exports){
+},{"../util/number-formatter":59,"./basechart":61,"backbone":4,"jquery":16,"underscore":52}],61:[function(require,module,exports){
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var Template = require('../templates/panel.html');
 var numberFormatter = require('../util/number-formatter');
+var LoaderOn = require('../util/loader').on;
+var LoaderOff = require('../util/loader').off;
 window.AmCharts_path = './';
 require('amcharts3/amcharts/amcharts');
 require('amcharts3/amcharts/serial');
@@ -57570,6 +57580,12 @@ module.exports = Backbone.View.extend({
 		// Listen to collection
 		this.listenTo(this.collection, 'sync', this.render);
 		this.listenTo(this.filteredCollection, 'sync', this.render);
+		
+		// Loading indicators
+		this.listenTo(this.collection, 'request', LoaderOn);
+		this.listenTo(this.collection, 'sync', LoaderOff);
+		this.listenTo(this.filteredCollection, 'request', LoaderOn);
+		this.listenTo(this.filteredCollection, 'sync', LoaderOff);
 		
 		// Set collection order if specified (necessary for datetime chart)
 		if(this.settings.collectionOrder) this.collection.order = this.settings.collectionOrder;
@@ -57656,13 +57672,15 @@ module.exports = Backbone.View.extend({
 		this.renderFilters();
 	}
 })
-},{"../templates/panel.html":57,"../util/number-formatter":58,"amcharts3/amcharts/amcharts":1,"amcharts3/amcharts/serial":2,"amcharts3/amcharts/themes/light":3,"backbone":4,"jquery":16,"underscore":52}],61:[function(require,module,exports){
+},{"../templates/panel.html":57,"../util/loader":58,"../util/number-formatter":59,"amcharts3/amcharts/amcharts":1,"amcharts3/amcharts/serial":2,"amcharts3/amcharts/themes/light":3,"backbone":4,"jquery":16,"underscore":52}],62:[function(require,module,exports){
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var L = require('mapbox.js');
 var geocolor = require('geocolor');
 var Template = require('../templates/panel.html');
+var LoaderOn = require('../util/loader').on;
+var LoaderOff = require('../util/loader').off;
 //L.Icon.Default.imagePath = 'node_modules/leaflet/dist/images/'; // necessary w/browserify
 	
 module.exports = Backbone.View.extend({
@@ -57677,6 +57695,12 @@ module.exports = Backbone.View.extend({
 		this.listenTo(this.boundaries, 'sync', this.addBoundaries);
 		this.listenTo(this.collection, 'sync', this.addBoundaries);
 		this.listenTo(this.filteredCollection, 'sync', this.addBoundaries);
+		
+		// Loading indicators
+		this.listenTo(this.collection, 'request', LoaderOn);
+		this.listenTo(this.collection, 'sync', LoaderOff);
+		this.listenTo(this.filteredCollection, 'request', LoaderOn);
+		this.listenTo(this.filteredCollection, 'sync', LoaderOff);
 		
 		// Listen to vent filters
 		this.listenTo(this.vent, 'filter', this.onFilter);
@@ -57847,7 +57871,7 @@ module.exports = Backbone.View.extend({
 	}
 });
 
-},{"../templates/panel.html":57,"backbone":4,"geocolor":11,"jquery":16,"mapbox.js":32,"underscore":52}],62:[function(require,module,exports){
+},{"../templates/panel.html":57,"../util/loader":58,"backbone":4,"geocolor":11,"jquery":16,"mapbox.js":32,"underscore":52}],63:[function(require,module,exports){
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
@@ -57973,7 +57997,7 @@ module.exports = BaseChart.extend({
 		}
 	}
 })
-},{"../util/number-formatter":58,"./basechart":60,"backbone":4,"jquery":16,"underscore":52}],63:[function(require,module,exports){
+},{"../util/number-formatter":59,"./basechart":61,"backbone":4,"jquery":16,"underscore":52}],64:[function(require,module,exports){
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
@@ -57988,11 +58012,13 @@ module.exports = Backbone.View.extend({
 		return this;
 	}
 });
-},{"../templates/header.html":56,"backbone":4,"jquery":16,"underscore":52}],64:[function(require,module,exports){
+},{"../templates/header.html":56,"backbone":4,"jquery":16,"underscore":52}],65:[function(require,module,exports){
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var Template = require('../templates/panel.html');
+var LoaderOn = require('../util/loader').on;
+var LoaderOff = require('../util/loader').off;
 require('datatables');
 require('datatables/media/js/dataTables.bootstrap');
 	
@@ -58004,6 +58030,10 @@ module.exports = Backbone.View.extend({
 		
 		// Listen to vent filters
 		this.listenTo(this.vent, 'filter', this.onFilter);
+		
+		// Loading indicators
+		this.listenTo(this.collection, 'request', LoaderOn);
+		this.listenTo(this.collection, 'sync', LoaderOff);
 		
 		// Fetch collection
 		this.renderTemplate();
@@ -58065,4 +58095,4 @@ module.exports = Backbone.View.extend({
 		this.renderFilters();
 	}
 });
-},{"../templates/panel.html":57,"backbone":4,"datatables":10,"datatables/media/js/dataTables.bootstrap":9,"jquery":16,"underscore":52}]},{},[55]);
+},{"../templates/panel.html":57,"../util/loader":58,"backbone":4,"datatables":10,"datatables/media/js/dataTables.bootstrap":9,"jquery":16,"underscore":52}]},{},[55]);
