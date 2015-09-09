@@ -57239,6 +57239,12 @@ $.getJSON('config/' + dataset + '.json')
 	if(config.header) {
 		var header = new Header(config.header);
 		$('#page-header').append(header.render().el);
+		
+		// Update <title> tag
+		if(config.header.title) {
+			var originalTitle = $('title').text();
+			$('title').text(config.header.title + ' - ' + originalTitle);
+		}
 	}
 	
 	var container = $('#page-content');
