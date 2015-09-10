@@ -31,6 +31,17 @@ module.exports = BaseChart.extend({
 		chart: {
 			'type': 'serial',
 			theme: 'light',
+			responsive: {
+				enabled: true,
+				rules: [
+					{
+						maxWidth: 450,
+						overrides: {
+							maxSelectedSeries: 3
+						}
+					}
+				]
+			},
 			categoryField: 'label',
 			marginLeft: 5,
 			marginRight: 5,

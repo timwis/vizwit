@@ -9,10 +9,11 @@ window.AmCharts_path = './';
 require('amcharts3');
 require('amcharts3/amcharts/serial');
 require('amcharts3/amcharts/themes/light');
+require('amcharts3/amcharts/plugins/responsive/responsive');
 	
 module.exports = Backbone.View.extend({
 	settings: {
-		limit: null,
+		/*limit: null,
 		collectionOrder: null,
 		graphs: [
 			{
@@ -48,7 +49,7 @@ module.exports = Backbone.View.extend({
 			categoryAxis: {
 				autoWrap: true
 			}
-		}
+		}*/
 	},
 	initialize: function(options) {
 		// Save options to view
