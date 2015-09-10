@@ -8,7 +8,7 @@ function ColorRange(colors, min, max) {
 }
 
 ColorRange.prototype.getColor = function(needle) {
-	var normalized = ( needle / (this.max - this.min) ) * this.colors.length;
+	var normalized = ( (needle - this.min) / (this.max - this.min) ) * this.colors.length;
 	return this.colorScale(normalized).hex();
 }
 
