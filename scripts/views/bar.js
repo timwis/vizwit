@@ -23,7 +23,11 @@ module.exports = BaseChart.extend({
 				fillAlphas: 0.8,
 				clustered: false,
 				lineColor: '#97bbcd',
-				balloonText: '<b>[[category]]</b><br>Total: [[count]]<br>Filtered Amount: [[value]]'
+				balloonFunction: function(item, graph) {
+					return '<b>' + item.category + '</b><br>\
+						Total: ' + (+item.dataContext.count).toLocaleString() + '<br> \
+						Filtered Amount: ' + (+item.dataContext.filteredCount).toLocaleString()
+				}
 			}
 		],
 		chart: {
