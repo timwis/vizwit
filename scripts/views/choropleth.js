@@ -80,7 +80,7 @@ module.exports = Backbone.View.extend({
 			var values = _.chain(this.boundaries.pluck('properties')).pluck(colorizeField).value(); 
 			var min = _.min(values);
 			var max = _.max(values);
-			var colorRange = new ColorRange(['#eff3ff', '#bdd7e7', '#6baed6', '#3182bd', '#08519c'], min, max);
+			var colorRange = new ColorRange('#dfe4e6', '#477a94', 5, min, max); // http://www.colorhexa.com/97bbcd			
 			
 			// Remove any existing layers
 			if(this.layer) {
