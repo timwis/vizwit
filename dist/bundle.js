@@ -401,6 +401,1248 @@ c*f);e||h||a.setDate(a.getDate()+1);break;case "MM":b=a.getMonth();a.setMonth(a.
 c,d,h){var f=-1;void 0===d&&(d=!0);void 0===h&&(h=!1);!0===d&&(f=1);switch(b){case "YYYY":a.setUTCFullYear(a.getUTCFullYear()+c*f);d||h||a.setUTCDate(a.getUTCDate()+1);break;case "MM":b=a.getUTCMonth();a.setUTCMonth(a.getUTCMonth()+c*f);a.getUTCMonth()>b+c*f&&a.setUTCDate(a.getUTCDate()-1);d||h||a.setUTCDate(a.getUTCDate()+1);break;case "DD":a.setUTCDate(a.getUTCDate()+c*f);break;case "WW":a.setUTCDate(a.getUTCDate()+c*f*7);break;case "hh":a.setUTCHours(a.getUTCHours()+c*f);break;case "mm":a.setUTCMinutes(a.getUTCMinutes()+
 c*f);break;case "ss":a.setUTCSeconds(a.getUTCSeconds()+c*f);break;case "fff":a.setUTCMilliseconds(a.getUTCMilliseconds()+c*f)}return a}})();
 },{}],2:[function(require,module,exports){
+/*
+Plugin Name: amCharts Responsive
+Description: This plugin add responsive functionality to JavaScript Charts and Maps.
+Author: Martynas Majeris, amCharts
+Contributors: Ohad Schneider
+Version: 1.0.1
+Author URI: http://www.amcharts.com/
+
+Copyright 2015 amCharts
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+	http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+Please note that the above license covers only this plugin. It by all means does
+not apply to any other amCharts products that are covered by different licenses.
+*/
+
+/*global AmCharts*/
+
+AmCharts.addInitHandler( function( chart ) {
+  "use strict";
+
+  if ( chart.responsive === undefined || chart.responsive.ready === true || chart.responsive.enabled !== true )
+    return;
+
+  var version = chart.version.split( '.' );
+  if ( ( version.length < 2 ) || Number( version[ 0 ] ) < 3 || ( Number( version[ 0 ] ) === 3 && Number( version[ 1 ] ) < 13 ) )
+    return;
+
+  // a short variable for easy reference
+  var r = chart.responsive;
+
+  r.ready = true;
+  r.currentRules = {};
+  r.overridden = [];
+
+  // defaults per chart type
+  var defaults = {
+
+    /**
+     * AmPie
+     */
+    'pie': [
+
+      /**
+       * Disable legend in certain cases
+       */
+      {
+        "maxWidth": 550,
+        "legendPosition": "left",
+        "overrides": {
+          "legend": {
+            "enabled": false
+          }
+        }
+      }, {
+        "maxWidth": 550,
+        "legendPosition": "right",
+        "overrides": {
+          "legend": {
+            "enabled": false
+          }
+        }
+      }, {
+        "maxWidth": 150,
+        "overrides": {
+          "legend": {
+            "enabled": false
+          }
+        }
+      }, {
+        "maxHeight": 350,
+        "legendPosition": "top",
+        "overrides": {
+          "legend": {
+            "enabled": false
+          }
+        }
+      }, {
+        "maxHeight": 350,
+        "legendPosition": "bottom",
+        "overrides": {
+          "legend": {
+            "enabled": false
+          }
+        }
+      }, {
+        "maxHeight": 150,
+        "overrides": {
+          "legend": {
+            "enabled": false
+          }
+        }
+      },
+
+      /**
+       * Narrow chart
+       */
+      {
+        "maxWidth": 400,
+        "overrides": {
+          "labelsEnabled": false
+        }
+      }, {
+        "maxWidth": 100,
+        "overrides": {
+          "legend": {
+            "enabled": false
+          }
+        }
+      },
+
+      /**
+       * Short chart
+       */
+      {
+        "maxHeight": 350,
+        "overrides": {
+          "pullOutRadius": 0
+        }
+      }, {
+        "maxHeight": 200,
+        "overrides": {
+          "titles": {
+            "enabled": false
+          },
+          "labelsEnabled": false
+        }
+      },
+
+      /**
+       * Supersmall
+       */
+      {
+        "maxWidth": 60,
+        "overrides": {
+          "autoMargins": false,
+          "marginTop": 0,
+          "marginBottom": 0,
+          "marginLeft": 0,
+          "marginRight": 0,
+          "radius": "50%",
+          "innerRadius": 0,
+          "balloon": {
+            "enabled": false
+          },
+          "legend": {
+            "enabled": false
+          }
+        }
+      }, {
+        "maxHeight": 60,
+        "overrides": {
+          "marginTop": 0,
+          "marginBottom": 0,
+          "marginLeft": 0,
+          "marginRight": 0,
+          "radius": "50%",
+          "innerRadius": 0,
+          "balloon": {
+            "enabled": false
+          },
+          "legend": {
+            "enabled": false
+          }
+        }
+      }
+    ],
+
+    /**
+     * AmFunnel
+     */
+
+    'funnel': [ {
+      "maxWidth": 550,
+      "legendPosition": "left",
+      "overrides": {
+        "legend": {
+          "enabled": false
+        }
+      }
+    }, {
+      "maxWidth": 550,
+      "legendPosition": "right",
+      "overrides": {
+        "legend": {
+          "enabled": false
+        }
+      }
+    }, {
+      "maxWidth": 150,
+      "overrides": {
+        "legend": {
+          "enabled": false
+        }
+      }
+    }, {
+      "maxHeight": 500,
+      "legendPosition": "top",
+      "overrides": {
+        "legend": {
+          "enabled": false
+        }
+      }
+    }, {
+      "maxHeight": 500,
+      "legendPosition": "bottom",
+      "overrides": {
+        "legend": {
+          "enabled": false
+        }
+      }
+    }, {
+      "maxHeight": 150,
+      "overrides": {
+        "legend": {
+          "enabled": false
+        }
+      }
+    }, {
+      "maxWidth": 400,
+      "overrides": {
+        "labelsEnabled": false,
+        "marginLeft": 10,
+        "marginRight": 10,
+        "legend": {
+          "enabled": false
+        }
+      }
+    }, {
+      "maxHeight": 350,
+      "overrides": {
+        "pullOutRadius": 0,
+        "legend": {
+          "enabled": false
+        }
+      }
+    }, {
+      "maxHeight": 300,
+      "overrides": {
+        "titles": {
+          "enabled": false
+        }
+      }
+    } ],
+
+    /**
+     * AmRadar
+     */
+
+    "radar": [ {
+      "maxWidth": 550,
+      "legendPosition": "left",
+      "overrides": {
+        "legend": {
+          "enabled": false
+        }
+      }
+    }, {
+      "maxWidth": 550,
+      "legendPosition": "right",
+      "overrides": {
+        "legend": {
+          "enabled": false
+        }
+      }
+    }, {
+      "maxWidth": 150,
+      "overrides": {
+        "legend": {
+          "enabled": false
+        }
+      }
+    }, {
+      "maxHeight": 350,
+      "legendPosition": "top",
+      "overrides": {
+        "legend": {
+          "enabled": false
+        }
+      }
+    }, {
+      "maxHeight": 350,
+      "legendPosition": "bottom",
+      "overrides": {
+        "legend": {
+          "enabled": false
+        }
+      }
+    }, {
+      "maxHeight": 150,
+      "overrides": {
+        "legend": {
+          "enabled": false
+        }
+      }
+    }, {
+      "maxWidth": 300,
+      "overrides": {
+        "labelsEnabled": false
+      }
+    }, {
+      "maxWidth": 200,
+      "overrides": {
+        "autoMargins": false,
+        "marginTop": 0,
+        "marginBottom": 0,
+        "marginLeft": 0,
+        "marginRight": 0,
+        "radius": "50%",
+        "titles": {
+          "enabled": false
+        },
+        "valueAxes": {
+          "labelsEnabled": false,
+          "radarCategoriesEnabled": false
+        }
+      }
+    }, {
+      "maxHeight": 300,
+      "overrides": {
+        "labelsEnabled": false
+      }
+    }, {
+      "maxHeight": 200,
+      "overrides": {
+        "autoMargins": false,
+        "marginTop": 0,
+        "marginBottom": 0,
+        "marginLeft": 0,
+        "marginRight": 0,
+        "radius": "50%",
+        "titles": {
+          "enabled": false
+        },
+        "valueAxes": {
+          "radarCategoriesEnabled": false
+        }
+      }
+    }, {
+      "maxHeight": 100,
+      "overrides": {
+        "valueAxes": {
+          "labelsEnabled": false
+        }
+      }
+    } ],
+
+    /**
+     * AmGauge
+     */
+
+    'gauge': [ {
+      "maxWidth": 550,
+      "legendPosition": "left",
+      "overrides": {
+        "legend": {
+          "enabled": false
+        }
+      }
+    }, {
+      "maxWidth": 550,
+      "legendPosition": "right",
+      "overrides": {
+        "legend": {
+          "enabled": false
+        }
+      }
+    }, {
+      "maxWidth": 150,
+      "overrides": {
+        "legend": {
+          "enabled": false
+        }
+      }
+    }, {
+      "maxHeight": 500,
+      "legendPosition": "top",
+      "overrides": {
+        "legend": {
+          "enabled": false
+        }
+      }
+    }, {
+      "maxHeight": 500,
+      "legendPosition": "bottom",
+      "overrides": {
+        "legend": {
+          "enabled": false
+        }
+      }
+    }, {
+      "maxHeight": 150,
+      "overrides": {
+        "legend": {
+          "enabled": false
+        }
+      }
+    }, {
+      "maxWidth": 200,
+      "overrides": {
+        "titles": {
+          "enabled": false
+        },
+        "allLabels": {
+          "enabled": false
+        },
+        "axes": {
+          "labelsEnabled": false
+        }
+      }
+    }, {
+      "maxHeight": 200,
+      "overrides": {
+        "titles": {
+          "enabled": false
+        },
+        "allLabels": {
+          "enabled": false
+        },
+        "axes": {
+          "labelsEnabled": false
+        }
+      }
+    } ],
+
+    /**
+     * AmSerial
+     */
+    "serial": [
+
+      /**
+       * Disable legend in certain cases
+       */
+      {
+        "maxWidth": 550,
+        "legendPosition": "left",
+        "overrides": {
+          "legend": {
+            "enabled": false
+          }
+        }
+      }, {
+        "maxWidth": 550,
+        "legendPosition": "right",
+        "overrides": {
+          "legend": {
+            "enabled": false
+          }
+        }
+      }, {
+        "maxWidth": 100,
+        "overrides": {
+          "legend": {
+            "enabled": false
+          }
+        }
+      }, {
+        "maxHeight": 350,
+        "legendPosition": "top",
+        "overrides": {
+          "legend": {
+            "enabled": false
+          }
+        }
+      }, {
+        "maxHeight": 350,
+        "legendPosition": "bottom",
+        "overrides": {
+          "legend": {
+            "enabled": false
+          }
+        }
+      }, {
+        "maxHeight": 100,
+        "overrides": {
+          "legend": {
+            "enabled": false
+          }
+        }
+      },
+
+
+      /**
+       * Narrow chart
+       */
+      {
+        "maxWidth": 350,
+        "overrides": {
+          "autoMarginOffset": 0,
+          "graphs": {
+            "hideBulletsCount": 10
+          }
+        }
+      }, {
+        "maxWidth": 350,
+        "rotate": false,
+        "overrides": {
+          "marginLeft": 10,
+          "marginRight": 10,
+          "valueAxes": {
+            "ignoreAxisWidth": true,
+            "inside": true,
+            "title": "",
+            "showFirstLabel": false,
+            "showLastLabel": false
+          },
+          "graphs": {
+            "bullet": "none"
+          }
+        }
+      }, {
+        "maxWidth": 350,
+        "rotate": true,
+        "overrides": {
+          "marginLeft": 10,
+          "marginRight": 10,
+          "categoryAxis": {
+            "ignoreAxisWidth": true,
+            "inside": true,
+            "title": ""
+          }
+        }
+      }, {
+        "maxWidth": 200,
+        "rotate": false,
+        "overrides": {
+          "marginLeft": 10,
+          "marginRight": 10,
+          "marginTop": 10,
+          "marginBottom": 10,
+          "categoryAxis": {
+            "ignoreAxisWidth": true,
+            "labelsEnabled": false,
+            "inside": true,
+            "title": "",
+            "guides": {
+              "inside": true
+            }
+          },
+          "valueAxes": {
+            "ignoreAxisWidth": true,
+            "labelsEnabled": false,
+            "axisAlpha": 0,
+            "guides": {
+              "label": ""
+            }
+          },
+          "legend": {
+            "enabled": false
+          }
+        }
+      }, {
+        "maxWidth": 200,
+        "rotate": true,
+        "overrides": {
+          "chartScrollbar": {
+            "scrollbarHeight": 4,
+            "graph": "",
+            "resizeEnabled": false
+          },
+          "categoryAxis": {
+            "labelsEnabled": false,
+            "axisAlpha": 0,
+            "guides": {
+              "label": ""
+            }
+          },
+          "legend": {
+            "enabled": false
+          }
+        }
+      }, {
+        "maxWidth": 100,
+        "rotate": false,
+        "overrides": {
+          "valueAxes": {
+            "gridAlpha": 0
+          }
+        }
+      }, {
+        "maxWidth": 100,
+        "rotate": true,
+        "overrides": {
+          "categoryAxis": {
+            "gridAlpha": 0
+          }
+        }
+      },
+
+      /**
+       * Short chart
+       */
+      {
+        "maxHeight": 300,
+        "overrides": {
+          "autoMarginOffset": 0,
+          "graphs": {
+            "hideBulletsCount": 10
+          }
+        }
+      }, {
+        "maxHeight": 200,
+        "rotate": false,
+        "overrides": {
+          "marginTop": 10,
+          "marginBottom": 10,
+          "categoryAxis": {
+            "ignoreAxisWidth": true,
+            "inside": true,
+            "title": "",
+            "showFirstLabel": false,
+            "showLastLabel": false
+          }
+        }
+      }, {
+        "maxHeight": 200,
+        "rotate": true,
+        "overrides": {
+          "marginTop": 10,
+          "marginBottom": 10,
+          "valueAxes": {
+            "ignoreAxisWidth": true,
+            "inside": true,
+            "title": "",
+            "showFirstLabel": false,
+            "showLastLabel": false
+          },
+          "graphs": {
+            "bullet": "none"
+          }
+        }
+      }, {
+        "maxHeight": 150,
+        "rotate": false,
+        "overrides": {
+          "titles": {
+            "enabled": false
+          },
+          "chartScrollbar": {
+            "scrollbarHeight": 4,
+            "graph": "",
+            "resizeEnabled": false
+          },
+          "categoryAxis": {
+            "labelsEnabled": false,
+            "ignoreAxisWidth": true,
+            "axisAlpha": 0,
+            "guides": {
+              "label": ""
+            }
+          }
+        }
+      }, {
+        "maxHeight": 150,
+        "rotate": true,
+        "overrides": {
+          "titles": {
+            "enabled": false
+          },
+          "valueAxes": {
+            "labelsEnabled": false,
+            "ignoreAxisWidth": true,
+            "axisAlpha": 0,
+            "guides": {
+              "label": ""
+            }
+          }
+        }
+      }, {
+        "maxHeight": 100,
+        "rotate": false,
+        "overrides": {
+          "valueAxes": {
+            "labelsEnabled": false,
+            "ignoreAxisWidth": true,
+            "axisAlpha": 0,
+            "gridAlpha": 0,
+            "guides": {
+              "label": ""
+            }
+          }
+        }
+      }, {
+        "maxHeight": 100,
+        "rotate": true,
+        "overrides": {
+          "categoryAxis": {
+            "labelsEnabled": false,
+            "ignoreAxisWidth": true,
+            "axisAlpha": 0,
+            "gridAlpha": 0,
+            "guides": {
+              "label": ""
+            }
+          }
+        }
+      },
+
+      /**
+       * Really small charts: microcharts and sparklines
+       */
+      {
+        "maxWidth": 100,
+        "overrides": {
+          "autoMargins": false,
+          "marginTop": 0,
+          "marginBottom": 0,
+          "marginLeft": 0,
+          "marginRight": 0,
+          "categoryAxis": {
+            "labelsEnabled": false
+          },
+          "valueAxes": {
+            "labelsEnabled": false
+          }
+        }
+      }, {
+        "maxHeight": 100,
+        "overrides": {
+          "autoMargins": false,
+          "marginTop": 0,
+          "marginBottom": 0,
+          "marginLeft": 0,
+          "marginRight": 0,
+          "categoryAxis": {
+            "labelsEnabled": false
+          },
+          "valueAxes": {
+            "labelsEnabled": false
+          }
+        }
+      }
+    ],
+
+    /**
+     * AmXY
+     */
+    "xy": [
+
+      /**
+       * Disable legend in certain cases
+       */
+      {
+        "maxWidth": 550,
+        "legendPosition": "left",
+        "overrides": {
+          "legend": {
+            "enabled": false
+          }
+        }
+      }, {
+        "maxWidth": 550,
+        "legendPosition": "right",
+        "overrides": {
+          "legend": {
+            "enabled": false
+          }
+        }
+      }, {
+        "maxWidth": 100,
+        "overrides": {
+          "legend": {
+            "enabled": false
+          }
+        }
+      }, {
+        "maxHeight": 350,
+        "legendPosition": "top",
+        "overrides": {
+          "legend": {
+            "enabled": false
+          }
+        }
+      }, {
+        "maxHeight": 350,
+        "legendPosition": "bottom",
+        "overrides": {
+          "legend": {
+            "enabled": false
+          }
+        }
+      }, {
+        "maxHeight": 100,
+        "overrides": {
+          "legend": {
+            "enabled": false
+          }
+        }
+      },
+
+      /**
+       * Narrow chart
+       */
+      {
+        "maxWidth": 250,
+        "overrides": {
+          "autoMarginOffset": 0,
+          "autoMargins": false,
+          "marginTop": 0,
+          "marginBottom": 0,
+          "marginLeft": 0,
+          "marginRight": 0,
+          "valueAxes": {
+            "inside": true,
+            "title": "",
+            "showFirstLabel": false,
+            "showLastLabel": false
+          },
+          "legend": {
+            "enabled": false
+          }
+        }
+      }, {
+        "maxWidth": 150,
+        "overrides": {
+          "valueyAxes": {
+            "labelsEnabled": false,
+            "axisAlpha": 0,
+            "gridAlpha": 0,
+            "guides": {
+              "label": ""
+            }
+          }
+        }
+      },
+
+      /**
+       * Short chart
+       */
+      {
+        "maxHeight": 250,
+        "overrides": {
+          "autoMarginOffset": 0,
+          "autoMargins": false,
+          "marginTop": 0,
+          "marginBottom": 0,
+          "marginLeft": 0,
+          "marginRight": 0,
+          "valueAxes": {
+            "inside": true,
+            "title": "",
+            "showFirstLabel": false,
+            "showLastLabel": false
+          },
+          "legend": {
+            "enabled": false
+          }
+        }
+      }, {
+        "maxWidth": 150,
+        "overrides": {
+          "valueyAxes": {
+            "labelsEnabled": false,
+            "axisAlpha": 0,
+            "gridAlpha": 0,
+            "guides": {
+              "label": ""
+            }
+          }
+        }
+      }
+    ],
+
+    /**
+     * AmStock
+     */
+
+    'stock': [ {
+      "maxWidth": 500,
+      "overrides": {
+        "dataSetSelector": {
+          "position": "top"
+        },
+        "periodSelector": {
+          "position": "bottom"
+        }
+      }
+    }, {
+      "maxWidth": 400,
+      "overrides": {
+        "dataSetSelector": {
+          "selectText": "",
+          "compareText": ""
+        },
+        "periodSelector": {
+          "periodsText": "",
+          "inputFieldsEnabled": false
+        }
+      }
+    } ],
+
+    /**
+     * AmMap
+     */
+
+    'map': [ {
+      "maxWidth": 200,
+      "overrides": {
+        "zoomControl": {
+          "zoomControlEnabled": false
+        },
+        "smallMap": {
+          "enabled": false
+        },
+        "valueLegend": {
+          "enabled": false
+        },
+        "dataProvider": {
+          "areas": {
+            "descriptionWindowWidth": 160,
+            "descriptionWindowRight": 10,
+            "descriptionWindowTop": 10
+          },
+          "images": {
+            "descriptionWindowWidth": 160,
+            "descriptionWindowRight": 10,
+            "descriptionWindowTop": 10
+          },
+          "lines": {
+            "descriptionWindowWidth": 160,
+            "descriptionWindowRight": 10,
+            "descriptionWindowTop": 10
+          }
+        }
+      }
+    }, {
+      "maxWidth": 150,
+      "overrides": {
+        "dataProvider": {
+          "areas": {
+            "descriptionWindowWidth": 110,
+            "descriptionWindowRight": 10,
+            "descriptionWindowTop": 10
+          },
+          "images": {
+            "descriptionWindowWidth": 110,
+            "descriptionWindowRight": 10,
+            "descriptionWindowTop": 10
+          },
+          "lines": {
+            "descriptionWindowWidth": 110,
+            "descriptionWindowLeft": 10,
+            "descriptionWindowRight": 10
+          }
+        }
+      }
+    }, {
+      "maxHeight": 200,
+      "overrides": {
+        "zoomControl": {
+          "zoomControlEnabled": false
+        },
+        "smallMap": {
+          "enabled": false
+        },
+        "valueLegend": {
+          "enabled": false
+        },
+        "dataProvider": {
+          "areas": {
+            "descriptionWindowHeight": 160,
+            "descriptionWindowRight": 10,
+            "descriptionWindowTop": 10
+          },
+          "images": {
+            "descriptionWindowHeight": 160,
+            "descriptionWindowRight": 10,
+            "descriptionWindowTop": 10
+          },
+          "lines": {
+            "descriptionWindowHeight": 160,
+            "descriptionWindowRight": 10,
+            "descriptionWindowTop": 10
+          }
+        }
+      }
+    }, {
+      "maxHeight": 150,
+      "overrides": {
+        "dataProvider": {
+          "areas": {
+            "descriptionWindowHeight": 110,
+            "descriptionWindowRight": 10,
+            "descriptionWindowTop": 10
+          },
+          "images": {
+            "descriptionWindowHeight": 110,
+            "descriptionWindowRight": 10,
+            "descriptionWindowTop": 10
+          },
+          "lines": {
+            "descriptionWindowHeight": 110,
+            "descriptionWindowLeft": 10,
+            "descriptionWindowRight": 10
+          }
+        }
+      }
+    } ]
+  };
+
+  var isNullOrUndefined = function( obj ) {
+    return ( obj === null ) || ( obj === undefined );
+  };
+
+  var isArray = function( obj ) {
+    return ( !isNullOrUndefined( obj ) && Object.prototype.toString.call( obj ) === '[object Array]' );
+  };
+
+  var isObject = function( obj ) {
+    return ( obj !== null && typeof obj === 'object' ); //the null check is necessary - recall that typeof null === 'object' !
+  };
+
+  var findArrayObjectById = function( arr, id ) {
+    for ( var i = 0; i < arr.length; i++ ) {
+      if ( isObject( arr[ i ] ) && arr[ i ].id === id )
+        return arr[ i ];
+    }
+    return undefined; //we can use undefined as it doesn't have an Id property and so will never be the desired object from the array
+  };
+
+  var cloneWithoutPrototypes = function( obj ) {
+    if ( !isObject( obj ) ) {
+      return obj;
+    }
+
+    if ( isArray( obj ) ) {
+      return obj.slice(); //effectively clones the array
+    }
+
+    var clone = {}; //here is where we lose the prototype
+    for ( var property in obj ) {
+      if ( Object.prototype.hasOwnProperty.call( obj, property ) ) {
+        clone[ property ] = cloneWithoutPrototypes( obj[ property ] );
+      }
+    }
+    return clone;
+  };
+
+  var originalValueRetainerPrefix = '{F0578839-A214-4E2D-8D1B-44941ECE8332}_';
+  var noOriginalPropertyStub = {};
+
+  var overrideProperty = function( object, property, overrideValue ) {
+
+    var originalValueRetainerProperty = originalValueRetainerPrefix + property;
+    if ( !( originalValueRetainerProperty in object ) ) {
+      object[ originalValueRetainerProperty ] = ( property in object ) ? object[ property ] : noOriginalPropertyStub;
+    }
+
+    object[ property ] = cloneWithoutPrototypes( overrideValue );
+
+    r.overridden.push( {
+      object: object,
+      property: property
+    } );
+  };
+
+  var restoreOriginalProperty = function( object, property ) {
+    var originalValue = object[ originalValueRetainerPrefix + property ];
+    if ( originalValue === noOriginalPropertyStub ) {
+      delete object[ property ];
+    } else {
+      object[ property ] = originalValue;
+    }
+  };
+
+  var restoreOriginals = function() {
+    while ( r.overridden.length > 0 ) {
+      var override = r.overridden.pop();
+      restoreOriginalProperty( override.object, override.property );
+    }
+  };
+
+  var redrawChart = function() {
+    chart.dataChanged = true;
+    if ( chart.type !== 'xy' ) {
+      chart.marginsUpdated = false;
+    }
+    chart.zoomOutOnDataUpdate = false;
+    chart.validateNow( true );
+    restoreOriginalProperty( chart, 'zoomOutOnDataUpdate' );
+  };
+
+  var applyConfig = function( current, override ) {
+    if ( isNullOrUndefined( override ) ) {
+      return;
+    }
+
+    for ( var property in override ) {
+      if ( !Object.prototype.hasOwnProperty.call( override, property ) ) {
+        continue;
+      }
+
+      var currentValue = current[ property ];
+      var overrideValue = override[ property ];
+
+      //property doesn't exist on current object or it exists as null/undefined => completely override it
+      if ( isNullOrUndefined( currentValue ) ) {
+        overrideProperty( current, property, overrideValue );
+        continue;
+      }
+
+      //current value is an array => override method depends on override form
+      if ( isArray( currentValue ) ) {
+
+        //override value is an array => override method depends on array elements
+        if ( isArray( overrideValue ) ) {
+
+          //current value is an array of non-objects => override the entire array
+          //we assume a uniformly-typed array, so checking the first value should suffice
+          if ( ( currentValue.length > 0 && !isObject( currentValue[ 0 ] ) ) || ( overrideValue.length > 0 && !isObject( overrideValue[ 0 ] ) ) ) {
+            overrideProperty( current, property, overrideValue );
+            continue;
+          }
+
+          var idPresentOnAllOverrideElements = true;
+          for ( var k = 0; k < overrideValue.length; k++ ) {
+            if ( isNullOrUndefined( overrideValue[ k ] ) || isNullOrUndefined( overrideValue[ k ].id ) ) {
+              idPresentOnAllOverrideElements = false;
+              break;
+            }
+          }
+
+          //Id property is present on all override elements => override elements by ID
+          if ( idPresentOnAllOverrideElements ) {
+            for ( var i = 0; i < overrideValue.length; i++ ) {
+              var correspondingCurrentElement = findArrayObjectById( currentValue, overrideValue[ i ].id );
+              if ( correspondingCurrentElement === undefined ) {
+                throw ( 'could not find element to override in "' + property + '" with ID: ' + overrideValue[ i ].id );
+              }
+              applyConfig( correspondingCurrentElement, overrideValue[ i ] );
+            }
+            continue;
+          }
+
+          //Id property is not set on all override elements and there aren't too many overrides => override objects by their index
+          if ( overrideValue.length <= currentValue.length ) {
+            for ( var l = 0; l < overrideValue.length; l++ ) {
+              applyConfig( currentValue[ l ], overrideValue[ l ] );
+            }
+            continue;
+          }
+
+          throw 'too many index-based overrides specified for object array property: ' + property;
+        }
+
+        // override value is a single object => override all current array objects with that object
+        if ( isObject( overrideValue ) ) {
+          for ( var j = 0; j < currentValue.length; j++ ) {
+            applyConfig( currentValue[ j ], overrideValue );
+          }
+          continue;
+        }
+
+        throw ( 'non-object override detected for array property: ' + property );
+      }
+
+      if ( isObject( currentValue ) ) {
+        applyConfig( currentValue, overrideValue );
+        continue;
+      }
+
+      //if we reached this point, the property is defined on the current object but is not an object => override it
+      overrideProperty( current, property, overrideValue );
+    }
+  };
+
+  var checkRules = function() {
+
+    var width = chart.divRealWidth;
+    var height = chart.divRealHeight;
+
+    // update current rules
+    var rulesChanged = false;
+    for ( var i = 0; i < r.rules.length; i++ ) {
+      var rule = r.rules[ i ];
+
+      var ruleMatches =
+        ( rule.minWidth === undefined || ( rule.minWidth <= width ) ) && ( rule.maxWidth === undefined || ( rule.maxWidth >= width ) ) &&
+        ( rule.minHeight === undefined || ( rule.minHeight <= height ) ) && ( rule.maxHeight === undefined || ( rule.maxHeight >= height ) ) &&
+        ( rule.rotate === undefined || ( rule.rotate === true && chart.rotate === true ) || ( rule.rotate === false && ( chart.rotate === undefined || chart.rotate === false ) ) ) &&
+        ( rule.legendPosition === undefined || ( chart.legend !== undefined && chart.legend.position !== undefined && chart.legend.position === rule.legendPosition ) );
+
+      if ( ruleMatches ) {
+        if ( r.currentRules[ i ] === undefined ) {
+          r.currentRules[ i ] = true;
+          rulesChanged = true;
+        }
+      } else if ( r.currentRules[ i ] !== undefined ) {
+        r.currentRules[ i ] = undefined;
+        rulesChanged = true;
+      }
+    }
+
+    if ( !rulesChanged )
+      return;
+
+    restoreOriginals();
+
+    for ( var key in r.currentRules ) {
+      if ( !Object.prototype.hasOwnProperty.call( r.currentRules, key ) ) {
+        continue;
+      }
+
+      if ( r.currentRules[ key ] !== undefined ) {
+        if ( isNullOrUndefined( r.rules[ key ] ) ) {
+          throw 'null or undefined rule in index: ' + key;
+        }
+        applyConfig( chart, r.rules[ key ].overrides );
+      }
+    }
+
+    // TODO - re-apply zooms/slices as necessary
+
+    redrawChart();
+  };
+
+  defaults.gantt = defaults.serial;
+
+  if ( !isArray( r.rules ) ) {
+    r.rules = defaults[ chart.type ];
+  } else if ( r.addDefaultRules !== false ) {
+    r.rules = defaults[ chart.type ].concat( r.rules );
+  }
+
+  //retain original zoomOutOnDataUpdate value
+  overrideProperty( chart, 'zoomOutOnDataUpdate', chart.zoomOutOnDataUpdate );
+
+  chart.addListener( 'resized', checkRules );
+  chart.addListener( 'init', checkRules );
+
+}, [ 'pie', 'serial', 'xy', 'funnel', 'radar', 'gauge', 'gantt', 'stock', 'map' ] );
+},{}],3:[function(require,module,exports){
 (function(){var e=window.AmCharts;e.AmSerialChart=e.Class({inherits:e.AmRectangularChart,construct:function(a){this.type="serial";e.AmSerialChart.base.construct.call(this,a);this.cname="AmSerialChart";this.theme=a;this.createEvents("changed");this.columnSpacing=5;this.columnSpacing3D=0;this.columnWidth=.8;this.updateScrollbar=!0;var b=new e.CategoryAxis(a);b.chart=this;this.categoryAxis=b;this.zoomOutOnDataUpdate=!0;this.mouseWheelZoomEnabled=this.mouseWheelScrollEnabled=this.rotate=this.skipZoom=
 !1;this.minSelectedTime=0;e.applyTheme(this,a,this.cname)},initChart:function(){e.AmSerialChart.base.initChart.call(this);this.updateCategoryAxis(this.categoryAxis,this.rotate,"categoryAxis");this.dataChanged&&(this.updateData(),this.dataChanged=!1,this.dispatchDataUpdated=!0);var a=this.chartCursor;a&&a.updateData&&(a.updateData(),a.fullWidth&&(a.fullRectSet=this.cursorLineSet));var a=this.countColumns(),b=this.graphs,c;for(c=0;c<b.length;c++)b[c].columnCount=a;this.updateScrollbar=!0;this.drawChart();
 this.autoMargins&&!this.marginsUpdated&&(this.marginsUpdated=!0,this.measureMargins())},handleWheelReal:function(a,b){if(!this.wheelBusy){var c=this.categoryAxis,d=c.parseDates,f=c.minDuration(),e=c=1;this.mouseWheelZoomEnabled?b||(c=-1):b&&(c=-1);var g=this.chartData.length,k=this.lastTime,m=this.firstTime;0>a?d?(g=this.endTime-this.startTime,d=this.startTime+c*f,f=this.endTime+e*f,0<e&&0<c&&f>=k&&(f=k,d=k-g),this.zoomToDates(new Date(d),new Date(f))):(0<e&&0<c&&this.end>=g-1&&(c=e=0),d=this.start+
@@ -452,7 +1694,7 @@ r=new this.axisItemRenderer(this,t,l.label,!0,NaN,k,l),this.pushAxisItem(r,u))),
 l))}this.axisCreated=!0;c=this.x;h=this.y;this.set.translate(c,h);this.labelsSet.translate(c,h);this.labelsSet.show();this.positionTitle();(c=this.axisLine.set)&&c.toFront();c=this.getBBox().height;2<c-this.previousHeight&&this.autoWrap&&!this.parseDates&&(this.axisCreated=this.chart.marginsUpdated=!1);this.previousHeight=c},xToIndex:function(a){var b=this.data,c=this.chart,d=c.rotate,f=this.stepWidth;this.parseDates&&!this.equalSpacing?(a=this.startTime+Math.round(a/f)-this.minDuration()/2,c=c.getClosestIndex(b,
 "time",a,!1,this.start,this.end+1)):(this.startOnAxis||(a-=f/2),c=this.start+Math.round(a/f));var c=e.fitToBounds(c,0,b.length-1),h;b[c]&&(h=b[c].x[this.id]);d?h>this.height+1&&c--:h>this.width+1&&c--;0>h&&c++;return c=e.fitToBounds(c,0,b.length-1)},dateToCoordinate:function(a){return this.parseDates&&!this.equalSpacing?(a.getTime()-this.startTime)*this.stepWidth:this.parseDates&&this.equalSpacing?(a=this.chart.getClosestIndex(this.data,"time",a.getTime(),!1,0,this.data.length-1),this.getCoordinate(a-
 this.start)):NaN},categoryToCoordinate:function(a){return this.chart?(a=this.chart.getCategoryIndexByValue(a),this.getCoordinate(a-this.start)):NaN},coordinateToDate:function(a){return this.equalSpacing?(a=this.xToIndex(a),new Date(this.data[a].time)):new Date(this.startTime+a/this.stepWidth)},getCoordinate:function(a){a*=this.stepWidth;this.startOnAxis||(a+=this.stepWidth/2);return Math.round(a)}})})();
-},{}],3:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 AmCharts.themes.light = {
 
 	themeName:"light",
@@ -642,7 +1884,7 @@ AmCharts.themes.light = {
 	}
 
 };
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 (function (global){
 //     Backbone.js 1.2.2
 
@@ -2539,7 +3781,7 @@ AmCharts.themes.light = {
 }));
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"jquery":16,"underscore":52}],5:[function(require,module,exports){
+},{"jquery":17,"underscore":53}],6:[function(require,module,exports){
 /*!
  * The buffer module from node.js, for the browser.
  *
@@ -4074,7 +5316,7 @@ function blitBuffer (src, dst, offset, length) {
   return i
 }
 
-},{"base64-js":6,"ieee754":7,"is-array":8}],6:[function(require,module,exports){
+},{"base64-js":7,"ieee754":8,"is-array":9}],7:[function(require,module,exports){
 var lookup = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 
 ;(function (exports) {
@@ -4200,7 +5442,7 @@ var lookup = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 	exports.fromByteArray = uint8ToBase64
 }(typeof exports === 'undefined' ? (this.base64js = {}) : exports))
 
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 exports.read = function (buffer, offset, isLE, mLen, nBytes) {
   var e, m
   var eLen = nBytes * 8 - mLen - 1
@@ -4286,7 +5528,7 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
   buffer[offset + i - d] |= s * 128
 }
 
-},{}],8:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 
 /**
  * isArray
@@ -4321,7 +5563,7 @@ module.exports = isArray || function (val) {
   return !! val && '[object Array]' == str.call(val);
 };
 
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 /*! DataTables Bootstrap 3 integration
  * ©2011-2014 SpryMedia Ltd - datatables.net/license
  */
@@ -4529,7 +5771,7 @@ else if ( jQuery ) {
 })(window, document);
 
 
-},{"datatables":10,"jquery":16}],10:[function(require,module,exports){
+},{"datatables":11,"jquery":17}],11:[function(require,module,exports){
 /*! DataTables 1.10.9
  * ©2008-2015 SpryMedia Ltd - datatables.net/license
  */
@@ -19660,11 +20902,11 @@ else if ( jQuery ) {
 }(window, document));
 
 
-},{"jquery":16}],11:[function(require,module,exports){
+},{"jquery":17}],12:[function(require,module,exports){
 var geocolor = require('./lib/geocolor')
 
 module.exports = geocolor
-},{"./lib/geocolor":12}],12:[function(require,module,exports){
+},{"./lib/geocolor":13}],13:[function(require,module,exports){
 var _ = require('lodash'),
     ss = require('simple-statistics'),
     chroma = require('chroma-js')
@@ -19851,7 +21093,7 @@ function normalize(numBreaks)
   return normals
 }
 
-},{"chroma-js":13,"lodash":14,"simple-statistics":15}],13:[function(require,module,exports){
+},{"chroma-js":14,"lodash":15,"simple-statistics":16}],14:[function(require,module,exports){
 // Generated by CoffeeScript 1.6.2
 /** echo  * @license echo  * while read i do echo  *  done echo
 */
@@ -21716,7 +22958,7 @@ function normalize(numBreaks)
 
 }).call(this);
 
-},{}],14:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 (function (global){
 /**
  * @license
@@ -28506,7 +29748,7 @@ function normalize(numBreaks)
 }.call(this));
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],15:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 // # simple-statistics
 //
 // A simple, literate statistics system. The code below uses the
@@ -29595,7 +30837,7 @@ function normalize(numBreaks)
 
 })(this);
 
-},{}],16:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 /*!
  * jQuery JavaScript Library v2.1.4
  * http://jquery.com/
@@ -38807,7 +40049,7 @@ return jQuery;
 
 }));
 
-},{}],17:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 function corslite(url, callback, cors) {
     var sent = false;
 
@@ -38902,12 +40144,12 @@ function corslite(url, callback, cors) {
 
 if (typeof module !== 'undefined') module.exports = corslite;
 
-},{}],18:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 module.exports = Array.isArray || function (arr) {
   return Object.prototype.toString.call(arr) == '[object Array]';
 };
 
-},{}],19:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 /*
  Leaflet, a JavaScript library for mobile-friendly interactive maps. http://leafletjs.com
  (c) 2010-2013, Vladimir Agafonkin
@@ -48088,7 +49330,7 @@ L.Map.include({
 
 
 }(window, document));
-},{}],20:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 /*!
  * mustache.js - Logic-less {{mustache}} templates with JavaScript
  * http://github.com/janl/mustache.js
@@ -48641,7 +49883,7 @@ L.Map.include({
 
 }));
 
-},{}],21:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 var html_sanitize = require('./sanitizer-bundle.js');
 
 module.exports = function(_) {
@@ -48661,7 +49903,7 @@ function cleanUrl(url) {
 
 function cleanId(id) { return id; }
 
-},{"./sanitizer-bundle.js":22}],22:[function(require,module,exports){
+},{"./sanitizer-bundle.js":23}],23:[function(require,module,exports){
 
 // Copyright (C) 2010 Google Inc.
 //
@@ -51110,7 +52352,7 @@ if (typeof module !== 'undefined') {
     module.exports = html_sanitize;
 }
 
-},{}],23:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 module.exports={
   "author": {
     "name": "Mapbox"
@@ -51304,7 +52546,7 @@ module.exports={
   "_resolved": "https://registry.npmjs.org/mapbox.js/-/mapbox.js-2.2.1.tgz"
 }
 
-},{}],24:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -51314,7 +52556,7 @@ module.exports = {
     REQUIRE_ACCESS_TOKEN: true
 };
 
-},{}],25:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 'use strict';
 
 var util = require('./util'),
@@ -51443,7 +52685,7 @@ module.exports.featureLayer = function(_, options) {
     return new FeatureLayer(_, options);
 };
 
-},{"./marker":40,"./request":41,"./simplestyle":43,"./url":45,"./util":46,"sanitize-caja":21}],26:[function(require,module,exports){
+},{"./marker":41,"./request":42,"./simplestyle":44,"./url":46,"./util":47,"sanitize-caja":22}],27:[function(require,module,exports){
 'use strict';
 
 var Feedback = L.Class.extend({
@@ -51457,7 +52699,7 @@ var Feedback = L.Class.extend({
 
 module.exports = new Feedback();
 
-},{}],27:[function(require,module,exports){
+},{}],28:[function(require,module,exports){
 'use strict';
 
 var isArray = require('isarray'),
@@ -51569,7 +52811,7 @@ module.exports = function(url, options) {
     return geocoder;
 };
 
-},{"./feedback":26,"./request":41,"./url":45,"./util":46,"isarray":18}],28:[function(require,module,exports){
+},{"./feedback":27,"./request":42,"./url":46,"./util":47,"isarray":19}],29:[function(require,module,exports){
 'use strict';
 
 var geocoder = require('./geocoder'),
@@ -51771,7 +53013,7 @@ module.exports.geocoderControl = function(_, options) {
     return new GeocoderControl(_, options);
 };
 
-},{"./geocoder":27,"./util":46}],29:[function(require,module,exports){
+},{"./geocoder":28,"./util":47}],30:[function(require,module,exports){
 'use strict';
 
 function utfDecode(c) {
@@ -51789,7 +53031,7 @@ module.exports = function(data) {
     };
 };
 
-},{}],30:[function(require,module,exports){
+},{}],31:[function(require,module,exports){
 'use strict';
 
 var util = require('./util'),
@@ -51989,7 +53231,7 @@ module.exports.gridControl = function(_, options) {
     return new GridControl(_, options);
 };
 
-},{"./util":46,"mustache":20,"sanitize-caja":21}],31:[function(require,module,exports){
+},{"./util":47,"mustache":21,"sanitize-caja":22}],32:[function(require,module,exports){
 'use strict';
 
 var util = require('./util'),
@@ -52214,7 +53456,7 @@ module.exports.gridLayer = function(_, options) {
     return new GridLayer(_, options);
 };
 
-},{"./grid":29,"./load_tilejson":36,"./request":41,"./util":46}],32:[function(require,module,exports){
+},{"./grid":30,"./load_tilejson":37,"./request":42,"./util":47}],33:[function(require,module,exports){
 'use strict';
 
 var leaflet = require('./leaflet');
@@ -52223,7 +53465,7 @@ require('./mapbox');
 
 module.exports = leaflet;
 
-},{"./leaflet":34,"./mapbox":38}],33:[function(require,module,exports){
+},{"./leaflet":35,"./mapbox":39}],34:[function(require,module,exports){
 'use strict';
 
 var InfoControl = L.Control.extend({
@@ -52340,10 +53582,10 @@ module.exports.infoControl = function(options) {
     return new InfoControl(options);
 };
 
-},{"sanitize-caja":21}],34:[function(require,module,exports){
+},{"sanitize-caja":22}],35:[function(require,module,exports){
 module.exports = window.L = require('leaflet/dist/leaflet-src');
 
-},{"leaflet/dist/leaflet-src":19}],35:[function(require,module,exports){
+},{"leaflet/dist/leaflet-src":20}],36:[function(require,module,exports){
 'use strict';
 
 var LegendControl = L.Control.extend({
@@ -52412,7 +53654,7 @@ module.exports.legendControl = function(options) {
     return new LegendControl(options);
 };
 
-},{"sanitize-caja":21}],36:[function(require,module,exports){
+},{"sanitize-caja":22}],37:[function(require,module,exports){
 'use strict';
 
 var request = require('./request'),
@@ -52438,7 +53680,7 @@ module.exports = {
     }
 };
 
-},{"./request":41,"./url":45,"./util":46}],37:[function(require,module,exports){
+},{"./request":42,"./url":46,"./util":47}],38:[function(require,module,exports){
 'use strict';
 
 var tileLayer = require('./tile_layer').tileLayer,
@@ -52674,7 +53916,7 @@ module.exports.map = function(element, _, options) {
     return new LMap(element, _, options);
 };
 
-},{"./feature_layer":25,"./feedback":26,"./grid_control":30,"./grid_layer":31,"./info_control":33,"./legend_control":35,"./load_tilejson":36,"./mapbox_logo":39,"./share_control":42,"./tile_layer":44,"sanitize-caja":21}],38:[function(require,module,exports){
+},{"./feature_layer":26,"./feedback":27,"./grid_control":31,"./grid_layer":32,"./info_control":34,"./legend_control":36,"./load_tilejson":37,"./mapbox_logo":40,"./share_control":43,"./tile_layer":45,"sanitize-caja":22}],39:[function(require,module,exports){
 'use strict';
 
 var geocoderControl = require('./geocoder_control'),
@@ -52727,7 +53969,7 @@ window.L.Icon.Default.imagePath =
     '//api.tiles.mapbox.com/mapbox.js/' + 'v' +
     require('../package.json').version + '/images';
 
-},{"../package.json":23,"./config":24,"./feature_layer":25,"./feedback":26,"./geocoder":27,"./geocoder_control":28,"./grid_control":30,"./grid_layer":31,"./info_control":33,"./legend_control":35,"./map":37,"./marker":40,"./share_control":42,"./simplestyle":43,"./tile_layer":44,"mustache":20,"sanitize-caja":21}],39:[function(require,module,exports){
+},{"../package.json":24,"./config":25,"./feature_layer":26,"./feedback":27,"./geocoder":28,"./geocoder_control":29,"./grid_control":31,"./grid_layer":32,"./info_control":34,"./legend_control":36,"./map":38,"./marker":41,"./share_control":43,"./simplestyle":44,"./tile_layer":45,"mustache":21,"sanitize-caja":22}],40:[function(require,module,exports){
 'use strict';
 
 var MapboxLogoControl = L.Control.extend({
@@ -52761,7 +54003,7 @@ module.exports.mapboxLogoControl = function(options) {
     return new MapboxLogoControl(options);
 };
 
-},{}],40:[function(require,module,exports){
+},{}],41:[function(require,module,exports){
 'use strict';
 
 var url = require('./url'),
@@ -52828,7 +54070,7 @@ module.exports = {
     createPopup: createPopup
 };
 
-},{"./url":45,"./util":46,"sanitize-caja":21}],41:[function(require,module,exports){
+},{"./url":46,"./util":47,"sanitize-caja":22}],42:[function(require,module,exports){
 'use strict';
 
 var corslite = require('corslite'),
@@ -52862,7 +54104,7 @@ module.exports = function(url, callback) {
     return corslite(url, onload);
 };
 
-},{"./config":24,"./util":46,"corslite":17}],42:[function(require,module,exports){
+},{"./config":25,"./util":47,"corslite":18}],43:[function(require,module,exports){
 'use strict';
 
 var urlhelper = require('./url');
@@ -52965,7 +54207,7 @@ module.exports.shareControl = function(_, options) {
     return new ShareControl(_, options);
 };
 
-},{"./load_tilejson":36,"./url":45}],43:[function(require,module,exports){
+},{"./load_tilejson":37,"./url":46}],44:[function(require,module,exports){
 'use strict';
 
 // an implementation of the simplestyle spec for polygon and linestring features
@@ -53012,7 +54254,7 @@ module.exports = {
     defaults: defaults
 };
 
-},{}],44:[function(require,module,exports){
+},{}],45:[function(require,module,exports){
 'use strict';
 
 var util = require('./util');
@@ -53112,7 +54354,7 @@ module.exports.tileLayer = function(_, options) {
     return new TileLayer(_, options);
 };
 
-},{"./load_tilejson":36,"./util":46,"sanitize-caja":21}],45:[function(require,module,exports){
+},{"./load_tilejson":37,"./util":47,"sanitize-caja":22}],46:[function(require,module,exports){
 'use strict';
 
 var config = require('./config'),
@@ -53156,7 +54398,7 @@ module.exports.tileJSON = function(urlOrMapID, accessToken) {
     return url;
 };
 
-},{"../package.json":23,"./config":24}],46:[function(require,module,exports){
+},{"../package.json":24,"./config":25}],47:[function(require,module,exports){
 'use strict';
 
 function contains(item, list) {
@@ -53203,7 +54445,7 @@ module.exports = {
     }
 };
 
-},{}],47:[function(require,module,exports){
+},{}],48:[function(require,module,exports){
 (function (Buffer){
 // Generated by CoffeeScript 1.9.3
 (function() {
@@ -53739,7 +54981,7 @@ module.exports = {
 }).call(this);
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":5,"eventemitter2":48,"superagent":49}],48:[function(require,module,exports){
+},{"buffer":6,"eventemitter2":49,"superagent":50}],49:[function(require,module,exports){
 /*!
  * EventEmitter2
  * https://github.com/hij1nx/EventEmitter2
@@ -54314,7 +55556,7 @@ module.exports = {
   }
 }();
 
-},{}],49:[function(require,module,exports){
+},{}],50:[function(require,module,exports){
 /**
  * Module dependencies.
  */
@@ -55397,7 +56639,7 @@ request.put = function(url, data, fn){
 
 module.exports = request;
 
-},{"emitter":50,"reduce":51}],50:[function(require,module,exports){
+},{"emitter":51,"reduce":52}],51:[function(require,module,exports){
 
 /**
  * Expose `Emitter`.
@@ -55563,7 +56805,7 @@ Emitter.prototype.hasListeners = function(event){
   return !! this.listeners(event).length;
 };
 
-},{}],51:[function(require,module,exports){
+},{}],52:[function(require,module,exports){
 
 /**
  * Reduce `arr` with `fn`.
@@ -55588,7 +56830,7 @@ module.exports = function(arr, fn, initial){
   
   return curr;
 };
-},{}],52:[function(require,module,exports){
+},{}],53:[function(require,module,exports){
 //     Underscore.js 1.8.3
 //     http://underscorejs.org
 //     (c) 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
@@ -57138,7 +58380,7 @@ module.exports = function(arr, fn, initial){
   }
 }.call(this));
 
-},{}],53:[function(require,module,exports){
+},{}],54:[function(require,module,exports){
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
@@ -57160,7 +58402,7 @@ module.exports = Backbone.Collection.extend({
 		};
 	}
 });
-},{"backbone":4,"jquery":16,"underscore":52}],54:[function(require,module,exports){
+},{"backbone":5,"jquery":17,"underscore":53}],55:[function(require,module,exports){
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
@@ -57214,7 +58456,7 @@ module.exports = Backbone.Collection.extend({
 		return _.pluck(this.filter, 'friendlyExpression').join(' and ');
 	}
 })
-},{"backbone":4,"jquery":16,"soda-js":47,"underscore":52}],55:[function(require,module,exports){
+},{"backbone":5,"jquery":17,"soda-js":48,"underscore":53}],56:[function(require,module,exports){
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
@@ -57309,7 +58551,7 @@ $.getJSON('config/' + dataset + '.json')
 .fail(function() {
 	console.error('Dataset %s not found', dataset);
 })
-},{"./collections/geojson":53,"./collections/socrata":54,"./views/bar":60,"./views/choropleth":62,"./views/datetime":63,"./views/header":64,"./views/table":65,"backbone":4,"jquery":16,"underscore":52}],56:[function(require,module,exports){
+},{"./collections/geojson":54,"./collections/socrata":55,"./views/bar":61,"./views/choropleth":63,"./views/datetime":64,"./views/header":65,"./views/table":66,"backbone":5,"jquery":17,"underscore":53}],57:[function(require,module,exports){
 module.exports = function(data){
 var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
 __p+='<div class="row">\n\t<div class="col-md-6">\n\t\t\n\t\t<h1 class="title">'+
@@ -57336,7 +58578,7 @@ __p+='\n\t\t\t\n\t</div>\n</div>';
 return __p;
 };
 
-},{}],57:[function(require,module,exports){
+},{}],58:[function(require,module,exports){
 module.exports = function(data){
 var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
 __p+='<div class="panel panel-default">\n\t';
@@ -57363,7 +58605,7 @@ __p+='\n</div>';
 return __p;
 };
 
-},{}],58:[function(require,module,exports){
+},{}],59:[function(require,module,exports){
 exports.on = function() {
 	this.$('.card').fadeTo(1, 0.4);
 };
@@ -57371,7 +58613,7 @@ exports.on = function() {
 exports.off = function() {
 	this.$('.card').fadeTo(1, 1);
 }
-},{}],59:[function(require,module,exports){
+},{}],60:[function(require,module,exports){
 module.exports = function(num) {
     isNegative = false
     if (num < 0) {
@@ -57390,7 +58632,7 @@ module.exports = function(num) {
     if(isNegative) { formattedNumber = '-' + formattedNumber }
     return formattedNumber;
 }
-},{}],60:[function(require,module,exports){
+},{}],61:[function(require,module,exports){
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
@@ -57417,13 +58659,24 @@ module.exports = BaseChart.extend({
 				fillAlphas: 0.8,
 				clustered: false,
 				lineColor: '#97bbcd',
-				balloonText: '<b>[[category]]</b><br>Filtered Amount: [[value]]',
+				balloonText: '<b>[[category]]</b><br>Total: [[count]]<br>Filtered Amount: [[value]]',
 				showHandOnHover: true
 			}
 		],
 		chart: {
 			'type': 'serial',
 			theme: 'light',
+			responsive: {
+				enabled: true,
+				rules: [
+					{
+						maxWidth: 450,
+						overrides: {
+							maxSelectedSeries: 3
+						}
+					}
+				]
+			},
 			categoryField: 'label',
 			marginLeft: 5,
 			marginRight: 5,
@@ -57444,7 +58697,8 @@ module.exports = BaseChart.extend({
 			chartCursor: {
 				fullWidth: true,
 				cursorAlpha: 0.1,
-				zoomable: false
+				zoomable: false,
+				oneBalloonOnly: true
 			},
 			maxSelectedSeries: 7,
 			zoomOutText: '',
@@ -57520,7 +58774,7 @@ module.exports = BaseChart.extend({
 		}
 	}
 })
-},{"../util/number-formatter":59,"./basechart":61,"backbone":4,"jquery":16,"underscore":52}],61:[function(require,module,exports){
+},{"../util/number-formatter":60,"./basechart":62,"backbone":5,"jquery":17,"underscore":53}],62:[function(require,module,exports){
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
@@ -57529,13 +58783,14 @@ var numberFormatter = require('../util/number-formatter');
 var LoaderOn = require('../util/loader').on;
 var LoaderOff = require('../util/loader').off;
 window.AmCharts_path = './';
-require('amcharts3/amcharts/amcharts');
+require('amcharts3');
 require('amcharts3/amcharts/serial');
 require('amcharts3/amcharts/themes/light');
+require('amcharts3/amcharts/plugins/responsive/responsive');
 	
 module.exports = Backbone.View.extend({
 	settings: {
-		limit: null,
+		/*limit: null,
 		collectionOrder: null,
 		graphs: [
 			{
@@ -57571,7 +58826,7 @@ module.exports = Backbone.View.extend({
 			categoryAxis: {
 				autoWrap: true
 			}
-		}
+		}*/
 	},
 	initialize: function(options) {
 		// Save options to view
@@ -57621,6 +58876,7 @@ module.exports = Backbone.View.extend({
 		if( ! _.isEmpty(this.filteredCollection.filter)) {
 			// Change color of original graph to subdued
 			config.graphs[0].lineColor = '#ddd';
+			config.graphs[0].showBalloon = false;
 			
 			config.graphs.push($.extend(true, {}, this.settings.graphs[1]));
 			
@@ -57678,7 +58934,7 @@ module.exports = Backbone.View.extend({
 		this.renderFilters();
 	}
 })
-},{"../templates/panel.html":57,"../util/loader":58,"../util/number-formatter":59,"amcharts3/amcharts/amcharts":1,"amcharts3/amcharts/serial":2,"amcharts3/amcharts/themes/light":3,"backbone":4,"jquery":16,"underscore":52}],62:[function(require,module,exports){
+},{"../templates/panel.html":58,"../util/loader":59,"../util/number-formatter":60,"amcharts3":1,"amcharts3/amcharts/plugins/responsive/responsive":2,"amcharts3/amcharts/serial":3,"amcharts3/amcharts/themes/light":4,"backbone":5,"jquery":17,"underscore":53}],63:[function(require,module,exports){
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
@@ -57877,7 +59133,7 @@ module.exports = Backbone.View.extend({
 	}
 });
 
-},{"../templates/panel.html":57,"../util/loader":58,"backbone":4,"geocolor":11,"jquery":16,"mapbox.js":32,"underscore":52}],63:[function(require,module,exports){
+},{"../templates/panel.html":58,"../util/loader":59,"backbone":5,"geocolor":12,"jquery":17,"mapbox.js":33,"underscore":53}],64:[function(require,module,exports){
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
@@ -57906,12 +59162,15 @@ module.exports = BaseChart.extend({
 				fillAlphas: 0.8,
 				clustered: false,
 				lineColor: '#97bbcd',
-				balloonText: '<b>[[category]]</b><br>Filtered Amount: [[value]]'
+				balloonText: '<b>[[category]]</b><br>Total: [[count]]<br>Filtered Amount: [[value]]'
 			}
 		],
 		chart: {
 			'type': 'serial',
 			theme: 'light',
+			responsive: {
+				enabled: true
+			},
 			categoryField: 'label',
 			marginLeft: 5,
 			marginRight: 5,
@@ -57946,7 +59205,8 @@ module.exports = BaseChart.extend({
 			chartCursor: {
 				categoryBalloonDateFormat: "MMM YYYY",
 				cursorPosition: "mouse",
-				selectWithoutZooming: true
+				selectWithoutZooming: true,
+				oneBalloonOnly: true
 			}
 		}
 	},
@@ -58003,7 +59263,7 @@ module.exports = BaseChart.extend({
 		}
 	}
 })
-},{"../util/number-formatter":59,"./basechart":61,"backbone":4,"jquery":16,"underscore":52}],64:[function(require,module,exports){
+},{"../util/number-formatter":60,"./basechart":62,"backbone":5,"jquery":17,"underscore":53}],65:[function(require,module,exports){
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
@@ -58018,7 +59278,7 @@ module.exports = Backbone.View.extend({
 		return this;
 	}
 });
-},{"../templates/header.html":56,"backbone":4,"jquery":16,"underscore":52}],65:[function(require,module,exports){
+},{"../templates/header.html":57,"backbone":5,"jquery":17,"underscore":53}],66:[function(require,module,exports){
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
@@ -58101,4 +59361,4 @@ module.exports = Backbone.View.extend({
 		this.renderFilters();
 	}
 });
-},{"../templates/panel.html":57,"../util/loader":58,"backbone":4,"datatables":10,"datatables/media/js/dataTables.bootstrap":9,"jquery":16,"underscore":52}]},{},[55]);
+},{"../templates/panel.html":58,"../util/loader":59,"backbone":5,"datatables":11,"datatables/media/js/dataTables.bootstrap":10,"jquery":17,"underscore":53}]},{},[56]);
