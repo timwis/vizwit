@@ -138,9 +138,9 @@ module.exports = Backbone.View.extend({
 		var popupContent = '\
 			<div class="marker-title">\
 			<h2>' + layer.feature.properties[this.boundaries.label] + '</h2>\
-			Total: ' + layer.feature.properties.count;
+			Total: ' + layer.feature.properties.count.toLocaleString();
 		if(layer.feature.properties.filteredCount !== undefined) {
-			popupContent += '<br>Filtered Amount: ' + layer.feature.properties.filteredCount;
+			popupContent += '<br>Filtered Amount: ' + layer.feature.properties.filteredCount.toLocaleString();
 		}
 		popupContent += '</div>';
 	
