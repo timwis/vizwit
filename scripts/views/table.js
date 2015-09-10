@@ -49,7 +49,7 @@ module.exports = Backbone.View.extend({
 			});
 			
 			// Initialize the table
-			this.table = this.$('.card').DataTable({
+			this.table = this.$('.viz').DataTable({
 				columns: columns,
 				scrollX: true,
 				pagingType: 'numbers',

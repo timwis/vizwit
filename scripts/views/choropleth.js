@@ -63,7 +63,7 @@ module.exports = Backbone.View.extend({
 		this.$('.filters').text(filters).parent().toggle(filters ? true : false);
 	},
 	render: function() {
-		this.map = L.map(this.$('.card').get(0));//.setView([39.95, -75.1667], 13);
+		this.map = L.map(this.$('.viz').get(0));//.setView([39.95, -75.1667], 13);
 		L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
 			attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ',
 			maxZoom: 16

@@ -18,12 +18,12 @@ body {
 	margin-top: 40px;
 }
 
-.card {
+.viz {
 	width: 100%;
 	min-height: 350px;
 }
 
-.card.table {
+.viz.table {
 	font-size: 13px;
 	/*white-space: nowrap;*/
 	word-wrap: break-word;

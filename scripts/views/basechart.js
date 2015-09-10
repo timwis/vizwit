@@ -120,7 +120,7 @@ module.exports = Backbone.View.extend({
 			}
 		}
 		
-		this.chart = AmCharts.makeChart(this.$('.card').get(0), config);
+		this.chart = AmCharts.makeChart(this.$('.viz').get(0), config);
 	},
 	formatChartData: function(limit) {
 		var self = this;
