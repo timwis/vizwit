@@ -15,6 +15,7 @@ var model = Backbone.Model.extend({
 	
 module.exports = Backbone.Collection.extend({
 	countProperty: 'count',
+	limit: 5000,
 	model: model,
 	initialize: function(models, options) {
 		// Save config to collection
