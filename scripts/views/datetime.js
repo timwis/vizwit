@@ -26,7 +26,7 @@ module.exports = BaseChart.extend({
 				fillAlphas: 0.8,
 				clustered: false,
 				lineColor: '#97bbcd',
-				balloonText: '<b>[[category]]</b><br>Filtered Amount: [[value]]'
+				balloonText: '<b>[[category]]</b><br>Total: [[count]]<br>Filtered Amount: [[value]]'
 			}
 		],
 		chart: {
@@ -66,7 +66,8 @@ module.exports = BaseChart.extend({
 			chartCursor: {
 				categoryBalloonDateFormat: "MMM YYYY",
 				cursorPosition: "mouse",
-				selectWithoutZooming: true
+				selectWithoutZooming: true,
+				oneBalloonOnly: true
 			}
 		}
 	},

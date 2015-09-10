@@ -98,6 +98,7 @@ module.exports = Backbone.View.extend({
 		if( ! _.isEmpty(this.filteredCollection.filter)) {
 			// Change color of original graph to subdued
 			config.graphs[0].lineColor = '#ddd';
+			config.graphs[0].showBalloon = false;
 			
 			config.graphs.push($.extend(true, {}, this.settings.graphs[1]));
 			

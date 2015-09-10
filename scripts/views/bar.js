@@ -24,7 +24,7 @@ module.exports = BaseChart.extend({
 				fillAlphas: 0.8,
 				clustered: false,
 				lineColor: '#97bbcd',
-				balloonText: '<b>[[category]]</b><br>Filtered Amount: [[value]]',
+				balloonText: '<b>[[category]]</b><br>Total: [[count]]<br>Filtered Amount: [[value]]',
 				showHandOnHover: true
 			}
 		],
@@ -51,7 +51,8 @@ module.exports = BaseChart.extend({
 			chartCursor: {
 				fullWidth: true,
 				cursorAlpha: 0.1,
-				zoomable: false
+				zoomable: false,
+				oneBalloonOnly: true
 			},
 			maxSelectedSeries: 7,
 			zoomOutText: '',
