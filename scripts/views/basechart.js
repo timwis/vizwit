@@ -6,7 +6,7 @@ var numberFormatter = require('../util/number-formatter');
 var LoaderOn = require('../util/loader').on;
 var LoaderOff = require('../util/loader').off;
 window.AmCharts_path = './';
-require('amcharts3/amcharts/amcharts');
+require('amcharts3');
 require('amcharts3/amcharts/serial');
 require('amcharts3/amcharts/themes/light');
 	
