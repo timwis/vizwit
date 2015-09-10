@@ -6,6 +6,7 @@ var geocolor = require('geocolor');
 var Template = require('../templates/panel.html');
 var LoaderOn = require('../util/loader').on;
 var LoaderOff = require('../util/loader').off;
+var ColorRange = require('../util/color-range');
 //L.Icon.Default.imagePath = 'node_modules/leaflet/dist/images/'; // necessary w/browserify
 	
 module.exports = Backbone.View.extend({
@@ -74,30 +75,30 @@ module.exports = Backbone.View.extend({
 	addBoundaries: function() {
 		var self = this;
 		if(this.boundaries.length && this.collection.length) {
+			// Put the dataset into the features
 			this.datasetInFeatures();
 			
-			var style = {
-				stroke: '#fff',
-				weight: 2,
-				fillOpacity: 0.7
-			};
-			
+			// Setup a color range utility
 			var colorizeField =  _.isEmpty(this.filteredCollection.filter) ? 'count' : 'filteredCount';
-			var colorized;
-			
-			if(this.collection.selected) {
-				colorized = geocolor.equalIntervals(this.boundaries.toGeoJSON(), colorizeField, 2, ['#eee', '#08519c'], style);
-			} else {
-				colorized = geocolor.quantiles(this.boundaries.toGeoJSON(), colorizeField, 15, ['#eff3ff', '#bdd7e7', '#6baed6', '#3182bd', '#08519c'], style);
-			}
+			var values = _.chain(this.boundaries.pluck('properties')).pluck(colorizeField).value(); 
+			var min = _.min(values);
+			var max = _.max(values);
+			var colorRange = new ColorRange(['#eff3ff', '#bdd7e7', '#6baed6', '#3182bd', '#08519c'], min, max);
 			
 			// Remove any existing layers
 			if(this.layer) {
 				this.map.removeLayer(this.layer);
 			}
 			
-			this.layer = L.geoJson(colorized, {
-				style: L.mapbox.simplestyle.style,
+			this.layer = L.geoJson(this.boundaries.toGeoJSON(), {
+				style: function(feature) {
+					return {
+						fillColor: colorRange.getColor(feature.properties[colorizeField]),
+						color: '#777',
+						weight: 2,
+						fillOpacity: 0.7
+					}
+				},
 				onEachFeature: function(feature, layer) {
 					layer.on({
 						mousemove: self.onMousemove,

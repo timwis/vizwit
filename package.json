@@ -14,6 +14,7 @@
   "dependencies": {
     "amcharts3": "amcharts/amcharts3",
     "backbone": "^1.2.2",
+    "chroma-js": "^1.1.1",
     "datatables": "https://github.com/DataTables/DataTables/archive/1.10.9.tar.gz",
     "geocolor": "0.0.16",
     "jquery": "^2.1.4",
