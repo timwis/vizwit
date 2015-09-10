@@ -14,8 +14,7 @@ module.exports = BaseChart.extend({
 				fillAlphas: 1,
 				clustered: false,
 				lineColor: '#97bbcd',
-				balloonText: '<b>[[category]]</b><br>Total: [[value]]',
-				showHandOnHover: true
+				balloonText: '<b>[[category]]</b><br>Total: [[value]]'
 			},
 			{
 				'type': 'column',
@@ -24,8 +23,7 @@ module.exports = BaseChart.extend({
 				fillAlphas: 0.8,
 				clustered: false,
 				lineColor: '#97bbcd',
-				balloonText: '<b>[[category]]</b><br>Total: [[count]]<br>Filtered Amount: [[value]]',
-				showHandOnHover: true
+				balloonText: '<b>[[category]]</b><br>Total: [[count]]<br>Filtered Amount: [[value]]'
 			}
 		],
 		chart: {
@@ -42,6 +40,7 @@ module.exports = BaseChart.extend({
 					}
 				]
 			},
+			addClassNames: true,
 			categoryField: 'label',
 			marginLeft: 5,
 			marginRight: 5,

@@ -44,6 +44,13 @@ body {
 	padding: 10px;
 }
 
+.amcharts-plot-area,
+.amcharts-graph-line,
+.amcharts-graph-column,
+.amcharts-guide-fill {
+	cursor: pointer
+}
+
 /* By default, this is set to nowrap, making it oversized on small screens */
 div.dataTables_wrapper div.dataTables_info {
 	white-space: normal;

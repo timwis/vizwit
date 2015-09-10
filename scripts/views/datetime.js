@@ -35,6 +35,7 @@ module.exports = BaseChart.extend({
 			responsive: {
 				enabled: true
 			},
+			addClassNames: true,
 			categoryField: 'label',
 			marginLeft: 5,
 			marginRight: 5,
