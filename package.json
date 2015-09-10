@@ -4,9 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "npm run watch & npm run livereload & npm run static",
+    "start": "npm run watch & npm run static",
     "watch": "./node_modules/watchify/bin/cmd.js scripts/main.js -o dist/bundle.js",
-    "livereload": "./node_modules/livereloadify/cli.js ./",
     "static": "./node_modules/node-static/bin/cli.js ./",
     "styles": "./node_modules/npm-css/bin/npm-css styles/main.css -o dist/bundle.css"
   },
@@ -25,7 +24,6 @@
   "devDependencies": {
     "browserify": "^11.0.1",
     "browserify-shim": "^3.8.10",
-    "livereloadify": "^2.0.0",
     "node-sass": "^3.2.0",
     "node-static": "^0.7.7",
     "node-underscorify": "0.0.14",
