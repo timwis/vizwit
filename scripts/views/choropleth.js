@@ -64,12 +64,9 @@ module.exports = Backbone.View.extend({
 	},
 	render: function() {
 		this.map = L.map(this.$('.card').get(0));//.setView([39.95, -75.1667], 13);
-		L.tileLayer('http://stamen-tiles-{s}.a.ssl.fastly.net/toner-lite/{z}/{x}/{y}.png', {
-			attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-			subdomains: 'abcd',
-			minZoom: 0,
-			maxZoom: 20,
-			ext: 'png'
+		L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
+			attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ',
+			maxZoom: 16
 		}).addTo(this.map);
 	},
 	addBoundaries: function() {
@@ -94,7 +91,7 @@ module.exports = Backbone.View.extend({
 				style: function(feature) {
 					return {
 						fillColor: colorRange.getColor(feature.properties[colorizeField]),
-						color: '#777',
+						color: '#fff',
 						weight: 2,
 						fillOpacity: 0.7
 					}
@@ -155,10 +152,8 @@ module.exports = Backbone.View.extend({
 	
 		// highlight feature
 		layer.setStyle({
-			weight: 3,
-			opacity: 0.8,
-			color: '#777',
-			fillOpacity: 0.9
+			weight: 4,
+			opacity: 0.8
 		});
 	
 		if ( ! L.Browser.ie && ! L.Browser.opera) {
