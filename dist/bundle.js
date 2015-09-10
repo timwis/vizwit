@@ -62887,7 +62887,7 @@ $.getJSON('config/' + dataset + '.json')
 },{"./collections/geojson":58,"./collections/socrata":59,"./views/bar":66,"./views/choropleth":68,"./views/datetime":69,"./views/header":70,"./views/table":71,"backbone":5,"jquery":18,"underscore":57}],61:[function(require,module,exports){
 module.exports = function(data){
 var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
-__p+='<div class="row">\n\t<div class="col-md-6">\n\t\t\n\t\t<h1 class="title">'+
+__p+='<div class="row">\n\t<div class="col-md-7">\n\t\t\n\t\t<h1 class="title">'+
 ((__t=( data.title ))==null?'':__t)+
 '</h1>\n\t\t\n\t\t';
  if(data.description) { 
@@ -62895,7 +62895,7 @@ __p+='\n\t\t<p class="description">'+
 ((__t=( data.description ))==null?'':__t)+
 '</p>\n\t\t';
  } 
-__p+='\n\t\t\t\n\t</div>\n\t<div class="col-md-6">\n\t\t\n\t\t';
+__p+='\n\t\t\t\n\t</div>\n\t<div class="col-md-5">\n\t\t\n\t\t';
  if(data.navigation) { 
 __p+='\n\t\t<div class="btn-group pull-right navigation" role="group" aria-label="Pages">\n\t\t\t';
  data.navigation.forEach(function(nav) { 
@@ -63016,7 +63016,11 @@ module.exports = BaseChart.extend({
 				fillAlphas: 0.8,
 				clustered: false,
 				lineColor: '#97bbcd',
-				balloonText: '<b>[[category]]</b><br>Total: [[count]]<br>Filtered Amount: [[value]]'
+				balloonFunction: function(item, graph) {
+					return '<b>' + item.category + '</b><br>\
+						Total: ' + (+item.dataContext.count).toLocaleString() + '<br> \
+						Filtered Amount: ' + (+item.dataContext.filteredCount).toLocaleString()
+				}
 			}
 		],
 		chart: {
@@ -63515,7 +63519,12 @@ module.exports = BaseChart.extend({
 				fillAlphas: 0.8,
 				clustered: false,
 				lineColor: '#97bbcd',
-				balloonText: '<b>[[category]]</b><br>Total: [[count]]<br>Filtered Amount: [[value]]'
+				dateFormat: 'MMM YYYY',
+				balloonFunction: function(item, graph) {
+					return '<b>' + AmCharts.formatDate(item.category, graph.dateFormat) + '</b><br>\
+						Total: ' + (+item.dataContext.count).toLocaleString() + '<br> \
+						Filtered Amount: ' + (+item.dataContext.filteredCount).toLocaleString()
+				}
 			}
 		],
 		chart: {
