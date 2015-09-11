@@ -63269,8 +63269,8 @@ module.exports = BaseChart.extend({
 		BaseChart.prototype.render.apply(this, arguments);
 		
 		// If there are greater than 10 bars, zoom to the first bar (ideally this would be done by configuration)
-		if(this.collection.length > this.settings.chart.maxSelectedSeries) {
-			this.chart.zoomToIndexes(0, this.settings.chart.maxSelectedSeries);
+		if(this.collection.length > this.chart.maxSelectedSeries) {
+			this.chart.zoomToIndexes(0, this.chart.maxSelectedSeries);
 		}
 		
 		this.chart.chartCursor.addListener('changed', this.onHover);
@@ -63283,10 +63283,10 @@ module.exports = BaseChart.extend({
 	},
 	onClickScroll: function(e) {
 		var modification = $(e.currentTarget).data('dir') === 'decrease' ? -1 : 1;
-		var displayCount = this.settings.chart.maxSelectedSeries;
+		var displayCount = this.chart.maxSelectedSeries;
 		var start = Math.min(this.collection.length - 1 - displayCount, Math.max(0, this.chart.startIndex + modification));
 		var end = Math.max(displayCount, Math.min(this.collection.length - 1, this.chart.endIndex + modification));
-		console.log(start, end);
+		
 		if(start !== this.chart.startIndex || end !== this.chart.endIndex) {
 			this.chart.zoomToIndexes(start, end);
 			this.chart.animateAgain();
