@@ -69,6 +69,8 @@ module.exports = BaseChart.extend({
 				oneBalloonOnly: true
 			},
 			maxSelectedSeries: 7,
+			startDuration: 0.5,
+			startEffect: 'easeOutSine',
 			zoomOutText: '',
 			mouseWheelScrollEnabled: true,
 			categoryAxis: {
@@ -95,7 +97,10 @@ module.exports = BaseChart.extend({
 	initialize: function(options) {
 		BaseChart.prototype.initialize.apply(this, arguments);
 		
-		_.bindAll(this, 'onClick', 'onHover');
+		_.bindAll(this, 'onClick', 'onHover', 'onClickScroll');
+	},
+	events: {
+		'click .scroll a': 'onClickScroll'
 	},
 	render: function() {
 		BaseChart.prototype.render.apply(this, arguments);
@@ -107,6 +112,12 @@ module.exports = BaseChart.extend({
 		
 		this.chart.chartCursor.addListener('changed', this.onHover);
 		this.chart.div.onclick = this.onClick;
+	},
+	onClickScroll: function(e) {
+		var modification = $(e.currentTarget).data('dir') === 'decrease' ? -1 : 1; 
+		this.chart.zoomToIndexes(this.chart.chartScrollbar.start + modification, this.chart.chartScrollbar.end + modification);
+		this.chart.animateAgain();
+		e.preventDefault();
 	},
 	// Keep track of which column the cursor is hovered over
 	onHover: function(e) {
