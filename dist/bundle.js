@@ -63088,11 +63088,11 @@ __p+='<div class="panel panel-default">\n\t';
  if(data.title) { 
 __p+='\n\t<div class="panel-heading">\n\t\t'+
 ((__t=( data.title ))==null?'':__t)+
-'\n\t\t\n\t\t<div class="pull-right">\n\t\t\t<a href="?page='+
+'\n\t\t\n\t\t<div class="pull-right">\n\t\t\t\n\t\t\t<a href="?page='+
 ((__t=( encodeURIComponent(data.page) ))==null?'':__t)+
 '&viz='+
 ((__t=( encodeURIComponent(data.title) ))==null?'':__t)+
-'" target="_blank">\n\t\t\t\t<span class="glyphicon glyphicon-new-window"></span>\n\t\t\t</a>\n\t\t</div>\n\t</div>\n\t';
+'" target="_blank" class="btn btn-default">\n\t\t\t\t<span class="glyphicon glyphicon-new-window"></span>\n\t\t\t</a>\n\t\t\n\t\t\t<div class="btn-group scroll hidden" role="group" aria-label="Scroll chart horizontally">\n\t\t\t\t<a href="#" class="btn btn-default" data-dir="decrease"><span class="glyphicon glyphicon-chevron-left"></span></a>\n\t\t\t\t<a href="#" class="btn btn-default" data-dir="increase"><span class="glyphicon glyphicon-chevron-right"></span></a>\n\t\t\t</div>\n\t\t\n\t\t</div>\n\t</div>\n\t';
  } 
 __p+='\n\t\t\n\t';
  if(data.padded) { 
@@ -63104,7 +63104,7 @@ __p+='\n\t\t<table class="viz table table-striped"></table>\n\t\t';
  } else { 
 __p+='\n\t\t<div class="viz"></div>\n\t\t';
  } 
-__p+='\n\t\t\n\t\t<div class="scroll">\n\t\t\t<a href="#" data-dir="decrease">&lt;</a>\n\t\t\t<a href="#" data-dir="increase">&gt;</a>\n\t\t</div>\n\t\t\n\t\t<div class="filters-container alert alert-info">\n\t\t\tFilters: <span class="filters"></span>\n\t\t</div>\n\t\n\t';
+__p+='\n\t\t\n\t\t<div class="filters-container alert alert-info">\n\t\t\tFilters: <span class="filters"></span>\n\t\t</div>\n\t\n\t';
  if(data.padded) { 
 __p+='\n\t</div>\n\t';
  } 
@@ -63225,10 +63225,6 @@ module.exports = BaseChart.extend({
 				tickLength: 0,
 				ignoreAxisWidth: true
 			}],
-			chartScrollbar: {
-				resizeEnabled: false,
-				dragIcon: 'empty'
-			},
 			chartCursor: {
 				fullWidth: true,
 				cursorAlpha: 0.1,
@@ -63279,11 +63275,22 @@ module.exports = BaseChart.extend({
 		
 		this.chart.chartCursor.addListener('changed', this.onHover);
 		this.chart.div.onclick = this.onClick;
+		
+		// If there are more records than the default, show scroll bars
+		if(this.chart.endIndex - this.chart.startIndex < this.collection.length) {
+			this.$('.scroll').removeClass('hidden');
+		}
 	},
 	onClickScroll: function(e) {
-		var modification = $(e.currentTarget).data('dir') === 'decrease' ? -1 : 1; 
-		this.chart.zoomToIndexes(this.chart.chartScrollbar.start + modification, this.chart.chartScrollbar.end + modification);
-		this.chart.animateAgain();
+		var modification = $(e.currentTarget).data('dir') === 'decrease' ? -1 : 1;
+		var displayCount = this.settings.chart.maxSelectedSeries;
+		var start = Math.min(this.collection.length - 1 - displayCount, Math.max(0, this.chart.startIndex + modification));
+		var end = Math.max(displayCount, Math.min(this.collection.length - 1, this.chart.endIndex + modification));
+		console.log(start, end);
+		if(start !== this.chart.startIndex || end !== this.chart.endIndex) {
+			this.chart.zoomToIndexes(start, end);
+			this.chart.animateAgain();
+		}
 		e.preventDefault();
 	},
 	// Keep track of which column the cursor is hovered over
