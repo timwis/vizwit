@@ -49,6 +49,7 @@
 		],
 		[
 			{
+				"title": "Parking Violations",
 				"chartType": "table",
 				"domain": "data.phila.gov",
 				"dataset": "2pfz-fnns",
