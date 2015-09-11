@@ -2,6 +2,12 @@
 	<% if(data.title) { %>
 	<div class="panel-heading">
 		<%= data.title %>
+		
+		<div class="pull-right">
+			<a href="?page=<%= encodeURIComponent(data.page) %>&viz=<%= encodeURIComponent(data.title) %>" target="_blank">
+				<span class="glyphicon glyphicon-new-window"></span>
+			</a>
+		</div>
 	</div>
 	<% } %>
 		

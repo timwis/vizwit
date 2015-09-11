@@ -3,6 +3,19 @@ body {
 	font-family: Arimo,"Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 
+body.embed {
+	background: none;
+}
+
+body.embed .header-container {
+	display: none;
+}
+
+body.embed .container-fluid {
+	margin: 0;
+	padding: 0;
+}
+
 .header-container {
 	background-color: #f8f8f8;
 	margin-bottom: 30px;
