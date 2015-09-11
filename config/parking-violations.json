@@ -5,7 +5,7 @@
 		"navigation": [
 			{
 				"label": "Properties",
-				"url": "?properties"
+				"url": "?page=properties"
 			}
 		]
 	},

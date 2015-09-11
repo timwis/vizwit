@@ -5,7 +5,7 @@
 		"navigation": [
 			{
 				"label": "Parking Violations",
-				"url": "?parking-violations"
+				"url": "?page=parking-violations"
 			}
 		]
 	},
