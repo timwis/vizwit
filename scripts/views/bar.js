@@ -58,10 +58,6 @@ module.exports = BaseChart.extend({
 				tickLength: 0,
 				ignoreAxisWidth: true
 			}],
-			chartScrollbar: {
-				resizeEnabled: false,
-				dragIcon: 'empty'
-			},
 			chartCursor: {
 				fullWidth: true,
 				cursorAlpha: 0.1,
@@ -112,11 +108,22 @@ module.exports = BaseChart.extend({
 		
 		this.chart.chartCursor.addListener('changed', this.onHover);
 		this.chart.div.onclick = this.onClick;
+		
+		// If there are more records than the default, show scroll bars
+		if(this.chart.endIndex - this.chart.startIndex < this.collection.length) {
+			this.$('.scroll').removeClass('hidden');
+		}
 	},
 	onClickScroll: function(e) {
-		var modification = $(e.currentTarget).data('dir') === 'decrease' ? -1 : 1; 
-		this.chart.zoomToIndexes(this.chart.chartScrollbar.start + modification, this.chart.chartScrollbar.end + modification);
-		this.chart.animateAgain();
+		var modification = $(e.currentTarget).data('dir') === 'decrease' ? -1 : 1;
+		var displayCount = this.settings.chart.maxSelectedSeries;
+		var start = Math.min(this.collection.length - 1 - displayCount, Math.max(0, this.chart.startIndex + modification));
+		var end = Math.max(displayCount, Math.min(this.collection.length - 1, this.chart.endIndex + modification));
+		console.log(start, end);
+		if(start !== this.chart.startIndex || end !== this.chart.endIndex) {
+			this.chart.zoomToIndexes(start, end);
+			this.chart.animateAgain();
+		}
 		e.preventDefault();
 	},
 	// Keep track of which column the cursor is hovered over
