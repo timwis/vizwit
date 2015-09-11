@@ -65,7 +65,6 @@ module.exports = Backbone.View.extend({
 					}
 				});
 			} else {
-				console.log(this.collection.fields.toJSON())
 				columns = this.collection.fields.toJSON();
 			}
 			
