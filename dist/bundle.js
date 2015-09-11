@@ -62852,13 +62852,50 @@ module.exports = Backbone.Collection.extend({
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
+
+module.exports = Backbone.Collection.extend({
+	typeMap: {
+		'calendar_date': 'date',
+		'number': 'num',
+		'money': 'num',
+		'default': 'string'
+	},
+	initialize: function(options) {
+		// Save config to collection
+		options = options || {};
+		this.domain = options.domain || null;
+		this.dataset = options.dataset || null;
+	},
+	url: function() {
+		return [
+			'https://',
+			this.domain,
+			'/api',
+			'/views',
+			'/' + this.dataset,
+			'.json'
+		].join('');
+	},
+	parse: function(response) {
+		var self = this;
+		return response.columns.filter(function(row) {
+			return ! _.isEmpty(row.format);
+		}).map(function(row) {
+			return {
+				data: row.fieldName,
+				title: row.name,
+				'type': self.typeMap[row.renderTypeName] || self.typeMap['default'],
+				defaultContent: ''
+			}
+		});
+	}
+});
+},{"backbone":5,"jquery":19,"underscore":58}],61:[function(require,module,exports){
+var $ = require('jquery');
+var _ = require('underscore');
+var Backbone = require('backbone');
 var soda = require('soda-js');
-	
-var modelFactory = function(idAttribute) {
-	return Backbone.Model.extend({
-		idAttribute: idAttribute
-	});
-};
+var SocrataFields = require('./socrata-fields');
 
 var model = Backbone.Model.extend({
 	idAttribute: 'label'
@@ -62878,7 +62915,7 @@ module.exports = Backbone.Collection.extend({
 		this.triggerField = options.triggerField || options.groupBy;
 		this.filter = options.filter || {};
 		
-		//this.model = modelFactory(options.groupBy);
+		this.fields = new SocrataFields(options);
 	},
 	url: function() {
 		var filter = _.pluck(this.filter, 'expression').join(' and ');
@@ -62903,7 +62940,7 @@ module.exports = Backbone.Collection.extend({
 		return _.pluck(this.filter, 'friendlyExpression').join(' and ');
 	}
 })
-},{"backbone":5,"jquery":19,"soda-js":50,"underscore":58}],61:[function(require,module,exports){
+},{"./socrata-fields":60,"backbone":5,"jquery":19,"soda-js":50,"underscore":58}],62:[function(require,module,exports){
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
@@ -63017,7 +63054,7 @@ $.getJSON('config/' + page + '.json')
 .fail(function() {
 	console.error('Dataset %s not found', dataset);
 })
-},{"./collections/geojson":59,"./collections/socrata":60,"./views/bar":67,"./views/choropleth":69,"./views/datetime":70,"./views/header":71,"./views/table":72,"backbone":5,"jquery":19,"jquery-deparam":18,"underscore":58}],62:[function(require,module,exports){
+},{"./collections/geojson":59,"./collections/socrata":61,"./views/bar":68,"./views/choropleth":70,"./views/datetime":71,"./views/header":72,"./views/table":73,"backbone":5,"jquery":19,"jquery-deparam":18,"underscore":58}],63:[function(require,module,exports){
 module.exports = function(data){
 var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
 __p+='<div class="row">\n\t<div class="col-md-7">\n\t\t\n\t\t<h1 class="title">'+
@@ -63044,7 +63081,7 @@ __p+='\n\t\t\t\n\t</div>\n</div>';
 return __p;
 };
 
-},{}],63:[function(require,module,exports){
+},{}],64:[function(require,module,exports){
 module.exports = function(data){
 var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
 __p+='<div class="panel panel-default">\n\t';
@@ -63075,7 +63112,7 @@ __p+='\n</div>';
 return __p;
 };
 
-},{}],64:[function(require,module,exports){
+},{}],65:[function(require,module,exports){
 var chroma = require('chroma-js');
 var tinygradient = require('tinygradient');
 
@@ -63094,7 +63131,7 @@ ColorRange.prototype.getColor = function(needle) {
 }
 
 module.exports = ColorRange;
-},{"chroma-js":10,"tinygradient":57}],65:[function(require,module,exports){
+},{"chroma-js":10,"tinygradient":57}],66:[function(require,module,exports){
 var Spinner = require('spin.js');
 
 exports.on = function() {
@@ -63108,7 +63145,7 @@ exports.off = function() {
 		this.spinner.stop();
 	}
 }
-},{"spin.js":55}],66:[function(require,module,exports){
+},{"spin.js":55}],67:[function(require,module,exports){
 module.exports = function(num) {
     isNegative = false
     if (num < 0) {
@@ -63127,7 +63164,7 @@ module.exports = function(num) {
     if(isNegative) { formattedNumber = '-' + formattedNumber }
     return formattedNumber;
 }
-},{}],67:[function(require,module,exports){
+},{}],68:[function(require,module,exports){
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
@@ -63283,7 +63320,7 @@ module.exports = BaseChart.extend({
 		}
 	}
 })
-},{"../util/number-formatter":66,"./basechart":68,"backbone":5,"jquery":19,"underscore":58}],68:[function(require,module,exports){
+},{"../util/number-formatter":67,"./basechart":69,"backbone":5,"jquery":19,"underscore":58}],69:[function(require,module,exports){
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
@@ -63443,7 +63480,7 @@ module.exports = Backbone.View.extend({
 		this.renderFilters();
 	}
 })
-},{"../templates/panel.html":63,"../util/loader":65,"../util/number-formatter":66,"amcharts3":1,"amcharts3/amcharts/plugins/responsive/responsive":2,"amcharts3/amcharts/serial":3,"amcharts3/amcharts/themes/light":4,"backbone":5,"jquery":19,"underscore":58}],69:[function(require,module,exports){
+},{"../templates/panel.html":64,"../util/loader":66,"../util/number-formatter":67,"amcharts3":1,"amcharts3/amcharts/plugins/responsive/responsive":2,"amcharts3/amcharts/serial":3,"amcharts3/amcharts/themes/light":4,"backbone":5,"jquery":19,"underscore":58}],70:[function(require,module,exports){
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
@@ -63638,7 +63675,7 @@ module.exports = Backbone.View.extend({
 	}
 });
 
-},{"../templates/panel.html":63,"../util/color-range":64,"../util/loader":65,"backbone":5,"geocolor":13,"jquery":19,"mapbox.js":35,"underscore":58}],70:[function(require,module,exports){
+},{"../templates/panel.html":64,"../util/color-range":65,"../util/loader":66,"backbone":5,"geocolor":13,"jquery":19,"mapbox.js":35,"underscore":58}],71:[function(require,module,exports){
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
@@ -63774,7 +63811,7 @@ module.exports = BaseChart.extend({
 		}
 	}
 })
-},{"../util/number-formatter":66,"./basechart":68,"backbone":5,"jquery":19,"underscore":58}],71:[function(require,module,exports){
+},{"../util/number-formatter":67,"./basechart":69,"backbone":5,"jquery":19,"underscore":58}],72:[function(require,module,exports){
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
@@ -63789,7 +63826,7 @@ module.exports = Backbone.View.extend({
 		return this;
 	}
 });
-},{"../templates/header.html":62,"backbone":5,"jquery":19,"underscore":58}],72:[function(require,module,exports){
+},{"../templates/header.html":63,"backbone":5,"jquery":19,"underscore":58}],73:[function(require,module,exports){
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
@@ -63812,9 +63849,18 @@ module.exports = Backbone.View.extend({
 		this.listenTo(this.collection, 'request', LoaderOn);
 		this.listenTo(this.collection, 'sync', LoaderOff);
 		
-		// Fetch collection
 		this.renderTemplate();
-		this.render();
+		
+		// If columns were defined in the config, go straight to render
+		// otherwise, fetch columns through the metadata model 
+		if(this.config.columns) {
+			this.render();
+		} else {
+			this.listenTo(this.collection.fields, 'sync', this.render);
+		}
+		
+		// Fetch meta model
+		this.collection.fields.fetch();
 	},
 	renderTemplate: function() {
 		this.$el.empty().append(Template(this.config));
@@ -63832,13 +63878,24 @@ module.exports = Backbone.View.extend({
 		// Otherwise, initialize the table
 		else {
 			// Map the array of columns to the expected format
-			var columns = this.config.columns.map(function(column) {
-				return {
-					data: column,
-					title: column,
-					defaultContent: ''
-				};
-			});
+			var columns;
+			
+			if(this.config.columns) {
+				columns = this.config.columns.map(function(column) {
+					if(typeof column === 'string') {
+						return {
+							data: column,
+							title: column,
+							defaultContent: ''
+						};
+					} else if(typeof column === 'object') {
+						column.defaultContent = '';
+						return column;
+					}
+				});
+			} else {
+				columns = this.collection.fields.toJSON();
+			}
 			
 			// Initialize the table
 			this.table = this.$('.viz').DataTable({
@@ -63872,4 +63929,4 @@ module.exports = Backbone.View.extend({
 		this.renderFilters();
 	}
 });
-},{"../templates/panel.html":63,"../util/loader":65,"backbone":5,"datatables":12,"datatables/media/js/dataTables.bootstrap":11,"jquery":19,"underscore":58}]},{},[61]);
+},{"../templates/panel.html":64,"../util/loader":66,"backbone":5,"datatables":12,"datatables/media/js/dataTables.bootstrap":11,"jquery":19,"underscore":58}]},{},[62]);

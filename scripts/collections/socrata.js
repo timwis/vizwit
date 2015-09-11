@@ -2,12 +2,7 @@ var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var soda = require('soda-js');
-	
-var modelFactory = function(idAttribute) {
-	return Backbone.Model.extend({
-		idAttribute: idAttribute
-	});
-};
+var SocrataFields = require('./socrata-fields');
 
 var model = Backbone.Model.extend({
 	idAttribute: 'label'
@@ -27,7 +22,7 @@ module.exports = Backbone.Collection.extend({
 		this.triggerField = options.triggerField || options.groupBy;
 		this.filter = options.filter || {};
 		
-		//this.model = modelFactory(options.groupBy);
+		this.fields = new SocrataFields(options);
 	},
 	url: function() {
 		var filter = _.pluck(this.filter, 'expression').join(' and ');

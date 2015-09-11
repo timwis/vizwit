@@ -20,9 +20,18 @@ module.exports = Backbone.View.extend({
 		this.listenTo(this.collection, 'request', LoaderOn);
 		this.listenTo(this.collection, 'sync', LoaderOff);
 		
-		// Fetch collection
 		this.renderTemplate();
-		this.render();
+		
+		// If columns were defined in the config, go straight to render
+		// otherwise, fetch columns through the metadata model 
+		if(this.config.columns) {
+			this.render();
+		} else {
+			this.listenTo(this.collection.fields, 'sync', this.render);
+		}
+		
+		// Fetch meta model
+		this.collection.fields.fetch();
 	},
 	renderTemplate: function() {
 		this.$el.empty().append(Template(this.config));
@@ -40,13 +49,24 @@ module.exports = Backbone.View.extend({
 		// Otherwise, initialize the table
 		else {
 			// Map the array of columns to the expected format
-			var columns = this.config.columns.map(function(column) {
-				return {
-					data: column,
-					title: column,
-					defaultContent: ''
-				};
-			});
+			var columns;
+			
+			if(this.config.columns) {
+				columns = this.config.columns.map(function(column) {
+					if(typeof column === 'string') {
+						return {
+							data: column,
+							title: column,
+							defaultContent: ''
+						};
+					} else if(typeof column === 'object') {
+						column.defaultContent = '';
+						return column;
+					}
+				});
+			} else {
+				columns = this.collection.fields.toJSON();
+			}
 			
 			// Initialize the table
 			this.table = this.$('.viz').DataTable({

@@ -53,17 +53,7 @@
 				"chartType": "table",
 				"domain": "data.phila.gov",
 				"dataset": "2pfz-fnns",
-				"padded": true,
-				"columns": [
-					"division",
-					"fine",
-					"issue_date_and_time",
-					"issuing_agency",
-					"location",
-					"plate_id",
-					"state",
-					"violation_description"
-				]
+				"padded": true
 			}
 		]
 	]

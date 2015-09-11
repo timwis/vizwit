@@ -55,13 +55,7 @@
 				"chartType": "table",
 				"domain": "data.phila.gov",
 				"dataset": "tqtk-pmbv",
-				"padded": true,
-				"columns": [
-					"parcel_number",
-					"location",
-					"owner_1",
-					"owner_2"
-				]
+				"padded": true
 			}
 		]
 	]
