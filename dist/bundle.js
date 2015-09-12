@@ -63223,6 +63223,7 @@ module.exports = BaseChart.extend({
 				axisThickness: 0,
 				axisAlpha: 0,
 				tickLength: 0,
+				includeAllValues: true,
 				ignoreAxisWidth: true
 			}],
 			chartCursor: {
@@ -63432,11 +63433,6 @@ module.exports = Backbone.View.extend({
 			config.graphs[0].showBalloon = false;
 			
 			config.graphs.push($.extend(true, {}, this.settings.graphs[1]));
-			
-			// Keep chart minimum pegged to original graph's minimum so legend doesn't change
-			if(this.chart) {
-				config.valueAxes[0].minimum = this.chart.valueAxes[0].min;
-			}
 		}
 		
 		// Show guide on selected item
