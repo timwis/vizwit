@@ -56,6 +56,7 @@ module.exports = BaseChart.extend({
 				axisThickness: 0,
 				axisAlpha: 0,
 				tickLength: 0,
+				includeAllValues: true,
 				ignoreAxisWidth: true
 			}],
 			chartCursor: {
