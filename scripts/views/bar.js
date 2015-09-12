@@ -65,8 +65,8 @@ module.exports = BaseChart.extend({
 				oneBalloonOnly: true
 			},
 			maxSelectedSeries: 7,
-			startDuration: 0.5,
-			startEffect: 'easeOutSine',
+			//startDuration: 0.5,
+			//startEffect: 'easeOutSine',
 			zoomOutText: '',
 			mouseWheelScrollEnabled: true,
 			categoryAxis: {
