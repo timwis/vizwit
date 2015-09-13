@@ -100,6 +100,7 @@ module.exports = BaseChart.extend({
 		'click .scroll a': 'onClickScroll'
 	},
 	render: function() {
+		var self = this;
 		BaseChart.prototype.render.apply(this, arguments);
 		
 		// If there are greater than 10 bars, zoom to the first bar (ideally this would be done by configuration)
@@ -108,7 +109,11 @@ module.exports = BaseChart.extend({
 		}
 		
 		this.chart.chartCursor.addListener('changed', this.onHover);
-		this.chart.div.onclick = this.onClick;
+		this.chart.div.onclick = function(e) {
+			setTimeout(function() {
+				self.onClick(e);
+			}, 100);
+		}
 		
 		// If there are more records than the default, show scroll bars
 		if(this.chart.endIndex - this.chart.startIndex < this.collection.length) {
