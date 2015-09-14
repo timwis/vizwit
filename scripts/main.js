@@ -12,6 +12,7 @@ var Bar = require('./views/bar');
 var Table = require('./views/table');
 var DateTime = require('./views/datetime');
 var Choropleth = require('./views/choropleth');
+var Pie = require('./views/pie');
 
 var vent = _.clone(Backbone.Events);
 
@@ -88,6 +89,15 @@ var gist = params.gist || '601224472a5d53cbb908'; // default to sample config
 						break;
 					case 'datetime':
 						new DateTime({
+							config: column,
+							el: columnEl,
+							collection: collection,
+							filteredCollection: filteredCollection,
+							vent: vent
+						});
+						break;
+					case 'pie':
+						new Pie({
 							config: column,
 							el: columnEl,
 							collection: collection,
