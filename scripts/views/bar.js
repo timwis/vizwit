@@ -94,7 +94,7 @@ module.exports = BaseChart.extend({
 	initialize: function(options) {
 		BaseChart.prototype.initialize.apply(this, arguments);
 		
-		_.bindAll(this, 'onClick', 'onHover', 'onClickScroll');
+		_.bindAll(this, 'onClick', 'onHover', 'onClickScroll', 'zoomToBeginning');
 	},
 	events: {
 		'click .scroll a': 'onClickScroll',
@@ -104,15 +104,19 @@ module.exports = BaseChart.extend({
 		BaseChart.prototype.render.apply(this, arguments);
 		
 		// If there are greater than 10 bars, zoom to the first bar (ideally this would be done by configuration)
-		if(this.collection.length > this.chart.maxSelectedSeries) {
-			this.chart.zoomToIndexes(0, this.chart.maxSelectedSeries);
-		}
+		this.chart.addListener('drawn', this.zoomToBeginning);
+		this.zoomToBeginning(); // since rendered isn't called the first time
 		
 		this.chart.chartCursor.addListener('changed', this.onHover);
 		
 		// If there are more records than the default, show scroll bars
 		if(this.chart.endIndex - this.chart.startIndex < this.collection.length) {
 			this.$('.scroll').removeClass('hidden');
+		}
+	},
+	zoomToBeginning: function() {
+		if(this.collection.length > this.chart.maxSelectedSeries) {
+			this.chart.zoomToIndexes(0, this.chart.maxSelectedSeries);
 		}
 	},
 	onClickScroll: function(e) {

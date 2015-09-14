@@ -114,22 +114,5 @@ module.exports = BaseChart.extend({
 			expression: field + ' >= \'' + startIso + '\' and ' + field + ' <= \'' + endIso + '\'',
 			friendlyExpression: field + ' is ' + startFriendly + ' to ' + endFriendly
 		})
-	},
-	// When a chart has been filtered
-	onFilter: function(data) {
-		// Only listen to other charts
-		if(data.field !== this.filteredCollection.triggerField) {
-			// Add the filter to the filtered collection and fetch it with the filter
-			if(data.expression) {
-				this.filteredCollection.filter[data.field] = data;
-			} else {
-				delete this.filteredCollection.filter[data.field];
-			}
-			this.filteredCollection.fetch();
-			this.renderFilters();
-		} else {
-			// Re-render to show the guides when they're initially set
-			this.render();
-		}
 	}
 })

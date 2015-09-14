@@ -104,16 +104,7 @@ module.exports = Backbone.View.extend({
 			config.graphs.push($.extend(true, {}, this.settings.graphs[1]));
 		}
 		
-		// Show guide on selected item
-		if(this.collection.selected) {
-			var guide = config.categoryAxis.guides[0];
-			if(config.categoryAxis.parseDates) {
-				guide.date = this.collection.selected[0];
-				guide.toDate = this.collection.selected[1];
-			} else {
-				guide.category = guide.toCategory = this.collection.selected;
-			}
-		}
+		this.updateGuide(config);
 		
 		this.chart = AmCharts.makeChart(this.$('.viz').get(0), config);
 	},
@@ -140,15 +131,41 @@ module.exports = Backbone.View.extend({
 		});
 		return chartData;
 	},
+	// Show guide on selected item or remove it if nothing's selected
+	updateGuide: function(config) {
+		var guide = config.categoryAxis.guides[0];
+		if(this.collection.selected) {
+			console.log('adding guide', this.collection.selected)
+			if(config.categoryAxis.parseDates) {
+				guide.date = this.collection.selected[0];
+				guide.toDate = this.collection.selected[1];
+			} else {
+				guide.category = guide.toCategory = this.collection.selected;
+			}
+		} else {
+			console.log('removing guide')
+			if(guide.date) delete guide.date;
+			if(guide.toDate) delete guide.toDate;
+			if(guide.category) delete guide.category;
+		}
+	},
 	// When a chart has been filtered
 	onFilter: function(data) {
-		// Add the filter to the filtered collection and fetch it with the filter
-		if(data.expression) {
-			this.filteredCollection.filter[data.field] = data;
+		// Only listen to other charts
+		if(data.field !== this.filteredCollection.triggerField) {
+			// Add the filter to the filtered collection and fetch it with the filter
+			if(data.expression) {
+				this.filteredCollection.filter[data.field] = data;
+			} else {
+				delete this.filteredCollection.filter[data.field];
+			}
+			this.filteredCollection.fetch();
+			this.renderFilters();
 		} else {
-			delete this.filteredCollection.filter[data.field];
+			// Re-render to show the guides when they're initially set
+			//this.render();
+			this.updateGuide(this.chart);
+			this.chart.validateData();
 		}
-		this.filteredCollection.fetch();
-		this.renderFilters();
 	}
 })
