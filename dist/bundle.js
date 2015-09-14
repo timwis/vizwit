@@ -62853,6 +62853,28 @@ var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 
+var model = Backbone.Model.extend({
+	idAttribute: 'filename'
+});
+	
+module.exports = Backbone.Collection.extend({
+	model: model,
+	initialize: function(models, options) {
+		options = options || {};
+		this.id = options.id;
+	},
+	url: function() {
+		return 'https://api.github.com/gists/' + this.id;
+	},
+	parse: function(response) {
+		return _.values(response.files);
+	}
+});
+},{"backbone":5,"jquery":19,"underscore":58}],61:[function(require,module,exports){
+var $ = require('jquery');
+var _ = require('underscore');
+var Backbone = require('backbone');
+
 module.exports = Backbone.Collection.extend({
 	typeMap: {
 		'calendar_date': 'date',
@@ -62890,7 +62912,7 @@ module.exports = Backbone.Collection.extend({
 		});
 	}
 });
-},{"backbone":5,"jquery":19,"underscore":58}],61:[function(require,module,exports){
+},{"backbone":5,"jquery":19,"underscore":58}],62:[function(require,module,exports){
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
@@ -62940,12 +62962,13 @@ module.exports = Backbone.Collection.extend({
 		return _.pluck(this.filter, 'friendlyExpression').join(' and ');
 	}
 })
-},{"./socrata-fields":60,"backbone":5,"jquery":19,"soda-js":50,"underscore":58}],62:[function(require,module,exports){
+},{"./socrata-fields":61,"backbone":5,"jquery":19,"soda-js":50,"underscore":58}],63:[function(require,module,exports){
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var deparam = require('jquery-deparam');
 
+var Gist = require('./collections/gist');
 var Socrata = require('./collections/socrata');
 var GeoJSON = require('./collections/geojson');
 
@@ -62958,103 +62981,111 @@ var Choropleth = require('./views/choropleth');
 var vent = _.clone(Backbone.Events);
 
 var params = window.location.search.substr(1) ? deparam(window.location.search.substr(1)) : {};
-var page = params.page || 'parking-violations';
+var gist = params.gist || '601224472a5d53cbb908'; // default to sample config
 
-//var config = require('../config/parking-violations');
-$.getJSON('config/' + page + '.json')
-.done(function(config) {
-
-	// Render header
-	if(config.header) {
-		var header = new Header(config.header);
-		$('#page-header').append(header.render().el);
+// Fetch gist
+(new Gist(null, {id: gist})).fetch({
+	success: function(collection, response, options) {	
+		if( ! collection.length) return console.error('No files in gist', gist, arguments);
 		
-		// Update <title> tag
-		if(config.header.title) {
-			var originalTitle = $('title').text();
-			$('title').text(config.header.title + ' - ' + originalTitle);
-		}
-	}
-	
-	// If embedding, only include the desired panel
-	if(params.viz) {
-		// Find the panel to embed
-		var panel = _.findWhere(config.panels.concat.apply([], config.panels), {title: params.viz});
-		if(panel) {
-			// Make it the only panel being iterated
-			config.panels = [[panel]];
-			
-			// Add embed class to the <body> to hide other elements
-			$('body').addClass('embed');
-		}
-	}
-	
-	var container = $('#page-content');
-	
-	config.panels.forEach(function(columns) {
-		var width = Math.round(12 / columns.length);
-		var rowEl = $('<div/>').addClass('row');
+		// If a file was provided, use that one; otherwise use the first file in the gist
+		var model = params.file ? collection.get(params.file) : collection.at(0);
+		var config = JSON.parse(model.get('content'));
 		
-		// Add new row to DOM
-		container.append(rowEl);
+		if( ! config.version) return console.error('No version specified in config');
 		
-		// Loop through columns in this row
-		columns.forEach(function(column) {
-			// Pass page name through via config
-			column.page = page;
+		// Render header
+		if(config.header) {
+			var header = new Header(config.header);
+			$('#page-header').append(header.render().el);
 			
-			// Add column element to row
-			var columnEl = $('<div/>').addClass('col-md-' + width);
-			rowEl.append(columnEl);
-			
-			// Initialize view
-			var collection = new Socrata(null, column);
-			var filteredCollection = new Socrata(null, column);
-			
-			switch(column.chartType) {
-				case 'bar':
-					new Bar({
-						config: column,
-						el: columnEl.get(0),
-						collection: collection,
-						filteredCollection: filteredCollection,
-						vent: vent
-					});
-					break;
-				case 'datetime':
-					new DateTime({
-						config: column,
-						el: columnEl,
-						collection: collection,
-						filteredCollection: filteredCollection,
-						vent: vent
-					});
-					break;
-				case 'table':
-					new Table({
-						config: column,
-						el: columnEl,
-						collection: collection,
-						vent: vent
-					});
-					break;
-				case 'choropleth':
-					new Choropleth({
-						config: column,
-						el: columnEl,
-						collection: collection,
-						boundaries: new GeoJSON(null, column),
-						filteredCollection: filteredCollection,
-						vent: vent
-					});
+			// Update <title> tag
+			if(config.header.title) {
+				var originalTitle = $('title').text();
+				$('title').text(config.header.title + ' - ' + originalTitle);
 			}
+		}
+		
+		// If embedding, only include the desired panel
+		if(params.viz) {
+			// Find the panel to embed
+			var panel = _.findWhere(config.panels.concat.apply([], config.panels), {title: params.viz});
+			if(panel) {
+				// Make it the only panel being iterated
+				config.panels = [[panel]];
+				
+				// Add embed class to the <body> to hide other elements
+				$('body').addClass('embed');
+			}
+		}
+		
+		var container = $('#page-content');
+		
+		config.panels.forEach(function(columns) {
+			var width = Math.round(12 / columns.length);
+			var rowEl = $('<div/>').addClass('row');
+			
+			// Add new row to DOM
+			container.append(rowEl);
+			
+			// Loop through columns in this row
+			columns.forEach(function(column) {
+				// Pass page name through via config
+				if(params.gist) column.gist = params.gist;
+				
+				// Add column element to row
+				var columnEl = $('<div/>').addClass('col-md-' + width);
+				rowEl.append(columnEl);
+				
+				// Initialize view
+				var collection = new Socrata(null, column);
+				var filteredCollection = new Socrata(null, column);
+				
+				switch(column.chartType) {
+					case 'bar':
+						new Bar({
+							config: column,
+							el: columnEl.get(0),
+							collection: collection,
+							filteredCollection: filteredCollection,
+							vent: vent
+						});
+						break;
+					case 'datetime':
+						new DateTime({
+							config: column,
+							el: columnEl,
+							collection: collection,
+							filteredCollection: filteredCollection,
+							vent: vent
+						});
+						break;
+					case 'table':
+						new Table({
+							config: column,
+							el: columnEl,
+							collection: collection,
+							vent: vent
+						});
+						break;
+					case 'choropleth':
+						new Choropleth({
+							config: column,
+							el: columnEl,
+							collection: collection,
+							boundaries: new GeoJSON(null, column),
+							filteredCollection: filteredCollection,
+							vent: vent
+						});
+				}
+			});
 		});
-	});
-})
-.fail(function() {
-	console.error('Dataset %s not found', dataset);
-})
-},{"./collections/geojson":59,"./collections/socrata":61,"./views/bar":68,"./views/choropleth":70,"./views/datetime":71,"./views/header":72,"./views/table":73,"backbone":5,"jquery":19,"jquery-deparam":18,"underscore":58}],63:[function(require,module,exports){
+	},
+	error: function() {
+		console.error('Error fetching gist', gist);
+	}
+});
+},{"./collections/geojson":59,"./collections/gist":60,"./collections/socrata":62,"./views/bar":69,"./views/choropleth":71,"./views/datetime":72,"./views/header":73,"./views/table":74,"backbone":5,"jquery":19,"jquery-deparam":18,"underscore":58}],64:[function(require,module,exports){
 module.exports = function(data){
 var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
 __p+='<div class="row">\n\t<div class="col-md-7">\n\t\t\n\t\t<h1 class="title">'+
@@ -63081,16 +63112,20 @@ __p+='\n\t\t\t\n\t</div>\n</div>';
 return __p;
 };
 
-},{}],64:[function(require,module,exports){
+},{}],65:[function(require,module,exports){
 module.exports = function(data){
 var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
 __p+='<div class="panel panel-default">\n\t';
  if(data.title) { 
 __p+='\n\t<div class="panel-heading">\n\t\t'+
 ((__t=( data.title ))==null?'':__t)+
-'\n\t\t\n\t\t<div class="pull-right">\n\t\t\t\n\t\t\t<a href="?page='+
-((__t=( encodeURIComponent(data.page) ))==null?'':__t)+
-'&viz='+
+'\n\t\t\n\t\t<div class="pull-right">\n\t\t\t\n\t\t\t<a href="?';
+ if(data.gist) { 
+__p+='gist='+
+((__t=( encodeURIComponent(data.gist) ))==null?'':__t)+
+'&';
+ } 
+__p+='viz='+
 ((__t=( encodeURIComponent(data.title) ))==null?'':__t)+
 '" target="_blank" class="btn btn-default">\n\t\t\t\t<span class="glyphicon glyphicon-new-window"></span>\n\t\t\t</a>\n\t\t\n\t\t\t<div class="btn-group scroll hidden" role="group" aria-label="Scroll chart horizontally">\n\t\t\t\t<a href="#" class="btn btn-default" data-dir="decrease"><span class="glyphicon glyphicon-chevron-left"></span></a>\n\t\t\t\t<a href="#" class="btn btn-default" data-dir="increase"><span class="glyphicon glyphicon-chevron-right"></span></a>\n\t\t\t</div>\n\t\t\n\t\t</div>\n\t</div>\n\t';
  } 
@@ -63112,7 +63147,7 @@ __p+='\n</div>';
 return __p;
 };
 
-},{}],65:[function(require,module,exports){
+},{}],66:[function(require,module,exports){
 var chroma = require('chroma-js');
 var tinygradient = require('tinygradient');
 
@@ -63131,21 +63166,32 @@ ColorRange.prototype.getColor = function(needle) {
 }
 
 module.exports = ColorRange;
-},{"chroma-js":10,"tinygradient":57}],66:[function(require,module,exports){
+},{"chroma-js":10,"tinygradient":57}],67:[function(require,module,exports){
 var Spinner = require('spin.js');
 
 exports.on = function() {
+	// Fade out panel
 	this.$('.viz').fadeTo(1, 0.4);
-	this.spinner = new Spinner().spin(this.el);
+	
+	// Create the spinner if it doesn't exist yet
+	if( ! this.spinner) {
+		this.spinner = new Spinner();
+	}
+	
+	// Start the spinner
+	this.spinner.spin(this.el);
 };
 
 exports.off = function() {
+	// Fade in panel
 	this.$('.viz').fadeTo(1, 1);
+	
+	// Stop the spinner
 	if(this.spinner) {
 		this.spinner.stop();
 	}
 }
-},{"spin.js":55}],67:[function(require,module,exports){
+},{"spin.js":55}],68:[function(require,module,exports){
 module.exports = function(num) {
     isNegative = false
     if (num < 0) {
@@ -63164,7 +63210,7 @@ module.exports = function(num) {
     if(isNegative) { formattedNumber = '-' + formattedNumber }
     return formattedNumber;
 }
-},{}],68:[function(require,module,exports){
+},{}],69:[function(require,module,exports){
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
@@ -63244,7 +63290,7 @@ module.exports = BaseChart.extend({
 				autoWrap: true,
 				//gridAlpha: 0,
 				labelFunction: function(label) {
-					return label.length > 15 ? label.substr(0, 15) + '…' : label;
+					return label.length > 12 ? label.substr(0, 12) + '…' : label;
 				},
 				guides: [{
 					lineThickness: 2,
@@ -63350,7 +63396,7 @@ module.exports = BaseChart.extend({
 		}
 	}
 })
-},{"../util/number-formatter":67,"./basechart":69,"backbone":5,"jquery":19,"underscore":58}],69:[function(require,module,exports){
+},{"../util/number-formatter":68,"./basechart":70,"backbone":5,"jquery":19,"underscore":58}],70:[function(require,module,exports){
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
@@ -63505,7 +63551,7 @@ module.exports = Backbone.View.extend({
 		this.renderFilters();
 	}
 })
-},{"../templates/panel.html":64,"../util/loader":66,"../util/number-formatter":67,"amcharts3":1,"amcharts3/amcharts/plugins/responsive/responsive":2,"amcharts3/amcharts/serial":3,"amcharts3/amcharts/themes/light":4,"backbone":5,"jquery":19,"underscore":58}],70:[function(require,module,exports){
+},{"../templates/panel.html":65,"../util/loader":67,"../util/number-formatter":68,"amcharts3":1,"amcharts3/amcharts/plugins/responsive/responsive":2,"amcharts3/amcharts/serial":3,"amcharts3/amcharts/themes/light":4,"backbone":5,"jquery":19,"underscore":58}],71:[function(require,module,exports){
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
@@ -63700,7 +63746,7 @@ module.exports = Backbone.View.extend({
 	}
 });
 
-},{"../templates/panel.html":64,"../util/color-range":65,"../util/loader":66,"backbone":5,"geocolor":13,"jquery":19,"mapbox.js":35,"underscore":58}],71:[function(require,module,exports){
+},{"../templates/panel.html":65,"../util/color-range":66,"../util/loader":67,"backbone":5,"geocolor":13,"jquery":19,"mapbox.js":35,"underscore":58}],72:[function(require,module,exports){
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
@@ -63836,7 +63882,7 @@ module.exports = BaseChart.extend({
 		}
 	}
 })
-},{"../util/number-formatter":67,"./basechart":69,"backbone":5,"jquery":19,"underscore":58}],72:[function(require,module,exports){
+},{"../util/number-formatter":68,"./basechart":70,"backbone":5,"jquery":19,"underscore":58}],73:[function(require,module,exports){
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
@@ -63851,7 +63897,7 @@ module.exports = Backbone.View.extend({
 		return this;
 	}
 });
-},{"../templates/header.html":63,"backbone":5,"jquery":19,"underscore":58}],73:[function(require,module,exports){
+},{"../templates/header.html":64,"backbone":5,"jquery":19,"underscore":58}],74:[function(require,module,exports){
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
@@ -63954,4 +64000,4 @@ module.exports = Backbone.View.extend({
 		this.renderFilters();
 	}
 });
-},{"../templates/panel.html":64,"../util/loader":66,"backbone":5,"datatables":12,"datatables/media/js/dataTables.bootstrap":11,"jquery":19,"underscore":58}]},{},[62]);
+},{"../templates/panel.html":65,"../util/loader":67,"backbone":5,"datatables":12,"datatables/media/js/dataTables.bootstrap":11,"jquery":19,"underscore":58}]},{},[63]);
