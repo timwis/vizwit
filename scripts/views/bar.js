@@ -14,7 +14,10 @@ module.exports = BaseChart.extend({
 				fillAlphas: 1,
 				clustered: false,
 				lineColor: '#97bbcd',
-				balloonText: '<b>[[category]]</b><br>Total: [[value]]'
+				balloonFunction: function(item, graph) {
+					return '<b>' + item.category + '</b><br>Total: ' + item.value + '<br>\
+						<a href="#foo">click me</a>';
+				}
 			},
 			{
 				'type': 'column',
@@ -44,6 +47,9 @@ module.exports = BaseChart.extend({
 					}
 				]
 			},
+			balloon: {
+				disableMouseEvents: false
+			},
 			addClassNames: true,
 			categoryField: 'label',
 			marginLeft: 5,
@@ -63,7 +69,8 @@ module.exports = BaseChart.extend({
 				fullWidth: true,
 				cursorAlpha: 0.1,
 				zoomable: false,
-				oneBalloonOnly: true
+				oneBalloonOnly: true,
+				leaveCursor: true
 			},
 			maxSelectedSeries: 7,
 			//startDuration: 0.5,
@@ -97,10 +104,11 @@ module.exports = BaseChart.extend({
 		_.bindAll(this, 'onClick', 'onHover', 'onClickScroll');
 	},
 	events: {
-		'click .scroll a': 'onClickScroll',
-		'click .viz': 'onClick'
+		'click .scroll a': 'onClickScroll'
+		//'click .viz': 'onClick'
 	},
 	render: function() {
+		var self = this;
 		BaseChart.prototype.render.apply(this, arguments);
 		
 		// If there are greater than 10 bars, zoom to the first bar (ideally this would be done by configuration)
@@ -109,6 +117,13 @@ module.exports = BaseChart.extend({
 		}
 		
 		this.chart.chartCursor.addListener('changed', this.onHover);
+		this.delegateEvents({
+			'click .viz': function(e) {
+				setTimeout(function() {
+					self.onClick(e);
+				}, 100);
+			}
+		});
 		
 		// If there are more records than the default, show scroll bars
 		if(this.chart.endIndex - this.chart.startIndex < this.collection.length) {
@@ -129,11 +144,8 @@ module.exports = BaseChart.extend({
 	},
 	// Keep track of which column the cursor is hovered over
 	onHover: function(e) {
-		if(e.index == null) {
-			this.hovering = null;
-		} else {
-			this.hovering = this.chart.categoryAxis.data[e.index];
-		}
+		console.log('onHover', e.index)
+		this.hovering = e.index ? this.chart.categoryAxis.data[e.index] : null;
 	},
 	// When the user clicks on a bar in this chart
 	onClick: function(e) {
