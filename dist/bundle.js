@@ -63945,7 +63945,7 @@ module.exports = Backbone.View.extend({
 			groupPercent: 1,
 			balloonFunction: function(item, formattedText) {
 				var content = '<b>' + item.title + '</b><br> \
-					Total: ' + (+item.dataContext.count).toLocaleString() + ' (' + parseFloat(item.percents.toFixed(2)) + '%)';
+					Total: ' + item.value.toLocaleString() + ' (' + parseFloat(item.percents.toFixed(2)) + '%)';
 				if(item.dataContext.filteredCount !== undefined) {
 					content += '<br>Filtered Amount: ' + (+item.dataContext.filteredCount).toLocaleString();
 				}
@@ -64054,12 +64054,29 @@ module.exports = Backbone.View.extend({
 		else {
 			this.collection.selected = category;
 			
-			// Trigger the global event handler with this filter
-			this.vent.trigger('filter', {
-				field: this.collection.triggerField,
-				expression: this.collection.triggerField + ' = \'' + category + '\'',
-				friendlyExpression: this.collection.triggerField + ' is ' + category
-			});
+			// If "Other" slice, get all of the currently displayed categories and send then as a NOT IN() query
+			if(_.isEmpty(data.dataItem.dataContext)) {
+				var shownCategories = [];
+				data.chart.chartData.forEach(function(item) {
+					if(item.title !== category) {
+						shownCategories.push(item.title);
+					}
+				});
+				
+				this.vent.trigger('filter', {
+					field: this.collection.triggerField,
+					expression: this.collection.triggerField + ' not in(\'' + shownCategories.join('\',\'') + '\')',
+					friendlyExpression: this.collection.triggerField + ' is not ' + shownCategories.join(', ')
+				});
+			}
+			// Otherwise fire a normal = query
+			else {
+				this.vent.trigger('filter', {
+					field: this.collection.triggerField,
+					expression: this.collection.triggerField + ' = \'' + category + '\'',
+					friendlyExpression: this.collection.triggerField + ' is ' + category
+				});
+			}
 		}
 	},
 	// When a chart has been filtered
