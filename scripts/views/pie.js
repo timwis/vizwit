@@ -87,6 +87,12 @@ module.exports = Backbone.View.extend({
 			config.valueField = 'filteredCount';
 		}
 		
+		// If "other" slice is selected, set other slice to be pulled out
+		var otherSliceTitle = config.groupedTitle || 'Other'
+		if(this.collection.selected === otherSliceTitle) {
+			config.groupedPulled = true;
+		}
+		
 		this.chart = AmCharts.makeChart(this.$('.viz').get(0), config);
 		
 		this.chart.addListener('clickSlice', this.onClickSlice);
