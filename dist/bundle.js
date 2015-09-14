@@ -401,6 +401,18 @@ c*f);e||h||a.setDate(a.getDate()+1);break;case "MM":b=a.getMonth();a.setMonth(a.
 c,d,h){var f=-1;void 0===d&&(d=!0);void 0===h&&(h=!1);!0===d&&(f=1);switch(b){case "YYYY":a.setUTCFullYear(a.getUTCFullYear()+c*f);d||h||a.setUTCDate(a.getUTCDate()+1);break;case "MM":b=a.getUTCMonth();a.setUTCMonth(a.getUTCMonth()+c*f);a.getUTCMonth()>b+c*f&&a.setUTCDate(a.getUTCDate()-1);d||h||a.setUTCDate(a.getUTCDate()+1);break;case "DD":a.setUTCDate(a.getUTCDate()+c*f);break;case "WW":a.setUTCDate(a.getUTCDate()+c*f*7);break;case "hh":a.setUTCHours(a.getUTCHours()+c*f);break;case "mm":a.setUTCMinutes(a.getUTCMinutes()+
 c*f);break;case "ss":a.setUTCSeconds(a.getUTCSeconds()+c*f);break;case "fff":a.setUTCMilliseconds(a.getUTCMilliseconds()+c*f)}return a}})();
 },{}],2:[function(require,module,exports){
+(function(){var l=window.AmCharts;l.AmPieChart=l.Class({inherits:l.AmSlicedChart,construct:function(d){this.type="pie";l.AmPieChart.base.construct.call(this,d);this.cname="AmPieChart";this.pieBrightnessStep=30;this.minRadius=10;this.depth3D=0;this.startAngle=90;this.angle=this.innerRadius=0;this.startRadius="500%";this.pullOutRadius="20%";this.labelRadius=20;this.labelText="[[title]]: [[percents]]%";this.balloonText="[[title]]: [[percents]]% ([[value]])\n[[description]]";this.previousScale=1;this.adjustPrecision=
+!1;l.applyTheme(this,d,this.cname)},drawChart:function(){l.AmPieChart.base.drawChart.call(this);var d=this.chartData;if(l.ifArray(d)){if(0<this.realWidth&&0<this.realHeight){l.VML&&(this.startAlpha=1);var g=this.startDuration,c=this.container,b=this.updateWidth();this.realWidth=b;var n=this.updateHeight();this.realHeight=n;var e=l.toCoordinate,f=e(this.marginLeft,b),a=e(this.marginRight,b),v=e(this.marginTop,n)+this.getTitleHeight(),m=e(this.marginBottom,n),A,B,k,y=l.toNumber(this.labelRadius),p=
+this.measureMaxLabel();p>this.maxLabelWidth&&(p=this.maxLabelWidth);this.labelText&&this.labelsEnabled||(y=p=0);A=void 0===this.pieX?(b-f-a)/2+f:e(this.pieX,this.realWidth);B=void 0===this.pieY?(n-v-m)/2+v:e(this.pieY,n);k=e(this.radius,b,n);k||(b=0<=y?b-f-a-2*p:b-f-a,n=n-v-m,k=Math.min(b,n),n<b&&(k/=1-this.angle/90,k>b&&(k=b)),n=l.toCoordinate(this.pullOutRadius,k),k=(0<=y?k-1.8*(y+n):k-1.8*n)/2);k<this.minRadius&&(k=this.minRadius);n=e(this.pullOutRadius,k);v=l.toCoordinate(this.startRadius,k);
+e=e(this.innerRadius,k);e>=k&&(e=k-1);m=l.fitToBounds(this.startAngle,0,360);0<this.depth3D&&(m=270<=m?270:90);m-=90;360<m&&(m-=360);b=k-k*this.angle/90;for(f=p=0;f<d.length;f++)a=d[f],!0!==a.hidden&&(p+=l.roundTo(a.percents,this.pf.precision));p=l.roundTo(p,this.pf.precision);this.tempPrec=NaN;this.adjustPrecision&&100!=p&&(this.tempPrec=this.pf.precision+1);for(var D,f=0;f<d.length;f++)if(a=d[f],!0!==a.hidden&&(this.showZeroSlices||0!==a.percents)){var t=360*a.percents/100,p=Math.sin((m+t/2)/180*
+Math.PI),C=-Math.cos((m+t/2)/180*Math.PI)*(b/k),q=this.outlineColor;q||(q=a.color);var w=this.alpha;isNaN(a.alpha)||(w=a.alpha);q={fill:a.color,stroke:q,"stroke-width":this.outlineThickness,"stroke-opacity":this.outlineAlpha,"fill-opacity":w};a.url&&(q.cursor="pointer");q=l.wedge(c,A,B,m,t,k,b,e,this.depth3D,q,this.gradientRatio,a.pattern,this.path);l.setCN(this,q,"pie-item");l.setCN(this,q.wedge,"pie-slice");l.setCN(this,q,a.className,!0);this.addEventListeners(q,a);a.startAngle=m;d[f].wedge=q;0<
+g&&(this.chartCreated||q.setAttr("opacity",this.startAlpha));a.ix=p;a.iy=C;a.wedge=q;a.index=f;a.label=null;w=c.set();if(this.labelsEnabled&&this.labelText&&a.percents>=this.hideLabelsPercent){var h=m+t/2;0>h&&(h+=360);360<h&&(h-=360);var r=y;isNaN(a.labelRadius)||(r=a.labelRadius,0>r&&(a.skipTick=!0));var t=A+p*(k+r),E=B+C*(k+r),x,u=0;isNaN(D)&&350<h&&1<d.length-f&&(D=f-1+Math.floor((d.length-f)/2));if(0<=r){var z;90>=h&&0<=h?(z=0,x="start",u=8):90<=h&&180>h?(z=1,x="start",u=8):180<=h&&270>h?(z=
+2,x="end",u=-8):270<=h&&357>=h?(z=3,x="end",u=-8):357<=h&&(f>D?(z=0,x="start",u=8):(z=3,x="end",u=-8));a.labelQuarter=z}else x="middle";h=this.formatString(this.labelText,a);(r=this.labelFunction)&&(h=r(a,h));r=a.labelColor;r||(r=this.color);if(""!==h){h=l.wrappedText(c,h,r,this.fontFamily,this.fontSize,x,!1,this.maxLabelWidth);l.setCN(this,h,"pie-label");l.setCN(this,h,a.className,!0);h.translate(t+1.5*u,E);h.node.style.pointerEvents="none";a.ty=E;a.textX=t+1.5*u;var r=h.getBBox(),F=l.rect(c,r.width+
+5,r.height+5,"#FFFFFF",.005);F.translate(t+1.5*u+r.x,E+r.y);a.hitRect=F;w.push(h);w.push(F);this.axesSet.push(w);a.labelSet=w;a.label=h}a.tx=t;a.tx2=t+u;a.tx0=A+p*k;a.ty0=B+C*k}t=e+(k-e)/2;a.pulled&&(t+=this.pullOutRadiusReal);a.balloonX=p*t+A;a.balloonY=C*t+B;a.startX=Math.round(p*v);a.startY=Math.round(C*v);a.pullX=Math.round(p*n);a.pullY=Math.round(C*n);this.graphsSet.push(q);if(0===a.alpha||0<g&&!this.chartCreated)q.hide(),w&&w.hide();m+=360*a.percents/100;360<m&&(m-=360)}0<y&&this.arrangeLabels();
+this.pieXReal=A;this.pieYReal=B;this.radiusReal=k;this.innerRadiusReal=e;0<y&&this.drawTicks();this.initialStart();this.setDepths()}(d=this.legend)&&d.invalidateSize()}else this.cleanChart();this.dispDUpd()},setDepths:function(){var d=this.chartData,g;for(g=0;g<d.length;g++){var c=d[g],b=c.wedge,c=c.startAngle;0<=c&&180>c?b.toFront():180<=c&&b.toBack()}},arrangeLabels:function(){var d=this.chartData,g=d.length,c,b;for(b=g-1;0<=b;b--)c=d[b],0!==c.labelQuarter||c.hidden||this.checkOverlapping(b,c,0,
+!0,0);for(b=0;b<g;b++)c=d[b],1!=c.labelQuarter||c.hidden||this.checkOverlapping(b,c,1,!1,0);for(b=g-1;0<=b;b--)c=d[b],2!=c.labelQuarter||c.hidden||this.checkOverlapping(b,c,2,!0,0);for(b=0;b<g;b++)c=d[b],3!=c.labelQuarter||c.hidden||this.checkOverlapping(b,c,3,!1,0)},checkOverlapping:function(d,g,c,b,l){var e,f,a=this.chartData,v=a.length,m=g.label;if(m){if(!0===b)for(f=d+1;f<v;f++)a[f].labelQuarter==c&&(e=this.checkOverlappingReal(g,a[f],c))&&(f=v);else for(f=d-1;0<=f;f--)a[f].labelQuarter==c&&(e=
+this.checkOverlappingReal(g,a[f],c))&&(f=0);!0===e&&100>l&&isNaN(g.labelRadius)&&(e=g.ty+3*g.iy,g.ty=e,m.translate(g.textX,e),g.hitRect&&(m=m.getBBox(),g.hitRect.translate(g.tx2,e+m.y)),this.checkOverlapping(d,g,c,b,l+1))}},checkOverlappingReal:function(d,g,c){var b=!1,n=d.label,e=g.label;d.labelQuarter!=c||d.hidden||g.hidden||!e||(n=n.getBBox(),c={},c.width=n.width,c.height=n.height,c.y=d.ty,c.x=d.tx,d=e.getBBox(),e={},e.width=d.width,e.height=d.height,e.y=g.ty,e.x=g.tx,l.hitTest(c,e)&&(b=!0));return b}})})();
+},{}],3:[function(require,module,exports){
 /*
 Plugin Name: amCharts Responsive
 Description: This plugin add responsive functionality to JavaScript Charts and Maps.
@@ -1642,7 +1654,7 @@ AmCharts.addInitHandler( function( chart ) {
   chart.addListener( 'init', checkRules );
 
 }, [ 'pie', 'serial', 'xy', 'funnel', 'radar', 'gauge', 'gantt', 'stock', 'map' ] );
-},{}],3:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 (function(){var e=window.AmCharts;e.AmSerialChart=e.Class({inherits:e.AmRectangularChart,construct:function(a){this.type="serial";e.AmSerialChart.base.construct.call(this,a);this.cname="AmSerialChart";this.theme=a;this.createEvents("changed");this.columnSpacing=5;this.columnSpacing3D=0;this.columnWidth=.8;this.updateScrollbar=!0;var b=new e.CategoryAxis(a);b.chart=this;this.categoryAxis=b;this.zoomOutOnDataUpdate=!0;this.mouseWheelZoomEnabled=this.mouseWheelScrollEnabled=this.rotate=this.skipZoom=
 !1;this.minSelectedTime=0;e.applyTheme(this,a,this.cname)},initChart:function(){e.AmSerialChart.base.initChart.call(this);this.updateCategoryAxis(this.categoryAxis,this.rotate,"categoryAxis");this.dataChanged&&(this.updateData(),this.dataChanged=!1,this.dispatchDataUpdated=!0);var a=this.chartCursor;a&&a.updateData&&(a.updateData(),a.fullWidth&&(a.fullRectSet=this.cursorLineSet));var a=this.countColumns(),b=this.graphs,c;for(c=0;c<b.length;c++)b[c].columnCount=a;this.updateScrollbar=!0;this.drawChart();
 this.autoMargins&&!this.marginsUpdated&&(this.marginsUpdated=!0,this.measureMargins())},handleWheelReal:function(a,b){if(!this.wheelBusy){var c=this.categoryAxis,d=c.parseDates,f=c.minDuration(),e=c=1;this.mouseWheelZoomEnabled?b||(c=-1):b&&(c=-1);var g=this.chartData.length,k=this.lastTime,m=this.firstTime;0>a?d?(g=this.endTime-this.startTime,d=this.startTime+c*f,f=this.endTime+e*f,0<e&&0<c&&f>=k&&(f=k,d=k-g),this.zoomToDates(new Date(d),new Date(f))):(0<e&&0<c&&this.end>=g-1&&(c=e=0),d=this.start+
@@ -1694,7 +1706,7 @@ r=new this.axisItemRenderer(this,t,l.label,!0,NaN,k,l),this.pushAxisItem(r,u))),
 l))}this.axisCreated=!0;c=this.x;h=this.y;this.set.translate(c,h);this.labelsSet.translate(c,h);this.labelsSet.show();this.positionTitle();(c=this.axisLine.set)&&c.toFront();c=this.getBBox().height;2<c-this.previousHeight&&this.autoWrap&&!this.parseDates&&(this.axisCreated=this.chart.marginsUpdated=!1);this.previousHeight=c},xToIndex:function(a){var b=this.data,c=this.chart,d=c.rotate,f=this.stepWidth;this.parseDates&&!this.equalSpacing?(a=this.startTime+Math.round(a/f)-this.minDuration()/2,c=c.getClosestIndex(b,
 "time",a,!1,this.start,this.end+1)):(this.startOnAxis||(a-=f/2),c=this.start+Math.round(a/f));var c=e.fitToBounds(c,0,b.length-1),h;b[c]&&(h=b[c].x[this.id]);d?h>this.height+1&&c--:h>this.width+1&&c--;0>h&&c++;return c=e.fitToBounds(c,0,b.length-1)},dateToCoordinate:function(a){return this.parseDates&&!this.equalSpacing?(a.getTime()-this.startTime)*this.stepWidth:this.parseDates&&this.equalSpacing?(a=this.chart.getClosestIndex(this.data,"time",a.getTime(),!1,0,this.data.length-1),this.getCoordinate(a-
 this.start)):NaN},categoryToCoordinate:function(a){return this.chart?(a=this.chart.getCategoryIndexByValue(a),this.getCoordinate(a-this.start)):NaN},coordinateToDate:function(a){return this.equalSpacing?(a=this.xToIndex(a),new Date(this.data[a].time)):new Date(this.startTime+a/this.stepWidth)},getCoordinate:function(a){a*=this.stepWidth;this.startOnAxis||(a+=this.stepWidth/2);return Math.round(a)}})})();
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 AmCharts.themes.light = {
 
 	themeName:"light",
@@ -1884,7 +1896,7 @@ AmCharts.themes.light = {
 	}
 
 };
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 (function (global){
 //     Backbone.js 1.2.2
 
@@ -3781,7 +3793,7 @@ AmCharts.themes.light = {
 }));
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"jquery":19,"underscore":58}],6:[function(require,module,exports){
+},{"jquery":20,"underscore":59}],7:[function(require,module,exports){
 /*!
  * The buffer module from node.js, for the browser.
  *
@@ -5316,7 +5328,7 @@ function blitBuffer (src, dst, offset, length) {
   return i
 }
 
-},{"base64-js":7,"ieee754":8,"is-array":9}],7:[function(require,module,exports){
+},{"base64-js":8,"ieee754":9,"is-array":10}],8:[function(require,module,exports){
 var lookup = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 
 ;(function (exports) {
@@ -5442,7 +5454,7 @@ var lookup = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 	exports.fromByteArray = uint8ToBase64
 }(typeof exports === 'undefined' ? (this.base64js = {}) : exports))
 
-},{}],8:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 exports.read = function (buffer, offset, isLE, mLen, nBytes) {
   var e, m
   var eLen = nBytes * 8 - mLen - 1
@@ -5528,7 +5540,7 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
   buffer[offset + i - d] |= s * 128
 }
 
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 
 /**
  * isArray
@@ -5563,7 +5575,7 @@ module.exports = isArray || function (val) {
   return !! val && '[object Array]' == str.call(val);
 };
 
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 
 /**
  * @license
@@ -8030,7 +8042,7 @@ module.exports = isArray || function (val) {
 
 }).call(this);
 
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 /*! DataTables Bootstrap 3 integration
  * ©2011-2014 SpryMedia Ltd - datatables.net/license
  */
@@ -8238,7 +8250,7 @@ else if ( jQuery ) {
 })(window, document);
 
 
-},{"datatables":12,"jquery":19}],12:[function(require,module,exports){
+},{"datatables":13,"jquery":20}],13:[function(require,module,exports){
 /*! DataTables 1.10.9
  * ©2008-2015 SpryMedia Ltd - datatables.net/license
  */
@@ -23369,11 +23381,11 @@ else if ( jQuery ) {
 }(window, document));
 
 
-},{"jquery":19}],13:[function(require,module,exports){
+},{"jquery":20}],14:[function(require,module,exports){
 var geocolor = require('./lib/geocolor')
 
 module.exports = geocolor
-},{"./lib/geocolor":14}],14:[function(require,module,exports){
+},{"./lib/geocolor":15}],15:[function(require,module,exports){
 var _ = require('lodash'),
     ss = require('simple-statistics'),
     chroma = require('chroma-js')
@@ -23560,7 +23572,7 @@ function normalize(numBreaks)
   return normals
 }
 
-},{"chroma-js":15,"lodash":16,"simple-statistics":17}],15:[function(require,module,exports){
+},{"chroma-js":16,"lodash":17,"simple-statistics":18}],16:[function(require,module,exports){
 // Generated by CoffeeScript 1.6.2
 /** echo  * @license echo  * while read i do echo  *  done echo
 */
@@ -25425,7 +25437,7 @@ function normalize(numBreaks)
 
 }).call(this);
 
-},{}],16:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 (function (global){
 /**
  * @license
@@ -32215,7 +32227,7 @@ function normalize(numBreaks)
 }.call(this));
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],17:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 // # simple-statistics
 //
 // A simple, literate statistics system. The code below uses the
@@ -33304,7 +33316,7 @@ function normalize(numBreaks)
 
 })(this);
 
-},{}],18:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 (function(deparam){
     if (typeof require === 'function' && typeof exports === 'object' && typeof module === 'object') {
         var jquery = require('jquery');
@@ -33418,7 +33430,7 @@ function normalize(numBreaks)
     return deparam;
 });
 
-},{"jquery":19}],19:[function(require,module,exports){
+},{"jquery":20}],20:[function(require,module,exports){
 /*!
  * jQuery JavaScript Library v2.1.4
  * http://jquery.com/
@@ -42630,7 +42642,7 @@ return jQuery;
 
 }));
 
-},{}],20:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 function corslite(url, callback, cors) {
     var sent = false;
 
@@ -42725,12 +42737,12 @@ function corslite(url, callback, cors) {
 
 if (typeof module !== 'undefined') module.exports = corslite;
 
-},{}],21:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 module.exports = Array.isArray || function (arr) {
   return Object.prototype.toString.call(arr) == '[object Array]';
 };
 
-},{}],22:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 /*
  Leaflet, a JavaScript library for mobile-friendly interactive maps. http://leafletjs.com
  (c) 2010-2013, Vladimir Agafonkin
@@ -51911,7 +51923,7 @@ L.Map.include({
 
 
 }(window, document));
-},{}],23:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 /*!
  * mustache.js - Logic-less {{mustache}} templates with JavaScript
  * http://github.com/janl/mustache.js
@@ -52464,7 +52476,7 @@ L.Map.include({
 
 }));
 
-},{}],24:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 var html_sanitize = require('./sanitizer-bundle.js');
 
 module.exports = function(_) {
@@ -52484,7 +52496,7 @@ function cleanUrl(url) {
 
 function cleanId(id) { return id; }
 
-},{"./sanitizer-bundle.js":25}],25:[function(require,module,exports){
+},{"./sanitizer-bundle.js":26}],26:[function(require,module,exports){
 
 // Copyright (C) 2010 Google Inc.
 //
@@ -54933,7 +54945,7 @@ if (typeof module !== 'undefined') {
     module.exports = html_sanitize;
 }
 
-},{}],26:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 module.exports={
   "author": {
     "name": "Mapbox"
@@ -55127,7 +55139,7 @@ module.exports={
   "_resolved": "https://registry.npmjs.org/mapbox.js/-/mapbox.js-2.2.1.tgz"
 }
 
-},{}],27:[function(require,module,exports){
+},{}],28:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -55137,7 +55149,7 @@ module.exports = {
     REQUIRE_ACCESS_TOKEN: true
 };
 
-},{}],28:[function(require,module,exports){
+},{}],29:[function(require,module,exports){
 'use strict';
 
 var util = require('./util'),
@@ -55266,7 +55278,7 @@ module.exports.featureLayer = function(_, options) {
     return new FeatureLayer(_, options);
 };
 
-},{"./marker":43,"./request":44,"./simplestyle":46,"./url":48,"./util":49,"sanitize-caja":24}],29:[function(require,module,exports){
+},{"./marker":44,"./request":45,"./simplestyle":47,"./url":49,"./util":50,"sanitize-caja":25}],30:[function(require,module,exports){
 'use strict';
 
 var Feedback = L.Class.extend({
@@ -55280,7 +55292,7 @@ var Feedback = L.Class.extend({
 
 module.exports = new Feedback();
 
-},{}],30:[function(require,module,exports){
+},{}],31:[function(require,module,exports){
 'use strict';
 
 var isArray = require('isarray'),
@@ -55392,7 +55404,7 @@ module.exports = function(url, options) {
     return geocoder;
 };
 
-},{"./feedback":29,"./request":44,"./url":48,"./util":49,"isarray":21}],31:[function(require,module,exports){
+},{"./feedback":30,"./request":45,"./url":49,"./util":50,"isarray":22}],32:[function(require,module,exports){
 'use strict';
 
 var geocoder = require('./geocoder'),
@@ -55594,7 +55606,7 @@ module.exports.geocoderControl = function(_, options) {
     return new GeocoderControl(_, options);
 };
 
-},{"./geocoder":30,"./util":49}],32:[function(require,module,exports){
+},{"./geocoder":31,"./util":50}],33:[function(require,module,exports){
 'use strict';
 
 function utfDecode(c) {
@@ -55612,7 +55624,7 @@ module.exports = function(data) {
     };
 };
 
-},{}],33:[function(require,module,exports){
+},{}],34:[function(require,module,exports){
 'use strict';
 
 var util = require('./util'),
@@ -55812,7 +55824,7 @@ module.exports.gridControl = function(_, options) {
     return new GridControl(_, options);
 };
 
-},{"./util":49,"mustache":23,"sanitize-caja":24}],34:[function(require,module,exports){
+},{"./util":50,"mustache":24,"sanitize-caja":25}],35:[function(require,module,exports){
 'use strict';
 
 var util = require('./util'),
@@ -56037,7 +56049,7 @@ module.exports.gridLayer = function(_, options) {
     return new GridLayer(_, options);
 };
 
-},{"./grid":32,"./load_tilejson":39,"./request":44,"./util":49}],35:[function(require,module,exports){
+},{"./grid":33,"./load_tilejson":40,"./request":45,"./util":50}],36:[function(require,module,exports){
 'use strict';
 
 var leaflet = require('./leaflet');
@@ -56046,7 +56058,7 @@ require('./mapbox');
 
 module.exports = leaflet;
 
-},{"./leaflet":37,"./mapbox":41}],36:[function(require,module,exports){
+},{"./leaflet":38,"./mapbox":42}],37:[function(require,module,exports){
 'use strict';
 
 var InfoControl = L.Control.extend({
@@ -56163,10 +56175,10 @@ module.exports.infoControl = function(options) {
     return new InfoControl(options);
 };
 
-},{"sanitize-caja":24}],37:[function(require,module,exports){
+},{"sanitize-caja":25}],38:[function(require,module,exports){
 module.exports = window.L = require('leaflet/dist/leaflet-src');
 
-},{"leaflet/dist/leaflet-src":22}],38:[function(require,module,exports){
+},{"leaflet/dist/leaflet-src":23}],39:[function(require,module,exports){
 'use strict';
 
 var LegendControl = L.Control.extend({
@@ -56235,7 +56247,7 @@ module.exports.legendControl = function(options) {
     return new LegendControl(options);
 };
 
-},{"sanitize-caja":24}],39:[function(require,module,exports){
+},{"sanitize-caja":25}],40:[function(require,module,exports){
 'use strict';
 
 var request = require('./request'),
@@ -56261,7 +56273,7 @@ module.exports = {
     }
 };
 
-},{"./request":44,"./url":48,"./util":49}],40:[function(require,module,exports){
+},{"./request":45,"./url":49,"./util":50}],41:[function(require,module,exports){
 'use strict';
 
 var tileLayer = require('./tile_layer').tileLayer,
@@ -56497,7 +56509,7 @@ module.exports.map = function(element, _, options) {
     return new LMap(element, _, options);
 };
 
-},{"./feature_layer":28,"./feedback":29,"./grid_control":33,"./grid_layer":34,"./info_control":36,"./legend_control":38,"./load_tilejson":39,"./mapbox_logo":42,"./share_control":45,"./tile_layer":47,"sanitize-caja":24}],41:[function(require,module,exports){
+},{"./feature_layer":29,"./feedback":30,"./grid_control":34,"./grid_layer":35,"./info_control":37,"./legend_control":39,"./load_tilejson":40,"./mapbox_logo":43,"./share_control":46,"./tile_layer":48,"sanitize-caja":25}],42:[function(require,module,exports){
 'use strict';
 
 var geocoderControl = require('./geocoder_control'),
@@ -56550,7 +56562,7 @@ window.L.Icon.Default.imagePath =
     '//api.tiles.mapbox.com/mapbox.js/' + 'v' +
     require('../package.json').version + '/images';
 
-},{"../package.json":26,"./config":27,"./feature_layer":28,"./feedback":29,"./geocoder":30,"./geocoder_control":31,"./grid_control":33,"./grid_layer":34,"./info_control":36,"./legend_control":38,"./map":40,"./marker":43,"./share_control":45,"./simplestyle":46,"./tile_layer":47,"mustache":23,"sanitize-caja":24}],42:[function(require,module,exports){
+},{"../package.json":27,"./config":28,"./feature_layer":29,"./feedback":30,"./geocoder":31,"./geocoder_control":32,"./grid_control":34,"./grid_layer":35,"./info_control":37,"./legend_control":39,"./map":41,"./marker":44,"./share_control":46,"./simplestyle":47,"./tile_layer":48,"mustache":24,"sanitize-caja":25}],43:[function(require,module,exports){
 'use strict';
 
 var MapboxLogoControl = L.Control.extend({
@@ -56584,7 +56596,7 @@ module.exports.mapboxLogoControl = function(options) {
     return new MapboxLogoControl(options);
 };
 
-},{}],43:[function(require,module,exports){
+},{}],44:[function(require,module,exports){
 'use strict';
 
 var url = require('./url'),
@@ -56651,7 +56663,7 @@ module.exports = {
     createPopup: createPopup
 };
 
-},{"./url":48,"./util":49,"sanitize-caja":24}],44:[function(require,module,exports){
+},{"./url":49,"./util":50,"sanitize-caja":25}],45:[function(require,module,exports){
 'use strict';
 
 var corslite = require('corslite'),
@@ -56685,7 +56697,7 @@ module.exports = function(url, callback) {
     return corslite(url, onload);
 };
 
-},{"./config":27,"./util":49,"corslite":20}],45:[function(require,module,exports){
+},{"./config":28,"./util":50,"corslite":21}],46:[function(require,module,exports){
 'use strict';
 
 var urlhelper = require('./url');
@@ -56788,7 +56800,7 @@ module.exports.shareControl = function(_, options) {
     return new ShareControl(_, options);
 };
 
-},{"./load_tilejson":39,"./url":48}],46:[function(require,module,exports){
+},{"./load_tilejson":40,"./url":49}],47:[function(require,module,exports){
 'use strict';
 
 // an implementation of the simplestyle spec for polygon and linestring features
@@ -56835,7 +56847,7 @@ module.exports = {
     defaults: defaults
 };
 
-},{}],47:[function(require,module,exports){
+},{}],48:[function(require,module,exports){
 'use strict';
 
 var util = require('./util');
@@ -56935,7 +56947,7 @@ module.exports.tileLayer = function(_, options) {
     return new TileLayer(_, options);
 };
 
-},{"./load_tilejson":39,"./util":49,"sanitize-caja":24}],48:[function(require,module,exports){
+},{"./load_tilejson":40,"./util":50,"sanitize-caja":25}],49:[function(require,module,exports){
 'use strict';
 
 var config = require('./config'),
@@ -56979,7 +56991,7 @@ module.exports.tileJSON = function(urlOrMapID, accessToken) {
     return url;
 };
 
-},{"../package.json":26,"./config":27}],49:[function(require,module,exports){
+},{"../package.json":27,"./config":28}],50:[function(require,module,exports){
 'use strict';
 
 function contains(item, list) {
@@ -57026,7 +57038,7 @@ module.exports = {
     }
 };
 
-},{}],50:[function(require,module,exports){
+},{}],51:[function(require,module,exports){
 (function (Buffer){
 // Generated by CoffeeScript 1.9.3
 (function() {
@@ -57562,7 +57574,7 @@ module.exports = {
 }).call(this);
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":6,"eventemitter2":51,"superagent":52}],51:[function(require,module,exports){
+},{"buffer":7,"eventemitter2":52,"superagent":53}],52:[function(require,module,exports){
 /*!
  * EventEmitter2
  * https://github.com/hij1nx/EventEmitter2
@@ -58137,7 +58149,7 @@ module.exports = {
   }
 }();
 
-},{}],52:[function(require,module,exports){
+},{}],53:[function(require,module,exports){
 /**
  * Module dependencies.
  */
@@ -59220,7 +59232,7 @@ request.put = function(url, data, fn){
 
 module.exports = request;
 
-},{"emitter":53,"reduce":54}],53:[function(require,module,exports){
+},{"emitter":54,"reduce":55}],54:[function(require,module,exports){
 
 /**
  * Expose `Emitter`.
@@ -59386,7 +59398,7 @@ Emitter.prototype.hasListeners = function(event){
   return !! this.listeners(event).length;
 };
 
-},{}],54:[function(require,module,exports){
+},{}],55:[function(require,module,exports){
 
 /**
  * Reduce `arr` with `fn`.
@@ -59411,7 +59423,7 @@ module.exports = function(arr, fn, initial){
   
   return curr;
 };
-},{}],55:[function(require,module,exports){
+},{}],56:[function(require,module,exports){
 /**
  * Copyright (c) 2011-2014 Felix Gnass
  * Licensed under the MIT license
@@ -59790,7 +59802,7 @@ module.exports = function(arr, fn, initial){
 
 }));
 
-},{}],56:[function(require,module,exports){
+},{}],57:[function(require,module,exports){
 // TinyColor v1.0.0
 // https://github.com/bgrins/TinyColor
 // Brian Grinstead, MIT License
@@ -60899,7 +60911,7 @@ else {
 
 })();
 
-},{}],57:[function(require,module,exports){
+},{}],58:[function(require,module,exports){
 /*!
 * TinyGradient
 * Copyright 2014 Damien "Mistic" Sorel (http://www.strangeplanet.fr)
@@ -61276,7 +61288,7 @@ else {
     // export
     return TinyGradient;
 }));
-},{"tinycolor2":56}],58:[function(require,module,exports){
+},{"tinycolor2":57}],59:[function(require,module,exports){
 //     Underscore.js 1.8.3
 //     http://underscorejs.org
 //     (c) 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
@@ -62826,7 +62838,7 @@ else {
   }
 }.call(this));
 
-},{}],59:[function(require,module,exports){
+},{}],60:[function(require,module,exports){
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
@@ -62848,7 +62860,7 @@ module.exports = Backbone.Collection.extend({
 		};
 	}
 });
-},{"backbone":5,"jquery":19,"underscore":58}],60:[function(require,module,exports){
+},{"backbone":6,"jquery":20,"underscore":59}],61:[function(require,module,exports){
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
@@ -62870,7 +62882,7 @@ module.exports = Backbone.Collection.extend({
 		return _.values(response.files);
 	}
 });
-},{"backbone":5,"jquery":19,"underscore":58}],61:[function(require,module,exports){
+},{"backbone":6,"jquery":20,"underscore":59}],62:[function(require,module,exports){
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
@@ -62912,7 +62924,7 @@ module.exports = Backbone.Collection.extend({
 		});
 	}
 });
-},{"backbone":5,"jquery":19,"underscore":58}],62:[function(require,module,exports){
+},{"backbone":6,"jquery":20,"underscore":59}],63:[function(require,module,exports){
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
@@ -62936,6 +62948,7 @@ module.exports = Backbone.Collection.extend({
 		this.groupBy = options.groupBy || null;
 		this.triggerField = options.triggerField || options.groupBy;
 		this.filter = options.filter || {};
+		this.limit = options.limit || this.limit;
 		
 		this.fields = new SocrataFields(options);
 	},
@@ -62962,7 +62975,7 @@ module.exports = Backbone.Collection.extend({
 		return _.pluck(this.filter, 'friendlyExpression').join(' and ');
 	}
 })
-},{"./socrata-fields":61,"backbone":5,"jquery":19,"soda-js":50,"underscore":58}],63:[function(require,module,exports){
+},{"./socrata-fields":62,"backbone":6,"jquery":20,"soda-js":51,"underscore":59}],64:[function(require,module,exports){
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
@@ -62977,6 +62990,7 @@ var Bar = require('./views/bar');
 var Table = require('./views/table');
 var DateTime = require('./views/datetime');
 var Choropleth = require('./views/choropleth');
+var Pie = require('./views/pie');
 
 var vent = _.clone(Backbone.Events);
 
@@ -63060,6 +63074,15 @@ var gist = params.gist || '601224472a5d53cbb908'; // default to sample config
 							vent: vent
 						});
 						break;
+					case 'pie':
+						new Pie({
+							config: column,
+							el: columnEl,
+							collection: collection,
+							filteredCollection: filteredCollection,
+							vent: vent
+						});
+						break;
 					case 'table':
 						new Table({
 							config: column,
@@ -63085,7 +63108,7 @@ var gist = params.gist || '601224472a5d53cbb908'; // default to sample config
 		console.error('Error fetching gist', gist);
 	}
 });
-},{"./collections/geojson":59,"./collections/gist":60,"./collections/socrata":62,"./views/bar":69,"./views/choropleth":71,"./views/datetime":72,"./views/header":73,"./views/table":74,"backbone":5,"jquery":19,"jquery-deparam":18,"underscore":58}],64:[function(require,module,exports){
+},{"./collections/geojson":60,"./collections/gist":61,"./collections/socrata":63,"./views/bar":70,"./views/choropleth":72,"./views/datetime":73,"./views/header":74,"./views/pie":75,"./views/table":76,"backbone":6,"jquery":20,"jquery-deparam":19,"underscore":59}],65:[function(require,module,exports){
 module.exports = function(data){
 var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
 __p+='<div class="row">\n\t<div class="col-md-7">\n\t\t\n\t\t<h1 class="title">'+
@@ -63112,7 +63135,7 @@ __p+='\n\t\t\t\n\t</div>\n</div>';
 return __p;
 };
 
-},{}],65:[function(require,module,exports){
+},{}],66:[function(require,module,exports){
 module.exports = function(data){
 var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
 __p+='<div class="panel panel-default">\n\t';
@@ -63147,7 +63170,7 @@ __p+='\n</div>';
 return __p;
 };
 
-},{}],66:[function(require,module,exports){
+},{}],67:[function(require,module,exports){
 var chroma = require('chroma-js');
 var tinygradient = require('tinygradient');
 
@@ -63166,7 +63189,7 @@ ColorRange.prototype.getColor = function(needle) {
 }
 
 module.exports = ColorRange;
-},{"chroma-js":10,"tinygradient":57}],67:[function(require,module,exports){
+},{"chroma-js":11,"tinygradient":58}],68:[function(require,module,exports){
 var Spinner = require('spin.js');
 
 exports.on = function() {
@@ -63191,7 +63214,7 @@ exports.off = function() {
 		this.spinner.stop();
 	}
 }
-},{"spin.js":55}],68:[function(require,module,exports){
+},{"spin.js":56}],69:[function(require,module,exports){
 module.exports = function(num) {
     isNegative = false
     if (num < 0) {
@@ -63210,7 +63233,7 @@ module.exports = function(num) {
     if(isNegative) { formattedNumber = '-' + formattedNumber }
     return formattedNumber;
 }
-},{}],69:[function(require,module,exports){
+},{}],70:[function(require,module,exports){
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
@@ -63331,7 +63354,7 @@ module.exports = BaseChart.extend({
 		
 		// If chart cursor is enabled (on larger screens) listen to clicks on it
 		if(this.chart.chartCursor.enabled) {
-			this.delegateEvents({'click .viz': 'onClickCursor'});
+			this.delegateEvents(_.extend({'click .viz': 'onClickCursor'}, this.events));
 		}
 		// Otherwise listen to clicks on the bars
 		else {
@@ -63396,7 +63419,7 @@ module.exports = BaseChart.extend({
 		}
 	}
 })
-},{"../util/number-formatter":68,"./basechart":70,"backbone":5,"jquery":19,"underscore":58}],70:[function(require,module,exports){
+},{"../util/number-formatter":69,"./basechart":71,"backbone":6,"jquery":20,"underscore":59}],71:[function(require,module,exports){
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
@@ -63551,7 +63574,7 @@ module.exports = Backbone.View.extend({
 		this.renderFilters();
 	}
 })
-},{"../templates/panel.html":65,"../util/loader":67,"../util/number-formatter":68,"amcharts3":1,"amcharts3/amcharts/plugins/responsive/responsive":2,"amcharts3/amcharts/serial":3,"amcharts3/amcharts/themes/light":4,"backbone":5,"jquery":19,"underscore":58}],71:[function(require,module,exports){
+},{"../templates/panel.html":66,"../util/loader":68,"../util/number-formatter":69,"amcharts3":1,"amcharts3/amcharts/plugins/responsive/responsive":3,"amcharts3/amcharts/serial":4,"amcharts3/amcharts/themes/light":5,"backbone":6,"jquery":20,"underscore":59}],72:[function(require,module,exports){
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
@@ -63746,7 +63769,7 @@ module.exports = Backbone.View.extend({
 	}
 });
 
-},{"../templates/panel.html":65,"../util/color-range":66,"../util/loader":67,"backbone":5,"geocolor":13,"jquery":19,"mapbox.js":35,"underscore":58}],72:[function(require,module,exports){
+},{"../templates/panel.html":66,"../util/color-range":67,"../util/loader":68,"backbone":6,"geocolor":14,"jquery":20,"mapbox.js":36,"underscore":59}],73:[function(require,module,exports){
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
@@ -63882,7 +63905,7 @@ module.exports = BaseChart.extend({
 		}
 	}
 })
-},{"../util/number-formatter":68,"./basechart":70,"backbone":5,"jquery":19,"underscore":58}],73:[function(require,module,exports){
+},{"../util/number-formatter":69,"./basechart":71,"backbone":6,"jquery":20,"underscore":59}],74:[function(require,module,exports){
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
@@ -63897,7 +63920,166 @@ module.exports = Backbone.View.extend({
 		return this;
 	}
 });
-},{"../templates/header.html":64,"backbone":5,"jquery":19,"underscore":58}],74:[function(require,module,exports){
+},{"../templates/header.html":65,"backbone":6,"jquery":20,"underscore":59}],75:[function(require,module,exports){
+var $ = require('jquery');
+var _ = require('underscore');
+var Backbone = require('backbone');
+var Template = require('../templates/panel.html');
+var numberFormatter = require('../util/number-formatter');
+var LoaderOn = require('../util/loader').on;
+var LoaderOff = require('../util/loader').off;
+window.AmCharts_path = './';
+require('amcharts3');
+require('amcharts3/amcharts/pie');
+require('amcharts3/amcharts/themes/light');
+require('amcharts3/amcharts/plugins/responsive/responsive');
+	
+module.exports = Backbone.View.extend({
+	settings: {
+		chart: {
+			'type': 'pie',
+			theme: 'light',
+			titleField: 'label',
+			valueField: 'count',
+			pulledField: 'pulled',
+			groupPercent: 1,
+			balloonFunction: function(item, formattedText) {
+				var content = '<b>' + item.title + '</b><br> \
+					Total: ' + (+item.dataContext.count).toLocaleString() + ' (' + parseFloat(item.percents.toFixed(2)) + '%)';
+				if(item.dataContext.filteredCount !== undefined) {
+					content += '<br>Filtered Amount: ' + (+item.dataContext.filteredCount).toLocaleString();
+				}
+				return content;
+			},
+			labelFunction: function(item, formattedText) {
+				return item.title.length > 12 ? item.title.substr(0, 12) + '…' : item.title;
+			},
+			balloon: {},
+			autoMargins: false,
+			marginTop: 0,
+			marginBottom: 0,
+			marginLeft: 0,
+			marginRight: 0,
+			pullOutRadius: '10%',
+			pullOutOnlyOne: true,
+			labelRadius: 1,
+			startDuration: 0
+		}
+	},
+	initialize: function(options) {
+		// Save options to view
+		options = options || {};
+		this.config = options.config || {};
+		this.vent = options.vent || null;
+		this.filteredCollection = options.filteredCollection || null;
+		
+		// Listen to vent filters
+		this.listenTo(this.vent, 'filter', this.onFilter);
+		
+		// Listen to collection
+		this.listenTo(this.collection, 'sync', this.render);
+		this.listenTo(this.filteredCollection, 'sync', this.render);
+		
+		// Loading indicators
+		this.listenTo(this.collection, 'request', LoaderOn);
+		this.listenTo(this.collection, 'sync', LoaderOff);
+		this.listenTo(this.filteredCollection, 'request', LoaderOn);
+		this.listenTo(this.filteredCollection, 'sync', LoaderOff);
+		
+		_.bindAll(this, 'onClickSlice');
+		
+		// Fetch collection
+		this.collection.fetch();
+		
+		// Render template
+		this.renderTemplate();
+	},
+	renderTemplate: function() {
+		this.$el.empty().append(Template(this.config));
+	},
+	renderFilters: function() {
+		var filters = this.filteredCollection.getFriendlyFilters();
+		this.$('.filters').text(filters).parent().toggle(filters ? true : false);
+	},
+	render: function() {
+		// Initialize chart
+		var config = $.extend(true, {}, this.settings.chart);
+		config.dataProvider = this.formatChartData();
+		
+		if( ! _.isEmpty(this.filteredCollection.filter)) {
+			config.valueField = 'filteredCount';
+		}
+		
+		this.chart = AmCharts.makeChart(this.$('.viz').get(0), config);
+		
+		this.chart.addListener('clickSlice', this.onClickSlice);
+	},
+	formatChartData: function() {
+		var self = this;
+		var chartData = [];
+		
+		// Map collection(s) into format expected by chart library
+		this.collection.forEach(function(model) {
+			var label = model.get('label');
+			var data = {
+				label: label,
+				count: model.get(self.collection.countProperty)
+			};
+			// If the filtered collection has been fetched, find the corresponding record and put it in another series
+			if(self.filteredCollection.length) {
+				var match = self.filteredCollection.get(label);
+				// Push a record even if there's no match so we don't align w/ the wrong bar in the other collection
+				data.filteredCount = match ? match.get(self.collection.countProperty) : 0;
+			}
+			// If this slice is selected, set it to be pulled
+			if(self.collection.selected === label) {
+				data.pulled = true;
+			}
+					
+			chartData.push(data);
+		});
+		return chartData;
+	},
+	onClickSlice: function(data) {
+		var category = data.dataItem.title;
+		
+		// If already selected, clear the filter
+		if(this.collection.selected === category) {
+			this.collection.selected = null;
+			this.vent.trigger('filter', {
+				field: this.collection.triggerField
+			})
+		}
+		// Otherwise, add the filter
+		else {
+			this.collection.selected = category;
+			
+			// Trigger the global event handler with this filter
+			this.vent.trigger('filter', {
+				field: this.collection.triggerField,
+				expression: this.collection.triggerField + ' = \'' + category + '\'',
+				friendlyExpression: this.collection.triggerField + ' is ' + category
+			});
+		}
+	},
+	// When a chart has been filtered
+	onFilter: function(data) {
+		// Only listen to other charts
+		if(data.field !== this.filteredCollection.triggerField) {
+			// Add the filter to the filtered collection and fetch it with the filter
+			if(data.expression) {
+				this.filteredCollection.filter[data.field] = data;
+			} else {
+				delete this.filteredCollection.filter[data.field];
+			}
+			this.filteredCollection.fetch();
+			this.renderFilters();
+		} else {
+			
+		}
+	}
+})
+},{"../templates/panel.html":66,"../util/loader":68,"../util/number-formatter":69,"amcharts3":1,"amcharts3/amcharts/pie":2,"amcharts3/amcharts/plugins/responsive/responsive":3,"amcharts3/amcharts/themes/light":5,"backbone":6,"jquery":20,"underscore":59}],76:[function(require,module,exports){
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
@@ -64000,4 +64182,4 @@ module.exports = Backbone.View.extend({
 		this.renderFilters();
 	}
 });
-},{"../templates/panel.html":65,"../util/loader":67,"backbone":5,"datatables":12,"datatables/media/js/dataTables.bootstrap":11,"jquery":19,"underscore":58}]},{},[63]);
+},{"../templates/panel.html":66,"../util/loader":68,"backbone":6,"datatables":13,"datatables/media/js/dataTables.bootstrap":12,"jquery":20,"underscore":59}]},{},[64]);
