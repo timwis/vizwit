@@ -41,7 +41,7 @@ module.exports = BaseChart.extend({
 						overrides: {
 							maxSelectedSeries: 3,
 							chartCursor: {
-								categoryBalloonEnabled: false
+								enabled: false
 							}
 						}
 					}
@@ -100,8 +100,7 @@ module.exports = BaseChart.extend({
 		_.bindAll(this, 'onClickCursor', 'onClickBar', 'onClickLabel', 'onHover', 'onClickScroll');
 	},
 	events: {
-		'click .scroll a': 'onClickScroll',
-		'click .viz': 'onClickCursor'
+		'click .scroll a': 'onClickScroll'
 	},
 	render: function() {
 		BaseChart.prototype.render.apply(this, arguments);
@@ -117,13 +116,13 @@ module.exports = BaseChart.extend({
 		// Listen to label clicks
 		this.chart.categoryAxis.addListener('clickItem', this.onClickLabel);
 		
-		// For small screens, listen to bar clicks
-		if(this.chart.realWidth < 450) {
-			this.chart.addListener('clickGraphItem', this.onClickBar);
-		}
-		// For larger screens, listen to clicks on the cursor (probably won't work on tablets)
-		else {
+		// If chart cursor is enabled (on larger screens) listen to clicks on it
+		if(this.chart.chartCursor.enabled) {
 			this.delegateEvents({'click .viz': 'onClickCursor'});
+		}
+		// Otherwise listen to clicks on the bars
+		else {
+			this.chart.addListener('clickGraphItem', this.onClickBar);
 		}
 		
 		// If there are more records than the default, show scroll bars
