@@ -63273,6 +63273,12 @@ module.exports = BaseChart.extend({
 				enabled: true,
 				rules: [
 					{
+						maxWidth: 550,
+						overrides: {
+							maxSelectedSeries: 7
+						}
+					},
+					{
 						maxWidth: 450,
 						overrides: {
 							maxSelectedSeries: 3,
@@ -63304,7 +63310,7 @@ module.exports = BaseChart.extend({
 				zoomable: false,
 				oneBalloonOnly: true
 			},
-			maxSelectedSeries: 7,
+			maxSelectedSeries: 14,
 			//startDuration: 0.5,
 			//startEffect: 'easeOutSine',
 			zoomOutText: '',
