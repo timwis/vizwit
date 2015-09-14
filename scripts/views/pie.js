@@ -41,6 +41,7 @@ module.exports = Backbone.View.extend({
 			pullOutOnlyOne: true,
 			labelRadius: 1,
 			hideLabelsPercent: 5,
+			creditsPosition: 'bottom-right',
 			startDuration: 0,
 			responsive: {
 				enabled: true,

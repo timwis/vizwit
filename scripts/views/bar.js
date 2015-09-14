@@ -79,6 +79,7 @@ module.exports = BaseChart.extend({
 			//startEffect: 'easeOutSine',
 			zoomOutText: '',
 			mouseWheelScrollEnabled: true,
+			creditsPosition: 'top-right',
 			categoryAxis: {
 				autoWrap: true,
 				//gridAlpha: 0,

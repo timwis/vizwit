@@ -72,6 +72,7 @@ module.exports = BaseChart.extend({
 				}]
 			},
 			dataDateFormat: 'YYYY-MM-DDT00:00:00.000', //"2015-04-07T16:21:00.000"
+			creditsPosition: 'top-right',
 			chartCursor: {
 				categoryBalloonDateFormat: "MMM YYYY",
 				cursorPosition: "mouse",
