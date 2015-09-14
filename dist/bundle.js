@@ -63206,7 +63206,10 @@ module.exports = BaseChart.extend({
 					{
 						maxWidth: 450,
 						overrides: {
-							maxSelectedSeries: 3
+							maxSelectedSeries: 3,
+							chartCursor: {
+								categoryBalloonEnabled: false
+							}
 						}
 					}
 				]
@@ -63261,11 +63264,11 @@ module.exports = BaseChart.extend({
 	initialize: function(options) {
 		BaseChart.prototype.initialize.apply(this, arguments);
 		
-		_.bindAll(this, 'onClick', 'onHover', 'onClickScroll');
+		_.bindAll(this, 'onClickCursor', 'onClickBar', 'onClickLabel', 'onHover', 'onClickScroll');
 	},
 	events: {
 		'click .scroll a': 'onClickScroll',
-		'click .viz': 'onClick'
+		'click .viz': 'onClickCursor'
 	},
 	render: function() {
 		BaseChart.prototype.render.apply(this, arguments);
@@ -63275,7 +63278,20 @@ module.exports = BaseChart.extend({
 			this.chart.zoomToIndexes(0, this.chart.maxSelectedSeries);
 		}
 		
+		// Listen to cursor hover changes
 		this.chart.chartCursor.addListener('changed', this.onHover);
+		
+		// Listen to label clicks
+		this.chart.categoryAxis.addListener('clickItem', this.onClickLabel);
+		
+		// For small screens, listen to bar clicks
+		if(this.chart.realWidth < 450) {
+			this.chart.addListener('clickGraphItem', this.onClickBar);
+		}
+		// For larger screens, listen to clicks on the cursor (probably won't work on tablets)
+		else {
+			this.delegateEvents({'click .viz': 'onClickCursor'});
+		}
 		
 		// If there are more records than the default, show scroll bars
 		if(this.chart.endIndex - this.chart.startIndex < this.collection.length) {
@@ -63303,28 +63319,35 @@ module.exports = BaseChart.extend({
 		}
 	},
 	// When the user clicks on a bar in this chart
-	onClick: function(e) {
+	onClickCursor: function(e) {
 		if(this.hovering !== null) {
-			var category = this.hovering.category;
+			this.onSelect(this.hovering.category);
+		}
+	},
+	onClickBar: function(e) {
+		this.onSelect(e.item.category);
+	},
+	onClickLabel: function(e) {
+		this.onSelect(e.serialDataItem.category);
+	},
+	onSelect: function(category) {
+		// If already selected, clear the filter
+		if(this.collection.selected === category) {
+			this.collection.selected = null;
+			this.vent.trigger('filter', {
+				field: this.collection.triggerField
+			})
+		}
+		// Otherwise, add the filter
+		else {
+			this.collection.selected = category;
 			
-			// If already selected, clear the filter
-			if(this.collection.selected === category) {
-				this.collection.selected = null;
-				this.vent.trigger('filter', {
-					field: this.collection.triggerField
-				})
-			}
-			// Otherwise, add the filter
-			else {
-				this.collection.selected = category;
-				
-				// Trigger the global event handler with this filter
-				this.vent.trigger('filter', {
-					field: this.collection.triggerField,
-					expression: this.collection.triggerField + ' = \'' + category + '\'',
-					friendlyExpression: this.collection.triggerField + ' is ' + category
-				});
-			}
+			// Trigger the global event handler with this filter
+			this.vent.trigger('filter', {
+				field: this.collection.triggerField,
+				expression: this.collection.triggerField + ' = \'' + category + '\'',
+				friendlyExpression: this.collection.triggerField + ' is ' + category
+			});
 		}
 	}
 })
