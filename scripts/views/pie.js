@@ -22,7 +22,7 @@ module.exports = Backbone.View.extend({
 			groupPercent: 1,
 			balloonFunction: function(item, formattedText) {
 				var content = '<b>' + item.title + '</b><br> \
-					Total: ' + (+item.dataContext.count).toLocaleString() + ' (' + parseFloat(item.percents.toFixed(2)) + '%)';
+					Total: ' + item.value.toLocaleString() + ' (' + parseFloat(item.percents.toFixed(2)) + '%)';
 				if(item.dataContext.filteredCount !== undefined) {
 					content += '<br>Filtered Amount: ' + (+item.dataContext.filteredCount).toLocaleString();
 				}
