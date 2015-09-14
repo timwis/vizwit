@@ -118,7 +118,7 @@ module.exports = BaseChart.extend({
 		
 		// If chart cursor is enabled (on larger screens) listen to clicks on it
 		if(this.chart.chartCursor.enabled) {
-			this.delegateEvents({'click .viz': 'onClickCursor'});
+			this.delegateEvents(_.extend({'click .viz': 'onClickCursor'}, this.events));
 		}
 		// Otherwise listen to clicks on the bars
 		else {
