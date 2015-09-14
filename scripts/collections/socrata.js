@@ -21,6 +21,7 @@ module.exports = Backbone.Collection.extend({
 		this.groupBy = options.groupBy || null;
 		this.triggerField = options.triggerField || options.groupBy;
 		this.filter = options.filter || {};
+		this.limit = options.limit || this.limit;
 		
 		this.fields = new SocrataFields(options);
 	},
