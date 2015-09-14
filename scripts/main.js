@@ -3,6 +3,7 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 var deparam = require('jquery-deparam');
 
+var Gist = require('./collections/gist');
 var Socrata = require('./collections/socrata');
 var GeoJSON = require('./collections/geojson');
 
@@ -15,12 +16,31 @@ var Choropleth = require('./views/choropleth');
 var vent = _.clone(Backbone.Events);
 
 var params = window.location.search.substr(1) ? deparam(window.location.search.substr(1)) : {};
-var page = params.page || 'parking-violations';
 
-//var config = require('../config/parking-violations');
-$.getJSON('config/' + page + '.json')
-.done(function(config) {
+// If a gist was provided, fetch the first file from it
+if(params.gist) {
+	(new Gist(null, {id: params.gist})).fetch({
+		success: function(collection, response, options) {
+			if(collection.length) {
+				// If a file was provided, use that one; otherwise use the first file in the gist
+				var model = params.file ? collection.get(params.file) : collection.at(0);
+				render(JSON.parse(model.get('content')));
+			} else {
+				console.error('No config files at gist ', params.gist);
+			}
+		},
+		error: function() {
+			console.error('Error fetching gist')
+		}
+	});
+}
+// Otherwise use the default config
+else {
+	$.getJSON('../config/sample.json', render);
+}
 
+function render(config) {
+	
 	// Render header
 	if(config.header) {
 		var header = new Header(config.header);
@@ -58,7 +78,7 @@ $.getJSON('config/' + page + '.json')
 		// Loop through columns in this row
 		columns.forEach(function(column) {
 			// Pass page name through via config
-			column.page = page;
+			if(params.gist) column.gist = params.gist;
 			
 			// Add column element to row
 			var columnEl = $('<div/>').addClass('col-md-' + width);
@@ -107,7 +127,4 @@ $.getJSON('config/' + page + '.json')
 			}
 		});
 	});
-})
-.fail(function() {
-	console.error('Dataset %s not found', dataset);
-})
+}
