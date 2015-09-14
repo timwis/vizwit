@@ -29,7 +29,7 @@ module.exports = Backbone.View.extend({
 				return content;
 			},
 			labelFunction: function(item, formattedText) {
-				return item.title.length > 12 ? item.title.substr(0, 12) + '…' : item.title;
+				return item.title.length > 15 ? item.title.substr(0, 15) + '…' : item.title;
 			},
 			balloon: {},
 			autoMargins: false,
@@ -40,7 +40,19 @@ module.exports = Backbone.View.extend({
 			pullOutRadius: '10%',
 			pullOutOnlyOne: true,
 			labelRadius: 1,
-			startDuration: 0
+			hideLabelsPercent: 5,
+			startDuration: 0,
+			responsive: {
+				enabled: true,
+				rules: [
+					{
+						maxWidth: 450,
+						overrides: {
+							pullOutRadius: '10%'
+						}
+					}
+				]
+			}
 		}
 	},
 	initialize: function(options) {
