@@ -187,8 +187,6 @@ module.exports = Backbone.View.extend({
 			}
 			this.filteredCollection.fetch();
 			this.renderFilters();
-		} else {
-			
 		}
 	}
 })

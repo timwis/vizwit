@@ -28,10 +28,8 @@ module.exports = Backbone.View.extend({
 			this.render();
 		} else {
 			this.listenTo(this.collection.fields, 'sync', this.render);
+			this.collection.fields.fetch();
 		}
-		
-		// Fetch meta model
-		this.collection.fields.fetch();
 	},
 	renderTemplate: function() {
 		this.$el.empty().append(Template(this.config));
