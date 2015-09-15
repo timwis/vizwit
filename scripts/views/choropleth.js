@@ -172,8 +172,8 @@ module.exports = Backbone.View.extend({
 		var clickedLabel = e.target.feature.properties[this.boundaries.label];
 		
 		// If already selected, clear the filter
-		if(this.collection.selected === clickedId) {
-			this.collection.selected = null;
+		var filter = this.filteredCollection.filter[this.filteredCollection.triggerField];
+		if(filter && filter.selected === clickedId) {
 			this.vent.trigger('filter', {
 				field: this.collection.triggerField
 			})
@@ -185,6 +185,7 @@ module.exports = Backbone.View.extend({
 			// Trigger the global event handler with this filter
 			this.vent.trigger('filter', {
 				field: this.collection.triggerField,
+				selected: clickedId,
 				expression: this.collection.triggerField + ' = \'' + clickedId + '\'',
 				friendlyExpression: this.config.title + ' is ' + clickedLabel
 			})
