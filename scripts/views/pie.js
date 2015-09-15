@@ -1,7 +1,7 @@
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
-var Template = require('../templates/panel.html');
+var Panel = require('./panel');
 var numberFormatter = require('../util/number-formatter');
 var LoaderOn = require('../util/loader').on;
 var LoaderOff = require('../util/loader').off;
@@ -11,7 +11,7 @@ require('amcharts3/amcharts/pie');
 require('amcharts3/amcharts/themes/light');
 require('amcharts3/amcharts/plugins/responsive/responsive');
 	
-module.exports = Backbone.View.extend({
+module.exports = Panel.extend({
 	settings: {
 		chart: {
 			'type': 'pie',
@@ -61,9 +61,10 @@ module.exports = Backbone.View.extend({
 		}
 	},
 	initialize: function(options) {
+		Panel.prototype.initialize.apply(this, arguments);
+		
 		// Save options to view
 		options = options || {};
-		this.config = options.config || {};
 		this.vent = options.vent || null;
 		this.filteredCollection = options.filteredCollection || null;
 		
@@ -84,16 +85,6 @@ module.exports = Backbone.View.extend({
 		
 		// Fetch collection
 		this.collection.fetch();
-		
-		// Render template
-		this.renderTemplate();
-	},
-	renderTemplate: function() {
-		this.$el.empty().append(Template(this.config));
-	},
-	renderFilters: function() {
-		var filters = this.filteredCollection.getFriendlyFilters();
-		this.$('.filters').text(filters).parent().toggle(filters ? true : false);
 	},
 	render: function() {
 		// Initialize chart

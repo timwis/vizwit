@@ -3,16 +3,17 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 var L = require('mapbox.js');
 var geocolor = require('geocolor');
-var Template = require('../templates/panel.html');
+var Panel = require('./panel');
 var LoaderOn = require('../util/loader').on;
 var LoaderOff = require('../util/loader').off;
 var ColorRange = require('../util/color-range');
 //L.Icon.Default.imagePath = 'node_modules/leaflet/dist/images/'; // necessary w/browserify
 	
-module.exports = Backbone.View.extend({
+module.exports = Panel.extend({
 	initialize: function(options) {
+		Panel.prototype.initialize.apply(this, arguments);
+		
 		options = options || {};
-		this.config = options.config || {};
 		this.vent = options.vent || null;
 		this.boundaries = options.boundaries || null;
 		this.filteredCollection = options.filteredCollection || null;
@@ -40,8 +41,7 @@ module.exports = Backbone.View.extend({
 		
 		_.bindAll(this, 'onMousemove', 'onMouseout', 'onClick', 'render');
 		
-		// Render template & map at load
-		this.renderTemplate();
+		// Render map at load
 		this.render();
 	},
 	// When a chart has been filtered
@@ -54,13 +54,6 @@ module.exports = Backbone.View.extend({
 		}
 		this.filteredCollection.fetch();
 		this.renderFilters();
-	},
-	renderTemplate: function() {
-		this.$el.empty().append(Template(this.config));
-	},
-	renderFilters: function() {
-		var filters = this.filteredCollection.getFriendlyFilters();
-		this.$('.filters').text(filters).parent().toggle(filters ? true : false);
 	},
 	render: function() {
 		this.map = L.map(this.$('.viz').get(0));//.setView([39.95, -75.1667], 13);

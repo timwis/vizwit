@@ -1,7 +1,7 @@
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
-var Template = require('../templates/panel.html');
+var Panel = require('./panel');
 var numberFormatter = require('../util/number-formatter');
 var LoaderOn = require('../util/loader').on;
 var LoaderOff = require('../util/loader').off;
@@ -11,50 +11,12 @@ require('amcharts3/amcharts/serial');
 require('amcharts3/amcharts/themes/light');
 require('amcharts3/amcharts/plugins/responsive/responsive');
 	
-module.exports = Backbone.View.extend({
-	settings: {
-		/*limit: null,
-		collectionOrder: null,
-		graphs: [
-			{
-				title: 'Data',
-				valueField: 'count',
-				fillAlphas: 1,
-				clustered: false,
-				lineColor: '#97bbcd',
-				balloonText: '<b>[[category]]</b><br>Total: [[value]]'
-			},
-			{
-				title: 'Filtered Data',
-				valueField: 'filteredCount',
-				fillAlphas: 0.8,
-				clustered: false,
-				lineColor: '#97bbcd',
-				balloonText: '<b>[[category]]</b><br>Filtered Amount: [[value]]'
-			}
-		],
-		chart: {
-			'type': 'serial',
-			theme: 'light',
-			categoryField: 'label',
-			valueAxes: [{
-				labelFunction: numberFormatter,
-				position: 'right',
-				inside: true,
-				axisThickness: 0,
-				axisAlpha: 0,
-				tickLength: 0,
-				ignoreAxisWidth: true
-			}],
-			categoryAxis: {
-				autoWrap: true
-			}
-		}*/
-	},
+module.exports = Panel.extend({
+	settings: {},
 	initialize: function(options) {
+		Panel.prototype.initialize.apply(this, arguments);
+		
 		// Save options to view
-		options = options || {};
-		this.config = options.config || {};
 		this.vent = options.vent || null;
 		this.filteredCollection = options.filteredCollection || null;
 		
@@ -74,25 +36,8 @@ module.exports = Backbone.View.extend({
 		// Set collection order if specified (necessary for datetime chart)
 		if(this.settings.collectionOrder) this.collection.order = this.settings.collectionOrder;
 		
-		_.bindAll(this, 'onClickRemoveFilter');
-		
 		// Fetch collection
 		this.collection.fetch();
-		
-		// Render template
-		this.renderTemplate();
-	},
-	renderTemplate: function() {
-		this.$el.empty().append(Template(this.config));
-	},
-	renderFilters: function() {
-		var filters = this.filteredCollection.filter;
-		var strings = [];
-		for(var i in filters) {
-			strings.push(filters[i].friendlyExpression + ' <a href="#" data-filter="' + i + '" class="remove-filter"><span class="glyphicon glyphicon-remove"></span></a>');
-		}
-		var content = strings.join(' and ');
-		this.$('.filters').empty().append(content).parent().toggle(content ? true : false);
 	},
 	render: function() {
 		// Initialize chart
@@ -165,14 +110,5 @@ module.exports = Backbone.View.extend({
 		}
 		this.renderFilters();
 		this.filteredCollection.fetch();
-	},
-	onClickRemoveFilter: function(e) {
-		var filter = $(e.currentTarget).data('filter');
-		if(filter) {
-			this.vent.trigger('filter', {
-				field: filter
-			});
-		}
-		e.preventDefault();
 	}
 })

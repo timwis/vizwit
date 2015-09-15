@@ -1,16 +1,17 @@
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
-var Template = require('../templates/panel.html');
+var Panel = require('./panel');
 var LoaderOn = require('../util/loader').on;
 var LoaderOff = require('../util/loader').off;
 require('datatables');
 require('datatables/media/js/dataTables.bootstrap');
 	
-module.exports = Backbone.View.extend({
+module.exports = Panel.extend({
 	initialize: function(options) {
+		Panel.prototype.initialize.apply(this, arguments);
+		
 		options = options || {};
-		this.config = options.config || {};
 		this.vent = options.vent || null;
 		
 		// Listen to vent filters
@@ -20,8 +21,6 @@ module.exports = Backbone.View.extend({
 		this.listenTo(this.collection, 'request', LoaderOn);
 		this.listenTo(this.collection, 'sync', LoaderOff);
 		
-		this.renderTemplate();
-		
 		// If columns were defined in the config, go straight to render
 		// otherwise, fetch columns through the metadata model 
 		if(this.config.columns) {
@@ -30,13 +29,6 @@ module.exports = Backbone.View.extend({
 			this.listenTo(this.collection.fields, 'sync', this.render);
 			this.collection.fields.fetch();
 		}
-	},
-	renderTemplate: function() {
-		this.$el.empty().append(Template(this.config));
-	},
-	renderFilters: function() {
-		var filters = this.collection.getFriendlyFilters();
-		this.$('.filters').text(filters).parent().toggle(filters ? true : false);
 	},
 	render: function() {
 		var self = this;

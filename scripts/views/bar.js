@@ -107,8 +107,7 @@ module.exports = BaseChart.extend({
 		_.bindAll(this, 'onClickCursor', 'onClickBar', 'onClickLabel', 'onHover', 'onClickScroll', 'zoomToBeginning');
 	},
 	events: {
-		'click .scroll a': 'onClickScroll',
-		'click .remove-filter': 'onClickRemoveFilter'
+		'click .scroll a': 'onClickScroll'
 	},
 	render: function() {
 		BaseChart.prototype.render.apply(this, arguments);
