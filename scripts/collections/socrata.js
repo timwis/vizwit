@@ -52,8 +52,5 @@ module.exports = Backbone.Collection.extend({
 			filters = _.filter(filters, function(row) { return row.field !== self.triggerField; });
 		}
 		return _.pluck(filters, 'expression').join(' and ');
-	},
-	getFriendlyFilters: function() {
-		return _.pluck(this.filter, 'friendlyExpression').join(' and ');
 	}
 })

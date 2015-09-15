@@ -188,6 +188,11 @@ module.exports = Backbone.View.extend({
 			this.filteredCollection.filter[data.field] = data;
 		} else {
 			delete this.filteredCollection.filter[data.field];
+			
+			// If this view's filter is being removed, re-render it (since this view doesn't filter itself)
+			if(data.field === this.filteredCollection.triggerField) {
+				this.render();
+			}
 		}
 		this.renderFilters();
 		

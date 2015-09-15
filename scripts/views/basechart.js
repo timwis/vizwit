@@ -74,6 +74,8 @@ module.exports = Backbone.View.extend({
 		// Set collection order if specified (necessary for datetime chart)
 		if(this.settings.collectionOrder) this.collection.order = this.settings.collectionOrder;
 		
+		_.bindAll(this, 'onClickRemoveFilter');
+		
 		// Fetch collection
 		this.collection.fetch();
 		
@@ -84,8 +86,13 @@ module.exports = Backbone.View.extend({
 		this.$el.empty().append(Template(this.config));
 	},
 	renderFilters: function() {
-		var filters = this.filteredCollection.getFriendlyFilters();
-		this.$('.filters').text(filters).parent().toggle(filters ? true : false);
+		var filters = this.filteredCollection.filter;
+		var strings = [];
+		for(var i in filters) {
+			strings.push(filters[i].friendlyExpression + ' <a href="#" data-filter="' + i + '" class="remove-filter"><span class="glyphicon glyphicon-remove"></span></a>');
+		}
+		var content = strings.join(' and ');
+		this.$('.filters').empty().append(content).parent().toggle(content ? true : false);
 	},
 	render: function() {
 		// Initialize chart
@@ -158,5 +165,14 @@ module.exports = Backbone.View.extend({
 		}
 		this.renderFilters();
 		this.filteredCollection.fetch();
+	},
+	onClickRemoveFilter: function(e) {
+		var filter = $(e.currentTarget).data('filter');
+		if(filter) {
+			this.vent.trigger('filter', {
+				field: filter
+			});
+		}
+		e.preventDefault();
 	}
 })
