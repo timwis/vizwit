@@ -62979,9 +62979,6 @@ module.exports = Backbone.Collection.extend({
 			filters = _.filter(filters, function(row) { return row.field !== self.triggerField; });
 		}
 		return _.pluck(filters, 'expression').join(' and ');
-	},
-	getFriendlyFilters: function() {
-		return _.pluck(this.filter, 'friendlyExpression').join(' and ');
 	}
 })
 },{"./socrata-fields":62,"backbone":6,"jquery":20,"soda-js":51,"underscore":59}],64:[function(require,module,exports){
@@ -63119,7 +63116,7 @@ var gist = params.gist || '601224472a5d53cbb908'; // default to sample config
 		console.error('Error fetching gist', gist);
 	}
 });
-},{"./collections/geojson":60,"./collections/gist":61,"./collections/socrata":63,"./views/bar":70,"./views/choropleth":72,"./views/datetime":73,"./views/header":74,"./views/pie":75,"./views/table":76,"backbone":6,"jquery":20,"jquery-deparam":19,"underscore":59}],65:[function(require,module,exports){
+},{"./collections/geojson":60,"./collections/gist":61,"./collections/socrata":63,"./views/bar":70,"./views/choropleth":72,"./views/datetime":73,"./views/header":74,"./views/pie":76,"./views/table":77,"backbone":6,"jquery":20,"jquery-deparam":19,"underscore":59}],65:[function(require,module,exports){
 module.exports = function(data){
 var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
 __p+='<div class="row">\n\t<div class="col-md-7">\n\t\t\n\t\t<h1 class="title">'+
@@ -63284,7 +63281,7 @@ module.exports = BaseChart.extend({
 				enabled: true,
 				rules: [
 					{
-						maxWidth: 550,
+						maxWidth: 600,
 						overrides: {
 							maxSelectedSeries: 7
 						}
@@ -63444,7 +63441,7 @@ module.exports = BaseChart.extend({
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
-var Template = require('../templates/panel.html');
+var Panel = require('./panel');
 var numberFormatter = require('../util/number-formatter');
 var LoaderOn = require('../util/loader').on;
 var LoaderOff = require('../util/loader').off;
@@ -63454,50 +63451,12 @@ require('amcharts3/amcharts/serial');
 require('amcharts3/amcharts/themes/light');
 require('amcharts3/amcharts/plugins/responsive/responsive');
 	
-module.exports = Backbone.View.extend({
-	settings: {
-		/*limit: null,
-		collectionOrder: null,
-		graphs: [
-			{
-				title: 'Data',
-				valueField: 'count',
-				fillAlphas: 1,
-				clustered: false,
-				lineColor: '#97bbcd',
-				balloonText: '<b>[[category]]</b><br>Total: [[value]]'
-			},
-			{
-				title: 'Filtered Data',
-				valueField: 'filteredCount',
-				fillAlphas: 0.8,
-				clustered: false,
-				lineColor: '#97bbcd',
-				balloonText: '<b>[[category]]</b><br>Filtered Amount: [[value]]'
-			}
-		],
-		chart: {
-			'type': 'serial',
-			theme: 'light',
-			categoryField: 'label',
-			valueAxes: [{
-				labelFunction: numberFormatter,
-				position: 'right',
-				inside: true,
-				axisThickness: 0,
-				axisAlpha: 0,
-				tickLength: 0,
-				ignoreAxisWidth: true
-			}],
-			categoryAxis: {
-				autoWrap: true
-			}
-		}*/
-	},
+module.exports = Panel.extend({
+	settings: {},
 	initialize: function(options) {
+		Panel.prototype.initialize.apply(this, arguments);
+		
 		// Save options to view
-		options = options || {};
-		this.config = options.config || {};
 		this.vent = options.vent || null;
 		this.filteredCollection = options.filteredCollection || null;
 		
@@ -63519,16 +63478,6 @@ module.exports = Backbone.View.extend({
 		
 		// Fetch collection
 		this.collection.fetch();
-		
-		// Render template
-		this.renderTemplate();
-	},
-	renderTemplate: function() {
-		this.$el.empty().append(Template(this.config));
-	},
-	renderFilters: function() {
-		var filters = this.filteredCollection.getFriendlyFilters();
-		this.$('.filters').text(filters).parent().toggle(filters ? true : false);
 	},
 	render: function() {
 		// Initialize chart
@@ -63603,22 +63552,23 @@ module.exports = Backbone.View.extend({
 		this.filteredCollection.fetch();
 	}
 })
-},{"../templates/panel.html":66,"../util/loader":68,"../util/number-formatter":69,"amcharts3":1,"amcharts3/amcharts/plugins/responsive/responsive":3,"amcharts3/amcharts/serial":4,"amcharts3/amcharts/themes/light":5,"backbone":6,"jquery":20,"underscore":59}],72:[function(require,module,exports){
+},{"../util/loader":68,"../util/number-formatter":69,"./panel":75,"amcharts3":1,"amcharts3/amcharts/plugins/responsive/responsive":3,"amcharts3/amcharts/serial":4,"amcharts3/amcharts/themes/light":5,"backbone":6,"jquery":20,"underscore":59}],72:[function(require,module,exports){
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var L = require('mapbox.js');
 var geocolor = require('geocolor');
-var Template = require('../templates/panel.html');
+var Panel = require('./panel');
 var LoaderOn = require('../util/loader').on;
 var LoaderOff = require('../util/loader').off;
 var ColorRange = require('../util/color-range');
 //L.Icon.Default.imagePath = 'node_modules/leaflet/dist/images/'; // necessary w/browserify
 	
-module.exports = Backbone.View.extend({
+module.exports = Panel.extend({
 	initialize: function(options) {
+		Panel.prototype.initialize.apply(this, arguments);
+		
 		options = options || {};
-		this.config = options.config || {};
 		this.vent = options.vent || null;
 		this.boundaries = options.boundaries || null;
 		this.filteredCollection = options.filteredCollection || null;
@@ -63646,8 +63596,7 @@ module.exports = Backbone.View.extend({
 		
 		_.bindAll(this, 'onMousemove', 'onMouseout', 'onClick', 'render');
 		
-		// Render template & map at load
-		this.renderTemplate();
+		// Render map at load
 		this.render();
 	},
 	// When a chart has been filtered
@@ -63660,13 +63609,6 @@ module.exports = Backbone.View.extend({
 		}
 		this.filteredCollection.fetch();
 		this.renderFilters();
-	},
-	renderTemplate: function() {
-		this.$el.empty().append(Template(this.config));
-	},
-	renderFilters: function() {
-		var filters = this.filteredCollection.getFriendlyFilters();
-		this.$('.filters').text(filters).parent().toggle(filters ? true : false);
 	},
 	render: function() {
 		this.map = L.map(this.$('.viz').get(0));//.setView([39.95, -75.1667], 13);
@@ -63778,8 +63720,8 @@ module.exports = Backbone.View.extend({
 		var clickedLabel = e.target.feature.properties[this.boundaries.label];
 		
 		// If already selected, clear the filter
-		if(this.collection.selected === clickedId) {
-			this.collection.selected = null;
+		var filter = this.filteredCollection.filter[this.filteredCollection.triggerField];
+		if(filter && filter.selected === clickedId) {
 			this.vent.trigger('filter', {
 				field: this.collection.triggerField
 			})
@@ -63791,6 +63733,7 @@ module.exports = Backbone.View.extend({
 			// Trigger the global event handler with this filter
 			this.vent.trigger('filter', {
 				field: this.collection.triggerField,
+				selected: clickedId,
 				expression: this.collection.triggerField + ' = \'' + clickedId + '\'',
 				friendlyExpression: this.config.title + ' is ' + clickedLabel
 			})
@@ -63798,7 +63741,7 @@ module.exports = Backbone.View.extend({
 	}
 });
 
-},{"../templates/panel.html":66,"../util/color-range":67,"../util/loader":68,"backbone":6,"geocolor":14,"jquery":20,"mapbox.js":36,"underscore":59}],73:[function(require,module,exports){
+},{"../util/color-range":67,"../util/loader":68,"./panel":75,"backbone":6,"geocolor":14,"jquery":20,"mapbox.js":36,"underscore":59}],73:[function(require,module,exports){
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
@@ -63939,6 +63882,50 @@ var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var Template = require('../templates/panel.html');
+	
+module.exports = Backbone.View.extend({
+	initialize: function(options) {
+		options = options || {};
+		this.config = options.config || {};
+		
+		_.bindAll(this, 'onClickRemoveFilter');
+		
+		// Delegate event here so as not to have it overriden by child classes' events properties
+		this.events = _.extend({
+			'click .remove-filter': 'onClickRemoveFilter'
+		}, this.events || {});
+		this.delegateEvents();
+		
+		// Render template
+		this.renderTemplate();
+	},
+	renderTemplate: function() {
+		this.$el.empty().append(Template(this.config));
+	},
+	renderFilters: function() {
+		var filters = this.filteredCollection ? this.filteredCollection.filter : this.collection.filter;
+		var strings = [];
+		for(var i in filters) {
+			strings.push(filters[i].friendlyExpression + ' <a href="#" data-filter="' + i + '" class="remove-filter"><span class="glyphicon glyphicon-remove"></span></a>');
+		}
+		var content = strings.join(' and ');
+		this.$('.filters').empty().append(content).parent().toggle(content ? true : false);
+	},
+	onClickRemoveFilter: function(e) {
+		var filter = $(e.currentTarget).data('filter');
+		if(filter) {
+			this.vent.trigger('filter', {
+				field: filter
+			});
+		}
+		e.preventDefault();
+	}
+});
+},{"../templates/panel.html":66,"backbone":6,"jquery":20,"underscore":59}],76:[function(require,module,exports){
+var $ = require('jquery');
+var _ = require('underscore');
+var Backbone = require('backbone');
+var Panel = require('./panel');
 var numberFormatter = require('../util/number-formatter');
 var LoaderOn = require('../util/loader').on;
 var LoaderOff = require('../util/loader').off;
@@ -63948,7 +63935,7 @@ require('amcharts3/amcharts/pie');
 require('amcharts3/amcharts/themes/light');
 require('amcharts3/amcharts/plugins/responsive/responsive');
 	
-module.exports = Backbone.View.extend({
+module.exports = Panel.extend({
 	settings: {
 		chart: {
 			'type': 'pie',
@@ -63998,9 +63985,10 @@ module.exports = Backbone.View.extend({
 		}
 	},
 	initialize: function(options) {
+		Panel.prototype.initialize.apply(this, arguments);
+		
 		// Save options to view
 		options = options || {};
-		this.config = options.config || {};
 		this.vent = options.vent || null;
 		this.filteredCollection = options.filteredCollection || null;
 		
@@ -64021,16 +64009,6 @@ module.exports = Backbone.View.extend({
 		
 		// Fetch collection
 		this.collection.fetch();
-		
-		// Render template
-		this.renderTemplate();
-	},
-	renderTemplate: function() {
-		this.$el.empty().append(Template(this.config));
-	},
-	renderFilters: function() {
-		var filters = this.filteredCollection.getFriendlyFilters();
-		this.$('.filters').text(filters).parent().toggle(filters ? true : false);
 	},
 	render: function() {
 		// Initialize chart
@@ -64125,6 +64103,11 @@ module.exports = Backbone.View.extend({
 			this.filteredCollection.filter[data.field] = data;
 		} else {
 			delete this.filteredCollection.filter[data.field];
+			
+			// If this view's filter is being removed, re-render it (since this view doesn't filter itself)
+			if(data.field === this.filteredCollection.triggerField) {
+				this.render();
+			}
 		}
 		this.renderFilters();
 		
@@ -64134,20 +64117,21 @@ module.exports = Backbone.View.extend({
 		}
 	}
 })
-},{"../templates/panel.html":66,"../util/loader":68,"../util/number-formatter":69,"amcharts3":1,"amcharts3/amcharts/pie":2,"amcharts3/amcharts/plugins/responsive/responsive":3,"amcharts3/amcharts/themes/light":5,"backbone":6,"jquery":20,"underscore":59}],76:[function(require,module,exports){
+},{"../util/loader":68,"../util/number-formatter":69,"./panel":75,"amcharts3":1,"amcharts3/amcharts/pie":2,"amcharts3/amcharts/plugins/responsive/responsive":3,"amcharts3/amcharts/themes/light":5,"backbone":6,"jquery":20,"underscore":59}],77:[function(require,module,exports){
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
-var Template = require('../templates/panel.html');
+var Panel = require('./panel');
 var LoaderOn = require('../util/loader').on;
 var LoaderOff = require('../util/loader').off;
 require('datatables');
 require('datatables/media/js/dataTables.bootstrap');
 	
-module.exports = Backbone.View.extend({
+module.exports = Panel.extend({
 	initialize: function(options) {
+		Panel.prototype.initialize.apply(this, arguments);
+		
 		options = options || {};
-		this.config = options.config || {};
 		this.vent = options.vent || null;
 		
 		// Listen to vent filters
@@ -64157,8 +64141,6 @@ module.exports = Backbone.View.extend({
 		this.listenTo(this.collection, 'request', LoaderOn);
 		this.listenTo(this.collection, 'sync', LoaderOff);
 		
-		this.renderTemplate();
-		
 		// If columns were defined in the config, go straight to render
 		// otherwise, fetch columns through the metadata model 
 		if(this.config.columns) {
@@ -64167,13 +64149,6 @@ module.exports = Backbone.View.extend({
 			this.listenTo(this.collection.fields, 'sync', this.render);
 			this.collection.fields.fetch();
 		}
-	},
-	renderTemplate: function() {
-		this.$el.empty().append(Template(this.config));
-	},
-	renderFilters: function() {
-		var filters = this.collection.getFriendlyFilters();
-		this.$('.filters').text(filters).parent().toggle(filters ? true : false);
 	},
 	render: function() {
 		var self = this;
@@ -64235,4 +64210,4 @@ module.exports = Backbone.View.extend({
 		this.renderFilters();
 	}
 });
-},{"../templates/panel.html":66,"../util/loader":68,"backbone":6,"datatables":13,"datatables/media/js/dataTables.bootstrap":12,"jquery":20,"underscore":59}]},{},[64]);
+},{"../util/loader":68,"./panel":75,"backbone":6,"datatables":13,"datatables/media/js/dataTables.bootstrap":12,"jquery":20,"underscore":59}]},{},[64]);
