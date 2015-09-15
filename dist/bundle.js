@@ -62954,7 +62954,7 @@ module.exports = Backbone.Collection.extend({
 		this.fields = new SocrataFields(options);
 	},
 	url: function() {
-		var filter = _.pluck(this.filter, 'expression').join(' and ');
+		var filter = this.getFilters();
 		var query = this.consumer.query()
 			.withDataset(this.dataset);
 		if(filter) {
@@ -62971,6 +62971,14 @@ module.exports = Backbone.Collection.extend({
 		if(this.offset) query.offset(this.offset);
 		if(this.q) { query.q(this.q); console.log(this.q) }
 		return query.getURL();
+	},
+	getFilters: function() {
+		var self = this;
+		var filters = this.filter;
+		if( ! _.isEmpty(filters) && this.dontFilterSelf) {
+			filters = _.filter(filters, function(row) { return row.field !== self.triggerField; });
+		}
+		return _.pluck(filters, 'expression').join(' and ');
 	},
 	getFriendlyFilters: function() {
 		return _.pluck(this.filter, 'friendlyExpression').join(' and ');
@@ -63076,6 +63084,8 @@ var gist = params.gist || '601224472a5d53cbb908'; // default to sample config
 						});
 						break;
 					case 'pie':
+						collection.dontFilterSelf = true;
+						filteredCollection.dontFilterSelf = true;
 						new Pie({
 							config: column,
 							el: columnEl,
@@ -63341,7 +63351,7 @@ module.exports = BaseChart.extend({
 	initialize: function(options) {
 		BaseChart.prototype.initialize.apply(this, arguments);
 		
-		_.bindAll(this, 'onClickCursor', 'onClickBar', 'onClickLabel', 'onHover', 'onClickScroll');
+		_.bindAll(this, 'onClickCursor', 'onClickBar', 'onClickLabel', 'onHover', 'onClickScroll', 'zoomToBeginning');
 	},
 	events: {
 		'click .scroll a': 'onClickScroll'
@@ -63350,9 +63360,8 @@ module.exports = BaseChart.extend({
 		BaseChart.prototype.render.apply(this, arguments);
 		
 		// If there are greater than 10 bars, zoom to the first bar (ideally this would be done by configuration)
-		if(this.collection.length > this.chart.maxSelectedSeries) {
-			this.chart.zoomToIndexes(0, this.chart.maxSelectedSeries);
-		}
+		this.chart.addListener('drawn', this.zoomToBeginning);
+		this.zoomToBeginning(); // since rendered isn't called the first time
 		
 		// Listen to cursor hover changes
 		this.chart.chartCursor.addListener('changed', this.onHover);
@@ -63372,6 +63381,11 @@ module.exports = BaseChart.extend({
 		// If there are more records than the default, show scroll bars
 		if(this.chart.endIndex - this.chart.startIndex < this.collection.length) {
 			this.$('.scroll').removeClass('hidden');
+		}
+	},
+	zoomToBeginning: function() {
+		if(this.collection.length > this.chart.maxSelectedSeries) {
+			this.chart.zoomToIndexes(0, this.chart.maxSelectedSeries);
 		}
 	},
 	onClickScroll: function(e) {
@@ -63408,19 +63422,18 @@ module.exports = BaseChart.extend({
 	},
 	onSelect: function(category) {
 		// If already selected, clear the filter
-		if(this.collection.selected === category) {
-			this.collection.selected = null;
+		var filter = this.filteredCollection.filter[this.filteredCollection.triggerField];
+		if(filter && filter.selected === category) {
 			this.vent.trigger('filter', {
 				field: this.collection.triggerField
 			})
 		}
 		// Otherwise, add the filter
-		else {
-			this.collection.selected = category;
-			
+		else {			
 			// Trigger the global event handler with this filter
 			this.vent.trigger('filter', {
 				field: this.collection.triggerField,
+				selected: category,
 				expression: this.collection.triggerField + ' = \'' + category + '\'',
 				friendlyExpression: this.collection.triggerField + ' is ' + category
 			});
@@ -63534,16 +63547,7 @@ module.exports = Backbone.View.extend({
 			config.graphs.push($.extend(true, {}, this.settings.graphs[1]));
 		}
 		
-		// Show guide on selected item
-		if(this.collection.selected) {
-			var guide = config.categoryAxis.guides[0];
-			if(config.categoryAxis.parseDates) {
-				guide.date = this.collection.selected[0];
-				guide.toDate = this.collection.selected[1];
-			} else {
-				guide.category = guide.toCategory = this.collection.selected;
-			}
-		}
+		this.updateGuide(config);
 		
 		this.chart = AmCharts.makeChart(this.$('.viz').get(0), config);
 	},
@@ -63570,6 +63574,23 @@ module.exports = Backbone.View.extend({
 		});
 		return chartData;
 	},
+	// Show guide on selected item or remove it if nothing's selected
+	updateGuide: function(config) {
+		var guide = config.categoryAxis.guides[0];
+		var filter = this.filteredCollection.filter[this.filteredCollection.triggerField];
+		if(filter) {
+			if(config.categoryAxis.parseDates) {
+				guide.date = filter.selected[0];
+				guide.toDate = filter.selected[1];
+			} else {
+				guide.category = guide.toCategory = filter.selected;
+			}
+		} else {
+			if(guide.date) delete guide.date;
+			if(guide.toDate) delete guide.toDate;
+			if(guide.category) delete guide.category;
+		}
+	},
 	// When a chart has been filtered
 	onFilter: function(data) {
 		// Add the filter to the filtered collection and fetch it with the filter
@@ -63578,8 +63599,8 @@ module.exports = Backbone.View.extend({
 		} else {
 			delete this.filteredCollection.filter[data.field];
 		}
-		this.filteredCollection.fetch();
 		this.renderFilters();
+		this.filteredCollection.fetch();
 	}
 })
 },{"../templates/panel.html":66,"../util/loader":68,"../util/number-formatter":69,"amcharts3":1,"amcharts3/amcharts/plugins/responsive/responsive":3,"amcharts3/amcharts/serial":4,"amcharts3/amcharts/themes/light":5,"backbone":6,"jquery":20,"underscore":59}],72:[function(require,module,exports){
@@ -63832,6 +63853,7 @@ module.exports = BaseChart.extend({
 				axisThickness: 0,
 				axisAlpha: 0,
 				tickLength: 0,
+				minimum: 0,
 				ignoreAxisWidth: true
 			}],
 			categoryAxis: {
@@ -63878,7 +63900,6 @@ module.exports = BaseChart.extend({
 	// When the user clicks on a bar in this chart
 	onClick: function(e) {
 		//console.log('Filtered by', (new Date(e.start)).toISOString(), (new Date(e.end)).toISOString());
-		this.collection.selected = [new Date(e.start), new Date(e.end)];
 		var field = this.collection.triggerField;
 		
 		var start = new Date(e.start);
@@ -63892,26 +63913,10 @@ module.exports = BaseChart.extend({
 		// Trigger the global event handler with this filter
 		this.vent.trigger('filter', {
 			field: field,
+			selected: [start, end],
 			expression: field + ' >= \'' + startIso + '\' and ' + field + ' <= \'' + endIso + '\'',
 			friendlyExpression: field + ' is ' + startFriendly + ' to ' + endFriendly
 		})
-	},
-	// When a chart has been filtered
-	onFilter: function(data) {
-		// Only listen to other charts
-		if(data.field !== this.filteredCollection.triggerField) {
-			// Add the filter to the filtered collection and fetch it with the filter
-			if(data.expression) {
-				this.filteredCollection.filter[data.field] = data;
-			} else {
-				delete this.filteredCollection.filter[data.field];
-			}
-			this.filteredCollection.fetch();
-			this.renderFilters();
-		} else {
-			// Re-render to show the guides when they're initially set
-			this.render();
-		}
 	}
 })
 },{"../util/number-formatter":69,"./basechart":71,"backbone":6,"jquery":20,"underscore":59}],74:[function(require,module,exports){
@@ -64038,7 +64043,8 @@ module.exports = Backbone.View.extend({
 		
 		// If "other" slice is selected, set other slice to be pulled out
 		var otherSliceTitle = config.groupedTitle || 'Other'
-		if(this.collection.selected === otherSliceTitle) {
+		var filter = this.filteredCollection.filter[this.filteredCollection.triggerField];
+		if(filter && filter.selected === otherSliceTitle) {
 			config.groupedPulled = true;
 		}
 		
@@ -64049,6 +64055,7 @@ module.exports = Backbone.View.extend({
 	formatChartData: function() {
 		var self = this;
 		var chartData = [];
+		var filter = this.filteredCollection.filter[this.filteredCollection.triggerField];
 		
 		// Map collection(s) into format expected by chart library
 		this.collection.forEach(function(model) {
@@ -64064,7 +64071,7 @@ module.exports = Backbone.View.extend({
 				data.filteredCount = match ? match.get(self.collection.countProperty) : 0;
 			}
 			// If this slice is selected, set it to be pulled
-			if(self.collection.selected === label) {
+			if(filter && filter.selected === label) {
 				data.pulled = true;
 			}
 					
@@ -64076,16 +64083,14 @@ module.exports = Backbone.View.extend({
 		var category = data.dataItem.title;
 		
 		// If already selected, clear the filter
-		if(this.collection.selected === category) {
-			this.collection.selected = null;
+		var filter = this.filteredCollection.filter[this.filteredCollection.triggerField];
+		if(filter && filter.selected === category) {
 			this.vent.trigger('filter', {
 				field: this.collection.triggerField
 			})
 		}
 		// Otherwise, add the filter
-		else {
-			this.collection.selected = category;
-			
+		else {			
 			// If "Other" slice, get all of the currently displayed categories and send then as a NOT IN() query
 			if(_.isEmpty(data.dataItem.dataContext)) {
 				var shownCategories = [];
@@ -64097,6 +64102,7 @@ module.exports = Backbone.View.extend({
 				
 				this.vent.trigger('filter', {
 					field: this.collection.triggerField,
+					selected: category,
 					expression: this.collection.triggerField + ' not in(\'' + shownCategories.join('\',\'') + '\')',
 					friendlyExpression: this.collection.triggerField + ' is not ' + shownCategories.join(', ')
 				});
@@ -64105,6 +64111,7 @@ module.exports = Backbone.View.extend({
 			else {
 				this.vent.trigger('filter', {
 					field: this.collection.triggerField,
+					selected: category,
 					expression: this.collection.triggerField + ' = \'' + category + '\'',
 					friendlyExpression: this.collection.triggerField + ' is ' + category
 				});
@@ -64113,16 +64120,17 @@ module.exports = Backbone.View.extend({
 	},
 	// When a chart has been filtered
 	onFilter: function(data) {
-		// Only listen to other charts
+		// Add the filter to the filtered collection and fetch it with the filter
+		if(data.expression) {
+			this.filteredCollection.filter[data.field] = data;
+		} else {
+			delete this.filteredCollection.filter[data.field];
+		}
+		this.renderFilters();
+		
+		// Only re-fetch if it's another chart (since this view doesn't filter itself)
 		if(data.field !== this.filteredCollection.triggerField) {
-			// Add the filter to the filtered collection and fetch it with the filter
-			if(data.expression) {
-				this.filteredCollection.filter[data.field] = data;
-			} else {
-				delete this.filteredCollection.filter[data.field];
-			}
 			this.filteredCollection.fetch();
-			this.renderFilters();
 		}
 	}
 })
