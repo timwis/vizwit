@@ -134,16 +134,15 @@ module.exports = Backbone.View.extend({
 	// Show guide on selected item or remove it if nothing's selected
 	updateGuide: function(config) {
 		var guide = config.categoryAxis.guides[0];
-		if(this.collection.selected) {
-			console.log('adding guide', this.collection.selected)
+		var filter = this.filteredCollection.filter[this.filteredCollection.triggerField];
+		if(filter) {
 			if(config.categoryAxis.parseDates) {
-				guide.date = this.collection.selected[0];
-				guide.toDate = this.collection.selected[1];
+				guide.date = filter.selected[0];
+				guide.toDate = filter.selected[1];
 			} else {
-				guide.category = guide.toCategory = this.collection.selected;
+				guide.category = guide.toCategory = filter.selected;
 			}
 		} else {
-			console.log('removing guide')
 			if(guide.date) delete guide.date;
 			if(guide.toDate) delete guide.toDate;
 			if(guide.category) delete guide.category;
@@ -151,21 +150,13 @@ module.exports = Backbone.View.extend({
 	},
 	// When a chart has been filtered
 	onFilter: function(data) {
-		// Only listen to other charts
-		if(data.field !== this.filteredCollection.triggerField) {
-			// Add the filter to the filtered collection and fetch it with the filter
-			if(data.expression) {
-				this.filteredCollection.filter[data.field] = data;
-			} else {
-				delete this.filteredCollection.filter[data.field];
-			}
-			this.filteredCollection.fetch();
-			this.renderFilters();
+		// Add the filter to the filtered collection and fetch it with the filter
+		if(data.expression) {
+			this.filteredCollection.filter[data.field] = data;
 		} else {
-			// Re-render to show the guides when they're initially set
-			//this.render();
-			this.updateGuide(this.chart);
-			this.chart.validateData();
+			delete this.filteredCollection.filter[data.field];
 		}
+		this.renderFilters();
+		this.filteredCollection.fetch();
 	}
 })

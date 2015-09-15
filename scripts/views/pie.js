@@ -106,7 +106,8 @@ module.exports = Backbone.View.extend({
 		
 		// If "other" slice is selected, set other slice to be pulled out
 		var otherSliceTitle = config.groupedTitle || 'Other'
-		if(this.collection.selected === otherSliceTitle) {
+		var filter = this.filteredCollection.filter[this.filteredCollection.triggerField];
+		if(filter && filter.selected === otherSliceTitle) {
 			config.groupedPulled = true;
 		}
 		
@@ -117,6 +118,7 @@ module.exports = Backbone.View.extend({
 	formatChartData: function() {
 		var self = this;
 		var chartData = [];
+		var filter = this.filteredCollection.filter[this.filteredCollection.triggerField];
 		
 		// Map collection(s) into format expected by chart library
 		this.collection.forEach(function(model) {
@@ -132,7 +134,7 @@ module.exports = Backbone.View.extend({
 				data.filteredCount = match ? match.get(self.collection.countProperty) : 0;
 			}
 			// If this slice is selected, set it to be pulled
-			if(self.collection.selected === label) {
+			if(filter && filter.selected === label) {
 				data.pulled = true;
 			}
 					
@@ -144,16 +146,14 @@ module.exports = Backbone.View.extend({
 		var category = data.dataItem.title;
 		
 		// If already selected, clear the filter
-		if(this.collection.selected === category) {
-			this.collection.selected = null;
+		var filter = this.filteredCollection.filter[this.filteredCollection.triggerField];
+		if(filter && filter.selected === category) {
 			this.vent.trigger('filter', {
 				field: this.collection.triggerField
 			})
 		}
 		// Otherwise, add the filter
-		else {
-			this.collection.selected = category;
-			
+		else {			
 			// If "Other" slice, get all of the currently displayed categories and send then as a NOT IN() query
 			if(_.isEmpty(data.dataItem.dataContext)) {
 				var shownCategories = [];
@@ -165,6 +165,7 @@ module.exports = Backbone.View.extend({
 				
 				this.vent.trigger('filter', {
 					field: this.collection.triggerField,
+					selected: category,
 					expression: this.collection.triggerField + ' not in(\'' + shownCategories.join('\',\'') + '\')',
 					friendlyExpression: this.collection.triggerField + ' is not ' + shownCategories.join(', ')
 				});
@@ -173,6 +174,7 @@ module.exports = Backbone.View.extend({
 			else {
 				this.vent.trigger('filter', {
 					field: this.collection.triggerField,
+					selected: category,
 					expression: this.collection.triggerField + ' = \'' + category + '\'',
 					friendlyExpression: this.collection.triggerField + ' is ' + category
 				});
@@ -181,16 +183,17 @@ module.exports = Backbone.View.extend({
 	},
 	// When a chart has been filtered
 	onFilter: function(data) {
-		// Only listen to other charts
+		// Add the filter to the filtered collection and fetch it with the filter
+		if(data.expression) {
+			this.filteredCollection.filter[data.field] = data;
+		} else {
+			delete this.filteredCollection.filter[data.field];
+		}
+		this.renderFilters();
+		
+		// Only re-fetch if it's another chart (since this view doesn't filter itself)
 		if(data.field !== this.filteredCollection.triggerField) {
-			// Add the filter to the filtered collection and fetch it with the filter
-			if(data.expression) {
-				this.filteredCollection.filter[data.field] = data;
-			} else {
-				delete this.filteredCollection.filter[data.field];
-			}
 			this.filteredCollection.fetch();
-			this.renderFilters();
 		}
 	}
 })

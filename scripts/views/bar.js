@@ -104,7 +104,7 @@ module.exports = BaseChart.extend({
 	initialize: function(options) {
 		BaseChart.prototype.initialize.apply(this, arguments);
 		
-		_.bindAll(this, 'onClickCursor', 'onClickBar', 'onClickLabel', 'onHover', 'onClickScroll');
+		_.bindAll(this, 'onClickCursor', 'onClickBar', 'onClickLabel', 'onHover', 'onClickScroll', 'zoomToBeginning');
 	},
 	events: {
 		'click .scroll a': 'onClickScroll'
@@ -175,19 +175,18 @@ module.exports = BaseChart.extend({
 	},
 	onSelect: function(category) {
 		// If already selected, clear the filter
-		if(this.collection.selected === category) {
-			this.collection.selected = null;
+		var filter = this.filteredCollection.filter[this.filteredCollection.triggerField];
+		if(filter && filter.selected === category) {
 			this.vent.trigger('filter', {
 				field: this.collection.triggerField
 			})
 		}
 		// Otherwise, add the filter
-		else {
-			this.collection.selected = category;
-			
+		else {			
 			// Trigger the global event handler with this filter
 			this.vent.trigger('filter', {
 				field: this.collection.triggerField,
+				selected: category,
 				expression: this.collection.triggerField + ' = \'' + category + '\'',
 				friendlyExpression: this.collection.triggerField + ' is ' + category
 			});

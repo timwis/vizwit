@@ -52,6 +52,7 @@ module.exports = BaseChart.extend({
 				axisThickness: 0,
 				axisAlpha: 0,
 				tickLength: 0,
+				minimum: 0,
 				ignoreAxisWidth: true
 			}],
 			categoryAxis: {
@@ -98,7 +99,6 @@ module.exports = BaseChart.extend({
 	// When the user clicks on a bar in this chart
 	onClick: function(e) {
 		//console.log('Filtered by', (new Date(e.start)).toISOString(), (new Date(e.end)).toISOString());
-		this.collection.selected = [new Date(e.start), new Date(e.end)];
 		var field = this.collection.triggerField;
 		
 		var start = new Date(e.start);
@@ -112,6 +112,7 @@ module.exports = BaseChart.extend({
 		// Trigger the global event handler with this filter
 		this.vent.trigger('filter', {
 			field: field,
+			selected: [start, end],
 			expression: field + ' >= \'' + startIso + '\' and ' + field + ' <= \'' + endIso + '\'',
 			friendlyExpression: field + ' is ' + startFriendly + ' to ' + endFriendly
 		})

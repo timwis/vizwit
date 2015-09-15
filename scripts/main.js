@@ -97,6 +97,8 @@ var gist = params.gist || '601224472a5d53cbb908'; // default to sample config
 						});
 						break;
 					case 'pie':
+						collection.dontFilterSelf = true;
+						filteredCollection.dontFilterSelf = true;
 						new Pie({
 							config: column,
 							el: columnEl,
