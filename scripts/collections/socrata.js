@@ -27,7 +27,7 @@ module.exports = Backbone.Collection.extend({
 		this.fields = new SocrataFields(options);
 	},
 	url: function() {
-		var filter = _.pluck(this.filter, 'expression').join(' and ');
+		var filter = this.getFilters();
 		var query = this.consumer.query()
 			.withDataset(this.dataset);
 		if(filter) {
@@ -44,6 +44,14 @@ module.exports = Backbone.Collection.extend({
 		if(this.offset) query.offset(this.offset);
 		if(this.q) { query.q(this.q); console.log(this.q) }
 		return query.getURL();
+	},
+	getFilters: function() {
+		var self = this;
+		var filters = this.filter;
+		if( ! _.isEmpty(filters) && this.dontFilterSelf) {
+			filters = _.filter(filters, function(row) { return row.field !== self.triggerField; });
+		}
+		return _.pluck(filters, 'expression').join(' and ');
 	},
 	getFriendlyFilters: function() {
 		return _.pluck(this.filter, 'friendlyExpression').join(' and ');
