@@ -45,11 +45,15 @@ module.exports = Backbone.View.extend({
 			startDuration: 0,
 			responsive: {
 				enabled: true,
+				addDefaultRules: false,
 				rules: [
 					{
 						maxWidth: 450,
 						overrides: {
-							pullOutRadius: '10%'
+							pullOutRadius: '10%',
+							titles: {
+								enabled: false
+							}
 						}
 					}
 				]

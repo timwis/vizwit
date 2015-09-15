@@ -62948,6 +62948,7 @@ module.exports = Backbone.Collection.extend({
 		this.groupBy = options.groupBy || null;
 		this.triggerField = options.triggerField || options.groupBy;
 		this.filter = options.filter || {};
+		this.order = options.order || null;
 		this.limit = options.limit || this.limit;
 		
 		this.fields = new SocrataFields(options);
@@ -63315,6 +63316,7 @@ module.exports = BaseChart.extend({
 			//startEffect: 'easeOutSine',
 			zoomOutText: '',
 			mouseWheelScrollEnabled: true,
+			creditsPosition: 'top-right',
 			categoryAxis: {
 				autoWrap: true,
 				//gridAlpha: 0,
@@ -63850,6 +63852,7 @@ module.exports = BaseChart.extend({
 				}]
 			},
 			dataDateFormat: 'YYYY-MM-DDT00:00:00.000', //"2015-04-07T16:21:00.000"
+			creditsPosition: 'top-right',
 			chartCursor: {
 				categoryBalloonDateFormat: "MMM YYYY",
 				cursorPosition: "mouse",
@@ -63970,14 +63973,19 @@ module.exports = Backbone.View.extend({
 			pullOutOnlyOne: true,
 			labelRadius: 1,
 			hideLabelsPercent: 5,
+			creditsPosition: 'bottom-right',
 			startDuration: 0,
 			responsive: {
 				enabled: true,
+				addDefaultRules: false,
 				rules: [
 					{
 						maxWidth: 450,
 						overrides: {
-							pullOutRadius: '10%'
+							pullOutRadius: '10%',
+							titles: {
+								enabled: false
+							}
 						}
 					}
 				]
@@ -64115,8 +64123,6 @@ module.exports = Backbone.View.extend({
 			}
 			this.filteredCollection.fetch();
 			this.renderFilters();
-		} else {
-			
 		}
 	}
 })
@@ -64151,10 +64157,8 @@ module.exports = Backbone.View.extend({
 			this.render();
 		} else {
 			this.listenTo(this.collection.fields, 'sync', this.render);
+			this.collection.fields.fetch();
 		}
-		
-		// Fetch meta model
-		this.collection.fields.fetch();
 	},
 	renderTemplate: function() {
 		this.$el.empty().append(Template(this.config));
