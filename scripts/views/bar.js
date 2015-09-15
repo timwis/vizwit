@@ -37,7 +37,7 @@ module.exports = BaseChart.extend({
 				enabled: true,
 				rules: [
 					{
-						maxWidth: 550,
+						maxWidth: 600,
 						overrides: {
 							maxSelectedSeries: 7
 						}
