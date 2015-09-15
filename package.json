@@ -20,7 +20,7 @@
     "jquery": "^2.1.4",
     "jquery-deparam": "^0.4.2",
     "mapbox.js": "^2.2.1",
-    "soda-js": "timwis/soda-js#timwis",
+    "soda-js": "socrata/soda-js",
     "spin.js": "^2.3.2",
     "tinygradient": "^0.3.0",
     "underscore": "^1.8.3"
