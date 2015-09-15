@@ -5,7 +5,7 @@
 		
 		<div class="pull-right">
 			
-			<a href="?page=<%= encodeURIComponent(data.page) %>&viz=<%= encodeURIComponent(data.title) %>" target="_blank" class="btn btn-default">
+			<a href="?<% if(data.gist) { %>gist=<%= encodeURIComponent(data.gist) %>&<% } %>viz=<%= encodeURIComponent(data.title) %>" target="_blank" class="btn btn-default">
 				<span class="glyphicon glyphicon-new-window"></span>
 			</a>
 		

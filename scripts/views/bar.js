@@ -37,9 +37,18 @@ module.exports = BaseChart.extend({
 				enabled: true,
 				rules: [
 					{
+						maxWidth: 550,
+						overrides: {
+							maxSelectedSeries: 7
+						}
+					},
+					{
 						maxWidth: 450,
 						overrides: {
-							maxSelectedSeries: 3
+							maxSelectedSeries: 3,
+							chartCursor: {
+								enabled: false
+							}
 						}
 					}
 				]
@@ -65,16 +74,17 @@ module.exports = BaseChart.extend({
 				zoomable: false,
 				oneBalloonOnly: true
 			},
-			maxSelectedSeries: 7,
+			maxSelectedSeries: 14,
 			//startDuration: 0.5,
 			//startEffect: 'easeOutSine',
 			zoomOutText: '',
 			mouseWheelScrollEnabled: true,
+			creditsPosition: 'top-right',
 			categoryAxis: {
 				autoWrap: true,
 				//gridAlpha: 0,
 				labelFunction: function(label) {
-					return label.length > 15 ? label.substr(0, 15) + '…' : label;
+					return label.length > 12 ? label.substr(0, 12) + '…' : label;
 				},
 				guides: [{
 					lineThickness: 2,
@@ -94,11 +104,10 @@ module.exports = BaseChart.extend({
 	initialize: function(options) {
 		BaseChart.prototype.initialize.apply(this, arguments);
 		
-		_.bindAll(this, 'onClick', 'onHover', 'onClickScroll', 'zoomToBeginning');
+		_.bindAll(this, 'onClickCursor', 'onClickBar', 'onClickLabel', 'onHover', 'onClickScroll');
 	},
 	events: {
-		'click .scroll a': 'onClickScroll',
-		'click .viz': 'onClick'
+		'click .scroll a': 'onClickScroll'
 	},
 	render: function() {
 		BaseChart.prototype.render.apply(this, arguments);
@@ -107,7 +116,20 @@ module.exports = BaseChart.extend({
 		this.chart.addListener('drawn', this.zoomToBeginning);
 		this.zoomToBeginning(); // since rendered isn't called the first time
 		
+		// Listen to cursor hover changes
 		this.chart.chartCursor.addListener('changed', this.onHover);
+		
+		// Listen to label clicks
+		this.chart.categoryAxis.addListener('clickItem', this.onClickLabel);
+		
+		// If chart cursor is enabled (on larger screens) listen to clicks on it
+		if(this.chart.chartCursor.enabled) {
+			this.delegateEvents(_.extend({'click .viz': 'onClickCursor'}, this.events));
+		}
+		// Otherwise listen to clicks on the bars
+		else {
+			this.chart.addListener('clickGraphItem', this.onClickBar);
+		}
 		
 		// If there are more records than the default, show scroll bars
 		if(this.chart.endIndex - this.chart.startIndex < this.collection.length) {
@@ -140,28 +162,35 @@ module.exports = BaseChart.extend({
 		}
 	},
 	// When the user clicks on a bar in this chart
-	onClick: function(e) {
+	onClickCursor: function(e) {
 		if(this.hovering !== null) {
-			var category = this.hovering.category;
+			this.onSelect(this.hovering.category);
+		}
+	},
+	onClickBar: function(e) {
+		this.onSelect(e.item.category);
+	},
+	onClickLabel: function(e) {
+		this.onSelect(e.serialDataItem.category);
+	},
+	onSelect: function(category) {
+		// If already selected, clear the filter
+		if(this.collection.selected === category) {
+			this.collection.selected = null;
+			this.vent.trigger('filter', {
+				field: this.collection.triggerField
+			})
+		}
+		// Otherwise, add the filter
+		else {
+			this.collection.selected = category;
 			
-			// If already selected, clear the filter
-			if(this.collection.selected === category) {
-				this.collection.selected = null;
-				this.vent.trigger('filter', {
-					field: this.collection.triggerField
-				})
-			}
-			// Otherwise, add the filter
-			else {
-				this.collection.selected = category;
-				
-				// Trigger the global event handler with this filter
-				this.vent.trigger('filter', {
-					field: this.collection.triggerField,
-					expression: this.collection.triggerField + ' = \'' + category + '\'',
-					friendlyExpression: this.collection.triggerField + ' is ' + category
-				});
-			}
+			// Trigger the global event handler with this filter
+			this.vent.trigger('filter', {
+				field: this.collection.triggerField,
+				expression: this.collection.triggerField + ' = \'' + category + '\'',
+				friendlyExpression: this.collection.triggerField + ' is ' + category
+			});
 		}
 	}
 })
