@@ -17,6 +17,12 @@
 		</div>
 	</div>
 	<% } %>
+	
+	<% if(data.description) { %>
+	<div class="panel-body">
+		<%= data.description %>
+	</div>
+	<% } %>
 		
 	<% if(data.padded) { %>
 	<div class="panel-body">
