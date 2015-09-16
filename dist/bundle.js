@@ -63186,6 +63186,12 @@ __p+='viz='+
 ((__t=( encodeURIComponent(data.title) ))==null?'':__t)+
 '" target="_blank" class="btn btn-default">\n\t\t\t\t<span class="glyphicon glyphicon-new-window"></span>\n\t\t\t</a>\n\t\t\n\t\t\t<div class="btn-group scroll hidden" role="group" aria-label="Scroll chart horizontally">\n\t\t\t\t<a href="#" class="btn btn-default" data-dir="decrease"><span class="glyphicon glyphicon-chevron-left"></span></a>\n\t\t\t\t<a href="#" class="btn btn-default" data-dir="increase"><span class="glyphicon glyphicon-chevron-right"></span></a>\n\t\t\t</div>\n\t\t\n\t\t</div>\n\t</div>\n\t';
  } 
+__p+='\n\t\n\t';
+ if(data.description) { 
+__p+='\n\t<div class="panel-body">\n\t\t'+
+((__t=( data.description ))==null?'':__t)+
+'\n\t</div>\n\t';
+ } 
 __p+='\n\t\t\n\t';
  if(data.padded) { 
 __p+='\n\t<div class="panel-body">\n\t';
