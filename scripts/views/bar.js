@@ -149,7 +149,6 @@ module.exports = BaseChart.extend({
 		
 		if(start !== this.chart.startIndex || end !== this.chart.endIndex) {
 			this.chart.zoomToIndexes(start, end);
-			this.chart.animateAgain();
 		}
 		e.preventDefault();
 	},
