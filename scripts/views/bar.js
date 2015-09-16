@@ -184,6 +184,7 @@ module.exports = BaseChart.extend({
 		else {			
 			// Trigger the global event handler with this filter
 			this.vent.trigger('filter', {
+				dataset: this.collection.dataset,
 				field: this.collection.triggerField,
 				selected: category,
 				expression: this.collection.triggerField + ' = \'' + category + '\'',

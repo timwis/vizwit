@@ -87,13 +87,16 @@ module.exports = Panel.extend({
 	},
 	// When another chart is filtered, filter this collection
 	onFilter: function(data) {
-		if(data.expression) {
-			this.collection.filter[data.field] = data;
-		} else {
-			delete this.collection.filter[data.field];
+		// Only listen on this dataset
+		if(data.dataset === this.collection.dataset) {
+			if(data.expression) {
+				this.collection.filter[data.field] = data;
+			} else {
+				delete this.collection.filter[data.field];
+			}
+			this.collection.recordCount = null;
+			this.table.ajax.reload();
+			this.renderFilters();
 		}
-		this.collection.recordCount = null;
-		this.table.ajax.reload();
-		this.renderFilters();
 	}
 });

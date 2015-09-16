@@ -111,6 +111,7 @@ module.exports = BaseChart.extend({
 		
 		// Trigger the global event handler with this filter
 		this.vent.trigger('filter', {
+			dataset: this.collection.dataset,
 			field: field,
 			selected: [start, end],
 			expression: field + ' >= \'' + startIso + '\' and ' + field + ' <= \'' + endIso + '\'',

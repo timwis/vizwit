@@ -155,6 +155,7 @@ module.exports = Panel.extend({
 				});
 				
 				this.vent.trigger('filter', {
+					dataset: this.collection.dataset,
 					field: this.collection.triggerField,
 					selected: category,
 					expression: this.collection.triggerField + ' not in(\'' + shownCategories.join('\',\'') + '\')',
@@ -164,6 +165,7 @@ module.exports = Panel.extend({
 			// Otherwise fire a normal = query
 			else {
 				this.vent.trigger('filter', {
+					dataset: this.collection.dataset,
 					field: this.collection.triggerField,
 					selected: category,
 					expression: this.collection.triggerField + ' = \'' + category + '\'',
@@ -174,22 +176,25 @@ module.exports = Panel.extend({
 	},
 	// When a chart has been filtered
 	onFilter: function(data) {
-		// Add the filter to the filtered collection and fetch it with the filter
-		if(data.expression) {
-			this.filteredCollection.filter[data.field] = data;
-		} else {
-			delete this.filteredCollection.filter[data.field];
-			
-			// If this view's filter is being removed, re-render it (since this view doesn't filter itself)
-			if(data.field === this.filteredCollection.triggerField) {
-				this.render();
+		// Only listen on this dataset
+		if(data.dataset === this.filteredCollection.dataset) {
+			// Add the filter to the filtered collection and fetch it with the filter
+			if(data.expression) {
+				this.filteredCollection.filter[data.field] = data;
+			} else {
+				delete this.filteredCollection.filter[data.field];
+				
+				// If this view's filter is being removed, re-render it (since this view doesn't filter itself)
+				if(data.field === this.filteredCollection.triggerField) {
+					this.render();
+				}
 			}
-		}
-		this.renderFilters();
-		
-		// Only re-fetch if it's another chart (since this view doesn't filter itself)
-		if(data.field !== this.filteredCollection.triggerField) {
-			this.filteredCollection.fetch();
+			this.renderFilters();
+			
+			// Only re-fetch if it's another chart (since this view doesn't filter itself)
+			if(data.field !== this.filteredCollection.triggerField) {
+				this.filteredCollection.fetch();
+			}
 		}
 	}
 })

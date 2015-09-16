@@ -102,13 +102,16 @@ module.exports = Panel.extend({
 	},
 	// When a chart has been filtered
 	onFilter: function(data) {
-		// Add the filter to the filtered collection and fetch it with the filter
-		if(data.expression) {
-			this.filteredCollection.filter[data.field] = data;
-		} else {
-			delete this.filteredCollection.filter[data.field];
+		// Only listen on this dataset
+		if(data.dataset === this.filteredCollection.dataset) {
+			// Add the filter to the filtered collection and fetch it with the filter
+			if(data.expression) {
+				this.filteredCollection.filter[data.field] = data;
+			} else {
+				delete this.filteredCollection.filter[data.field];
+			}
+			this.renderFilters();
+			this.filteredCollection.fetch();
 		}
-		this.renderFilters();
-		this.filteredCollection.fetch();
 	}
 })
