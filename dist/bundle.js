@@ -62952,24 +62952,39 @@ module.exports = Backbone.Collection.extend({
 		this.limit = options.limit || this.limit;
 		
 		this.fields = new SocrataFields(options);
+		this.countModel = new Backbone.Model();
 	},
-	url: function() {
+	url: function(count) {
 		var filter = this.getFilters();
 		var query = this.consumer.query()
 			.withDataset(this.dataset);
+		
+		// Filters
 		if(filter) {
 			query.where(filter);
 		}
+		if(this.q) { query.q(this.q); console.log(this.q) }
+		
+		// Group by
 		if(this.groupBy) {
 			query.select('count(*), ' + this.groupBy + ' as label')
 			.group(this.groupBy)
 			.order(this.order || 'count desc');
-		} else {
-			query.order(this.order || ':id');
 		}
-		if(this.limit) query.limit(this.limit);
-		if(this.offset) query.offset(this.offset);
-		if(this.q) { query.q(this.q); console.log(this.q) }
+		
+		// Count
+		if(count) {
+			query.select('count(*)');
+		}
+		// Non-count
+		else {
+			// Limit & offset
+			if(this.limit) query.limit(this.limit);
+			if(this.offset) query.offset(this.offset);
+			
+			// Group by already sets order
+			if( ! this.groupBy) query.order(this.order || ':id');
+		}
 		return query.getURL();
 	},
 	getFilters: function() {
@@ -62979,6 +62994,17 @@ module.exports = Backbone.Collection.extend({
 			filters = _.filter(filters, function(row) { return row.field !== self.triggerField; });
 		}
 		return _.pluck(filters, 'expression').join(' and ');
+	},
+	getCount: function() {
+		var self = this;
+		this.countModel.url = this.url(true);
+		
+		// If recordCount is already set, return it (as a deferred); otherwise fetch it
+		return self.recordCount ? ($.Deferred()).resolve(self.recordCount) : this.countModel.fetch()
+			.then(function(response) {
+				self.recordCount = response.length ? response[0].count : 0;
+				return self.recordCount;
+			});
 	}
 })
 },{"./socrata-fields":62,"backbone":6,"jquery":20,"soda-js":51,"underscore":59}],64:[function(require,module,exports){
@@ -63393,7 +63419,6 @@ module.exports = BaseChart.extend({
 		
 		if(start !== this.chart.startIndex || end !== this.chart.endIndex) {
 			this.chart.zoomToIndexes(start, end);
-			this.chart.animateAgain();
 		}
 		e.preventDefault();
 	},
@@ -64182,18 +64207,24 @@ module.exports = Panel.extend({
 			this.table = this.$('.viz').DataTable({
 				columns: columns,
 				scrollX: true,
-				pagingType: 'numbers',
-				info: false,
 				serverSide: true,
 				ajax: function(data, callback, settings) {
-					self.collection.offset = data.start || 0;
-					self.collection.limit = data.length || 25;
-					self.collection.order = data.columns[data.order[0].column].data + ' ' + data.order[0].dir;
 					self.collection.q = data.search.value ? data.search.value : null;
-					self.collection.fetch({
-						success: function(collection, response, options) {
-							callback({data: collection.toJSON()});
-						}
+					
+					self.collection.getCount().done(function(recordCount) {
+						self.recordsTotal = self.recordsTotal || recordCount;
+						self.collection.offset = data.start || 0;
+						self.collection.limit = data.length || 25;
+						self.collection.order = data.columns[data.order[0].column].data + ' ' + data.order[0].dir;
+						self.collection.fetch({
+							success: function(collection, response, options) {
+								callback({
+									data: collection.toJSON(),
+									recordsTotal: self.recordsTotal,
+									recordsFiltered: recordCount
+								});
+							}
+						});
 					});
 				}
 			});
@@ -64206,6 +64237,7 @@ module.exports = Panel.extend({
 		} else {
 			delete this.collection.filter[data.field];
 		}
+		this.collection.recordCount = null;
 		this.table.ajax.reload();
 		this.renderFilters();
 	}
