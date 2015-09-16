@@ -63287,7 +63287,7 @@ module.exports = BaseChart.extend({
 				'type': 'column',
 				title: 'Data',
 				valueField: 'count',
-				fillAlphas: 1,
+				fillAlphas: 0.6,
 				clustered: false,
 				lineColor: '#97bbcd',
 				balloonText: '<b>[[category]]</b><br>Total: [[value]]'
@@ -63296,7 +63296,7 @@ module.exports = BaseChart.extend({
 				'type': 'column',
 				title: 'Filtered Data',
 				valueField: 'filteredCount',
-				fillAlphas: 0.8,
+				fillAlphas: 0.4,
 				clustered: false,
 				lineColor: '#97bbcd',
 				balloonFunction: function(item, graph) {
@@ -63348,7 +63348,8 @@ module.exports = BaseChart.extend({
 				fullWidth: true,
 				cursorAlpha: 0.1,
 				zoomable: false,
-				oneBalloonOnly: true
+				oneBalloonOnly: true,
+				categoryBalloonEnabled: false
 			},
 			maxSelectedSeries: 14,
 			//startDuration: 0.5,
@@ -63453,7 +63454,8 @@ module.exports = BaseChart.extend({
 		var filter = this.filteredCollection.filter[this.filteredCollection.triggerField];
 		if(filter && filter.selected === category) {
 			this.vent.trigger('filter', {
-				field: this.collection.triggerField
+				dataset: this.filteredCollection.dataset,
+				field: this.filteredCollection.triggerField
 			})
 		}
 		// Otherwise, add the filter
@@ -63761,7 +63763,8 @@ module.exports = Panel.extend({
 		var filter = this.filteredCollection.filter[this.filteredCollection.triggerField];
 		if(filter && filter.selected === clickedId) {
 			this.vent.trigger('filter', {
-				field: this.collection.triggerField
+				dataset: this.filteredCollection.dataset,
+				field: this.filteredCollection.triggerField
 			})
 		}
 		// Otherwise, add the filter
@@ -63798,7 +63801,7 @@ module.exports = BaseChart.extend({
 			{
 				title: 'Data',
 				valueField: 'count',
-				fillAlphas: 1,
+				fillAlphas: 0.6,
 				clustered: false,
 				lineColor: '#97bbcd',
 				balloonText: '<b>[[category]]</b><br>Total: [[value]]'
@@ -63806,7 +63809,7 @@ module.exports = BaseChart.extend({
 			{
 				title: 'Filtered Data',
 				valueField: 'filteredCount',
-				fillAlphas: 0.8,
+				fillAlphas: 0.4,
 				clustered: false,
 				lineColor: '#97bbcd',
 				dateFormat: 'MMM YYYY',
@@ -63861,7 +63864,8 @@ module.exports = BaseChart.extend({
 				categoryBalloonDateFormat: "MMM YYYY",
 				cursorPosition: "mouse",
 				selectWithoutZooming: true,
-				oneBalloonOnly: true
+				oneBalloonOnly: true,
+				categoryBalloonEnabled: false
 			}
 		}
 	},
@@ -63955,8 +63959,8 @@ module.exports = Backbone.View.extend({
 		var filter = $(e.currentTarget).data('filter');
 		if(filter) {
 			this.vent.trigger('filter', {
-				field: filter,
-				dataset: this.collection.dataset
+				dataset: this.collection.dataset,
+				field: filter
 			});
 		}
 		e.preventDefault();
@@ -64005,6 +64009,7 @@ module.exports = Panel.extend({
 			pullOutRadius: '10%',
 			pullOutOnlyOne: true,
 			labelRadius: 1,
+			pieAlpha: 0.8,
 			hideLabelsPercent: 5,
 			creditsPosition: 'bottom-right',
 			startDuration: 0,
@@ -64105,7 +64110,8 @@ module.exports = Panel.extend({
 		var filter = this.filteredCollection.filter[this.filteredCollection.triggerField];
 		if(filter && filter.selected === category) {
 			this.vent.trigger('filter', {
-				field: this.collection.triggerField
+				dataset: this.filteredCollection.dataset,
+				field: this.filteredCollection.triggerField
 			})
 		}
 		// Otherwise, add the filter
