@@ -40,6 +40,7 @@ module.exports = Panel.extend({
 			pullOutRadius: '10%',
 			pullOutOnlyOne: true,
 			labelRadius: 1,
+			pieAlpha: 0.8,
 			hideLabelsPercent: 5,
 			creditsPosition: 'bottom-right',
 			startDuration: 0,

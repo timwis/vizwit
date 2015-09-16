@@ -15,7 +15,7 @@ module.exports = BaseChart.extend({
 			{
 				title: 'Data',
 				valueField: 'count',
-				fillAlphas: 1,
+				fillAlphas: 0.6,
 				clustered: false,
 				lineColor: '#97bbcd',
 				balloonText: '<b>[[category]]</b><br>Total: [[value]]'
@@ -23,7 +23,7 @@ module.exports = BaseChart.extend({
 			{
 				title: 'Filtered Data',
 				valueField: 'filteredCount',
-				fillAlphas: 0.8,
+				fillAlphas: 0.4,
 				clustered: false,
 				lineColor: '#97bbcd',
 				dateFormat: 'MMM YYYY',
