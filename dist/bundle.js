@@ -63460,6 +63460,7 @@ module.exports = BaseChart.extend({
 		else {			
 			// Trigger the global event handler with this filter
 			this.vent.trigger('filter', {
+				dataset: this.collection.dataset,
 				field: this.collection.triggerField,
 				selected: category,
 				expression: this.collection.triggerField + ' = \'' + category + '\'',
@@ -63573,14 +63574,17 @@ module.exports = Panel.extend({
 	},
 	// When a chart has been filtered
 	onFilter: function(data) {
-		// Add the filter to the filtered collection and fetch it with the filter
-		if(data.expression) {
-			this.filteredCollection.filter[data.field] = data;
-		} else {
-			delete this.filteredCollection.filter[data.field];
+		// Only listen on this dataset
+		if(data.dataset === this.filteredCollection.dataset) {
+			// Add the filter to the filtered collection and fetch it with the filter
+			if(data.expression) {
+				this.filteredCollection.filter[data.field] = data;
+			} else {
+				delete this.filteredCollection.filter[data.field];
+			}
+			this.renderFilters();
+			this.filteredCollection.fetch();
 		}
-		this.renderFilters();
-		this.filteredCollection.fetch();
 	}
 })
 },{"../util/loader":68,"../util/number-formatter":69,"./panel":75,"amcharts3":1,"amcharts3/amcharts/plugins/responsive/responsive":3,"amcharts3/amcharts/serial":4,"amcharts3/amcharts/themes/light":5,"backbone":6,"jquery":20,"underscore":59}],72:[function(require,module,exports){
@@ -63632,14 +63636,17 @@ module.exports = Panel.extend({
 	},
 	// When a chart has been filtered
 	onFilter: function(data) {
-		// Add the filter to the filtered collection and fetch it with the filter
-		if(data.expression) {
-			this.filteredCollection.filter[data.field] = data;
-		} else {
-			delete this.filteredCollection.filter[data.field];
+		// Only listen on this dataset
+		if(data.dataset === this.filteredCollection.dataset) {
+			// Add the filter to the filtered collection and fetch it with the filter
+			if(data.expression) {
+				this.filteredCollection.filter[data.field] = data;
+			} else {
+				delete this.filteredCollection.filter[data.field];
+			}
+			this.filteredCollection.fetch();
+			this.renderFilters();
 		}
-		this.filteredCollection.fetch();
-		this.renderFilters();
 	},
 	render: function() {
 		this.map = L.map(this.$('.viz').get(0));//.setView([39.95, -75.1667], 13);
@@ -63763,6 +63770,7 @@ module.exports = Panel.extend({
 			
 			// Trigger the global event handler with this filter
 			this.vent.trigger('filter', {
+				dataset: this.collection.dataset,
 				field: this.collection.triggerField,
 				selected: clickedId,
 				expression: this.collection.triggerField + ' = \'' + clickedId + '\'',
@@ -63886,6 +63894,7 @@ module.exports = BaseChart.extend({
 		
 		// Trigger the global event handler with this filter
 		this.vent.trigger('filter', {
+			dataset: this.collection.dataset,
 			field: field,
 			selected: [start, end],
 			expression: field + ' >= \'' + startIso + '\' and ' + field + ' <= \'' + endIso + '\'',
@@ -63946,7 +63955,8 @@ module.exports = Backbone.View.extend({
 		var filter = $(e.currentTarget).data('filter');
 		if(filter) {
 			this.vent.trigger('filter', {
-				field: filter
+				field: filter,
+				dataset: this.collection.dataset
 			});
 		}
 		e.preventDefault();
@@ -64110,6 +64120,7 @@ module.exports = Panel.extend({
 				});
 				
 				this.vent.trigger('filter', {
+					dataset: this.collection.dataset,
 					field: this.collection.triggerField,
 					selected: category,
 					expression: this.collection.triggerField + ' not in(\'' + shownCategories.join('\',\'') + '\')',
@@ -64119,6 +64130,7 @@ module.exports = Panel.extend({
 			// Otherwise fire a normal = query
 			else {
 				this.vent.trigger('filter', {
+					dataset: this.collection.dataset,
 					field: this.collection.triggerField,
 					selected: category,
 					expression: this.collection.triggerField + ' = \'' + category + '\'',
@@ -64129,22 +64141,25 @@ module.exports = Panel.extend({
 	},
 	// When a chart has been filtered
 	onFilter: function(data) {
-		// Add the filter to the filtered collection and fetch it with the filter
-		if(data.expression) {
-			this.filteredCollection.filter[data.field] = data;
-		} else {
-			delete this.filteredCollection.filter[data.field];
-			
-			// If this view's filter is being removed, re-render it (since this view doesn't filter itself)
-			if(data.field === this.filteredCollection.triggerField) {
-				this.render();
+		// Only listen on this dataset
+		if(data.dataset === this.filteredCollection.dataset) {
+			// Add the filter to the filtered collection and fetch it with the filter
+			if(data.expression) {
+				this.filteredCollection.filter[data.field] = data;
+			} else {
+				delete this.filteredCollection.filter[data.field];
+				
+				// If this view's filter is being removed, re-render it (since this view doesn't filter itself)
+				if(data.field === this.filteredCollection.triggerField) {
+					this.render();
+				}
 			}
-		}
-		this.renderFilters();
-		
-		// Only re-fetch if it's another chart (since this view doesn't filter itself)
-		if(data.field !== this.filteredCollection.triggerField) {
-			this.filteredCollection.fetch();
+			this.renderFilters();
+			
+			// Only re-fetch if it's another chart (since this view doesn't filter itself)
+			if(data.field !== this.filteredCollection.triggerField) {
+				this.filteredCollection.fetch();
+			}
 		}
 	}
 })
@@ -64238,14 +64253,17 @@ module.exports = Panel.extend({
 	},
 	// When another chart is filtered, filter this collection
 	onFilter: function(data) {
-		if(data.expression) {
-			this.collection.filter[data.field] = data;
-		} else {
-			delete this.collection.filter[data.field];
+		// Only listen on this dataset
+		if(data.dataset === this.collection.dataset) {
+			if(data.expression) {
+				this.collection.filter[data.field] = data;
+			} else {
+				delete this.collection.filter[data.field];
+			}
+			this.collection.recordCount = null;
+			this.table.ajax.reload();
+			this.renderFilters();
 		}
-		this.collection.recordCount = null;
-		this.table.ajax.reload();
-		this.renderFilters();
 	}
 });
 },{"../util/loader":68,"./panel":75,"backbone":6,"datatables":13,"datatables/media/js/dataTables.bootstrap":12,"jquery":20,"underscore":59}]},{},[64]);
