@@ -171,7 +171,8 @@ module.exports = Panel.extend({
 		var filter = this.filteredCollection.filter[this.filteredCollection.triggerField];
 		if(filter && filter.selected === clickedId) {
 			this.vent.trigger('filter', {
-				field: this.collection.triggerField
+				dataset: this.filteredCollection.dataset,
+				field: this.filteredCollection.triggerField
 			})
 		}
 		// Otherwise, add the filter

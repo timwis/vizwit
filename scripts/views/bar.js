@@ -178,7 +178,8 @@ module.exports = BaseChart.extend({
 		var filter = this.filteredCollection.filter[this.filteredCollection.triggerField];
 		if(filter && filter.selected === category) {
 			this.vent.trigger('filter', {
-				field: this.collection.triggerField
+				dataset: this.filteredCollection.dataset,
+				field: this.filteredCollection.triggerField
 			})
 		}
 		// Otherwise, add the filter

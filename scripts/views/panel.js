@@ -35,8 +35,8 @@ module.exports = Backbone.View.extend({
 		var filter = $(e.currentTarget).data('filter');
 		if(filter) {
 			this.vent.trigger('filter', {
-				field: filter,
-				dataset: this.collection.dataset
+				dataset: this.collection.dataset,
+				field: filter
 			});
 		}
 		e.preventDefault();
