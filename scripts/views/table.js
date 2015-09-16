@@ -62,18 +62,24 @@ module.exports = Panel.extend({
 			this.table = this.$('.viz').DataTable({
 				columns: columns,
 				scrollX: true,
-				pagingType: 'numbers',
-				info: false,
 				serverSide: true,
 				ajax: function(data, callback, settings) {
-					self.collection.offset = data.start || 0;
-					self.collection.limit = data.length || 25;
-					self.collection.order = data.columns[data.order[0].column].data + ' ' + data.order[0].dir;
 					self.collection.q = data.search.value ? data.search.value : null;
-					self.collection.fetch({
-						success: function(collection, response, options) {
-							callback({data: collection.toJSON()});
-						}
+					
+					self.collection.getCount().done(function(recordCount) {
+						self.recordsTotal = self.recordsTotal || recordCount;
+						self.collection.offset = data.start || 0;
+						self.collection.limit = data.length || 25;
+						self.collection.order = data.columns[data.order[0].column].data + ' ' + data.order[0].dir;
+						self.collection.fetch({
+							success: function(collection, response, options) {
+								callback({
+									data: collection.toJSON(),
+									recordsTotal: self.recordsTotal,
+									recordsFiltered: recordCount
+								});
+							}
+						});
 					});
 				}
 			});
@@ -86,6 +92,7 @@ module.exports = Panel.extend({
 		} else {
 			delete this.collection.filter[data.field];
 		}
+		this.collection.recordCount = null;
 		this.table.ajax.reload();
 		this.renderFilters();
 	}
