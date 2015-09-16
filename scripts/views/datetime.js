@@ -78,7 +78,8 @@ module.exports = BaseChart.extend({
 				categoryBalloonDateFormat: "MMM YYYY",
 				cursorPosition: "mouse",
 				selectWithoutZooming: true,
-				oneBalloonOnly: true
+				oneBalloonOnly: true,
+				categoryBalloonEnabled: false
 			}
 		}
 	},

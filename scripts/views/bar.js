@@ -72,7 +72,8 @@ module.exports = BaseChart.extend({
 				fullWidth: true,
 				cursorAlpha: 0.1,
 				zoomable: false,
-				oneBalloonOnly: true
+				oneBalloonOnly: true,
+				categoryBalloonEnabled: false
 			},
 			maxSelectedSeries: 14,
 			//startDuration: 0.5,
