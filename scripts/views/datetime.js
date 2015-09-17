@@ -104,19 +104,26 @@ module.exports = BaseChart.extend({
 		
 		var start = new Date(e.start);
 		var startIso = trimLastCharacter(start.toISOString());
-		var startFriendly = start.toLocaleDateString();
 		
 		var end = new Date(e.end);
 		var endIso = trimLastCharacter(end.toISOString());
-		var endFriendly = end.toLocaleDateString();
 		
-		// Trigger the global event handler with this filter
-		this.vent.trigger('filter', {
-			dataset: this.collection.dataset,
+		// Trigger the global event handler with this filter		
+		this.vent.trigger(this.collection.dataset + '.filter', {
 			field: field,
-			selected: [start, end],
-			expression: field + ' >= \'' + startIso + '\' and ' + field + ' <= \'' + endIso + '\'',
-			friendlyExpression: field + ' is ' + startFriendly + ' to ' + endFriendly
+			expression: {
+				'type': 'and',
+				left: {
+					'type': '>=',
+					left: field,
+					right: startIso
+				},
+				right: {
+					'type': '<=',
+					left: field,
+					right: endIso
+				}
+			}
 		})
 	}
 })

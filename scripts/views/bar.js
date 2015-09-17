@@ -175,23 +175,23 @@ module.exports = BaseChart.extend({
 	},
 	onSelect: function(category) {
 		// If already selected, clear the filter
-		var filter = this.filteredCollection.filter[this.filteredCollection.triggerField];
-		if(filter && filter.selected === category) {
-			this.vent.trigger('filter', {
-				dataset: this.filteredCollection.dataset,
+		var filter = this.filteredCollection.filters[this.filteredCollection.triggerField];
+		if(filter && filter.expression.right === category) {
+			this.vent.trigger(this.collection.dataset + '.filter', {
 				field: this.filteredCollection.triggerField
 			})
 		}
 		// Otherwise, add the filter
-		else {			
-			// Trigger the global event handler with this filter
-			this.vent.trigger('filter', {
-				dataset: this.collection.dataset,
+		else {
+			// Trigger the global event handler with this filter			
+			this.vent.trigger(this.collection.dataset + '.filter', {
 				field: this.collection.triggerField,
-				selected: category,
-				expression: this.collection.triggerField + ' = \'' + category + '\'',
-				friendlyExpression: this.collection.triggerField + ' is ' + category
-			});
+				expression: {
+					'type': '=',
+					left: this.collection.triggerField,
+					right: category
+				}
+			})
 		}
 	}
 })

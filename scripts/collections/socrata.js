@@ -7,6 +7,10 @@ var SocrataFields = require('./socrata-fields');
 var model = Backbone.Model.extend({
 	idAttribute: 'label'
 });
+
+var enclose = function(val) {
+  return typeof val === 'string' ? '\'' + val + '\'' : val;
+};
 	
 module.exports = Backbone.Collection.extend({
 	countProperty: 'count',
@@ -20,7 +24,7 @@ module.exports = Backbone.Collection.extend({
 		this.dataset = options.dataset || null;
 		this.groupBy = options.groupBy || null;
 		this.triggerField = options.triggerField || options.groupBy;
-		this.filter = options.filter || {};
+		this.filters = options.filters || {};
 		this.order = options.order || null;
 		this.limit = options.limit || this.limit;
 		
@@ -28,15 +32,15 @@ module.exports = Backbone.Collection.extend({
 		this.countModel = new Backbone.Model();
 	},
 	url: function(count) {
-		var filter = this.getFilters();
+		var filters = this.getFilters();
 		var query = this.consumer.query()
 			.withDataset(this.dataset);
 		
 		// Filters
-		if(filter) {
-			query.where(filter);
+		if(filters) {
+			query.where(filters);
 		}
-		if(this.q) { query.q(this.q); console.log(this.q) }
+		if(this.q) { query.q(this.q); }
 		
 		// Group by
 		if(this.groupBy) {
@@ -62,11 +66,35 @@ module.exports = Backbone.Collection.extend({
 	},
 	getFilters: function() {
 		var self = this;
-		var filters = this.filter;
+		var filters = this.filters;
+		
+		// If dontFilterSelf enabled, remove the filter this collection's triggerField
 		if( ! _.isEmpty(filters) && this.dontFilterSelf) {
-			filters = _.filter(filters, function(row) { return row.field !== self.triggerField; });
+			filters = _.omit(filters, this.triggerField);
 		}
-		return _.pluck(filters, 'expression').join(' and ');
+		
+		// Parse expressions into basic SQL strings
+		var expressions = _.pluck(filters, 'expression');
+		expressions = expressions.map(function(expression) {
+			return self.parseExpression(expression);
+		});
+		
+		return expressions.join(' and ');
+	},
+	parseExpression: function(expression) {
+		if(expression['type'] === 'and' || expression['type'] === 'or') {
+			return [
+				this.parseExpression(expression.left),
+				expression.type,
+				this.parseExpression(expression.right)
+			].join(' ');
+		} else {
+			return [
+				expression.left,
+				expression.type,
+				enclose(expression.right)
+			].join(' ');
+		}
 	},
 	getCount: function() {
 		var self = this;

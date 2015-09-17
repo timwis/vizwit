@@ -21,7 +21,7 @@ module.exports = Panel.extend({
 		this.filteredCollection = options.filteredCollection || null;
 		
 		// Listen to vent filters
-		this.listenTo(this.vent, 'filter', this.onFilter);
+		this.listenTo(this.vent, this.collection.dataset + '.filter', this.onFilter);
 		
 		// Listen to collection
 		this.listenTo(this.collection, 'sync', this.render);
@@ -48,7 +48,7 @@ module.exports = Panel.extend({
 		config.graphs = [$.extend(true, {}, this.settings.graphs[0])];
 		
 		// If there's a filtered amount, define the series/graph for it
-		if( ! _.isEmpty(this.filteredCollection.filter)) {
+		if( ! _.isEmpty(this.filteredCollection.filters)) {
 			// Change color of original graph to subdued
 			config.graphs[0].lineColor = '#ddd';
 			config.graphs[0].showBalloon = false;
@@ -86,13 +86,13 @@ module.exports = Panel.extend({
 	// Show guide on selected item or remove it if nothing's selected
 	updateGuide: function(config) {
 		var guide = config.categoryAxis.guides[0];
-		var filter = this.filteredCollection.filter[this.filteredCollection.triggerField];
+		var filter = this.filteredCollection.filters[this.filteredCollection.triggerField];
 		if(filter) {
 			if(config.categoryAxis.parseDates) {
-				guide.date = filter.selected[0];
-				guide.toDate = filter.selected[1];
+				guide.date = filter.expression.left.right;
+				guide.toDate = filter.expression.right.right;
 			} else {
-				guide.category = guide.toCategory = filter.selected;
+				guide.category = guide.toCategory = filter.expression.right;
 			}
 		} else {
 			if(guide.date) delete guide.date;
@@ -102,16 +102,13 @@ module.exports = Panel.extend({
 	},
 	// When a chart has been filtered
 	onFilter: function(data) {
-		// Only listen on this dataset
-		if(data.dataset === this.filteredCollection.dataset) {
-			// Add the filter to the filtered collection and fetch it with the filter
-			if(data.expression) {
-				this.filteredCollection.filter[data.field] = data;
-			} else {
-				delete this.filteredCollection.filter[data.field];
-			}
-			this.renderFilters();
-			this.filteredCollection.fetch();
+		// Add the filter to the filtered collection and fetch it with the filter
+		if(data.expression) {
+			this.filteredCollection.filters[data.field] = data;
+		} else {
+			delete this.filteredCollection.filters[data.field];
 		}
+		this.renderFilters();
+		this.filteredCollection.fetch();
 	}
 })

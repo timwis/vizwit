@@ -34,8 +34,7 @@ module.exports = Backbone.View.extend({
 	onClickRemoveFilter: function(e) {
 		var filter = $(e.currentTarget).data('filter');
 		if(filter) {
-			this.vent.trigger('filter', {
-				dataset: this.collection.dataset,
+			this.vent.trigger(this.collection.dataset + '.filter', {
 				field: filter
 			});
 		}
