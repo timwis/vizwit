@@ -11,6 +11,14 @@ var model = Backbone.Model.extend({
 var enclose = function(val) {
   return typeof val === 'string' ? '\'' + val + '\'' : val;
 };
+
+var typeMap = {
+	'=': 'is',
+	'>': 'is greater than',
+	'>=': 'is greater than or equal to',
+	'<': 'is less than',
+	'<=': 'is less than or equal to',
+};
 	
 module.exports = Backbone.Collection.extend({
 	countProperty: 'count',
@@ -93,6 +101,23 @@ module.exports = Backbone.Collection.extend({
 				expression.left,
 				expression.type,
 				enclose(expression.right)
+			].join(' ');
+		}
+	},
+	parseExpressionFriendly: function(expression) {
+		if(expression['type'] === 'and' || expression['type'] === 'or') {
+			return [
+				this.parseExpression(expression.left),
+				expression.type,
+				this.parseExpression(expression.right)
+			].join(' ');
+		} else {
+			var match = this.fields.get(expression.left);
+			
+			return [
+				match ? match.get('title') : expression.left,
+				typeMap[expression.type] || expression.type,
+				expression.right
 			].join(' ');
 		}
 	},

@@ -9,6 +9,7 @@ module.exports = Backbone.Collection.extend({
 		'money': 'num',
 		'default': 'string'
 	},
+	idAttribute: 'data',
 	initialize: function(options) {
 		// Save config to collection
 		options = options || {};
