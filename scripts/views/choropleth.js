@@ -30,7 +30,7 @@ module.exports = Panel.extend({
 		this.listenTo(this.filteredCollection, 'sync', LoaderOff);
 		
 		// Listen to vent filters
-		this.listenTo(this.vent, 'filter', this.onFilter);
+		this.listenTo(this.vent, this.collection.dataset + '.filter', this.onFilter);
 		
 		// Fetch boundaries & collection
 		this.boundaries.fetch();
@@ -46,17 +46,10 @@ module.exports = Panel.extend({
 	},
 	// When a chart has been filtered
 	onFilter: function(data) {
-		// Only listen on this dataset
-		if(data.dataset === this.filteredCollection.dataset) {
-			// Add the filter to the filtered collection and fetch it with the filter
-			if(data.expression) {
-				this.filteredCollection.filter[data.field] = data;
-			} else {
-				delete this.filteredCollection.filter[data.field];
-			}
-			this.filteredCollection.fetch();
-			this.renderFilters();
-		}
+		// Add the filter to the filtered collection and fetch it with the filter
+		this.filteredCollection.setFilter(data);
+		this.filteredCollection.fetch();
+		this.renderFilters();
 	},
 	render: function() {
 		this.map = L.map(this.$('.viz').get(0));//.setView([39.95, -75.1667], 13);
@@ -72,7 +65,7 @@ module.exports = Panel.extend({
 			this.datasetInFeatures();
 			
 			// Setup a color range utility
-			var colorizeField =  _.isEmpty(this.filteredCollection.filter) ? 'count' : 'filteredCount';
+			var colorizeField =  _.isEmpty(this.filteredCollection.filters) ? 'count' : 'filteredCount';
 			var values = _.chain(this.boundaries.pluck('properties')).pluck(colorizeField).value(); 
 			var min = _.min(values);
 			var max = _.max(values);
@@ -119,7 +112,7 @@ module.exports = Panel.extend({
 			featureProperties.count = collectionMatch ? +collectionMatch.get(self.collection.countProperty) : 0;
 			
 			// If filteredCollection has any records, find match there too
-			if( ! _.isEmpty(self.filteredCollection.filter)) {
+			if( ! _.isEmpty(self.filteredCollection.filters)) {
 				var filteredCollectionMatch = self.filteredCollection.length ? self.filteredCollection.get(featureProperties[self.boundaries.idAttribute]) : null;
 				featureProperties.filteredCount = filteredCollectionMatch ? +filteredCollectionMatch.get(self.filteredCollection.countProperty) : 0;
 			}
@@ -168,24 +161,22 @@ module.exports = Panel.extend({
 		var clickedLabel = e.target.feature.properties[this.boundaries.label];
 		
 		// If already selected, clear the filter
-		var filter = this.filteredCollection.filter[this.filteredCollection.triggerField];
-		if(filter && filter.selected === clickedId) {
-			this.vent.trigger('filter', {
-				dataset: this.filteredCollection.dataset,
+		var filter = this.filteredCollection.filters[this.filteredCollection.triggerField];
+		if(filter && filter.expression.value === clickedId) {
+			this.vent.trigger(this.filteredCollection.dataset + '.filter', {
 				field: this.filteredCollection.triggerField
 			})
 		}
 		// Otherwise, add the filter
 		else {
-			this.collection.selected = clickedId;
-			
 			// Trigger the global event handler with this filter
-			this.vent.trigger('filter', {
-				dataset: this.collection.dataset,
+			this.vent.trigger(this.filteredCollection.dataset + '.filter', {
 				field: this.collection.triggerField,
-				selected: clickedId,
-				expression: this.collection.triggerField + ' = \'' + clickedId + '\'',
-				friendlyExpression: this.config.title + ' is ' + clickedLabel
+				expression: {
+					'type': '=',
+					value: clickedId,
+					label: clickedLabel
+				}
 			})
 		}
 	}

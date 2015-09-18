@@ -70,7 +70,7 @@ module.exports = Panel.extend({
 		this.filteredCollection = options.filteredCollection || null;
 		
 		// Listen to vent filters
-		this.listenTo(this.vent, 'filter', this.onFilter);
+		this.listenTo(this.vent, this.collection.dataset + '.filter', this.onFilter);
 		
 		// Listen to collection
 		this.listenTo(this.collection, 'sync', this.render);
@@ -92,14 +92,14 @@ module.exports = Panel.extend({
 		var config = $.extend(true, {}, this.settings.chart);
 		config.dataProvider = this.formatChartData();
 		
-		if( ! _.isEmpty(this.filteredCollection.filter)) {
+		if( ! _.isEmpty(this.filteredCollection.filters)) {
 			config.valueField = 'filteredCount';
 		}
 		
 		// If "other" slice is selected, set other slice to be pulled out
 		var otherSliceTitle = config.groupedTitle || 'Other'
-		var filter = this.filteredCollection.filter[this.filteredCollection.triggerField];
-		if(filter && filter.selected === otherSliceTitle) {
+		var filter = this.filteredCollection.filters[this.filteredCollection.triggerField];
+		if(filter && (filter.expression.label || filter.expression.value) === otherSliceTitle) {
 			config.groupedPulled = true;
 		}
 		
@@ -110,7 +110,7 @@ module.exports = Panel.extend({
 	formatChartData: function() {
 		var self = this;
 		var chartData = [];
-		var filter = this.filteredCollection.filter[this.filteredCollection.triggerField];
+		var filter = this.filteredCollection.filters[this.filteredCollection.triggerField];
 		
 		// Map collection(s) into format expected by chart library
 		this.collection.forEach(function(model) {
@@ -120,13 +120,13 @@ module.exports = Panel.extend({
 				count: model.get(self.collection.countProperty)
 			};
 			// If the filtered collection has been fetched, find the corresponding record and put it in another series
-			if(self.filteredCollection.length) {
+			if( ! _.isEmpty(self.filteredCollection.filters)) {
 				var match = self.filteredCollection.get(label);
 				// Push a record even if there's no match so we don't align w/ the wrong bar in the other collection
 				data.filteredCount = match ? match.get(self.collection.countProperty) : 0;
 			}
 			// If this slice is selected, set it to be pulled
-			if(filter && filter.selected === label) {
+			if(filter && filter.expression.value === label) {
 				data.pulled = true;
 			}
 					
@@ -140,8 +140,7 @@ module.exports = Panel.extend({
 		// If already selected, clear the filter
 		var filter = this.filteredCollection.filter[this.filteredCollection.triggerField];
 		if(filter && filter.selected === category) {
-			this.vent.trigger('filter', {
-				dataset: this.filteredCollection.dataset,
+			this.vent.trigger(this.collection.dataset + '.filter', {
 				field: this.filteredCollection.triggerField
 			})
 		}
@@ -156,47 +155,41 @@ module.exports = Panel.extend({
 					}
 				});
 				
-				this.vent.trigger('filter', {
-					dataset: this.collection.dataset,
+				this.vent.trigger(this.collection.dataset + '.filter', {
 					field: this.collection.triggerField,
-					selected: category,
-					expression: this.collection.triggerField + ' not in(\'' + shownCategories.join('\',\'') + '\')',
-					friendlyExpression: this.collection.triggerField + ' is not ' + shownCategories.join(', ')
+					expression: {
+						'type': 'not in',
+						value: shownCategories,
+						label: this.config.groupedTitle || 'Other'
+					}
 				});
 			}
 			// Otherwise fire a normal = query
 			else {
-				this.vent.trigger('filter', {
-					dataset: this.collection.dataset,
+				this.vent.trigger(this.collection.dataset + '.filter', {
 					field: this.collection.triggerField,
-					selected: category,
-					expression: this.collection.triggerField + ' = \'' + category + '\'',
-					friendlyExpression: this.collection.triggerField + ' is ' + category
+					expression: {
+						'type': '=',
+						value: category
+					}
 				});
 			}
 		}
 	},
 	// When a chart has been filtered
 	onFilter: function(data) {
-		// Only listen on this dataset
-		if(data.dataset === this.filteredCollection.dataset) {
-			// Add the filter to the filtered collection and fetch it with the filter
-			if(data.expression) {
-				this.filteredCollection.filter[data.field] = data;
-			} else {
-				delete this.filteredCollection.filter[data.field];
-				
-				// If this view's filter is being removed, re-render it (since this view doesn't filter itself)
-				if(data.field === this.filteredCollection.triggerField) {
-					this.render();
-				}
-			}
-			this.renderFilters();
-			
-			// Only re-fetch if it's another chart (since this view doesn't filter itself)
-			if(data.field !== this.filteredCollection.triggerField) {
-				this.filteredCollection.fetch();
-			}
+		// Add the filter to the filtered collection and fetch it with the filter
+		this.filteredCollection.setFilter(data);
+		
+		// Only re-fetch if it's another chart (since this view doesn't filter itself)
+		if(data.field !== this.filteredCollection.triggerField) {
+			this.filteredCollection.fetch();
 		}
+		// If it's this chart and the filter is being removed, re-render the chart
+		else if( ! data.expression) {
+			this.render();
+		}
+		
+		this.renderFilters();
 	}
 })

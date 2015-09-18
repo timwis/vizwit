@@ -55,10 +55,14 @@ body.embed .container-fluid {
 	background: white;
 }
 
-.filters-container {
+.filters {
 	display: none;
 	margin-bottom: 0;
 	padding: 10px;
+}
+
+.filters .filter {
+	display: inline-block;
 }
 
 .amcharts-plot-area,

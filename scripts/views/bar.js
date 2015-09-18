@@ -176,7 +176,7 @@ module.exports = BaseChart.extend({
 	onSelect: function(category) {
 		// If already selected, clear the filter
 		var filter = this.filteredCollection.filters[this.filteredCollection.triggerField];
-		if(filter && filter.expression.right === category) {
+		if(filter && filter.expression.value === category) {
 			this.vent.trigger(this.collection.dataset + '.filter', {
 				field: this.filteredCollection.triggerField
 			})
@@ -188,8 +188,7 @@ module.exports = BaseChart.extend({
 				field: this.collection.triggerField,
 				expression: {
 					'type': '=',
-					left: this.collection.triggerField,
-					right: category
+					value: category
 				}
 			})
 		}

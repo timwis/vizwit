@@ -11,14 +11,6 @@ var model = Backbone.Model.extend({
 var enclose = function(val) {
   return typeof val === 'string' ? '\'' + val + '\'' : val;
 };
-
-var typeMap = {
-	'=': 'is',
-	'>': 'is greater than',
-	'>=': 'is greater than or equal to',
-	'<': 'is less than',
-	'<=': 'is less than or equal to',
-};
 	
 module.exports = Backbone.Collection.extend({
 	countProperty: 'count',
@@ -36,7 +28,6 @@ module.exports = Backbone.Collection.extend({
 		this.order = options.order || null;
 		this.limit = options.limit || this.limit;
 		
-		this.fields = new SocrataFields(options);
 		this.countModel = new Backbone.Model();
 	},
 	url: function(count) {
@@ -72,7 +63,14 @@ module.exports = Backbone.Collection.extend({
 		}
 		return query.getURL();
 	},
-	getFilters: function() {
+	setFilter: function(filter) {
+		if(filter.expression) {
+			this.filters[filter.field] = filter;
+		} else {
+			delete this.filters[filter.field];
+		}
+	},
+	getFilters: function(raw) {
 		var self = this;
 		var filters = this.filters;
 		
@@ -81,43 +79,37 @@ module.exports = Backbone.Collection.extend({
 			filters = _.omit(filters, this.triggerField);
 		}
 		
-		// Parse expressions into basic SQL strings
-		var expressions = _.pluck(filters, 'expression');
-		expressions = expressions.map(function(expression) {
-			return self.parseExpression(expression);
-		});
-		
-		return expressions.join(' and ');
-	},
-	parseExpression: function(expression) {
-		if(expression['type'] === 'and' || expression['type'] === 'or') {
-			return [
-				this.parseExpression(expression.left),
-				expression.type,
-				this.parseExpression(expression.right)
-			].join(' ');
+		if(raw) {
+			return filters;
 		} else {
-			return [
-				expression.left,
-				expression.type,
-				enclose(expression.right)
-			].join(' ');
+			// Parse expressions into basic SQL strings
+			var expressions = _.map(filters, function(filter) {
+				return self.parseExpression(filter.field, filter.expression);
+			});
+			
+			return expressions.join(' and ');
 		}
 	},
-	parseExpressionFriendly: function(expression) {
+	parseExpression: function(field, expression) {
 		if(expression['type'] === 'and' || expression['type'] === 'or') {
 			return [
-				this.parseExpression(expression.left),
+				this.parseExpression(field, expression.value[0]),
 				expression.type,
-				this.parseExpression(expression.right)
+				this.parseExpression(field, expression.value[1])
+			].join(' ');
+		} else if(expression['type'] === 'not in') {
+			return [
+				field,
+				expression.type,
+				'(',
+				expression.value.map(enclose).join(', '),
+				')'
 			].join(' ');
 		} else {
-			var match = this.fields.get(expression.left);
-			
 			return [
-				match ? match.get('title') : expression.left,
-				typeMap[expression.type] || expression.type,
-				expression.right
+				field,
+				expression.type,
+				enclose(expression.value)
 			].join(' ');
 		}
 	},

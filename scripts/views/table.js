@@ -15,7 +15,7 @@ module.exports = Panel.extend({
 		this.vent = options.vent || null;
 		
 		// Listen to vent filters
-		this.listenTo(this.vent, 'filter', this.onFilter);
+		this.listenTo(this.vent, this.collection.dataset + '.filter', this.onFilter);
 		
 		// Loading indicators
 		this.listenTo(this.collection, 'request', LoaderOn);
@@ -26,8 +26,7 @@ module.exports = Panel.extend({
 		if(this.config.columns) {
 			this.render();
 		} else {
-			this.listenTo(this.collection.fields, 'sync', this.render);
-			this.collection.fields.fetch();
+			this.listenTo(this.fields, 'sync', this.render);
 		}
 	},
 	render: function() {
@@ -55,7 +54,7 @@ module.exports = Panel.extend({
 					}
 				});
 			} else {
-				columns = this.collection.fields.toJSON();
+				columns = this.fields.toJSON();
 			}
 			
 			// Initialize the table
@@ -87,16 +86,9 @@ module.exports = Panel.extend({
 	},
 	// When another chart is filtered, filter this collection
 	onFilter: function(data) {
-		// Only listen on this dataset
-		if(data.dataset === this.collection.dataset) {
-			if(data.expression) {
-				this.collection.filter[data.field] = data;
-			} else {
-				delete this.collection.filter[data.field];
-			}
-			this.collection.recordCount = null;
-			this.table.ajax.reload();
-			this.renderFilters();
-		}
+		this.collection.setFilter(data);
+		this.collection.recordCount = null;
+		this.table.ajax.reload();
+		this.renderFilters();
 	}
 });

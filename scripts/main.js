@@ -5,6 +5,7 @@ var deparam = require('jquery-deparam');
 
 var Gist = require('./collections/gist');
 var Socrata = require('./collections/socrata');
+var SocrataFields = require('./collections/socrata-fields');
 var GeoJSON = require('./collections/geojson');
 
 var Header = require('./views/header');
@@ -15,6 +16,7 @@ var Choropleth = require('./views/choropleth');
 var Pie = require('./views/pie');
 
 var vent = _.clone(Backbone.Events);
+var fields = {};
 
 var params = window.location.search.substr(1) ? deparam(window.location.search.substr(1)) : {};
 var gist = params.gist || '601224472a5d53cbb908'; // default to sample config
@@ -73,10 +75,17 @@ var gist = params.gist || '601224472a5d53cbb908'; // default to sample config
 				var columnEl = $('<div/>').addClass('col-md-' + width);
 				rowEl.append(columnEl);
 				
-				// Initialize view
+				// Initialize collection
 				var collection = new Socrata(null, column);
 				var filteredCollection = new Socrata(null, column);
 				
+				// If we haven't already created a fields collection for this dataset, create one
+				if(fields[column.dataset] === undefined) {
+					fields[column.dataset] = new SocrataFields(null, column);
+					fields[column.dataset].fetch();
+				}
+				
+				// Initialize view
 				switch(column.chartType) {
 					case 'bar':
 						new Bar({
@@ -84,6 +93,7 @@ var gist = params.gist || '601224472a5d53cbb908'; // default to sample config
 							el: columnEl.get(0),
 							collection: collection,
 							filteredCollection: filteredCollection,
+							fields: fields[column.dataset],
 							vent: vent
 						});
 						break;
@@ -93,6 +103,7 @@ var gist = params.gist || '601224472a5d53cbb908'; // default to sample config
 							el: columnEl,
 							collection: collection,
 							filteredCollection: filteredCollection,
+							fields: fields[column.dataset],
 							vent: vent
 						});
 						break;
@@ -104,6 +115,7 @@ var gist = params.gist || '601224472a5d53cbb908'; // default to sample config
 							el: columnEl,
 							collection: collection,
 							filteredCollection: filteredCollection,
+							fields: fields[column.dataset],
 							vent: vent
 						});
 						break;
@@ -112,6 +124,7 @@ var gist = params.gist || '601224472a5d53cbb908'; // default to sample config
 							config: column,
 							el: columnEl,
 							collection: collection,
+							fields: fields[column.dataset],
 							vent: vent
 						});
 						break;
@@ -122,6 +135,7 @@ var gist = params.gist || '601224472a5d53cbb908'; // default to sample config
 							collection: collection,
 							boundaries: new GeoJSON(null, column),
 							filteredCollection: filteredCollection,
+							fields: fields[column.dataset],
 							vent: vent
 						});
 				}

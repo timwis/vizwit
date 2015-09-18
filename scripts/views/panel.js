@@ -2,11 +2,22 @@ var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var Template = require('../templates/panel.html');
+var FiltersTemplate = require('../templates/filters.html');
+
+var operatorMap = {
+	'=': 'is',
+	'>': 'is greater than',
+	'>=': 'is greater than or equal to',
+	'<': 'is less than',
+	'<=': 'is less than or equal to',
+	'not in': 'is not'
+};
 	
 module.exports = Backbone.View.extend({
 	initialize: function(options) {
 		options = options || {};
 		this.config = options.config || {};
+		this.fields = options.fields || {};
 		
 		_.bindAll(this, 'onClickRemoveFilter');
 		
@@ -23,13 +34,33 @@ module.exports = Backbone.View.extend({
 		this.$el.empty().append(Template(this.config));
 	},
 	renderFilters: function() {
-		var filters = this.filteredCollection ? this.filteredCollection.filter : this.collection.filter;
-		var strings = [];
-		for(var i in filters) {
-			strings.push(filters[i].friendlyExpression + ' <a href="#" data-filter="' + i + '" class="remove-filter"><span class="glyphicon glyphicon-remove"></span></a>');
+		var self = this;
+		var filters = this.filteredCollection ? this.filteredCollection.getFilters(true) : this.collection.getFilters(true);
+		
+		var parsedFilters = _.map(filters, function(filter) {
+			return {
+				field: filter.field,
+				expression: self.parseExpression(filter.field, filter.expression)
+			};
+		});
+		
+		this.$('.filters').empty().append(FiltersTemplate(parsedFilters)).toggle(parsedFilters.length ? true : false);
+	},
+	parseExpression: function(field, expression) {
+		if(expression['type'] === 'and' || expression['type'] === 'or') {
+			return [
+				this.parseExpression(field, expression.value[0]),
+				expression.type,
+				this.parseExpression(field, expression.value[1])
+			];
+		} else {
+			var match = this.fields.get(field);
+			return [
+				match ? match.get('title') : field,
+				operatorMap[expression.type] || expression.type,
+				expression.label || expression.value
+			];
 		}
-		var content = strings.join(' and ');
-		this.$('.filters').empty().append(content).parent().toggle(content ? true : false);
 	},
 	onClickRemoveFilter: function(e) {
 		var filter = $(e.currentTarget).data('filter');

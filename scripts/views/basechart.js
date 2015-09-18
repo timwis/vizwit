@@ -89,10 +89,10 @@ module.exports = Panel.extend({
 		var filter = this.filteredCollection.filters[this.filteredCollection.triggerField];
 		if(filter) {
 			if(config.categoryAxis.parseDates) {
-				guide.date = filter.expression.left.right;
-				guide.toDate = filter.expression.right.right;
+				guide.date = filter.expression.value[0].value;
+				guide.toDate = filter.expression.value[1].value;
 			} else {
-				guide.category = guide.toCategory = filter.expression.right;
+				guide.category = guide.toCategory = filter.expression.value;
 			}
 		} else {
 			if(guide.date) delete guide.date;
@@ -103,11 +103,7 @@ module.exports = Panel.extend({
 	// When a chart has been filtered
 	onFilter: function(data) {
 		// Add the filter to the filtered collection and fetch it with the filter
-		if(data.expression) {
-			this.filteredCollection.filters[data.field] = data;
-		} else {
-			delete this.filteredCollection.filters[data.field];
-		}
+		this.filteredCollection.setFilter(data);
 		this.renderFilters();
 		this.filteredCollection.fetch();
 	}

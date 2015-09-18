@@ -2,6 +2,10 @@ var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 
+var model = Backbone.Model.extend({
+	idAttribute: 'data'
+});
+
 module.exports = Backbone.Collection.extend({
 	typeMap: {
 		'calendar_date': 'date',
@@ -9,8 +13,8 @@ module.exports = Backbone.Collection.extend({
 		'money': 'num',
 		'default': 'string'
 	},
-	idAttribute: 'data',
-	initialize: function(options) {
+	model: model,
+	initialize: function(models, options) {
 		// Save config to collection
 		options = options || {};
 		this.domain = options.domain || null;
