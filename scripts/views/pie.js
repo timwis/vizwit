@@ -138,8 +138,8 @@ module.exports = Panel.extend({
 		var category = data.dataItem.title;
 		
 		// If already selected, clear the filter
-		var filter = this.filteredCollection.filter[this.filteredCollection.triggerField];
-		if(filter && filter.selected === category) {
+		var filter = this.filteredCollection.filters[this.filteredCollection.triggerField];
+		if(filter && (filter.expression.value === category || filter.expression.label === category)) {
 			this.vent.trigger(this.collection.dataset + '.filter', {
 				field: this.filteredCollection.triggerField
 			})
