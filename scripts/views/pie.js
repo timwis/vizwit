@@ -19,6 +19,7 @@ module.exports = Panel.extend({
 			titleField: 'label',
 			valueField: 'count',
 			pulledField: 'pulled',
+			innerRadius: '40%',
 			groupPercent: 1,
 			balloonFunction: function(item, formattedText) {
 				var content = '<b>' + item.title + '</b><br> \
