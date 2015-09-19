@@ -92,13 +92,13 @@ module.exports = Panel.extend({
 		var config = $.extend(true, {}, this.settings.chart);
 		config.dataProvider = this.formatChartData();
 		
-		if( ! _.isEmpty(this.filteredCollection.filters)) {
+		if(this.filteredCollection.getFilters().length) {
 			config.valueField = 'filteredCount';
 		}
 		
 		// If "other" slice is selected, set other slice to be pulled out
 		var otherSliceTitle = config.groupedTitle || 'Other'
-		var filter = this.filteredCollection.filters[this.filteredCollection.triggerField];
+		var filter = this.filteredCollection.getFilters(this.filteredCollection.triggerField);
 		if(filter && (filter.expression.label || filter.expression.value) === otherSliceTitle) {
 			config.groupedPulled = true;
 		}
@@ -110,7 +110,7 @@ module.exports = Panel.extend({
 	formatChartData: function() {
 		var self = this;
 		var chartData = [];
-		var filter = this.filteredCollection.filters[this.filteredCollection.triggerField];
+		var filter = this.filteredCollection.getFilters(this.filteredCollection.triggerField);
 		
 		// Map collection(s) into format expected by chart library
 		this.collection.forEach(function(model) {
@@ -120,7 +120,7 @@ module.exports = Panel.extend({
 				count: model.get(self.collection.countProperty)
 			};
 			// If the filtered collection has been fetched, find the corresponding record and put it in another series
-			if( ! _.isEmpty(self.filteredCollection.filters)) {
+			if(self.filteredCollection.getFilters().length) {
 				var match = self.filteredCollection.get(label);
 				// Push a record even if there's no match so we don't align w/ the wrong bar in the other collection
 				data.filteredCount = match ? match.get(self.collection.countProperty) : 0;
@@ -138,7 +138,7 @@ module.exports = Panel.extend({
 		var category = data.dataItem.title;
 		
 		// If already selected, clear the filter
-		var filter = this.filteredCollection.filters[this.filteredCollection.triggerField];
+		var filter = this.filteredCollection.getFilters(this.filteredCollection.triggerField);
 		if(filter && (filter.expression.value === category || filter.expression.label === category)) {
 			this.vent.trigger(this.collection.dataset + '.filter', {
 				field: this.filteredCollection.triggerField

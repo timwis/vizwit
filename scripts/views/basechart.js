@@ -48,7 +48,7 @@ module.exports = Panel.extend({
 		config.graphs = [$.extend(true, {}, this.settings.graphs[0])];
 		
 		// If there's a filtered amount, define the series/graph for it
-		if( ! _.isEmpty(this.filteredCollection.filters)) {
+		if(this.filteredCollection.getFilters().length) {
 			// Change color of original graph to subdued
 			config.graphs[0].lineColor = '#ddd';
 			config.graphs[0].showBalloon = false;
@@ -86,7 +86,7 @@ module.exports = Panel.extend({
 	// Show guide on selected item or remove it if nothing's selected
 	updateGuide: function(config) {
 		var guide = config.categoryAxis.guides[0];
-		var filter = this.filteredCollection.filters[this.filteredCollection.triggerField];
+		var filter = this.filteredCollection.getFilters(this.filteredCollection.triggerField);
 		if(filter) {
 			if(config.categoryAxis.parseDates) {
 				guide.date = filter.expression.value[0].value;

@@ -175,7 +175,7 @@ module.exports = BaseChart.extend({
 	},
 	onSelect: function(category) {
 		// If already selected, clear the filter
-		var filter = this.filteredCollection.filters[this.filteredCollection.triggerField];
+		var filter = this.filteredCollection.getFilters(this.filteredCollection.triggerField);
 		if(filter && filter.expression.value === category) {
 			this.vent.trigger(this.collection.dataset + '.filter', {
 				field: this.filteredCollection.triggerField

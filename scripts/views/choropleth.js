@@ -65,7 +65,7 @@ module.exports = Panel.extend({
 			this.datasetInFeatures();
 			
 			// Setup a color range utility
-			var colorizeField =  _.isEmpty(this.filteredCollection.filters) ? 'count' : 'filteredCount';
+			var colorizeField =  this.filteredCollection.getFilters().length ? 'filteredCount' : 'count';
 			var values = _.chain(this.boundaries.pluck('properties')).pluck(colorizeField).value(); 
 			var min = _.min(values);
 			var max = _.max(values);
@@ -111,8 +111,8 @@ module.exports = Panel.extend({
 			var collectionMatch = self.collection.get(featureProperties[self.boundaries.idAttribute]);
 			featureProperties.count = collectionMatch ? +collectionMatch.get(self.collection.countProperty) : 0;
 			
-			// If filteredCollection has any records, find match there too
-			if( ! _.isEmpty(self.filteredCollection.filters)) {
+			// If filters are set, find match on filteredCollection too
+			if(self.filteredCollection.getFilters().length) {
 				var filteredCollectionMatch = self.filteredCollection.length ? self.filteredCollection.get(featureProperties[self.boundaries.idAttribute]) : null;
 				featureProperties.filteredCount = filteredCollectionMatch ? +filteredCollectionMatch.get(self.filteredCollection.countProperty) : 0;
 			}
@@ -161,7 +161,7 @@ module.exports = Panel.extend({
 		var clickedLabel = e.target.feature.properties[this.boundaries.label];
 		
 		// If already selected, clear the filter
-		var filter = this.filteredCollection.filters[this.filteredCollection.triggerField];
+		var filter = this.filteredCollection.getFilters(this.filteredCollection.triggerField);
 		if(filter && filter.expression.value === clickedId) {
 			this.vent.trigger(this.filteredCollection.dataset + '.filter', {
 				field: this.filteredCollection.triggerField

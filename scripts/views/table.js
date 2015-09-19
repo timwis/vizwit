@@ -65,7 +65,7 @@ module.exports = Panel.extend({
 				ajax: function(data, callback, settings) {
 					self.collection.q = data.search.value ? data.search.value : null;
 					
-					self.collection.getCount().done(function(recordCount) {
+					self.collection.getRecordCount().done(function(recordCount) {
 						self.recordsTotal = self.recordsTotal || recordCount;
 						self.collection.offset = data.start || 0;
 						self.collection.limit = data.length || 25;

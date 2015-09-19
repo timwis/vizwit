@@ -35,7 +35,7 @@ module.exports = Backbone.View.extend({
 	},
 	renderFilters: function() {
 		var self = this;
-		var filters = this.filteredCollection ? this.filteredCollection.getFilters(true) : this.collection.getFilters(true);
+		var filters = this.filteredCollection ? this.filteredCollection.getFilters() : this.collection.getFilters();
 		
 		var parsedFilters = _.map(filters, function(filter) {
 			return {

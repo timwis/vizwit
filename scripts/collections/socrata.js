@@ -31,12 +31,17 @@ module.exports = Backbone.Collection.extend({
 		this.countModel = new Backbone.Model();
 	},
 	url: function(count) {
+		var self = this;
 		var filters = this.getFilters();
 		var query = this.consumer.query()
 			.withDataset(this.dataset);
 		
 		// Filters
-		if(filters) {
+		if(filters.length) {
+			// Parse filter expressions into basic SQL strings and concatenate
+			filters = _.map(filters, function(filter) {
+				return self.parseExpression(filter.field, filter.expression);
+			}).join(' and ');
 			query.where(filters);
 		}
 		if(this.q) { query.q(this.q); }
@@ -70,24 +75,18 @@ module.exports = Backbone.Collection.extend({
 			delete this.filters[filter.field];
 		}
 	},
-	getFilters: function(raw) {
-		var self = this;
+	getFilters: function(key) {
 		var filters = this.filters;
 		
-		// If dontFilterSelf enabled, remove the filter this collection's triggerField
-		if( ! _.isEmpty(filters) && this.dontFilterSelf) {
-			filters = _.omit(filters, this.triggerField);
-		}
-		
-		if(raw) {
-			return filters;
+		if(key) {
+			return filters[key];
 		} else {
-			// Parse expressions into basic SQL strings
-			var expressions = _.map(filters, function(filter) {
-				return self.parseExpression(filter.field, filter.expression);
-			});
+			// If dontFilterSelf enabled, remove the filter this collection's triggerField
+			if( ! _.isEmpty(filters) && this.dontFilterSelf) {
+				filters = _.omit(filters, this.triggerField);
+			}
 			
-			return expressions.join(' and ');
+			return _.values(filters);
 		}
 	},
 	parseExpression: function(field, expression) {
@@ -113,7 +112,7 @@ module.exports = Backbone.Collection.extend({
 			].join(' ');
 		}
 	},
-	getCount: function() {
+	getRecordCount: function() {
 		var self = this;
 		this.countModel.url = this.url(true);
 		
