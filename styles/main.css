@@ -65,6 +65,10 @@ body.embed .container-fluid {
 	display: inline-block;
 }
 
+.filter-value {
+	font-weight: bold;
+}
+
 .amcharts-plot-area,
 .amcharts-graph-line,
 .amcharts-graph-column,
