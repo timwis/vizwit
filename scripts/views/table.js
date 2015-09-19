@@ -54,7 +54,7 @@ module.exports = Panel.extend({
 					}
 				});
 			} else {
-				columns = this.fields.toJSON();
+				columns = new Backbone.Collection(this.fields.reject({display: false})).toJSON();
 			}
 			
 			// Initialize the table

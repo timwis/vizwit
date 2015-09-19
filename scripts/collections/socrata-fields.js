@@ -32,14 +32,13 @@ module.exports = Backbone.Collection.extend({
 	},
 	parse: function(response) {
 		var self = this;
-		return response.columns.filter(function(row) {
-			return ! _.isEmpty(row.format);
-		}).map(function(row) {
+		return response.columns.map(function(row) {
 			return {
 				data: row.fieldName,
 				title: row.name,
 				'type': self.typeMap[row.renderTypeName] || self.typeMap['default'],
-				defaultContent: ''
+				defaultContent: '',
+				display: ( ! _.isEmpty(row.format))
 			}
 		});
 	}
