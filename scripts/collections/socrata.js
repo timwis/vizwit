@@ -82,6 +82,8 @@ module.exports = Backbone.Collection.extend({
 			return filters[key];
 		} else {
 			// If dontFilterSelf enabled, remove the filter this collection's triggerField
+			// (don't do this if key provided since that's usually done to see if a filter is set
+			// rather than to perform an actual filter query)
 			if( ! _.isEmpty(filters) && this.dontFilterSelf) {
 				filters = _.omit(filters, this.triggerField);
 			}
