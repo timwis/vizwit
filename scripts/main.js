@@ -14,6 +14,7 @@ var Table = require('./views/table');
 var DateTime = require('./views/datetime');
 var Choropleth = require('./views/choropleth');
 var Pie = require('./views/pie');
+var Callout = require('./views/callout');
 
 var vent = _.clone(Backbone.Events);
 var fields = {};
@@ -138,6 +139,17 @@ var gist = params.gist || '601224472a5d53cbb908'; // default to sample config
 							fields: fields[column.dataset],
 							vent: vent
 						});
+						break;
+					case 'callout':
+						new Callout({
+							config: column,
+							el: columnEl,
+							collection: collection,
+							filteredCollection: filteredCollection,
+							fields: fields[column.dataset],
+							vent: vent
+						});
+						break;
 				}
 			});
 		});
