@@ -18,6 +18,7 @@ module.exports = Backbone.View.extend({
 		options = options || {};
 		this.config = options.config || {};
 		this.fields = options.fields || {};
+		this.template = Template;
 		
 		_.bindAll(this, 'onClickRemoveFilter');
 		
@@ -28,10 +29,11 @@ module.exports = Backbone.View.extend({
 		this.delegateEvents();
 		
 		// Render template
+		this.$el.addClass(this.config.chartType)
 		this.renderTemplate();
 	},
 	renderTemplate: function() {
-		this.$el.empty().append(Template(this.config));
+		this.$el.empty().append(this.template(this.config));
 	},
 	renderFilters: function() {
 		var self = this;
