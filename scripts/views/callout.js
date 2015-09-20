@@ -10,6 +10,9 @@ module.exports = Panel.extend({
 	initialize: function(options) {
 		Panel.prototype.initialize.apply(this, arguments);
 		
+		// Collection should only fetch one result
+		this.collection.limit = 1;
+		
 		// Listen to collection
 		this.listenTo(this.collection, 'sync', this.render);
 		
