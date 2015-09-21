@@ -13,7 +13,6 @@ var enclose = function(val) {
 };
 	
 module.exports = Backbone.Collection.extend({
-	limit: 5000,
 	model: model,
 	initialize: function(models, options) {
 		// Save config to collection
@@ -21,6 +20,8 @@ module.exports = Backbone.Collection.extend({
 		this.domain = options.domain || null;
 		this.consumer = new soda.Consumer(this.domain);
 		this.dataset = options.dataset || null;
+		this.aggregateFunction = options.aggregateFunction || null;
+		this.aggregateField = options.aggregateField || null;
 		this.groupBy = options.groupBy || null;
 		this.triggerField = options.triggerField || options.groupBy;
 		this.filters = options.filters || {};
@@ -34,8 +35,30 @@ module.exports = Backbone.Collection.extend({
 		var filters = this.getFilters();
 		var query = this.consumer.query()
 			.withDataset(this.dataset);
+			
+		// Aggregate & group by
+		if(this.aggregateFunction || this.groupBy) {
+			// If group by was specified but no aggregate function, use count by default
+			if( ! this.aggregateFunction) this.aggregateFunction = 'count';
+			
+			// Aggregation
+			query.select(this.aggregateFunction + '(' + (this.aggregateField || '*') + ') as value');
+			
+			// Group by
+			if(this.groupBy) {
+				query.select(this.groupBy + ' as label')
+				.group(this.groupBy)
+				.order(this.order || 'value desc');
+			}
+		} else {
+			// Offset
+			if(this.offset) query.offset(this.offset);
+			
+			// Order
+			query.order(this.order || ':id');
+		}
 		
-		// Filters
+		// Where
 		if(filters.length) {
 			// Parse filter expressions into basic SQL strings and concatenate
 			filters = _.map(filters, function(filter) {
@@ -43,28 +66,13 @@ module.exports = Backbone.Collection.extend({
 			}).join(' and ');
 			query.where(filters);
 		}
-		if(this.q) { query.q(this.q); }
 		
-		// Group by
-		if(this.groupBy) {
-			query.select('count(*) as value, ' + this.groupBy + ' as label')
-			.group(this.groupBy)
-			.order(this.order || 'value desc');
-		}
+		// Full text search
+		if(this.q) query.q(this.q);
 		
-		// Count
-		if(count) {
-			query.select('count(*)');
-		}
-		// Non-count
-		else {
-			// Limit & offset
-			if(this.limit) query.limit(this.limit);
-			if(this.offset) query.offset(this.offset);
-			
-			// Group by already sets order
-			if( ! this.groupBy) query.order(this.order || ':id');
-		}
+		// Limit
+		query.limit(this.limit || '5000');
+		
 		return query.getURL();
 	},
 	setFilter: function(filter) {
@@ -115,12 +123,26 @@ module.exports = Backbone.Collection.extend({
 	},
 	getRecordCount: function() {
 		var self = this;
-		this.countModel.url = this.url(true);
+		
+		// Save current values
+		var oldAggregateFunction = this.aggregateFunction;
+		var oldGroupBy = this.groupBy;
+		
+		// Change values in order to get the URL
+		this.aggregateFunction = 'count';
+		this.groupBy = null;
+		
+		// Get the URL
+		this.countModel.url = this.url();
+		
+		// Set the values back
+		this.aggregateFunction = oldAggregateFunction;
+		this.groupBy = oldGroupBy;
 		
 		// If recordCount is already set, return it (as a deferred); otherwise fetch it
 		return self.recordCount ? ($.Deferred()).resolve(self.recordCount) : this.countModel.fetch()
 			.then(function(response) {
-				self.recordCount = response.length ? response[0].count : 0;
+				self.recordCount = response.length ? response[0].value : 0;
 				return self.recordCount;
 			});
 	}
