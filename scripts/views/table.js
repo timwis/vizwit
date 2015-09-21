@@ -63,7 +63,7 @@ module.exports = Panel.extend({
 				scrollX: true,
 				serverSide: true,
 				ajax: function(data, callback, settings) {
-					self.collection.q = data.search.value ? data.search.value : null;
+					self.collection.search = data.search.value ? data.search.value : null;
 					
 					self.collection.getRecordCount().done(function(recordCount) {
 						self.recordsTotal = self.recordsTotal || recordCount;

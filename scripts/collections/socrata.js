@@ -68,7 +68,7 @@ module.exports = Backbone.Collection.extend({
 		}
 		
 		// Full text search
-		if(this.q) query.q(this.q);
+		if(this.search) query.q(this.search);
 		
 		// Limit
 		query.limit(this.limit || '5000');
