@@ -5,6 +5,11 @@
 		</div>
 	</div>
 	<div class="col-xs-9">
-		<div class="callout-value"><%= (+data.data.value).toLocaleString() %></div>
+		<% if(data.filteredValue !== undefined) { %>
+		<div class="callout-filtered-value"><%= (+data.filteredValue).toLocaleString() %></div>
+		<div class="callout-original-value">Filtered from <%= (+data.value).toLocaleString() %></div>
+		<% } else { %>
+		<div class="callout-value"><%= (+data.value).toLocaleString() %></div>
+		<% } %>
 	</div>
 </div>

@@ -53,11 +53,14 @@ body.embed .container-fluid {
 .callout-icon {
 	font-size: 70px;
 }
-.callout-value {
+.callout-value,
+.callout-filtered-value {
 	font-size: 60px;
+	text-align: right;
 }
-.callout-title,
-.callout-value {
+
+.callout-original-value {
+	font-size: 20px;
 	text-align: right;
 }
 
