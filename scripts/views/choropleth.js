@@ -65,7 +65,7 @@ module.exports = Panel.extend({
 			this.datasetInFeatures();
 			
 			// Setup a color range utility
-			var colorizeField =  this.filteredCollection.getFilters().length ? 'filteredCount' : 'count';
+			var colorizeField =  this.filteredCollection.getFilters().length ? 'filteredValue' : 'value';
 			var values = _.chain(this.boundaries.pluck('properties')).pluck(colorizeField).value(); 
 			var min = _.min(values);
 			var max = _.max(values);
@@ -109,12 +109,12 @@ module.exports = Panel.extend({
 			
 			// Find match in collection
 			var collectionMatch = self.collection.get(featureProperties[self.boundaries.idAttribute]);
-			featureProperties.count = collectionMatch ? +collectionMatch.get(self.collection.countProperty) : 0;
+			featureProperties.value = collectionMatch ? +collectionMatch.get('value') : 0;
 			
 			// If filters are set, find match on filteredCollection too
 			if(self.filteredCollection.getFilters().length) {
 				var filteredCollectionMatch = self.filteredCollection.length ? self.filteredCollection.get(featureProperties[self.boundaries.idAttribute]) : null;
-				featureProperties.filteredCount = filteredCollectionMatch ? +filteredCollectionMatch.get(self.filteredCollection.countProperty) : 0;
+				featureProperties.filteredValue = filteredCollectionMatch ? +filteredCollectionMatch.get('value') : 0;
 			}
 			
 			featureModel.set('properties', featureProperties);
@@ -127,9 +127,9 @@ module.exports = Panel.extend({
 		var popupContent = '\
 			<div class="marker-title">\
 			<h2>' + layer.feature.properties[this.boundaries.label] + '</h2>\
-			Total: ' + layer.feature.properties.count.toLocaleString();
-		if(layer.feature.properties.filteredCount !== undefined) {
-			popupContent += '<br>Filtered Amount: ' + layer.feature.properties.filteredCount.toLocaleString();
+			Total: ' + layer.feature.properties.value.toLocaleString();
+		if(layer.feature.properties.filteredValue !== undefined) {
+			popupContent += '<br>Filtered Amount: ' + layer.feature.properties.filteredValue.toLocaleString();
 		}
 		popupContent += '</div>';
 	
