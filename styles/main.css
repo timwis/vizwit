@@ -50,12 +50,8 @@ body.embed .container-fluid {
 .callout .viz {
 	min-height: 0;
 }
-.callout .panel-heading {
-	display: none;
-}
 .callout-icon {
 	font-size: 70px;
-	margin-top: 15px;
 }
 .callout-value {
 	font-size: 60px;
