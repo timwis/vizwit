@@ -70,13 +70,13 @@ module.exports = Panel.extend({
 			var label = model.get('label');
 			var data = {
 				label: label,
-				count: model.get(self.collection.countProperty)
+				value: model.get('value')
 			};
 			// If the filtered collection has been fetched, find the corresponding record and put it in another series
 			if(self.filteredCollection.length) {
 				var match = self.filteredCollection.get(label);
 				// Push a record even if there's no match so we don't align w/ the wrong bar in the other collection
-				data.filteredCount = match ? match.get(self.collection.countProperty) : 0;
+				data.filteredValue = match ? match.get('value') : 0;
 			}
 					
 			chartData.push(data);

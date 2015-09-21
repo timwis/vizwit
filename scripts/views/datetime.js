@@ -14,7 +14,7 @@ module.exports = BaseChart.extend({
 		graphs: [
 			{
 				title: 'Data',
-				valueField: 'count',
+				valueField: 'value',
 				fillAlphas: 0.6,
 				clustered: false,
 				lineColor: '#97bbcd',
@@ -22,15 +22,15 @@ module.exports = BaseChart.extend({
 			},
 			{
 				title: 'Filtered Data',
-				valueField: 'filteredCount',
+				valueField: 'filteredValue',
 				fillAlphas: 0.4,
 				clustered: false,
 				lineColor: '#97bbcd',
 				dateFormat: 'MMM YYYY',
 				balloonFunction: function(item, graph) {
 					return '<b>' + AmCharts.formatDate(item.category, graph.dateFormat) + '</b><br>\
-						Total: ' + (+item.dataContext.count).toLocaleString() + '<br> \
-						Filtered Amount: ' + (+item.dataContext.filteredCount).toLocaleString()
+						Total: ' + (+item.dataContext.value).toLocaleString() + '<br> \
+						Filtered Amount: ' + (+item.dataContext.filteredValue).toLocaleString()
 				}
 			}
 		],

@@ -13,7 +13,6 @@ var enclose = function(val) {
 };
 	
 module.exports = Backbone.Collection.extend({
-	countProperty: 'count',
 	limit: 5000,
 	model: model,
 	initialize: function(models, options) {
@@ -48,9 +47,9 @@ module.exports = Backbone.Collection.extend({
 		
 		// Group by
 		if(this.groupBy) {
-			query.select('count(*), ' + this.groupBy + ' as label')
+			query.select('count(*) as value, ' + this.groupBy + ' as label')
 			.group(this.groupBy)
-			.order(this.order || 'count desc');
+			.order(this.order || 'value desc');
 		}
 		
 		// Count

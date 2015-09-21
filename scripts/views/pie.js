@@ -17,15 +17,15 @@ module.exports = Panel.extend({
 			'type': 'pie',
 			theme: 'light',
 			titleField: 'label',
-			valueField: 'count',
+			valueField: 'value',
 			pulledField: 'pulled',
 			innerRadius: '40%',
 			groupPercent: 1,
 			balloonFunction: function(item, formattedText) {
 				var content = '<b>' + item.title + '</b><br> \
 					Total: ' + item.value.toLocaleString() + ' (' + parseFloat(item.percents.toFixed(2)) + '%)';
-				if(item.dataContext.filteredCount !== undefined) {
-					content += '<br>Filtered Amount: ' + (+item.dataContext.filteredCount).toLocaleString();
+				if(item.dataContext.filteredValue !== undefined) {
+					content += '<br>Filtered Amount: ' + (+item.dataContext.filteredValue).toLocaleString();
 				}
 				return content;
 			},
@@ -94,7 +94,7 @@ module.exports = Panel.extend({
 		config.dataProvider = this.formatChartData();
 		
 		if(this.filteredCollection.getFilters().length) {
-			config.valueField = 'filteredCount';
+			config.valueField = 'filteredValue';
 		}
 		
 		// If "other" slice is selected, set other slice to be pulled out
@@ -118,13 +118,13 @@ module.exports = Panel.extend({
 			var label = model.get('label');
 			var data = {
 				label: label,
-				count: model.get(self.collection.countProperty)
+				value: model.get('value')
 			};
 			// If the filtered collection has been fetched, find the corresponding record and put it in another series
 			if(self.filteredCollection.getFilters().length) {
 				var match = self.filteredCollection.get(label);
 				// Push a record even if there's no match so we don't align w/ the wrong bar in the other collection
-				data.filteredCount = match ? match.get(self.collection.countProperty) : 0;
+				data.filteredValue = match ? match.get('value') : 0;
 			}
 			// If this slice is selected, set it to be pulled
 			if(filter && filter.expression.value === label) {
