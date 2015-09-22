@@ -33,11 +33,21 @@
 		<% } else { %>
 		<div class="viz"></div>
 		<% } %>
-		
-		<div class="filters alert alert-info">
-		</div>
 	
 	<% if(data.padded) { %>
 	</div>
 	<% } %>
+	
+	<% if(data.link !== undefined) { %>
+	<a href="<%= data.link.url %>">
+		<div class="panel-footer">
+			<span class="pull-left"><%= data.link.label || 'View Details' %></span>
+			<span class="pull-right"><span class="glyphicon glyphicon-circle-arrow-right"></span></span>
+			<div class="clearfix"></div>
+		</div>
+	</a>
+	<% } %>
+		
+	<div class="filters panel-footer"></div>
+	
 </div>
