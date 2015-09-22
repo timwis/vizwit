@@ -1,8 +1,9 @@
-var $ = require('jquery');
+var $ = jQuery = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var Template = require('../templates/panel.html');
 var FiltersTemplate = require('../templates/filters.html');
+require('bootstrap/js/dropdown');
 
 var operatorMap = {
 	'=': 'is',
