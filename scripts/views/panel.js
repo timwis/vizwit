@@ -1,8 +1,9 @@
-var $ = require('jquery');
+var $ = jQuery = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var Template = require('../templates/panel.html');
 var FiltersTemplate = require('../templates/filters.html');
+require('bootstrap/js/dropdown');
 
 var operatorMap = {
 	'=': 'is',
@@ -31,6 +32,13 @@ module.exports = Backbone.View.extend({
 		// Render template
 		this.$el.addClass(this.config.chartType)
 		this.renderTemplate();
+		
+		// Set export link
+		this.updateExportLink();
+		
+		// Watch for collection sync and update export link
+		if(options.collection) this.listenTo(options.collection, 'sync', this.updateExportLink);
+		if(options.filteredCollection) this.listenTo(options.filteredCollection, 'sync', this.updateExportLink);
 	},
 	renderTemplate: function() {
 		this.$el.empty().append(this.template(this.config));
@@ -72,5 +80,9 @@ module.exports = Backbone.View.extend({
 			});
 		}
 		e.preventDefault();
+	},
+	updateExportLink: function(collection) {
+		collection = collection || this.collection;
+		this.$('.export-link').attr('href', collection.exportUrl());
 	}
 });

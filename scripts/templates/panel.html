@@ -3,11 +3,21 @@
 	<div class="panel-heading">
 		<%= data.title %>
 		
+		<div class="dropdown pull-right">
+			<a href="#" class="dropdown-toggle" data-toggle="dropdown">&nbsp;<b class="caret"></b></a>
+			<ul class="dropdown-menu" role="menu">
+				<li>
+					<a href="?<% if(data.gist) { %>gist=<%= encodeURIComponent(data.gist) %>&<% } %>viz=<%= encodeURIComponent(data.title) %>" target="_blank">
+						<span class="glyphicon glyphicon-new-window"></span> Full Screen
+					</a>
+				</li>
+				<li>
+					<a href="#" class="export-link"><span class="glyphicon glyphicon-download-alt"></span> Export (CSV)</a>
+				</li>
+			</ul>
+		</div>
+		
 		<div class="pull-right">
-			
-			<a href="?<% if(data.gist) { %>gist=<%= encodeURIComponent(data.gist) %>&<% } %>viz=<%= encodeURIComponent(data.title) %>" target="_blank" class="btn btn-default">
-				<span class="glyphicon glyphicon-new-window"></span>
-			</a>
 		
 			<div class="btn-group scroll hidden" role="group" aria-label="Scroll chart horizontally">
 				<a href="#" class="btn btn-default" data-dir="decrease"><span class="glyphicon glyphicon-chevron-left"></span></a>
