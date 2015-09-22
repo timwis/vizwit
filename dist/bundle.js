@@ -3793,7 +3793,174 @@ AmCharts.themes.light = {
 }));
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"jquery":20,"underscore":59}],7:[function(require,module,exports){
+},{"jquery":21,"underscore":60}],7:[function(require,module,exports){
+/* ========================================================================
+ * Bootstrap: dropdown.js v3.3.5
+ * http://getbootstrap.com/javascript/#dropdowns
+ * ========================================================================
+ * Copyright 2011-2015 Twitter, Inc.
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+ * ======================================================================== */
+
+
++function ($) {
+  'use strict';
+
+  // DROPDOWN CLASS DEFINITION
+  // =========================
+
+  var backdrop = '.dropdown-backdrop'
+  var toggle   = '[data-toggle="dropdown"]'
+  var Dropdown = function (element) {
+    $(element).on('click.bs.dropdown', this.toggle)
+  }
+
+  Dropdown.VERSION = '3.3.5'
+
+  function getParent($this) {
+    var selector = $this.attr('data-target')
+
+    if (!selector) {
+      selector = $this.attr('href')
+      selector = selector && /#[A-Za-z]/.test(selector) && selector.replace(/.*(?=#[^\s]*$)/, '') // strip for ie7
+    }
+
+    var $parent = selector && $(selector)
+
+    return $parent && $parent.length ? $parent : $this.parent()
+  }
+
+  function clearMenus(e) {
+    if (e && e.which === 3) return
+    $(backdrop).remove()
+    $(toggle).each(function () {
+      var $this         = $(this)
+      var $parent       = getParent($this)
+      var relatedTarget = { relatedTarget: this }
+
+      if (!$parent.hasClass('open')) return
+
+      if (e && e.type == 'click' && /input|textarea/i.test(e.target.tagName) && $.contains($parent[0], e.target)) return
+
+      $parent.trigger(e = $.Event('hide.bs.dropdown', relatedTarget))
+
+      if (e.isDefaultPrevented()) return
+
+      $this.attr('aria-expanded', 'false')
+      $parent.removeClass('open').trigger('hidden.bs.dropdown', relatedTarget)
+    })
+  }
+
+  Dropdown.prototype.toggle = function (e) {
+    var $this = $(this)
+
+    if ($this.is('.disabled, :disabled')) return
+
+    var $parent  = getParent($this)
+    var isActive = $parent.hasClass('open')
+
+    clearMenus()
+
+    if (!isActive) {
+      if ('ontouchstart' in document.documentElement && !$parent.closest('.navbar-nav').length) {
+        // if mobile we use a backdrop because click events don't delegate
+        $(document.createElement('div'))
+          .addClass('dropdown-backdrop')
+          .insertAfter($(this))
+          .on('click', clearMenus)
+      }
+
+      var relatedTarget = { relatedTarget: this }
+      $parent.trigger(e = $.Event('show.bs.dropdown', relatedTarget))
+
+      if (e.isDefaultPrevented()) return
+
+      $this
+        .trigger('focus')
+        .attr('aria-expanded', 'true')
+
+      $parent
+        .toggleClass('open')
+        .trigger('shown.bs.dropdown', relatedTarget)
+    }
+
+    return false
+  }
+
+  Dropdown.prototype.keydown = function (e) {
+    if (!/(38|40|27|32)/.test(e.which) || /input|textarea/i.test(e.target.tagName)) return
+
+    var $this = $(this)
+
+    e.preventDefault()
+    e.stopPropagation()
+
+    if ($this.is('.disabled, :disabled')) return
+
+    var $parent  = getParent($this)
+    var isActive = $parent.hasClass('open')
+
+    if (!isActive && e.which != 27 || isActive && e.which == 27) {
+      if (e.which == 27) $parent.find(toggle).trigger('focus')
+      return $this.trigger('click')
+    }
+
+    var desc = ' li:not(.disabled):visible a'
+    var $items = $parent.find('.dropdown-menu' + desc)
+
+    if (!$items.length) return
+
+    var index = $items.index(e.target)
+
+    if (e.which == 38 && index > 0)                 index--         // up
+    if (e.which == 40 && index < $items.length - 1) index++         // down
+    if (!~index)                                    index = 0
+
+    $items.eq(index).trigger('focus')
+  }
+
+
+  // DROPDOWN PLUGIN DEFINITION
+  // ==========================
+
+  function Plugin(option) {
+    return this.each(function () {
+      var $this = $(this)
+      var data  = $this.data('bs.dropdown')
+
+      if (!data) $this.data('bs.dropdown', (data = new Dropdown(this)))
+      if (typeof option == 'string') data[option].call($this)
+    })
+  }
+
+  var old = $.fn.dropdown
+
+  $.fn.dropdown             = Plugin
+  $.fn.dropdown.Constructor = Dropdown
+
+
+  // DROPDOWN NO CONFLICT
+  // ====================
+
+  $.fn.dropdown.noConflict = function () {
+    $.fn.dropdown = old
+    return this
+  }
+
+
+  // APPLY TO STANDARD DROPDOWN ELEMENTS
+  // ===================================
+
+  $(document)
+    .on('click.bs.dropdown.data-api', clearMenus)
+    .on('click.bs.dropdown.data-api', '.dropdown form', function (e) { e.stopPropagation() })
+    .on('click.bs.dropdown.data-api', toggle, Dropdown.prototype.toggle)
+    .on('keydown.bs.dropdown.data-api', toggle, Dropdown.prototype.keydown)
+    .on('keydown.bs.dropdown.data-api', '.dropdown-menu', Dropdown.prototype.keydown)
+
+}(jQuery);
+
+},{}],8:[function(require,module,exports){
 /*!
  * The buffer module from node.js, for the browser.
  *
@@ -5328,7 +5495,7 @@ function blitBuffer (src, dst, offset, length) {
   return i
 }
 
-},{"base64-js":8,"ieee754":9,"is-array":10}],8:[function(require,module,exports){
+},{"base64-js":9,"ieee754":10,"is-array":11}],9:[function(require,module,exports){
 var lookup = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 
 ;(function (exports) {
@@ -5454,7 +5621,7 @@ var lookup = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 	exports.fromByteArray = uint8ToBase64
 }(typeof exports === 'undefined' ? (this.base64js = {}) : exports))
 
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 exports.read = function (buffer, offset, isLE, mLen, nBytes) {
   var e, m
   var eLen = nBytes * 8 - mLen - 1
@@ -5540,7 +5707,7 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
   buffer[offset + i - d] |= s * 128
 }
 
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 
 /**
  * isArray
@@ -5575,7 +5742,7 @@ module.exports = isArray || function (val) {
   return !! val && '[object Array]' == str.call(val);
 };
 
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 
 /**
  * @license
@@ -8042,7 +8209,7 @@ module.exports = isArray || function (val) {
 
 }).call(this);
 
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 /*! DataTables Bootstrap 3 integration
  * ©2011-2014 SpryMedia Ltd - datatables.net/license
  */
@@ -8250,7 +8417,7 @@ else if ( jQuery ) {
 })(window, document);
 
 
-},{"datatables":13,"jquery":20}],13:[function(require,module,exports){
+},{"datatables":14,"jquery":21}],14:[function(require,module,exports){
 /*! DataTables 1.10.9
  * ©2008-2015 SpryMedia Ltd - datatables.net/license
  */
@@ -23381,11 +23548,11 @@ else if ( jQuery ) {
 }(window, document));
 
 
-},{"jquery":20}],14:[function(require,module,exports){
+},{"jquery":21}],15:[function(require,module,exports){
 var geocolor = require('./lib/geocolor')
 
 module.exports = geocolor
-},{"./lib/geocolor":15}],15:[function(require,module,exports){
+},{"./lib/geocolor":16}],16:[function(require,module,exports){
 var _ = require('lodash'),
     ss = require('simple-statistics'),
     chroma = require('chroma-js')
@@ -23572,7 +23739,7 @@ function normalize(numBreaks)
   return normals
 }
 
-},{"chroma-js":16,"lodash":17,"simple-statistics":18}],16:[function(require,module,exports){
+},{"chroma-js":17,"lodash":18,"simple-statistics":19}],17:[function(require,module,exports){
 // Generated by CoffeeScript 1.6.2
 /** echo  * @license echo  * while read i do echo  *  done echo
 */
@@ -25437,7 +25604,7 @@ function normalize(numBreaks)
 
 }).call(this);
 
-},{}],17:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 (function (global){
 /**
  * @license
@@ -32227,7 +32394,7 @@ function normalize(numBreaks)
 }.call(this));
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],18:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 // # simple-statistics
 //
 // A simple, literate statistics system. The code below uses the
@@ -33316,7 +33483,7 @@ function normalize(numBreaks)
 
 })(this);
 
-},{}],19:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 (function(deparam){
     if (typeof require === 'function' && typeof exports === 'object' && typeof module === 'object') {
         var jquery = require('jquery');
@@ -33430,7 +33597,7 @@ function normalize(numBreaks)
     return deparam;
 });
 
-},{"jquery":20}],20:[function(require,module,exports){
+},{"jquery":21}],21:[function(require,module,exports){
 /*!
  * jQuery JavaScript Library v2.1.4
  * http://jquery.com/
@@ -42642,7 +42809,7 @@ return jQuery;
 
 }));
 
-},{}],21:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 function corslite(url, callback, cors) {
     var sent = false;
 
@@ -42737,12 +42904,12 @@ function corslite(url, callback, cors) {
 
 if (typeof module !== 'undefined') module.exports = corslite;
 
-},{}],22:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 module.exports = Array.isArray || function (arr) {
   return Object.prototype.toString.call(arr) == '[object Array]';
 };
 
-},{}],23:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 /*
  Leaflet, a JavaScript library for mobile-friendly interactive maps. http://leafletjs.com
  (c) 2010-2013, Vladimir Agafonkin
@@ -51923,7 +52090,7 @@ L.Map.include({
 
 
 }(window, document));
-},{}],24:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 /*!
  * mustache.js - Logic-less {{mustache}} templates with JavaScript
  * http://github.com/janl/mustache.js
@@ -52476,7 +52643,7 @@ L.Map.include({
 
 }));
 
-},{}],25:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 var html_sanitize = require('./sanitizer-bundle.js');
 
 module.exports = function(_) {
@@ -52496,7 +52663,7 @@ function cleanUrl(url) {
 
 function cleanId(id) { return id; }
 
-},{"./sanitizer-bundle.js":26}],26:[function(require,module,exports){
+},{"./sanitizer-bundle.js":27}],27:[function(require,module,exports){
 
 // Copyright (C) 2010 Google Inc.
 //
@@ -54945,7 +55112,7 @@ if (typeof module !== 'undefined') {
     module.exports = html_sanitize;
 }
 
-},{}],27:[function(require,module,exports){
+},{}],28:[function(require,module,exports){
 module.exports={
   "author": {
     "name": "Mapbox"
@@ -55139,7 +55306,7 @@ module.exports={
   "_resolved": "https://registry.npmjs.org/mapbox.js/-/mapbox.js-2.2.1.tgz"
 }
 
-},{}],28:[function(require,module,exports){
+},{}],29:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -55149,7 +55316,7 @@ module.exports = {
     REQUIRE_ACCESS_TOKEN: true
 };
 
-},{}],29:[function(require,module,exports){
+},{}],30:[function(require,module,exports){
 'use strict';
 
 var util = require('./util'),
@@ -55278,7 +55445,7 @@ module.exports.featureLayer = function(_, options) {
     return new FeatureLayer(_, options);
 };
 
-},{"./marker":44,"./request":45,"./simplestyle":47,"./url":49,"./util":50,"sanitize-caja":25}],30:[function(require,module,exports){
+},{"./marker":45,"./request":46,"./simplestyle":48,"./url":50,"./util":51,"sanitize-caja":26}],31:[function(require,module,exports){
 'use strict';
 
 var Feedback = L.Class.extend({
@@ -55292,7 +55459,7 @@ var Feedback = L.Class.extend({
 
 module.exports = new Feedback();
 
-},{}],31:[function(require,module,exports){
+},{}],32:[function(require,module,exports){
 'use strict';
 
 var isArray = require('isarray'),
@@ -55404,7 +55571,7 @@ module.exports = function(url, options) {
     return geocoder;
 };
 
-},{"./feedback":30,"./request":45,"./url":49,"./util":50,"isarray":22}],32:[function(require,module,exports){
+},{"./feedback":31,"./request":46,"./url":50,"./util":51,"isarray":23}],33:[function(require,module,exports){
 'use strict';
 
 var geocoder = require('./geocoder'),
@@ -55606,7 +55773,7 @@ module.exports.geocoderControl = function(_, options) {
     return new GeocoderControl(_, options);
 };
 
-},{"./geocoder":31,"./util":50}],33:[function(require,module,exports){
+},{"./geocoder":32,"./util":51}],34:[function(require,module,exports){
 'use strict';
 
 function utfDecode(c) {
@@ -55624,7 +55791,7 @@ module.exports = function(data) {
     };
 };
 
-},{}],34:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 'use strict';
 
 var util = require('./util'),
@@ -55824,7 +55991,7 @@ module.exports.gridControl = function(_, options) {
     return new GridControl(_, options);
 };
 
-},{"./util":50,"mustache":24,"sanitize-caja":25}],35:[function(require,module,exports){
+},{"./util":51,"mustache":25,"sanitize-caja":26}],36:[function(require,module,exports){
 'use strict';
 
 var util = require('./util'),
@@ -56049,7 +56216,7 @@ module.exports.gridLayer = function(_, options) {
     return new GridLayer(_, options);
 };
 
-},{"./grid":33,"./load_tilejson":40,"./request":45,"./util":50}],36:[function(require,module,exports){
+},{"./grid":34,"./load_tilejson":41,"./request":46,"./util":51}],37:[function(require,module,exports){
 'use strict';
 
 var leaflet = require('./leaflet');
@@ -56058,7 +56225,7 @@ require('./mapbox');
 
 module.exports = leaflet;
 
-},{"./leaflet":38,"./mapbox":42}],37:[function(require,module,exports){
+},{"./leaflet":39,"./mapbox":43}],38:[function(require,module,exports){
 'use strict';
 
 var InfoControl = L.Control.extend({
@@ -56175,10 +56342,10 @@ module.exports.infoControl = function(options) {
     return new InfoControl(options);
 };
 
-},{"sanitize-caja":25}],38:[function(require,module,exports){
+},{"sanitize-caja":26}],39:[function(require,module,exports){
 module.exports = window.L = require('leaflet/dist/leaflet-src');
 
-},{"leaflet/dist/leaflet-src":23}],39:[function(require,module,exports){
+},{"leaflet/dist/leaflet-src":24}],40:[function(require,module,exports){
 'use strict';
 
 var LegendControl = L.Control.extend({
@@ -56247,7 +56414,7 @@ module.exports.legendControl = function(options) {
     return new LegendControl(options);
 };
 
-},{"sanitize-caja":25}],40:[function(require,module,exports){
+},{"sanitize-caja":26}],41:[function(require,module,exports){
 'use strict';
 
 var request = require('./request'),
@@ -56273,7 +56440,7 @@ module.exports = {
     }
 };
 
-},{"./request":45,"./url":49,"./util":50}],41:[function(require,module,exports){
+},{"./request":46,"./url":50,"./util":51}],42:[function(require,module,exports){
 'use strict';
 
 var tileLayer = require('./tile_layer').tileLayer,
@@ -56509,7 +56676,7 @@ module.exports.map = function(element, _, options) {
     return new LMap(element, _, options);
 };
 
-},{"./feature_layer":29,"./feedback":30,"./grid_control":34,"./grid_layer":35,"./info_control":37,"./legend_control":39,"./load_tilejson":40,"./mapbox_logo":43,"./share_control":46,"./tile_layer":48,"sanitize-caja":25}],42:[function(require,module,exports){
+},{"./feature_layer":30,"./feedback":31,"./grid_control":35,"./grid_layer":36,"./info_control":38,"./legend_control":40,"./load_tilejson":41,"./mapbox_logo":44,"./share_control":47,"./tile_layer":49,"sanitize-caja":26}],43:[function(require,module,exports){
 'use strict';
 
 var geocoderControl = require('./geocoder_control'),
@@ -56562,7 +56729,7 @@ window.L.Icon.Default.imagePath =
     '//api.tiles.mapbox.com/mapbox.js/' + 'v' +
     require('../package.json').version + '/images';
 
-},{"../package.json":27,"./config":28,"./feature_layer":29,"./feedback":30,"./geocoder":31,"./geocoder_control":32,"./grid_control":34,"./grid_layer":35,"./info_control":37,"./legend_control":39,"./map":41,"./marker":44,"./share_control":46,"./simplestyle":47,"./tile_layer":48,"mustache":24,"sanitize-caja":25}],43:[function(require,module,exports){
+},{"../package.json":28,"./config":29,"./feature_layer":30,"./feedback":31,"./geocoder":32,"./geocoder_control":33,"./grid_control":35,"./grid_layer":36,"./info_control":38,"./legend_control":40,"./map":42,"./marker":45,"./share_control":47,"./simplestyle":48,"./tile_layer":49,"mustache":25,"sanitize-caja":26}],44:[function(require,module,exports){
 'use strict';
 
 var MapboxLogoControl = L.Control.extend({
@@ -56596,7 +56763,7 @@ module.exports.mapboxLogoControl = function(options) {
     return new MapboxLogoControl(options);
 };
 
-},{}],44:[function(require,module,exports){
+},{}],45:[function(require,module,exports){
 'use strict';
 
 var url = require('./url'),
@@ -56663,7 +56830,7 @@ module.exports = {
     createPopup: createPopup
 };
 
-},{"./url":49,"./util":50,"sanitize-caja":25}],45:[function(require,module,exports){
+},{"./url":50,"./util":51,"sanitize-caja":26}],46:[function(require,module,exports){
 'use strict';
 
 var corslite = require('corslite'),
@@ -56697,7 +56864,7 @@ module.exports = function(url, callback) {
     return corslite(url, onload);
 };
 
-},{"./config":28,"./util":50,"corslite":21}],46:[function(require,module,exports){
+},{"./config":29,"./util":51,"corslite":22}],47:[function(require,module,exports){
 'use strict';
 
 var urlhelper = require('./url');
@@ -56800,7 +56967,7 @@ module.exports.shareControl = function(_, options) {
     return new ShareControl(_, options);
 };
 
-},{"./load_tilejson":40,"./url":49}],47:[function(require,module,exports){
+},{"./load_tilejson":41,"./url":50}],48:[function(require,module,exports){
 'use strict';
 
 // an implementation of the simplestyle spec for polygon and linestring features
@@ -56847,7 +57014,7 @@ module.exports = {
     defaults: defaults
 };
 
-},{}],48:[function(require,module,exports){
+},{}],49:[function(require,module,exports){
 'use strict';
 
 var util = require('./util');
@@ -56947,7 +57114,7 @@ module.exports.tileLayer = function(_, options) {
     return new TileLayer(_, options);
 };
 
-},{"./load_tilejson":40,"./util":50,"sanitize-caja":25}],49:[function(require,module,exports){
+},{"./load_tilejson":41,"./util":51,"sanitize-caja":26}],50:[function(require,module,exports){
 'use strict';
 
 var config = require('./config'),
@@ -56991,7 +57158,7 @@ module.exports.tileJSON = function(urlOrMapID, accessToken) {
     return url;
 };
 
-},{"../package.json":27,"./config":28}],50:[function(require,module,exports){
+},{"../package.json":28,"./config":29}],51:[function(require,module,exports){
 'use strict';
 
 function contains(item, list) {
@@ -57038,7 +57205,7 @@ module.exports = {
     }
 };
 
-},{}],51:[function(require,module,exports){
+},{}],52:[function(require,module,exports){
 (function (Buffer){
 // Generated by CoffeeScript 1.10.0
 var Connection, Consumer, Dataset, EventEmitter, Operation, Producer, Query, addExpr, base64Lookup, expr, extend, handleLiteral, handleOrder, httpClient, isArray, isNumber, isString, rawToBase64, toBase64, toQuerystring,
@@ -57571,7 +57738,7 @@ extend(typeof exports !== "undefined" && exports !== null ? exports : this.soda,
 });
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":7,"eventemitter2":52,"superagent":53}],52:[function(require,module,exports){
+},{"buffer":8,"eventemitter2":53,"superagent":54}],53:[function(require,module,exports){
 /*!
  * EventEmitter2
  * https://github.com/hij1nx/EventEmitter2
@@ -58146,7 +58313,7 @@ extend(typeof exports !== "undefined" && exports !== null ? exports : this.soda,
   }
 }();
 
-},{}],53:[function(require,module,exports){
+},{}],54:[function(require,module,exports){
 /**
  * Module dependencies.
  */
@@ -59229,7 +59396,7 @@ request.put = function(url, data, fn){
 
 module.exports = request;
 
-},{"emitter":54,"reduce":55}],54:[function(require,module,exports){
+},{"emitter":55,"reduce":56}],55:[function(require,module,exports){
 
 /**
  * Expose `Emitter`.
@@ -59395,7 +59562,7 @@ Emitter.prototype.hasListeners = function(event){
   return !! this.listeners(event).length;
 };
 
-},{}],55:[function(require,module,exports){
+},{}],56:[function(require,module,exports){
 
 /**
  * Reduce `arr` with `fn`.
@@ -59420,7 +59587,7 @@ module.exports = function(arr, fn, initial){
   
   return curr;
 };
-},{}],56:[function(require,module,exports){
+},{}],57:[function(require,module,exports){
 /**
  * Copyright (c) 2011-2014 Felix Gnass
  * Licensed under the MIT license
@@ -59799,7 +59966,7 @@ module.exports = function(arr, fn, initial){
 
 }));
 
-},{}],57:[function(require,module,exports){
+},{}],58:[function(require,module,exports){
 // TinyColor v1.0.0
 // https://github.com/bgrins/TinyColor
 // Brian Grinstead, MIT License
@@ -60908,7 +61075,7 @@ else {
 
 })();
 
-},{}],58:[function(require,module,exports){
+},{}],59:[function(require,module,exports){
 /*!
 * TinyGradient
 * Copyright 2014 Damien "Mistic" Sorel (http://www.strangeplanet.fr)
@@ -61285,7 +61452,7 @@ else {
     // export
     return TinyGradient;
 }));
-},{"tinycolor2":57}],59:[function(require,module,exports){
+},{"tinycolor2":58}],60:[function(require,module,exports){
 //     Underscore.js 1.8.3
 //     http://underscorejs.org
 //     (c) 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
@@ -62835,7 +63002,7 @@ else {
   }
 }.call(this));
 
-},{}],60:[function(require,module,exports){
+},{}],61:[function(require,module,exports){
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
@@ -62857,7 +63024,7 @@ module.exports = Backbone.Collection.extend({
 		};
 	}
 });
-},{"backbone":6,"jquery":20,"underscore":59}],61:[function(require,module,exports){
+},{"backbone":6,"jquery":21,"underscore":60}],62:[function(require,module,exports){
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
@@ -62879,7 +63046,7 @@ module.exports = Backbone.Collection.extend({
 		return _.values(response.files);
 	}
 });
-},{"backbone":6,"jquery":20,"underscore":59}],62:[function(require,module,exports){
+},{"backbone":6,"jquery":21,"underscore":60}],63:[function(require,module,exports){
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
@@ -62925,7 +63092,7 @@ module.exports = Backbone.Collection.extend({
 		});
 	}
 });
-},{"backbone":6,"jquery":20,"underscore":59}],63:[function(require,module,exports){
+},{"backbone":6,"jquery":21,"underscore":60}],64:[function(require,module,exports){
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
@@ -62941,8 +63108,6 @@ var enclose = function(val) {
 };
 	
 module.exports = Backbone.Collection.extend({
-	countProperty: 'count',
-	limit: 5000,
 	model: model,
 	initialize: function(models, options) {
 		// Save config to collection
@@ -62950,6 +63115,8 @@ module.exports = Backbone.Collection.extend({
 		this.domain = options.domain || null;
 		this.consumer = new soda.Consumer(this.domain);
 		this.dataset = options.dataset || null;
+		this.aggregateFunction = options.aggregateFunction || null;
+		this.aggregateField = options.aggregateField || null;
 		this.groupBy = options.groupBy || null;
 		this.triggerField = options.triggerField || options.groupBy;
 		this.filters = options.filters || {};
@@ -62958,13 +63125,35 @@ module.exports = Backbone.Collection.extend({
 		
 		this.countModel = new Backbone.Model();
 	},
-	url: function(count) {
+	url: function() {
 		var self = this;
 		var filters = this.getFilters();
 		var query = this.consumer.query()
 			.withDataset(this.dataset);
+			
+		// Aggregate & group by
+		if(this.aggregateFunction || this.groupBy) {
+			// If group by was specified but no aggregate function, use count by default
+			if( ! this.aggregateFunction) this.aggregateFunction = 'count';
+			
+			// Aggregation
+			query.select(this.aggregateFunction + '(' + (this.aggregateField || '*') + ') as value');
+			
+			// Group by
+			if(this.groupBy) {
+				query.select(this.groupBy + ' as label')
+				.group(this.groupBy)
+				.order(this.order || 'value desc');
+			}
+		} else {
+			// Offset
+			if(this.offset) query.offset(this.offset);
+			
+			// Order
+			query.order(this.order || ':id');
+		}
 		
-		// Filters
+		// Where
 		if(filters.length) {
 			// Parse filter expressions into basic SQL strings and concatenate
 			filters = _.map(filters, function(filter) {
@@ -62972,29 +63161,17 @@ module.exports = Backbone.Collection.extend({
 			}).join(' and ');
 			query.where(filters);
 		}
-		if(this.q) { query.q(this.q); }
 		
-		// Group by
-		if(this.groupBy) {
-			query.select('count(*), ' + this.groupBy + ' as label')
-			.group(this.groupBy)
-			.order(this.order || 'count desc');
-		}
+		// Full text search
+		if(this.search) query.q(this.search);
 		
-		// Count
-		if(count) {
-			query.select('count(*)');
-		}
-		// Non-count
-		else {
-			// Limit & offset
-			if(this.limit) query.limit(this.limit);
-			if(this.offset) query.offset(this.offset);
-			
-			// Group by already sets order
-			if( ! this.groupBy) query.order(this.order || ':id');
-		}
+		// Limit
+		query.limit(this.limit || '5000');
+		
 		return query.getURL();
+	},
+	exportUrl: function() {
+		return this.url().replace(this.dataset + '.json', this.dataset + '.csv');
 	},
 	setFilter: function(filter) {
 		if(filter.expression) {
@@ -63044,17 +63221,31 @@ module.exports = Backbone.Collection.extend({
 	},
 	getRecordCount: function() {
 		var self = this;
-		this.countModel.url = this.url(true);
+		
+		// Save current values
+		var oldAggregateFunction = this.aggregateFunction;
+		var oldGroupBy = this.groupBy;
+		
+		// Change values in order to get the URL
+		this.aggregateFunction = 'count';
+		this.groupBy = null;
+		
+		// Get the URL
+		this.countModel.url = this.url();
+		
+		// Set the values back
+		this.aggregateFunction = oldAggregateFunction;
+		this.groupBy = oldGroupBy;
 		
 		// If recordCount is already set, return it (as a deferred); otherwise fetch it
 		return self.recordCount ? ($.Deferred()).resolve(self.recordCount) : this.countModel.fetch()
 			.then(function(response) {
-				self.recordCount = response.length ? response[0].count : 0;
+				self.recordCount = response.length ? response[0].value : 0;
 				return self.recordCount;
 			});
 	}
 })
-},{"./socrata-fields":62,"backbone":6,"jquery":20,"soda-js":51,"underscore":59}],64:[function(require,module,exports){
+},{"./socrata-fields":63,"backbone":6,"jquery":21,"soda-js":52,"underscore":60}],65:[function(require,module,exports){
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
@@ -63203,7 +63394,7 @@ var gist = params.gist || '601224472a5d53cbb908'; // default to sample config
 		console.error('Error fetching gist', gist);
 	}
 });
-},{"./collections/geojson":60,"./collections/gist":61,"./collections/socrata":63,"./collections/socrata-fields":62,"./views/bar":71,"./views/choropleth":73,"./views/datetime":74,"./views/header":75,"./views/pie":77,"./views/table":78,"backbone":6,"jquery":20,"jquery-deparam":19,"underscore":59}],65:[function(require,module,exports){
+},{"./collections/geojson":61,"./collections/gist":62,"./collections/socrata":64,"./collections/socrata-fields":63,"./views/bar":72,"./views/choropleth":74,"./views/datetime":75,"./views/header":76,"./views/pie":78,"./views/table":79,"backbone":6,"jquery":21,"jquery-deparam":20,"underscore":60}],66:[function(require,module,exports){
 module.exports = function(data){
 var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
 __p+='Filters:\n';
@@ -63240,7 +63431,7 @@ __p+='';
 return __p;
 };
 
-},{}],66:[function(require,module,exports){
+},{}],67:[function(require,module,exports){
 module.exports = function(data){
 var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
 __p+='<div class="row">\n\t<div class="col-md-7">\n\t\t\n\t\t<h1 class="title">'+
@@ -63267,14 +63458,14 @@ __p+='\n\t\t\t\n\t</div>\n</div>';
 return __p;
 };
 
-},{}],67:[function(require,module,exports){
+},{}],68:[function(require,module,exports){
 module.exports = function(data){
 var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
 __p+='<div class="panel panel-default">\n\t';
  if(data.title) { 
 __p+='\n\t<div class="panel-heading">\n\t\t'+
 ((__t=( data.title ))==null?'':__t)+
-'\n\t\t\n\t\t<div class="pull-right">\n\t\t\t\n\t\t\t<a href="?';
+'\n\t\t\n\t\t<div class="dropdown pull-right">\n\t\t\t<a href="#" class="dropdown-toggle" data-toggle="dropdown">&nbsp;<b class="caret"></b></a>\n\t\t\t<ul class="dropdown-menu" role="menu">\n\t\t\t\t<li>\n\t\t\t\t\t<a href="?';
  if(data.gist) { 
 __p+='gist='+
 ((__t=( encodeURIComponent(data.gist) ))==null?'':__t)+
@@ -63282,7 +63473,7 @@ __p+='gist='+
  } 
 __p+='viz='+
 ((__t=( encodeURIComponent(data.title) ))==null?'':__t)+
-'" target="_blank" class="btn btn-default">\n\t\t\t\t<span class="glyphicon glyphicon-new-window"></span>\n\t\t\t</a>\n\t\t\n\t\t\t<div class="btn-group scroll hidden" role="group" aria-label="Scroll chart horizontally">\n\t\t\t\t<a href="#" class="btn btn-default" data-dir="decrease"><span class="glyphicon glyphicon-chevron-left"></span></a>\n\t\t\t\t<a href="#" class="btn btn-default" data-dir="increase"><span class="glyphicon glyphicon-chevron-right"></span></a>\n\t\t\t</div>\n\t\t\n\t\t</div>\n\t</div>\n\t';
+'" target="_blank">\n\t\t\t\t\t\t<span class="glyphicon glyphicon-new-window"></span> Full Screen\n\t\t\t\t\t</a>\n\t\t\t\t</li>\n\t\t\t\t<li>\n\t\t\t\t\t<a href="#" class="export-link"><span class="glyphicon glyphicon-download-alt"></span> Export (CSV)</a>\n\t\t\t\t</li>\n\t\t\t</ul>\n\t\t</div>\n\t\t\n\t\t<div class="pull-right">\n\t\t\n\t\t\t<div class="btn-group scroll hidden" role="group" aria-label="Scroll chart horizontally">\n\t\t\t\t<a href="#" class="btn btn-default" data-dir="decrease"><span class="glyphicon glyphicon-chevron-left"></span></a>\n\t\t\t\t<a href="#" class="btn btn-default" data-dir="increase"><span class="glyphicon glyphicon-chevron-right"></span></a>\n\t\t\t</div>\n\t\t\n\t\t</div>\n\t</div>\n\t';
  } 
 __p+='\n\t\n\t';
  if(data.description) { 
@@ -63300,15 +63491,15 @@ __p+='\n\t\t<table class="viz table table-striped"></table>\n\t\t';
  } else { 
 __p+='\n\t\t<div class="viz"></div>\n\t\t';
  } 
-__p+='\n\t\t\n\t\t<div class="filters alert alert-info">\n\t\t</div>\n\t\n\t';
+__p+='\n\t\n\t';
  if(data.padded) { 
 __p+='\n\t</div>\n\t';
  } 
-__p+='\n</div>';
+__p+='\n\t\n\t<div class="filters panel-footer"></div>\n\t\n</div>';
 return __p;
 };
 
-},{}],68:[function(require,module,exports){
+},{}],69:[function(require,module,exports){
 var chroma = require('chroma-js');
 var tinygradient = require('tinygradient');
 
@@ -63327,7 +63518,7 @@ ColorRange.prototype.getColor = function(needle) {
 }
 
 module.exports = ColorRange;
-},{"chroma-js":11,"tinygradient":58}],69:[function(require,module,exports){
+},{"chroma-js":12,"tinygradient":59}],70:[function(require,module,exports){
 var Spinner = require('spin.js');
 
 exports.on = function() {
@@ -63352,7 +63543,7 @@ exports.off = function() {
 		this.spinner.stop();
 	}
 }
-},{"spin.js":56}],70:[function(require,module,exports){
+},{"spin.js":57}],71:[function(require,module,exports){
 module.exports = function(num) {
     isNegative = false
     if (num < 0) {
@@ -63371,7 +63562,7 @@ module.exports = function(num) {
     if(isNegative) { formattedNumber = '-' + formattedNumber }
     return formattedNumber;
 }
-},{}],71:[function(require,module,exports){
+},{}],72:[function(require,module,exports){
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
@@ -63384,7 +63575,7 @@ module.exports = BaseChart.extend({
 			{
 				'type': 'column',
 				title: 'Data',
-				valueField: 'count',
+				valueField: 'value',
 				fillAlphas: 0.6,
 				clustered: false,
 				lineColor: '#97bbcd',
@@ -63393,14 +63584,14 @@ module.exports = BaseChart.extend({
 			{
 				'type': 'column',
 				title: 'Filtered Data',
-				valueField: 'filteredCount',
+				valueField: 'filteredValue',
 				fillAlphas: 0.4,
 				clustered: false,
 				lineColor: '#97bbcd',
 				balloonFunction: function(item, graph) {
 					return '<b>' + item.category + '</b><br>\
-						Total: ' + (+item.dataContext.count).toLocaleString() + '<br> \
-						Filtered Amount: ' + (+item.dataContext.filteredCount).toLocaleString()
+						Total: ' + (+item.dataContext.value).toLocaleString() + '<br> \
+						Filtered Amount: ' + (+item.dataContext.filteredValue).toLocaleString()
 				}
 			}
 		],
@@ -63568,7 +63759,7 @@ module.exports = BaseChart.extend({
 		}
 	}
 })
-},{"../util/number-formatter":70,"./basechart":72,"backbone":6,"jquery":20,"underscore":59}],72:[function(require,module,exports){
+},{"../util/number-formatter":71,"./basechart":73,"backbone":6,"jquery":21,"underscore":60}],73:[function(require,module,exports){
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
@@ -63641,13 +63832,13 @@ module.exports = Panel.extend({
 			var label = model.get('label');
 			var data = {
 				label: label,
-				count: model.get(self.collection.countProperty)
+				value: model.get('value')
 			};
 			// If the filtered collection has been fetched, find the corresponding record and put it in another series
 			if(self.filteredCollection.length) {
 				var match = self.filteredCollection.get(label);
 				// Push a record even if there's no match so we don't align w/ the wrong bar in the other collection
-				data.filteredCount = match ? match.get(self.collection.countProperty) : 0;
+				data.filteredValue = match ? match.get('value') : 0;
 			}
 					
 			chartData.push(data);
@@ -63679,7 +63870,7 @@ module.exports = Panel.extend({
 		this.filteredCollection.fetch();
 	}
 })
-},{"../util/loader":69,"../util/number-formatter":70,"./panel":76,"amcharts3":1,"amcharts3/amcharts/plugins/responsive/responsive":3,"amcharts3/amcharts/serial":4,"amcharts3/amcharts/themes/light":5,"backbone":6,"jquery":20,"underscore":59}],73:[function(require,module,exports){
+},{"../util/loader":70,"../util/number-formatter":71,"./panel":77,"amcharts3":1,"amcharts3/amcharts/plugins/responsive/responsive":3,"amcharts3/amcharts/serial":4,"amcharts3/amcharts/themes/light":5,"backbone":6,"jquery":21,"underscore":60}],74:[function(require,module,exports){
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
@@ -63747,7 +63938,7 @@ module.exports = Panel.extend({
 			this.datasetInFeatures();
 			
 			// Setup a color range utility
-			var colorizeField =  this.filteredCollection.getFilters().length ? 'filteredCount' : 'count';
+			var colorizeField =  this.filteredCollection.getFilters().length ? 'filteredValue' : 'value';
 			var values = _.chain(this.boundaries.pluck('properties')).pluck(colorizeField).value(); 
 			var min = _.min(values);
 			var max = _.max(values);
@@ -63791,12 +63982,12 @@ module.exports = Panel.extend({
 			
 			// Find match in collection
 			var collectionMatch = self.collection.get(featureProperties[self.boundaries.idAttribute]);
-			featureProperties.count = collectionMatch ? +collectionMatch.get(self.collection.countProperty) : 0;
+			featureProperties.value = collectionMatch ? +collectionMatch.get('value') : 0;
 			
 			// If filters are set, find match on filteredCollection too
 			if(self.filteredCollection.getFilters().length) {
 				var filteredCollectionMatch = self.filteredCollection.length ? self.filteredCollection.get(featureProperties[self.boundaries.idAttribute]) : null;
-				featureProperties.filteredCount = filteredCollectionMatch ? +filteredCollectionMatch.get(self.filteredCollection.countProperty) : 0;
+				featureProperties.filteredValue = filteredCollectionMatch ? +filteredCollectionMatch.get('value') : 0;
 			}
 			
 			featureModel.set('properties', featureProperties);
@@ -63809,9 +64000,9 @@ module.exports = Panel.extend({
 		var popupContent = '\
 			<div class="marker-title">\
 			<h2>' + layer.feature.properties[this.boundaries.label] + '</h2>\
-			Total: ' + layer.feature.properties.count.toLocaleString();
-		if(layer.feature.properties.filteredCount !== undefined) {
-			popupContent += '<br>Filtered Amount: ' + layer.feature.properties.filteredCount.toLocaleString();
+			Total: ' + layer.feature.properties.value.toLocaleString();
+		if(layer.feature.properties.filteredValue !== undefined) {
+			popupContent += '<br>Filtered Amount: ' + layer.feature.properties.filteredValue.toLocaleString();
 		}
 		popupContent += '</div>';
 	
@@ -63864,7 +64055,7 @@ module.exports = Panel.extend({
 	}
 });
 
-},{"../util/color-range":68,"../util/loader":69,"./panel":76,"backbone":6,"geocolor":14,"jquery":20,"mapbox.js":36,"underscore":59}],74:[function(require,module,exports){
+},{"../util/color-range":69,"../util/loader":70,"./panel":77,"backbone":6,"geocolor":15,"jquery":21,"mapbox.js":37,"underscore":60}],75:[function(require,module,exports){
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
@@ -63881,7 +64072,7 @@ module.exports = BaseChart.extend({
 		graphs: [
 			{
 				title: 'Data',
-				valueField: 'count',
+				valueField: 'value',
 				fillAlphas: 0.6,
 				clustered: false,
 				lineColor: '#97bbcd',
@@ -63889,15 +64080,15 @@ module.exports = BaseChart.extend({
 			},
 			{
 				title: 'Filtered Data',
-				valueField: 'filteredCount',
+				valueField: 'filteredValue',
 				fillAlphas: 0.4,
 				clustered: false,
 				lineColor: '#97bbcd',
 				dateFormat: 'MMM YYYY',
 				balloonFunction: function(item, graph) {
 					return '<b>' + AmCharts.formatDate(item.category, graph.dateFormat) + '</b><br>\
-						Total: ' + (+item.dataContext.count).toLocaleString() + '<br> \
-						Filtered Amount: ' + (+item.dataContext.filteredCount).toLocaleString()
+						Total: ' + (+item.dataContext.value).toLocaleString() + '<br> \
+						Filtered Amount: ' + (+item.dataContext.filteredValue).toLocaleString()
 				}
 			}
 		],
@@ -63998,7 +64189,7 @@ module.exports = BaseChart.extend({
 		})
 	}
 })
-},{"../util/number-formatter":70,"./basechart":72,"backbone":6,"jquery":20,"underscore":59}],75:[function(require,module,exports){
+},{"../util/number-formatter":71,"./basechart":73,"backbone":6,"jquery":21,"underscore":60}],76:[function(require,module,exports){
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
@@ -64013,12 +64204,13 @@ module.exports = Backbone.View.extend({
 		return this;
 	}
 });
-},{"../templates/header.html":66,"backbone":6,"jquery":20,"underscore":59}],76:[function(require,module,exports){
-var $ = require('jquery');
+},{"../templates/header.html":67,"backbone":6,"jquery":21,"underscore":60}],77:[function(require,module,exports){
+var $ = jQuery = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var Template = require('../templates/panel.html');
 var FiltersTemplate = require('../templates/filters.html');
+require('bootstrap/js/dropdown');
 
 var operatorMap = {
 	'=': 'is',
@@ -64045,6 +64237,13 @@ module.exports = Backbone.View.extend({
 		
 		// Render template
 		this.renderTemplate();
+		
+		// Set export link
+		this.updateExportLink();
+		
+		// Watch for collection sync and update export link
+		if(options.collection) this.listenTo(options.collection, 'sync', this.updateExportLink);
+		if(options.filteredCollection) this.listenTo(options.filteredCollection, 'sync', this.updateExportLink);
 	},
 	renderTemplate: function() {
 		this.$el.empty().append(Template(this.config));
@@ -64086,9 +64285,13 @@ module.exports = Backbone.View.extend({
 			});
 		}
 		e.preventDefault();
+	},
+	updateExportLink: function(collection) {
+		collection = collection || this.collection;
+		this.$('.export-link').attr('href', collection.exportUrl());
 	}
 });
-},{"../templates/filters.html":65,"../templates/panel.html":67,"backbone":6,"jquery":20,"underscore":59}],77:[function(require,module,exports){
+},{"../templates/filters.html":66,"../templates/panel.html":68,"backbone":6,"bootstrap/js/dropdown":7,"jquery":21,"underscore":60}],78:[function(require,module,exports){
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
@@ -64108,14 +64311,15 @@ module.exports = Panel.extend({
 			'type': 'pie',
 			theme: 'light',
 			titleField: 'label',
-			valueField: 'count',
+			valueField: 'value',
 			pulledField: 'pulled',
+			innerRadius: '40%',
 			groupPercent: 1,
 			balloonFunction: function(item, formattedText) {
 				var content = '<b>' + item.title + '</b><br> \
 					Total: ' + item.value.toLocaleString() + ' (' + parseFloat(item.percents.toFixed(2)) + '%)';
-				if(item.dataContext.filteredCount !== undefined) {
-					content += '<br>Filtered Amount: ' + (+item.dataContext.filteredCount).toLocaleString();
+				if(item.dataContext.filteredValue !== undefined) {
+					content += '<br>Filtered Amount: ' + (+item.dataContext.filteredValue).toLocaleString();
 				}
 				return content;
 			},
@@ -64184,7 +64388,7 @@ module.exports = Panel.extend({
 		config.dataProvider = this.formatChartData();
 		
 		if(this.filteredCollection.getFilters().length) {
-			config.valueField = 'filteredCount';
+			config.valueField = 'filteredValue';
 		}
 		
 		// If "other" slice is selected, set other slice to be pulled out
@@ -64208,13 +64412,13 @@ module.exports = Panel.extend({
 			var label = model.get('label');
 			var data = {
 				label: label,
-				count: model.get(self.collection.countProperty)
+				value: model.get('value')
 			};
 			// If the filtered collection has been fetched, find the corresponding record and put it in another series
 			if(self.filteredCollection.getFilters().length) {
 				var match = self.filteredCollection.get(label);
 				// Push a record even if there's no match so we don't align w/ the wrong bar in the other collection
-				data.filteredCount = match ? match.get(self.collection.countProperty) : 0;
+				data.filteredValue = match ? match.get('value') : 0;
 			}
 			// If this slice is selected, set it to be pulled
 			if(filter && filter.expression.value === label) {
@@ -64284,7 +64488,7 @@ module.exports = Panel.extend({
 		this.renderFilters();
 	}
 })
-},{"../util/loader":69,"../util/number-formatter":70,"./panel":76,"amcharts3":1,"amcharts3/amcharts/pie":2,"amcharts3/amcharts/plugins/responsive/responsive":3,"amcharts3/amcharts/themes/light":5,"backbone":6,"jquery":20,"underscore":59}],78:[function(require,module,exports){
+},{"../util/loader":70,"../util/number-formatter":71,"./panel":77,"amcharts3":1,"amcharts3/amcharts/pie":2,"amcharts3/amcharts/plugins/responsive/responsive":3,"amcharts3/amcharts/themes/light":5,"backbone":6,"jquery":21,"underscore":60}],79:[function(require,module,exports){
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
@@ -64350,7 +64554,7 @@ module.exports = Panel.extend({
 				scrollX: true,
 				serverSide: true,
 				ajax: function(data, callback, settings) {
-					self.collection.q = data.search.value ? data.search.value : null;
+					self.collection.search = data.search.value ? data.search.value : null;
 					
 					self.collection.getRecordCount().done(function(recordCount) {
 						self.recordsTotal = self.recordsTotal || recordCount;
@@ -64379,4 +64583,4 @@ module.exports = Panel.extend({
 		this.renderFilters();
 	}
 });
-},{"../util/loader":69,"./panel":76,"backbone":6,"datatables":13,"datatables/media/js/dataTables.bootstrap":12,"jquery":20,"underscore":59}]},{},[64]);
+},{"../util/loader":70,"./panel":77,"backbone":6,"datatables":14,"datatables/media/js/dataTables.bootstrap":13,"jquery":21,"underscore":60}]},{},[65]);
