@@ -30,6 +30,13 @@ module.exports = Backbone.View.extend({
 		
 		// Render template
 		this.renderTemplate();
+		
+		// Set export link
+		this.updateExportLink();
+		
+		// Watch for collection sync and update export link
+		if(options.collection) this.listenTo(options.collection, 'sync', this.updateExportLink);
+		if(options.filteredCollection) this.listenTo(options.filteredCollection, 'sync', this.updateExportLink);
 	},
 	renderTemplate: function() {
 		this.$el.empty().append(Template(this.config));
@@ -71,5 +78,9 @@ module.exports = Backbone.View.extend({
 			});
 		}
 		e.preventDefault();
+	},
+	updateExportLink: function(collection) {
+		collection = collection || this.collection;
+		this.$('.export-link').attr('href', collection.exportUrl());
 	}
 });

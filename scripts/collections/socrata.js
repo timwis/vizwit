@@ -30,7 +30,7 @@ module.exports = Backbone.Collection.extend({
 		
 		this.countModel = new Backbone.Model();
 	},
-	url: function(count) {
+	url: function() {
 		var self = this;
 		var filters = this.getFilters();
 		var query = this.consumer.query()
@@ -74,6 +74,9 @@ module.exports = Backbone.Collection.extend({
 		query.limit(this.limit || '5000');
 		
 		return query.getURL();
+	},
+	exportUrl: function() {
+		return this.url().replace(this.dataset + '.json', this.dataset + '.csv');
 	},
 	setFilter: function(filter) {
 		if(filter.expression) {
