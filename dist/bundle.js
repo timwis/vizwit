@@ -63063,6 +63063,7 @@ module.exports = Backbone.Collection.extend({
 		'default': 'string'
 	},
 	model: model,
+	comparator: 'position',
 	initialize: function(models, options) {
 		// Save config to collection
 		options = options || {};
@@ -63081,13 +63082,24 @@ module.exports = Backbone.Collection.extend({
 	},
 	parse: function(response) {
 		var self = this;
-		return response.columns.map(function(row) {
+		
+		// Parse out sort field and order
+		var sortId, sortDir;
+		if(response.query && response.query.orderBys && response.query.orderBys.length && response.query.orderBys[0].expression) {
+			sortId = response.query.orderBys[0].expression.columnId;
+			sortDir = response.query.orderBys[0].ascending ? 'asc' : 'desc';
+		}
+		
+		return response.columns.map(function(row, key) {
+			if(sortId && row.id === sortId) {
+				self.sortKey = key;
+				self.sortDir = sortDir;
+			}
 			return {
 				data: row.fieldName,
 				title: row.name,
 				'type': self.typeMap[row.renderTypeName] || self.typeMap['default'],
-				defaultContent: '',
-				display: ( ! _.isEmpty(row.format))
+				defaultContent: ''
 			}
 		});
 	}
@@ -63104,7 +63116,7 @@ var model = Backbone.Model.extend({
 });
 
 var enclose = function(val) {
-  return typeof val === 'string' ? '\'' + val + '\'' : val;
+  return typeof val === 'string' && val != 'true' && val != 'false' ? '\'' + val + '\'' : val;
 };
 	
 module.exports = Backbone.Collection.extend({
@@ -63267,15 +63279,19 @@ var vent = _.clone(Backbone.Events);
 var fields = {};
 
 var params = window.location.search.substr(1) ? deparam(window.location.search.substr(1)) : {};
-var gist = params.gist || '601224472a5d53cbb908'; // default to sample config
+
+// If no gist specified, redirect to homepage
+if( ! params.gist) {
+	window.location.replace('http://vizwit.io');
+}
 
 // Fetch gist
-(new Gist(null, {id: gist})).fetch({
+(new Gist(null, {id: params.gist})).fetch({
 	success: function(collection, response, options) {	
-		if( ! collection.length) return console.error('No files in gist', gist, arguments);
+		if( ! collection.length) return console.error('No files in gist', params.gist);
 		
 		// If a file was provided, use that one; otherwise use the first file in the gist
-		var model = params.file ? collection.get(params.file) : collection.at(0);
+		var model = params.file && collection.get(params.file) ? collection.get(params.file) : collection.at(0);
 		var config = JSON.parse(model.get('content'));
 		
 		if( ! config.version) return console.error('No version specified in config');
@@ -63391,7 +63407,7 @@ var gist = params.gist || '601224472a5d53cbb908'; // default to sample config
 		});
 	},
 	error: function() {
-		console.error('Error fetching gist', gist);
+		console.error('Error fetching gist', params.gist);
 	}
 });
 },{"./collections/geojson":61,"./collections/gist":62,"./collections/socrata":64,"./collections/socrata-fields":63,"./views/bar":72,"./views/choropleth":74,"./views/datetime":75,"./views/header":76,"./views/pie":78,"./views/table":79,"backbone":6,"jquery":21,"jquery-deparam":20,"underscore":60}],66:[function(require,module,exports){
@@ -64409,7 +64425,7 @@ module.exports = Panel.extend({
 		
 		// Map collection(s) into format expected by chart library
 		this.collection.forEach(function(model) {
-			var label = model.get('label');
+			var label = model.get('label') + ''; // ensure it's a string
 			var data = {
 				label: label,
 				value: model.get('value')
@@ -64529,7 +64545,7 @@ module.exports = Panel.extend({
 		// Otherwise, initialize the table
 		else {
 			// Map the array of columns to the expected format
-			var columns;
+			var columns, order;
 			
 			if(this.config.columns) {
 				columns = this.config.columns.map(function(column) {
@@ -64545,12 +64561,14 @@ module.exports = Panel.extend({
 					}
 				});
 			} else {
-				columns = new Backbone.Collection(this.fields.reject({display: false})).toJSON();
+				columns = this.fields.toJSON();
+				order = this.fields.sortKey ? [[this.fields.sortKey, this.fields.sortDir]] : null;
 			}
 			
 			// Initialize the table
 			this.table = this.$('.viz').DataTable({
 				columns: columns,
+				order: order || [[0, 'asc']],
 				scrollX: true,
 				serverSide: true,
 				ajax: function(data, callback, settings) {
