@@ -108,7 +108,7 @@ module.exports = Backbone.Collection.extend({
 				expression.type,
 				this.parseExpression(field, expression.value[1])
 			].join(' ');
-		} else if(expression['type'] === 'not in') {
+		} else if(expression['type'] === 'in' || expression['type'] === 'not in') {
 			return [
 				field,
 				expression.type,
