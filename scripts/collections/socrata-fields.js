@@ -14,6 +14,7 @@ module.exports = Backbone.Collection.extend({
 		'default': 'string'
 	},
 	model: model,
+	comparator: 'position',
 	initialize: function(models, options) {
 		// Save config to collection
 		options = options || {};
