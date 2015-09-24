@@ -115,7 +115,7 @@ module.exports = Panel.extend({
 		
 		// Map collection(s) into format expected by chart library
 		this.collection.forEach(function(model) {
-			var label = model.get('label');
+			var label = model.get('label') + ''; // ensure it's a string
 			var data = {
 				label: label,
 				value: model.get('value')

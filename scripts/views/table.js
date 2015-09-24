@@ -38,7 +38,7 @@ module.exports = Panel.extend({
 		// Otherwise, initialize the table
 		else {
 			// Map the array of columns to the expected format
-			var columns;
+			var columns, order;
 			
 			if(this.config.columns) {
 				columns = this.config.columns.map(function(column) {
@@ -54,12 +54,14 @@ module.exports = Panel.extend({
 					}
 				});
 			} else {
-				columns = new Backbone.Collection(this.fields.reject({display: false})).toJSON();
+				columns = this.fields.toJSON();
+				order = this.fields.sortKey ? [[this.fields.sortKey, this.fields.sortDir]] : null;
 			}
 			
 			// Initialize the table
 			this.table = this.$('.viz').DataTable({
 				columns: columns,
+				order: order || [[0, 'asc']],
 				scrollX: true,
 				serverSide: true,
 				ajax: function(data, callback, settings) {

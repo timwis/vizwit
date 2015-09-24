@@ -9,7 +9,7 @@ var model = Backbone.Model.extend({
 });
 
 var enclose = function(val) {
-  return typeof val === 'string' ? '\'' + val + '\'' : val;
+  return typeof val === 'string' && val != 'true' && val != 'false' ? '\'' + val + '\'' : val;
 };
 	
 module.exports = Backbone.Collection.extend({

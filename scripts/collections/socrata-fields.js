@@ -14,6 +14,7 @@ module.exports = Backbone.Collection.extend({
 		'default': 'string'
 	},
 	model: model,
+	comparator: 'position',
 	initialize: function(models, options) {
 		// Save config to collection
 		options = options || {};
@@ -32,13 +33,24 @@ module.exports = Backbone.Collection.extend({
 	},
 	parse: function(response) {
 		var self = this;
-		return response.columns.map(function(row) {
+		
+		// Parse out sort field and order
+		var sortId, sortDir;
+		if(response.query && response.query.orderBys && response.query.orderBys.length && response.query.orderBys[0].expression) {
+			sortId = response.query.orderBys[0].expression.columnId;
+			sortDir = response.query.orderBys[0].ascending ? 'asc' : 'desc';
+		}
+		
+		return response.columns.map(function(row, key) {
+			if(sortId && row.id === sortId) {
+				self.sortKey = key;
+				self.sortDir = sortDir;
+			}
 			return {
 				data: row.fieldName,
 				title: row.name,
 				'type': self.typeMap[row.renderTypeName] || self.typeMap['default'],
-				defaultContent: '',
-				display: ( ! _.isEmpty(row.format))
+				defaultContent: ''
 			}
 		});
 	}
