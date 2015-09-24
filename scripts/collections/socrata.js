@@ -24,6 +24,7 @@ module.exports = Backbone.Collection.extend({
 		this.aggregateField = options.aggregateField || null;
 		this.groupBy = options.groupBy || null;
 		this.triggerField = options.triggerField || options.groupBy;
+		this.baseFilters = options.baseFilters || [];
 		this.filters = options.filters || {};
 		this.order = options.order || null;
 		this.limit = options.limit || this.limit;
@@ -32,7 +33,7 @@ module.exports = Backbone.Collection.extend({
 	},
 	url: function() {
 		var self = this;
-		var filters = this.getFilters();
+		var filters = this.baseFilters.concat(this.getFilters());
 		var query = this.consumer.query()
 			.withDataset(this.dataset);
 			
