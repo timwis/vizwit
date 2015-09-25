@@ -1,5 +1,5 @@
 <div class="panel panel-default">
-	<% if(data.title) { %>
+	<% if(data.title && data.chartType !== 'callout') { %>
 	<div class="panel-heading">
 		<%= data.title %>
 		

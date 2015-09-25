@@ -49,13 +49,24 @@ body.embed .container-fluid {
 
 .callout .viz {
 	min-height: 0;
+	display: table;
 }
 .callout-icon {
-	font-size: 70px;
+	font-size: 80px;
+	display: table-cell;
+	vertical-align: middle;
+}
+.callout-text {
+	display: table-cell;
+	vertical-align: middle;
+}
+.callout-title {
+	font-size: 16px;
+	text-align: right;
 }
 .callout-value,
 .callout-filtered-value {
-	font-size: 60px;
+	font-size: 50px;
 	text-align: right;
 }
 
