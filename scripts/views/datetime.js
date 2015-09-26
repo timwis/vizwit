@@ -42,8 +42,8 @@ module.exports = BaseChart.extend({
 			},
 			addClassNames: true,
 			categoryField: 'label',
-			marginLeft: 5,
-			marginRight: 5,
+			marginLeft: 0,
+			marginRight: 0,
 			marginTop: 0,
 			valueAxes: [{
 				labelFunction: numberFormatter,
@@ -53,7 +53,6 @@ module.exports = BaseChart.extend({
 				axisAlpha: 0,
 				tickLength: 0,
 				minimum: 0,
-				ignoreAxisWidth: true,
 				gridAlpha: 0
 			}],
 			categoryAxis: {
