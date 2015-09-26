@@ -16,7 +16,6 @@ body.embed .container-fluid {
 }
 
 .header-container {
-	background-color: #f8f8f8;
 	margin-bottom: 30px;
 	padding-bottom: 10px;
 	-webkit-box-shadow: 0 1px 0 rgba(0,1,1,.08),inset 0 1px 0 #ededed;
@@ -24,7 +23,9 @@ body.embed .container-fluid {
   box-shadow: 0 1px 0 rgba(0,1,1,.08),inset 0 1px 0 #ededed;
 }
 
-.header-container .title { font-size: 27px; }
+.header-container .title {
+	font-weight: bold;
+}
 .header-container .description {
 	color: #979898;
 	font-size: 13px;
@@ -35,8 +36,13 @@ body.embed .container-fluid {
 }
 
 .card {
-	border-bottom: 2px #ddd solid;
-	padding-bottom: 15px;
+	border-top: 2px #ddd solid;
+	padding-top: 15px;
+	margin-bottom: 15px;
+}
+.card-title {
+	font-size: 20pt;
+	font-weight: bold;
 }
 
 .viz {
