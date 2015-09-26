@@ -2,19 +2,6 @@ body {
 	font-family: Arimo,"Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 
-body.embed {
-	background: none;
-}
-
-body.embed .header-container {
-	display: none;
-}
-
-body.embed .container-fluid {
-	margin: 0;
-	padding: 0;
-}
-
 .header-container {
 	margin-bottom: 30px;
 	padding-bottom: 10px;
@@ -87,4 +74,22 @@ body.embed .container-fluid {
 /* By default, this is set to nowrap, making it oversized on small screens */
 div.dataTables_wrapper div.dataTables_info {
 	white-space: normal;
+}
+
+body.embed {
+	background: none;
+}
+
+body.embed .header-container {
+	display: none;
+}
+
+body.embed .container {
+	margin: 0;
+	padding: 0;
+	width: 100%;
+}
+
+body.embed .card {
+	padding-top: 0;
 }
