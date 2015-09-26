@@ -1,10 +1,11 @@
 <div class="card">
 	<% if(data.title) { %>
-	<div class="card-heading">
-		<h2><%= data.title %></h2>
-		
-		<div class="dropdown pull-right">
-			<a href="#" class="dropdown-toggle" data-toggle="dropdown">&nbsp;<b class="caret"></b></a>
+	<div class="card-heading">		
+		<div class="dropdown pull-left card-title">
+			<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+				<%= data.title %>
+				<b class="caret"></b>
+			</a>
 			<ul class="dropdown-menu" role="menu">
 				<li>
 					<a href="?<% if(data.gist) { %>gist=<%= encodeURIComponent(data.gist) %>&<% } %>viz=<%= encodeURIComponent(data.title) %>" target="_blank">
@@ -18,12 +19,10 @@
 		</div>
 		
 		<div class="pull-right">
-		
 			<div class="btn-group scroll hidden" role="group" aria-label="Scroll chart horizontally">
 				<a href="#" class="btn btn-default" data-dir="decrease"><span class="glyphicon glyphicon-chevron-left"></span></a>
 				<a href="#" class="btn btn-default" data-dir="increase"><span class="glyphicon glyphicon-chevron-right"></span></a>
 			</div>
-		
 		</div>
 	</div>
 	<% } %>
