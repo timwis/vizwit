@@ -5,11 +5,11 @@ module.exports = function(num) {
     }
     num = Math.abs(num)
     if (num >= 1000000000) {
-        formattedNumber = (num / 1000000000).toFixed(1).replace(/\.0$/, '') + 'G';
+        formattedNumber = (num / 1000000000).toFixed(1).replace(/\.0$/, '') + 'g';
     } else if (num >= 1000000) {
-        formattedNumber =  (num / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
+        formattedNumber =  (num / 1000000).toFixed(1).replace(/\.0$/, '') + 'm';
     } else  if (num >= 1000) {
-        formattedNumber =  (num / 1000).toFixed(1).replace(/\.0$/, '') + 'K';
+        formattedNumber =  (num / 1000).toFixed(1).replace(/\.0$/, '') + 'k';
     } else {
         formattedNumber = num;
     }   
