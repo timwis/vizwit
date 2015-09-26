@@ -63568,11 +63568,11 @@ module.exports = function(num) {
     }
     num = Math.abs(num)
     if (num >= 1000000000) {
-        formattedNumber = (num / 1000000000).toFixed(1).replace(/\.0$/, '') + 'G';
+        formattedNumber = (num / 1000000000).toFixed(1).replace(/\.0$/, '') + 'g';
     } else if (num >= 1000000) {
-        formattedNumber =  (num / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
+        formattedNumber =  (num / 1000000).toFixed(1).replace(/\.0$/, '') + 'm';
     } else  if (num >= 1000) {
-        formattedNumber =  (num / 1000).toFixed(1).replace(/\.0$/, '') + 'K';
+        formattedNumber =  (num / 1000).toFixed(1).replace(/\.0$/, '') + 'k';
     } else {
         formattedNumber = num;
     }   
@@ -63648,7 +63648,8 @@ module.exports = BaseChart.extend({
 				axisAlpha: 0,
 				tickLength: 0,
 				includeAllValues: true,
-				ignoreAxisWidth: true
+				ignoreAxisWidth: true,
+				gridAlpha: 0
 			}],
 			chartCursor: {
 				fullWidth: true,
@@ -63665,7 +63666,7 @@ module.exports = BaseChart.extend({
 			creditsPosition: 'top-right',
 			categoryAxis: {
 				autoWrap: true,
-				//gridAlpha: 0,
+				gridAlpha: 0,
 				labelFunction: function(label) {
 					return label.length > 12 ? label.substr(0, 12) + '…' : label;
 				},
@@ -64128,12 +64129,14 @@ module.exports = BaseChart.extend({
 				axisAlpha: 0,
 				tickLength: 0,
 				minimum: 0,
-				ignoreAxisWidth: true
+				ignoreAxisWidth: true,
+				gridAlpha: 0
 			}],
 			categoryAxis: {
 				autoWrap: true,
 				parseDates: true,
 				minPeriod: 'MM',
+				gridAlpha: 0,
 				guides: [{
 					lineThickness: 2,
 					lineColor: '#ddd64b',
