@@ -99,7 +99,7 @@ module.exports = Panel.extend({
 			}).addTo(this.map);
 			
 			// Zoom to boundaries of new layer
-			this.map.fitBounds((L.featureGroup([this.layer])).getBounds());
+			this.map.fitBounds((L.featureGroup([this.layer])).getBounds()).zoomIn();
 		}
 	},
 	/**
