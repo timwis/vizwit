@@ -66,7 +66,8 @@ module.exports = BaseChart.extend({
 				axisAlpha: 0,
 				tickLength: 0,
 				includeAllValues: true,
-				ignoreAxisWidth: true
+				ignoreAxisWidth: true,
+				gridAlpha: 0
 			}],
 			chartCursor: {
 				fullWidth: true,
@@ -83,7 +84,7 @@ module.exports = BaseChart.extend({
 			creditsPosition: 'top-right',
 			categoryAxis: {
 				autoWrap: true,
-				//gridAlpha: 0,
+				gridAlpha: 0,
 				labelFunction: function(label) {
 					return label.length > 12 ? label.substr(0, 12) + '…' : label;
 				},

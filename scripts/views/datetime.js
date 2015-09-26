@@ -53,12 +53,14 @@ module.exports = BaseChart.extend({
 				axisAlpha: 0,
 				tickLength: 0,
 				minimum: 0,
-				ignoreAxisWidth: true
+				ignoreAxisWidth: true,
+				gridAlpha: 0
 			}],
 			categoryAxis: {
 				autoWrap: true,
 				parseDates: true,
 				minPeriod: 'MM',
+				gridAlpha: 0,
 				guides: [{
 					lineThickness: 2,
 					lineColor: '#ddd64b',
