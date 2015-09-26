@@ -1,5 +1,4 @@
 body {
-	background-color: #eee;
 	font-family: Arimo,"Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 
@@ -35,9 +34,14 @@ body.embed .container-fluid {
 	margin-top: 40px;
 }
 
+.card {
+	border-bottom: 2px #ddd solid;
+	padding-bottom: 15px;
+}
+
 .viz {
 	width: 100%;
-	min-height: 350px;
+	min-height: 250px;
 }
 
 .viz.table {

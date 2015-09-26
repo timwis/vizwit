@@ -1,7 +1,7 @@
-<div class="panel panel-default">
+<div class="card">
 	<% if(data.title) { %>
-	<div class="panel-heading">
-		<%= data.title %>
+	<div class="card-heading">
+		<h2><%= data.title %></h2>
 		
 		<div class="dropdown pull-right">
 			<a href="#" class="dropdown-toggle" data-toggle="dropdown">&nbsp;<b class="caret"></b></a>
@@ -29,13 +29,13 @@
 	<% } %>
 	
 	<% if(data.description) { %>
-	<div class="panel-body">
-		<%= data.description %>
+	<div class="card-body">
+		<p><%= data.description %></p>
 	</div>
 	<% } %>
 		
 	<% if(data.padded) { %>
-	<div class="panel-body">
+	<div class="card-body">
 	<% } %>
 		
 		<% if(data.chartType === 'table') { %>
@@ -48,6 +48,6 @@
 	</div>
 	<% } %>
 	
-	<div class="filters panel-footer"></div>
+	<div class="filters card-footer"></div>
 	
 </div>
