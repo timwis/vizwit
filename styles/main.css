@@ -46,9 +46,7 @@ body.embed .container-fluid {
 
 .viz.table {
 	font-size: 13px;
-	/*white-space: nowrap;*/
-	word-wrap: break-word;
-	word-break: keep-all;
+	white-space: nowrap;
 }
 
 .ct-label {
