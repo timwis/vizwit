@@ -66,7 +66,8 @@ module.exports = BaseChart.extend({
 				axisAlpha: 0,
 				tickLength: 0,
 				includeAllValues: true,
-				ignoreAxisWidth: true
+				ignoreAxisWidth: true,
+				gridAlpha: 0
 			}],
 			chartCursor: {
 				fullWidth: true,
@@ -79,13 +80,12 @@ module.exports = BaseChart.extend({
 			//startDuration: 0.5,
 			//startEffect: 'easeOutSine',
 			zoomOutText: '',
-			mouseWheelScrollEnabled: true,
 			creditsPosition: 'top-right',
 			categoryAxis: {
 				autoWrap: true,
-				//gridAlpha: 0,
+				gridAlpha: 0,
 				labelFunction: function(label) {
-					return label.length > 12 ? label.substr(0, 12) + '…' : label;
+					return label && label.length > 12 ? label.substr(0, 12) + '…' : label;
 				},
 				guides: [{
 					lineThickness: 2,
