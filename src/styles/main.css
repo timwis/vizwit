@@ -1,23 +1,8 @@
 body {
-	background-color: #eee;
 	font-family: Arimo,"Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 
-body.embed {
-	background: none;
-}
-
-body.embed .header-container {
-	display: none;
-}
-
-body.embed .container-fluid {
-	margin: 0;
-	padding: 0;
-}
-
 .header-container {
-	background-color: #f8f8f8;
 	margin-bottom: 30px;
 	padding-bottom: 10px;
 	-webkit-box-shadow: 0 1px 0 rgba(0,1,1,.08),inset 0 1px 0 #ededed;
@@ -25,7 +10,9 @@ body.embed .container-fluid {
   box-shadow: 0 1px 0 rgba(0,1,1,.08),inset 0 1px 0 #ededed;
 }
 
-.header-container .title { font-size: 27px; }
+.header-container .title {
+	font-weight: bold;
+}
 .header-container .description {
 	color: #979898;
 	font-size: 13px;
@@ -35,16 +22,24 @@ body.embed .container-fluid {
 	margin-top: 40px;
 }
 
-.viz {
-	width: 100%;
-	min-height: 350px;
+.card {
+	border-top: 2px #ddd solid;
+	padding-top: 15px;
+	margin-bottom: 15px;
+}
+.card-title {
+	font-size: 20pt;
+	font-weight: bold;
 }
 
-.viz.table {
+.card-content {
+	width: 100%;
+	min-height: 250px;
+}
+
+.card-content.table {
 	font-size: 13px;
-	/*white-space: nowrap;*/
-	word-wrap: break-word;
-	word-break: keep-all;
+	white-space: nowrap;
 }
 
 .callout .viz {
@@ -107,4 +102,22 @@ body.embed .container-fluid {
 /* By default, this is set to nowrap, making it oversized on small screens */
 div.dataTables_wrapper div.dataTables_info {
 	white-space: normal;
+}
+
+body.embed {
+	background: none;
+}
+
+body.embed .header-container {
+	display: none;
+}
+
+body.embed .container {
+	margin: 0;
+	padding: 0;
+	width: 100%;
+}
+
+body.embed .card {
+	padding-top: 0;
 }

@@ -49,13 +49,13 @@ if( ! params.gist) {
 			}
 		}
 		
-		// If embedding, only include the desired panel
-		if(params.viz) {
-			// Find the panel to embed
-			var panel = _.findWhere(config.panels.concat.apply([], config.panels), {title: params.viz});
-			if(panel) {
-				// Make it the only panel being iterated
-				config.panels = [[panel]];
+		// If embedding, only include the desired card
+		if(params.card) {
+			// Find the card to embed
+			var card = _.findWhere(config.cards.concat.apply([], config.cards), {title: params.card});
+			if(card) {
+				// Make it the only card being iterated
+				config.cards = [[card]];
 				
 				// Add embed class to the <body> to hide other elements
 				$('body').addClass('embed');
@@ -64,7 +64,7 @@ if( ! params.gist) {
 		
 		var container = $('#page-content');
 		
-		config.panels.forEach(function(columns) {
+		config.cards.forEach(function(columns) {
 			var width = Math.round(12 / columns.length);
 			var rowEl = $('<div/>').addClass('row');
 			

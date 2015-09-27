@@ -1,15 +1,15 @@
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
-var Panel = require('./panel');
+var Card = require('./card');
 var LoaderOn = require('../util/loader').on;
 var LoaderOff = require('../util/loader').off;
 require('datatables');
 require('datatables/media/js/dataTables.bootstrap');
 	
-module.exports = Panel.extend({
+module.exports = Card.extend({
 	initialize: function(options) {
-		Panel.prototype.initialize.apply(this, arguments);
+		Card.prototype.initialize.apply(this, arguments);
 		
 		options = options || {};
 		this.vent = options.vent || null;
@@ -59,7 +59,7 @@ module.exports = Panel.extend({
 			}
 			
 			// Initialize the table
-			this.table = this.$('.viz').DataTable({
+			this.table = this.$('.card-content').DataTable({
 				columns: columns,
 				order: order || [[0, 'asc']],
 				scrollX: true,
