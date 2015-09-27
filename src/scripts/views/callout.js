@@ -1,14 +1,16 @@
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
-var Panel = require('./panel');
+var Card = require('./card');
 var LoaderOn = require('../util/loader').on;
 var LoaderOff = require('../util/loader').off;
 var Template = require('../templates/callout.html');
+var numbro = require('numbro');
+var moment = require('moment');
 	
-module.exports = Panel.extend({
+module.exports = Card.extend({
 	initialize: function(options) {
-		Panel.prototype.initialize.apply(this, arguments);
+		Card.prototype.initialize.apply(this, arguments);
 		
 		// Save options to view
 		options = options || {};
@@ -17,9 +19,6 @@ module.exports = Panel.extend({
 		
 		// Listen to vent filters
 		this.listenTo(this.vent, this.collection.dataset + '.filter', this.onFilter);
-		
-		// Collection should only fetch one result
-		this.collection.limit = 1;
 		
 		// Listen to collection
 		this.listenTo(this.collection, 'sync', this.render);
@@ -34,15 +33,23 @@ module.exports = Panel.extend({
 		this.collection.fetch();
 	},
 	render: function() {
-		var model = this.collection.at(0);
 		var data = {
-			config: this.config,
-			value: model ? model.get('value') : 0
+			label: this.filteredCollection.length ? this.filteredCollection.at(0).get('label') : this.collection.length ? this.collection.at(0).get('label') : null,
+			value: this.collection.length ? this.collection.at(0).get('value') : null,
+			filteredValue: this.filteredCollection.length ? this.filteredCollection.at(0).get('value') : null
 		};
-		if(this.filteredCollection.getFilters().length) {
-			data.filteredValue = this.filteredCollection.length ? this.filteredCollection.at(0).get('value') : 0;
+		
+		// Apply formatting if specified in config
+		if(this.config.labelFormat) {
+			if(data.label !== null) data.label = moment(data.label).format(this.config.labelFormat);
 		}
-		this.$('.viz').empty().append(Template(data));
+		
+		if(this.config.valueFormat) {
+			if(data.value !== null) data.value = numbro(data.value).format(this.config.valueFormat);
+			if(data.filteredValue !== null) data.filteredValue = numbro(data.filteredValue).format(this.config.valueFormat);
+		}
+		 
+		this.$('.card-content').empty().append(Template(data));
 	},
 	// When another chart is filtered, filter this collection
 	onFilter: function(data) {

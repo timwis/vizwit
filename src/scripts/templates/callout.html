@@ -1,14 +1,9 @@
-<% if(data.config.icon) { %>
-<div class="callout-icon">
-	<span class="fa fa-<%= data.config.icon %>" aria-hidden="true"></span>
-</div>
+<% if(data.filteredValue !== null) { %>
+<div class="callout-filtered-value"><%= data.filteredValue %></div>
+<div class="callout-original-value">Filtered from <%= data.value %></div>
+<% } else { %>
+<div class="callout-value"><%= data.value %></div>
 <% } %>
-<div class="callout-text">
-	<div class="callout-title"><%= data.config.title %></div>
-	<% if(data.filteredValue !== undefined) { %>
-	<div class="callout-filtered-value"><%= (+data.filteredValue).toLocaleString() %></div>
-	<div class="callout-original-value">Filtered from <%= (+data.value).toLocaleString() %></div>
-	<% } else { %>
-	<div class="callout-value"><%= (+data.value).toLocaleString() %></div>
-	<% } %>
-</div>
+<% if(data.label) { %>
+<div class="callout-label"><%= data.label %></div>
+<% } %>

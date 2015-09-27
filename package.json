@@ -22,6 +22,8 @@
     "jquery": "^2.1.4",
     "jquery-deparam": "^0.4.2",
     "mapbox.js": "^2.2.1",
+    "moment": "^2.10.6",
+    "numbro": "^1.3.3",
     "soda-js": "socrata/soda-js",
     "spin.js": "^2.3.2",
     "tinygradient": "^0.3.0",
