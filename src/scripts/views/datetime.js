@@ -15,7 +15,8 @@ module.exports = BaseChart.extend({
 			{
 				title: 'Data',
 				valueField: 'value',
-				fillAlphas: 0.6,
+				fillAlphas: 0.4,
+				lineThickness: 4,
 				clustered: false,
 				lineColor: '#97bbcd',
 				balloonText: '<b>[[category]]</b><br>Total: [[value]]'
@@ -24,6 +25,7 @@ module.exports = BaseChart.extend({
 				title: 'Filtered Data',
 				valueField: 'filteredValue',
 				fillAlphas: 0.4,
+				lineThickness: 4,
 				clustered: false,
 				lineColor: '#97bbcd',
 				dateFormat: 'MMM YYYY',
