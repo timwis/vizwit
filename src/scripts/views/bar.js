@@ -85,7 +85,7 @@ module.exports = BaseChart.extend({
 				autoWrap: true,
 				gridAlpha: 0,
 				labelFunction: function(label) {
-					return label.length > 12 ? label.substr(0, 12) + '…' : label;
+					return label && label.length > 12 ? label.substr(0, 12) + '…' : label;
 				},
 				guides: [{
 					lineThickness: 2,
