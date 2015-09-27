@@ -15,7 +15,7 @@ var dir = {
 };
 
 gulp.task('default', ['clean'], function() {
-  gulp.start('scripts', 'styles', 'html');
+  gulp.start('cname', 'scripts', 'styles', 'html');
 });
 
 // add custom browserify options here
@@ -46,6 +46,11 @@ function bundle() {
     .pipe(sourcemaps.write('./')) // writes .map file
     .pipe(gulp.dest(dir.prod + 'scripts/'));
 }
+
+gulp.task('cname', function() {
+  return gulp.src('CNAME')
+    .pipe(gulp.dest(dir.prod));
+});
 
 gulp.task('html', function() {
   return gulp.src(dir.dev + '*.html')
