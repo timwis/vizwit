@@ -2,7 +2,7 @@
   "name": "phlviz",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/scripts/main.js",
   "scripts": {
     "start": "npm run watch & npm run server",
     "build": "./node_modules/gulp/bin/gulp.js",
