@@ -34,9 +34,9 @@ module.exports = Card.extend({
 	},
 	render: function() {
 		var data = {
-			label: this.filteredCollection.length ? this.filteredCollection.at(0).get('label') : this.collection.length ? this.collection.at(0).get('label') : null,
+			label: this.filteredCollection.getFilters().length ? this.filteredCollection.at(0).get('label') : this.collection.length ? this.collection.at(0).get('label') : null,
 			value: this.collection.length ? this.collection.at(0).get('value') : null,
-			filteredValue: this.filteredCollection.length ? this.filteredCollection.at(0).get('value') : null
+			filteredValue: this.filteredCollection.getFilters().length ? this.filteredCollection.at(0).get('value') : null
 		};
 		
 		// Apply formatting if specified in config
