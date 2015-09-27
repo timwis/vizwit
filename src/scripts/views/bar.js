@@ -39,7 +39,7 @@ module.exports = BaseChart.extend({
 					{
 						maxWidth: 600,
 						overrides: {
-							maxSelectedSeries: 7
+							maxSelectedSeries: 5
 						}
 					},
 					{
@@ -76,7 +76,7 @@ module.exports = BaseChart.extend({
 				oneBalloonOnly: true,
 				categoryBalloonEnabled: false
 			},
-			maxSelectedSeries: 14,
+			maxSelectedSeries: 10,
 			//startDuration: 0.5,
 			//startEffect: 'easeOutSine',
 			zoomOutText: '',
