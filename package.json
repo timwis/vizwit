@@ -29,10 +29,18 @@
   "devDependencies": {
     "browserify": "^11.0.1",
     "browserify-shim": "^3.8.10",
+    "del": "^2.0.2",
+    "gulp": "^3.9.0",
+    "gulp-sourcemaps": "^1.5.2",
+    "gulp-uglify": "^1.4.1",
+    "gulp-util": "^3.0.6",
+    "lodash.assign": "^3.2.0",
     "node-sass": "^3.2.0",
     "node-static": "^0.7.7",
     "node-underscorify": "0.0.14",
     "npm-css": "^0.2.3",
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.3.1"
   },
   "browserify": {
