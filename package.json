@@ -4,10 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "npm run watch & npm run static",
-    "watch": "./node_modules/watchify/bin/cmd.js scripts/main.js -o dist/bundle.js",
-    "static": "./node_modules/node-static/bin/cli.js ./",
-    "styles": "./node_modules/npm-css/bin/npm-css styles/main.css -o dist/bundle.css"
+    "start": "npm run watch & npm run server",
+    "build": "./node_modules/gulp/bin/gulp.js",
+    "watch": "./node_modules/gulp/bin/gulp.js scripts",
+    "server": "./node_modules/node-static/bin/cli.js ./dist"
   },
   "author": "timwis",
   "license": "MIT",
