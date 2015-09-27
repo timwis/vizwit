@@ -32,12 +32,12 @@ body {
 	font-weight: bold;
 }
 
-.viz {
+.card-content {
 	width: 100%;
 	min-height: 250px;
 }
 
-.viz.table {
+.card-content.table {
 	font-size: 13px;
 	white-space: nowrap;
 }

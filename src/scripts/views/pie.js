@@ -1,7 +1,7 @@
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
-var Panel = require('./panel');
+var Card = require('./card');
 var numberFormatter = require('../util/number-formatter');
 var LoaderOn = require('../util/loader').on;
 var LoaderOff = require('../util/loader').off;
@@ -11,7 +11,7 @@ require('amcharts3/amcharts/pie');
 require('amcharts3/amcharts/themes/light');
 require('amcharts3/amcharts/plugins/responsive/responsive');
 	
-module.exports = Panel.extend({
+module.exports = Card.extend({
 	settings: {
 		chart: {
 			'type': 'pie',
@@ -63,7 +63,7 @@ module.exports = Panel.extend({
 		}
 	},
 	initialize: function(options) {
-		Panel.prototype.initialize.apply(this, arguments);
+		Card.prototype.initialize.apply(this, arguments);
 		
 		// Save options to view
 		options = options || {};
@@ -104,7 +104,7 @@ module.exports = Panel.extend({
 			config.groupedPulled = true;
 		}
 		
-		this.chart = AmCharts.makeChart(this.$('.viz').get(0), config);
+		this.chart = AmCharts.makeChart(this.$('.card-content').get(0), config);
 		
 		this.chart.addListener('clickSlice', this.onClickSlice);
 	},

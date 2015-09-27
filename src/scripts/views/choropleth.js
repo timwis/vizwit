@@ -3,15 +3,15 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 var L = require('mapbox.js');
 var geocolor = require('geocolor');
-var Panel = require('./panel');
+var Card = require('./card');
 var LoaderOn = require('../util/loader').on;
 var LoaderOff = require('../util/loader').off;
 var ColorRange = require('../util/color-range');
 //L.Icon.Default.imagePath = 'node_modules/leaflet/dist/images/'; // necessary w/browserify
 	
-module.exports = Panel.extend({
+module.exports = Card.extend({
 	initialize: function(options) {
-		Panel.prototype.initialize.apply(this, arguments);
+		Card.prototype.initialize.apply(this, arguments);
 		
 		options = options || {};
 		this.vent = options.vent || null;
@@ -52,7 +52,7 @@ module.exports = Panel.extend({
 		this.renderFilters();
 	},
 	render: function() {
-		this.map = L.map(this.$('.viz').get(0));//.setView([39.95, -75.1667], 13);
+		this.map = L.map(this.$('.card-content').get(0));//.setView([39.95, -75.1667], 13);
 		
 		// Disable scroll zoom
 		this.map.scrollWheelZoom.disable();

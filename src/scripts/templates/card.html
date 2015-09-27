@@ -8,7 +8,7 @@
 			</a>
 			<ul class="dropdown-menu" role="menu">
 				<li>
-					<a href="?<% if(data.gist) { %>gist=<%= encodeURIComponent(data.gist) %>&<% } %>viz=<%= encodeURIComponent(data.title) %>" target="_blank">
+					<a href="?<% if(data.gist) { %>gist=<%= encodeURIComponent(data.gist) %>&<% } %>card=<%= encodeURIComponent(data.title) %>" target="_blank">
 						<span class="glyphicon glyphicon-new-window"></span> Full Screen
 					</a>
 				</li>
@@ -40,15 +40,15 @@
 	<% } %>
 		
 		<% if(data.chartType === 'table') { %>
-		<table class="viz table table-striped"></table>
+		<table class="card-content table table-striped"></table>
 		<% } else { %>
-		<div class="viz"></div>
+		<div class="card-content"></div>
 		<% } %>
 	
 	<% if(data.padded) { %>
 	</div>
 	<% } %>
 	
-	<div class="filters card-footer"></div>
+	<div class="card-footer filters"></div>
 	
 </div>
