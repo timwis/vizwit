@@ -28,8 +28,14 @@ body {
 	margin-bottom: 15px;
 }
 .card-title {
-	font-size: 20pt;
+	font-size: 18pt;
 	font-weight: bold;
+}
+.card .dropdown {
+	display: inline-block;
+}
+.card-tools {
+	text-align: right;
 }
 
 .card-content {
@@ -42,32 +48,19 @@ body {
 	white-space: nowrap;
 }
 
-.callout .viz {
+.callout .card-content {
 	min-height: 0;
-	display: table;
-}
-.callout-icon {
-	font-size: 80px;
-	display: table-cell;
-	vertical-align: middle;
-}
-.callout-text {
-	display: table-cell;
-	vertical-align: middle;
-}
-.callout-title {
-	font-size: 16px;
-	text-align: right;
 }
 .callout-value,
 .callout-filtered-value {
 	font-size: 50px;
-	text-align: right;
+	font-weight: bold;
 }
-
 .callout-original-value {
 	font-size: 20px;
-	text-align: right;
+}
+.callout-label {
+	font-size: 16px;
 }
 
 .ct-label {
