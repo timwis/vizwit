@@ -74,7 +74,7 @@ body {
 .filters {
 	display: none;
 	margin-bottom: 0;
-	padding: 10px;
+	padding-top: 10px;
 }
 
 .filters .filter {
