@@ -31,7 +31,8 @@ body {
 	font-size: 18pt;
 	font-weight: bold;
 }
-.card .dropdown {
+.card .dropdown,
+.card .scroll {
 	display: inline-block;
 }
 .card-tools {
