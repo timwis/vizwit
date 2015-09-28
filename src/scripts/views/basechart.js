@@ -58,7 +58,10 @@ module.exports = Card.extend({
 		
 		this.updateGuide(config);
 		
-		this.chart = AmCharts.makeChart(this.$('.card-content').get(0), config);
+		// Initialize the chart
+		this.chart = AmCharts.makeChart(null, config);
+		this.chart.write(this.$('.card-content').get(0));
+		
 	},
 	formatChartData: function(limit) {
 		var self = this;
