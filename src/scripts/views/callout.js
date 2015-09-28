@@ -41,7 +41,7 @@ module.exports = Card.extend({
 		
 		// Apply formatting if specified in config
 		if(this.config.labelFormat) {
-			if(data.label !== null) data.label = moment(data.label).format(this.config.labelFormat);
+			if(data.label !== null) data.label = moment(new Date(data.label)).format(this.config.labelFormat);
 		}
 		
 		if(this.config.valueFormat) {
