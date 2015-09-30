@@ -92,13 +92,10 @@ module.exports = BaseChart.extend({
 		_.bindAll(this, 'onClick');
 	},
 	render: function() {
-		var self = this;
 		BaseChart.prototype.render.apply(this, arguments);
 		
 		// Listen to when the user selects a range
-		setTimeout(function() {
-			self.chart.chartCursor.addListener('selected', self.onClick);
-		}, 100);
+		this.chart.chartCursor.addListener('selected', this.onClick);
 	},
 	// When the user clicks on a bar in this chart
 	onClick: function(e) {

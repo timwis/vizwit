@@ -33,15 +33,17 @@ module.exports = Card.extend({
 		this.collection.fetch();
 	},
 	render: function() {
+		var filters = this.filteredCollection.getFilters();
+		
 		var data = {
-			label: this.filteredCollection.getFilters().length ? this.filteredCollection.at(0).get('label') : this.collection.length ? this.collection.at(0).get('label') : null,
+			label: filters.length ? (this.filteredCollection.length ? this.filteredCollection.at(0).get('label') : null) : this.collection.length ? this.collection.at(0).get('label') : null,
 			value: this.collection.length ? this.collection.at(0).get('value') : null,
-			filteredValue: this.filteredCollection.getFilters().length ? this.filteredCollection.at(0).get('value') : null
+			filteredValue: filters.length ? (this.filteredCollection.length ? this.filteredCollection.at(0).get('value') : 0) : null
 		};
 		
 		// Apply formatting if specified in config
 		if(this.config.labelFormat) {
-			if(data.label !== null) data.label = moment(data.label).format(this.config.labelFormat);
+			if(data.label !== null) data.label = moment.utc(new Date(data.label)).format(this.config.labelFormat);
 		}
 		
 		if(this.config.valueFormat) {
