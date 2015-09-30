@@ -3,7 +3,6 @@ var sinon = require('sinon')
 var proxyquire = require('proxyquire')
 var $ = require('jquery')
 
-var $ = require('jquery')
 var sampleData = require('./sample-data/rectangles.json')
 
 function inspect(obj) {
@@ -25,7 +24,7 @@ describe('geojson', function() {
 	})
 	
 	it('should request url from boundaries param', function() {
-		this.stubJquery.getCall(0).args[0].url.should.eql('foo')
+		$.ajax.getCall(0).args[0].url.should.eql('foo')
 	})
 	
 	it('should get correct number of features', function() {		
