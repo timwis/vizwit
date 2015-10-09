@@ -22,6 +22,7 @@ module.exports = Backbone.Collection.extend({
 		this.dataset = options.dataset || null;
 		this.aggregateFunction = options.aggregateFunction || null;
 		this.aggregateField = options.aggregateField || null;
+		this.valueField = options.valueField || null;
 		this.groupBy = options.groupBy || null;
 		this.triggerField = options.triggerField || options.groupBy;
 		this.baseFilters = options.baseFilters || [];
