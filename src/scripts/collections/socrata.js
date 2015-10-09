@@ -38,12 +38,19 @@ module.exports = Backbone.Collection.extend({
 			.withDataset(this.dataset);
 			
 		// Aggregate & group by
-		if(this.aggregateFunction || this.groupBy) {
-			// If group by was specified but no aggregate function, use count by default
-			if( ! this.aggregateFunction) this.aggregateFunction = 'count';
-			
-			// Aggregation
-			query.select(this.aggregateFunction + '(' + (this.aggregateField || '*') + ') as value');
+		if(this.valueField || this.aggregateFunction || this.groupBy) {
+			// If valueField specified, use it as the value
+			if(this.valueField) {
+				query.select(this.valueField + ' as value');
+			}
+			// Otherwise use the aggregateFunction / aggregateField as the value
+			else {
+				// If group by was specified but no aggregate function, use count by default
+				if( ! this.aggregateFunction) this.aggregateFunction = 'count';
+				
+				// Aggregation
+				query.select(this.aggregateFunction + '(' + (this.aggregateField || '*') + ') as value');
+			}
 			
 			// Group by
 			if(this.groupBy) {
