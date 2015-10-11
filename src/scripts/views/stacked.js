@@ -130,11 +130,12 @@ module.exports = Card.extend({
 		config.categoryField = this.config.labelField || config.categoryField;
 		
 		// Define the series/graph for the original amount
-		config.graphs = [];		
+		config.graphs = [];
 		this.config.fields.forEach(function(field) {
+			var fieldModel = this.fields.get(field);
 			config.graphs.push(_.defaults({
 				valueField: field,
-				balloonText: '<b>' + field + '</b><br>Total: [[value]]'
+				balloonText: '<b>' + fieldModel ? fieldModel.get('title') : field + '</b><br>Total: [[value]]'
 			}, this.settings.graphs[0]));
 		}, this);
 		console.log(config.graphs)
