@@ -15,6 +15,7 @@ var DateTime = require('./views/datetime');
 var Choropleth = require('./views/choropleth');
 var Pie = require('./views/pie');
 var Callout = require('./views/callout');
+var Stacked = require('./views/stacked');
 
 var vent = _.clone(Backbone.Events);
 var fields = {};
@@ -150,6 +151,15 @@ if( ! params.gist) {
 							el: columnEl,
 							collection: collection,
 							filteredCollection: filteredCollection,
+							fields: fields[column.dataset],
+							vent: vent
+						});
+						break;
+					case 'stacked':
+						new Stacked({
+							config: column,
+							el: columnEl.get(0),
+							collection: collection,
 							fields: fields[column.dataset],
 							vent: vent
 						});
