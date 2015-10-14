@@ -2,19 +2,9 @@ var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var deparam = require('jquery-deparam');
-
-var Gist = require('./collections/gist');
-var Socrata = require('./collections/socrata');
-var SocrataFields = require('./collections/socrata-fields');
-var GeoJSON = require('./collections/geojson');
-
 var Header = require('./views/header');
-var Bar = require('./views/bar');
-var Table = require('./views/table');
-var DateTime = require('./views/datetime');
-var Choropleth = require('./views/choropleth');
-var Pie = require('./views/pie');
-var Callout = require('./views/callout');
+var vizwit = require('./vizwit');
+var Gist = require('./collections/gist');
 
 var vent = _.clone(Backbone.Events);
 var fields = {};
@@ -80,81 +70,10 @@ if( ! params.gist) {
 				var columnEl = $('<div/>').addClass('col-md-' + width);
 				rowEl.append(columnEl);
 				
-				// Initialize collection
-				var collection = new Socrata(null, column);
-				var filteredCollection = new Socrata(null, column);
-				
-				// If we haven't already created a fields collection for this dataset, create one
-				if(fields[column.dataset] === undefined) {
-					fields[column.dataset] = new SocrataFields(null, column);
-					fields[column.dataset].fetch();
-				}
-				
-				// Initialize view
-				switch(column.chartType) {
-					case 'bar':
-						new Bar({
-							config: column,
-							el: columnEl.get(0),
-							collection: collection,
-							filteredCollection: filteredCollection,
-							fields: fields[column.dataset],
-							vent: vent
-						});
-						break;
-					case 'datetime':
-						new DateTime({
-							config: column,
-							el: columnEl,
-							collection: collection,
-							filteredCollection: filteredCollection,
-							fields: fields[column.dataset],
-							vent: vent
-						});
-						break;
-					case 'pie':
-						collection.dontFilterSelf = true;
-						filteredCollection.dontFilterSelf = true;
-						new Pie({
-							config: column,
-							el: columnEl,
-							collection: collection,
-							filteredCollection: filteredCollection,
-							fields: fields[column.dataset],
-							vent: vent
-						});
-						break;
-					case 'table':
-						new Table({
-							config: column,
-							el: columnEl,
-							collection: collection,
-							fields: fields[column.dataset],
-							vent: vent
-						});
-						break;
-					case 'choropleth':
-						new Choropleth({
-							config: column,
-							el: columnEl,
-							collection: collection,
-							boundaries: new GeoJSON(null, column),
-							filteredCollection: filteredCollection,
-							fields: fields[column.dataset],
-							vent: vent
-						});
-						break;
-					case 'callout':
-						new Callout({
-							config: column,
-							el: columnEl,
-							collection: collection,
-							filteredCollection: filteredCollection,
-							fields: fields[column.dataset],
-							vent: vent
-						});
-						break;
-				}
+				vizwit.init(columnEl, column, {
+					vent: vent,
+					fields: fields
+				});
 			});
 		});
 	},
