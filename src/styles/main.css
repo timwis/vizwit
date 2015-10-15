@@ -24,8 +24,8 @@ body {
 
 .card {
 	border-top: 2px #ddd solid;
-	padding-top: 15px;
-	margin-bottom: 15px;
+	/*padding-top: 15px;*/
+	/*margin-bottom: 15px;*/
 }
 .card-title {
 	font-size: 18pt;
@@ -41,7 +41,7 @@ body {
 
 .card-content {
 	width: 100%;
-	min-height: 260px;
+	/*min-height: 200px;*/
 }
 
 .card-content.table {
@@ -49,9 +49,9 @@ body {
 	white-space: nowrap;
 }
 
-.callout .card-content {
+/*.callout .card-content {
 	min-height: 0;
-}
+}*/
 .callout-value,
 .callout-filtered-value {
 	font-size: 50px;
@@ -115,3 +115,8 @@ body.embed .container {
 body.embed .card {
 	padding-top: 0;
 }
+
+/*.grid-stack-item-content {
+	color: #2c3e50;
+	border: 1px #000 solid;
+}*/
