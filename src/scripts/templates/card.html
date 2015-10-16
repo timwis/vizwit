@@ -44,11 +44,11 @@
 	<div class="card-body">
 	<% } %>
 		
-		<% if(data.chartType === 'table') { %>
-		<table class="card-content table table-striped"></table>
-		<% } else { %>
-		<div class="card-content"></div>
-		<% } %>
+		<div class="card-content">
+			<% if(data.chartType === 'table') { %>
+			<table class="table table-striped"></table>
+			<% } %>
+		</div>
 	
 	<% if(data.padded) { %>
 	</div>

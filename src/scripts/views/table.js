@@ -59,7 +59,7 @@ module.exports = Card.extend({
 			}
 			
 			// Initialize the table
-			this.table = this.$('.card-content').DataTable({
+			this.table = this.$('.card-content table').DataTable({
 				columns: columns,
 				order: order || [[0, 'asc']],
 				scrollX: true,

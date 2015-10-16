@@ -44,7 +44,7 @@ body {
 	/*min-height: 200px;*/
 }
 
-.card-content.table {
+.card-content table {
 	font-size: 13px;
 	white-space: nowrap;
 }
