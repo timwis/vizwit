@@ -81,7 +81,7 @@
 			"x": 0,
 			"y": 2,
 			"width": 12,
-			"height": 3,
+			"height": 5,
 			"vizwit": {
 				"title": "Date Issued",
 				"description": "Date the license was issued. The spike in December 2012 refers to the City of Chicago's \"Business First!\" initiative (demo).",
@@ -141,7 +141,7 @@
 			"x": 0,
 			"y": 8,
 			"width": 12,
-			"height": 3,
+			"height": 5,
 			"vizwit": {
 				"title": "License Description",
 				"chartType": "bar",
