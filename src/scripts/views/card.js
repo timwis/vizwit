@@ -53,7 +53,7 @@ module.exports = Backbone.View.extend({
 		$.each(cardContent.siblings(), function() {
 			availableHeight -= $(this).height();
 		});
-		cardContent.height(availableHeight);
+		cardContent.css('min-height', availableHeight);
 	},
 	renderFilters: function() {
 		var self = this;
