@@ -32,6 +32,7 @@ module.exports = Backbone.View.extend({
 		// Render template
 		this.$el.addClass(this.config.chartType)
 		this.renderTemplate();
+		this.setHeight();
 		
 		// Set export link
 		this.updateExportLink();
@@ -42,6 +43,17 @@ module.exports = Backbone.View.extend({
 	},
 	renderTemplate: function() {
 		this.$el.empty().append(this.template(this.config));
+	},
+	setHeight: function() {
+		var availableHeight = this.$el.height();
+		this.$('.card').css('min-height', availableHeight);
+		
+		// Set .card-content height to the available height in its container
+		var cardContent = this.$('.card-content');
+		$.each(cardContent.siblings(), function() {
+			availableHeight -= $(this).height();
+		});
+		cardContent.height(availableHeight);
 	},
 	renderFilters: function() {
 		var self = this;

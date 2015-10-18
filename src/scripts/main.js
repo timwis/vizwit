@@ -25,22 +25,40 @@ if(config.header) {
 }
 
 var container = $('#page-content');
-
-var grid = container.gridstack({ static_grid: true }).data('gridstack');
-var markup = '<div><div class="grid-stack-item-content"></div></div>'
+var heightInterval = 60; // from gridstack.js
+var current = {x: null, y: null};
+var row;
 
 config.cards.forEach(function(config) {
-	var card = grid.add_widget(markup, config.x || null, config.y || null, config.width || 6, config.height || 1, true);
-	vizwit.init($('.grid-stack-item-content', card), config.vizwit, {
+	// If y suggests we're on a new row (including the first item), create a new row
+	if(config.y !== current.y) {
+		row = $('<div class="row"></div>');
+		container.append(row);
+		current.y = config.y;
+		current.x = 0;
+	}
+	
+	var column = $('<div/>');
+	
+	// Add width class
+	column.addClass('col-sm-' + config.width);
+	
+	// If x is not the same as our current x position, add offset class
+	if(config.x !== current.x) {
+		column.addClass('col-sm-offset-' + (config.x - current.x));
+	}
+	// Set height of new div
+	column.css('min-height', config.height * heightInterval);
+	
+	// Increment current.x to new starting position
+	current.x += config.width;
+	
+	// Add the div to the current row
+	row.append(column);
+	
+	// Initialize vizwit on new div
+	vizwit.init(column, config.vizwit, {
 		vent: vent,
 		fields: fields
 	});
-	
-	// Set card content height to available space in container (necessary since position: absolute)
-	var cardContent = $('.card-content', card);
-	var availableHeight = card.height();
-	$.each(cardContent.siblings(), function() {
-		availableHeight -= $(this).height();
-	});
-	cardContent.height(availableHeight);
 });
