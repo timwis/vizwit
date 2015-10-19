@@ -114,9 +114,7 @@ module.exports = Backbone.Collection.extend({
 			return [
 				field,
 				expression.type,
-				'(',
-				expression.value.map(enclose).join(', '),
-				')'
+				'(' + expression.value.map(enclose).join(', ') + ')'
 			].join(' ');
 		} else {
 			return [
