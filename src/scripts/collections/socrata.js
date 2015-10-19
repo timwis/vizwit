@@ -28,6 +28,7 @@ module.exports = Backbone.Collection.extend({
 		this.filters = options.filters || {};
 		this.order = options.order || null;
 		this.limit = options.limit || this.limit;
+		this.offset = options.offset || this.offset;
 		
 		this.countModel = new Backbone.Model();
 	},
