@@ -257,13 +257,14 @@ describe('socrata fetch', function() {
 		this.collection.fetch()
 	})
 	
-	it('should construct url', function() {
-		$.ajax.getCall(0).args[0].url.should.eql('https://data.cityofchicago.org/resource/xqx5-8hwx.json?%24select=count(*)%20as%20value%2C%20license_description%20as%20label&%24group=license_description&%24order=value%20desc')
-	})
-	
 	it('should get correct number of features', function() {		
 		this.collection.length.should.eql(132)
 	})
+	
+	/*it('should construct record count url', function() {
+		this.collection.getRecordCount()
+		console.log($.ajax.getCall(1).args[0].url)
+	})*/
 	
 	after(function() {
 		$.ajax.restore()
