@@ -1,7 +1,7 @@
 {
-  "name": "phlviz",
+  "name": "vizwit",
   "version": "1.0.0",
-  "description": "",
+  "description": "An interactive data visualization tool",
   "main": "src/scripts/main.js",
   "scripts": {
     "start": "npm run watch & npm run server",
@@ -11,6 +11,10 @@
     "deploy": ". deploy.sh"
   },
   "author": "timwis",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/timwis/vizwit.git"
+  },
   "license": "MIT",
   "dependencies": {
     "amcharts3": "amcharts/amcharts3",
