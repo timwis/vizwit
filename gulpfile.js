@@ -6,6 +6,7 @@ var source = require('vinyl-source-stream');
 var buffer = require('vinyl-buffer');
 var gutil = require('gulp-util');
 var del = require('del');
+var mergeStream = require('merge-stream');
 
 var dir = {
 	dev: './src/',
@@ -23,11 +24,17 @@ gulp.task('watch', ['clean'], function() {
 });
 
 gulp.task('scripts', function() {
-	return scripts();
+	return mergeStream(
+		scripts(dir.dev + 'scripts/layout.js', 'layout.js'),
+		scripts(dir.dev + 'scripts/embed.js', 'embed.js')
+	);
 });
 
 gulp.task('scripts-watch', function() {
-	return scripts(true);
+	return mergeStream(
+		scripts(dir.dev + 'scripts/layout.js', 'layout.js', true),
+		scripts(dir.dev + 'scripts/embed.js', 'embed.js', true)
+	);
 })
 	
 gulp.task('cname', function() {
@@ -52,27 +59,27 @@ gulp.task("clean", function(cb) {
 /**
 * Build scripts and optionally watch for changes
 */
-function scripts(watch) {
+function scripts(src, dest, watch) {
 	var bundleOpts = _.extend({}, watchify.args, {debug: true});
-	var bundle = browserify(dir.dev + 'scripts/main.js', bundleOpts);
+	var bundle = browserify(src, bundleOpts);
 	
 	if(watch) {
 		bundle = watchify(bundle);
 		
-		bundle.on('update', function() { compileBundle(bundle) }); // when a dependency changes, recompile
+		bundle.on('update', function() { compileBundle(bundle, dest) }); // when a dependency changes, recompile
 		bundle.on('log', gutil.log); // output build logs to terminal
 	}
 	
-	return compileBundle(bundle);
+	return compileBundle(bundle, dest);
 }
 
 /**
 * Compile a browserify bundle (used by multiple tasks)
 */
-function compileBundle(bundle) {
+function compileBundle(bundle, dest) {
 	return bundle.bundle()
 		.on('error', gutil.log.bind(gutil, 'Browserify Error'))
-		.pipe(source('bundle.js'))
+		.pipe(source(dest))
 		.pipe(buffer()) // buffer file contents (is this necessary?)
 		.pipe(gulp.dest(dir.prod + 'scripts/'));
 };

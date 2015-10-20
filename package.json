@@ -39,6 +39,7 @@
     "gulp-uglify": "^1.4.1",
     "gulp-util": "^3.0.6",
     "lodash.assign": "^3.2.0",
+    "merge-stream": "^1.0.0",
     "node-sass": "^3.2.0",
     "node-static": "^0.7.7",
     "node-underscorify": "0.0.14",
