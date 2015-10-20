@@ -1,0 +1,119 @@
+
+{
+  "url": "https://api.github.com/gists/b03fc4fb30e5c8265f6b",
+  "forks_url": "https://api.github.com/gists/b03fc4fb30e5c8265f6b/forks",
+  "commits_url": "https://api.github.com/gists/b03fc4fb30e5c8265f6b/commits",
+  "id": "b03fc4fb30e5c8265f6b",
+  "git_pull_url": "https://gist.github.com/b03fc4fb30e5c8265f6b.git",
+  "git_push_url": "https://gist.github.com/b03fc4fb30e5c8265f6b.git",
+  "html_url": "https://gist.github.com/b03fc4fb30e5c8265f6b",
+  "files": {
+    "city-owned-properties.json": {
+      "filename": "city-owned-properties.json",
+      "type": "application/json",
+      "language": "JSON",
+      "raw_url": "https://gist.githubusercontent.com/timwis/b03fc4fb30e5c8265f6b/raw/05f70c001a3da2d80e2c4b94a82e09e3fe06d37a/city-owned-properties.json",
+      "size": 4343,
+      "truncated": false,
+      "content": "{\n\t\"version\": \"1\",\n\t\"header\": {\n\t\t\"title\": \"City-owned Properties\",\n\t\t\"description\": \"Properties owned by the City of Philadelphia\",\n\t\t\"navigation\": [\n\t\t\t{\n\t\t\t\t\"label\": \"Download\",\n\t\t\t\t\"url\": \"https://data.phila.gov/api/views/3h6i-2hfj/rows.csv?accessType=DOWNLOAD&bom=true\"\n\t\t\t}\n\t\t]\n\t},\n\t\"cards\": [\n\t\t[\n\t\t\t{\n\t\t\t\t\"title\": \"Census Block Groups (2010)\",\n\t\t\t\t\"chartType\": \"choropleth\",\n\t\t\t\t\"domain\": \"data.phila.gov\",\n\t\t\t\t\"dataset\": \"tqtk-pmbv\",\n\t\t\t\t\"groupBy\": \":@computed_region_6tz8_nbrg\",\n\t\t\t\t\n\t\t\t\t\"boundaries\": \"https://data.phila.gov/resource/6tz8-nbrg.geojson?$limit=5000\",\n\t\t\t\t\"boundariesLabel\": \"geoid10\",\n\t\t\t\t\"boundariesId\": \"_feature_id\",\n\t\t\t\t\"baseFilters\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"field\": \"owner_1\",\n\t\t\t\t\t\t\"expression\": {\n\t\t\t\t\t\t\t\"type\": \"in\",\n\t\t\t\t\t\t\t\"value\": [\n\t\t\t\t\t\t\t\t\"CITY OF PHILA\",\n\t\t\t\t\t\t\t\t\"CITY OF PHILADELPHIA\",\n\t\t\t\t\t\t\t\t\"PHILA HOUSING AUTHORITY\",\n\t\t\t\t\t\t\t\t\"REDEVELOPMENT AUTHORITY\",\n\t\t\t\t\t\t\t\t\"PHILADELPHIA HOUSING\",\n\t\t\t\t\t\t\t\t\"REDEVELOPMENT AUTHORITY O\",\n\t\t\t\t\t\t\t\t\"PHILADELPHIA HOUSING AUTH\",\n\t\t\t\t\t\t\t\t\"PHILADELPHIA REDEVELOPMEN\",\n\t\t\t\t\t\t\t\t\"PHILA REDEVELOPMENT AUTH\"\n\t\t\t\t\t\t\t]\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t},\n\t\t\t{\n\t\t\t\t\"title\": \"Council Districts (2016)\",\n\t\t\t\t\"chartType\": \"choropleth\",\n\t\t\t\t\"domain\": \"data.phila.gov\",\n\t\t\t\t\"dataset\": \"tqtk-pmbv\",\n\t\t\t\t\"groupBy\": \":@computed_region_j2cn_knjf\",\n\t\t\t\t\n\t\t\t\t\"boundaries\": \"https://data.phila.gov/resource/j2cn-knjf.geojson?$limit=5000\",\n\t\t\t\t\"boundariesLabel\": \"district\",\n\t\t\t\t\"boundariesId\": \"_feature_id\",\n\t\t\t\t\"baseFilters\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"field\": \"owner_1\",\n\t\t\t\t\t\t\"expression\": {\n\t\t\t\t\t\t\t\"type\": \"in\",\n\t\t\t\t\t\t\t\"value\": [\n\t\t\t\t\t\t\t\t\"CITY OF PHILA\",\n\t\t\t\t\t\t\t\t\"CITY OF PHILADELPHIA\",\n\t\t\t\t\t\t\t\t\"PHILA HOUSING AUTHORITY\",\n\t\t\t\t\t\t\t\t\"REDEVELOPMENT AUTHORITY\",\n\t\t\t\t\t\t\t\t\"PHILADELPHIA HOUSING\",\n\t\t\t\t\t\t\t\t\"REDEVELOPMENT AUTHORITY O\",\n\t\t\t\t\t\t\t\t\"PHILADELPHIA HOUSING AUTH\",\n\t\t\t\t\t\t\t\t\"PHILADELPHIA REDEVELOPMEN\",\n\t\t\t\t\t\t\t\t\"PHILA REDEVELOPMENT AUTH\"\n\t\t\t\t\t\t\t]\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t}\n\t\t],\n\t\t[\n\t\t\t{\n\t\t\t\t\"title\": \"Zoning\",\n\t\t\t\t\"chartType\": \"bar\",\n\t\t\t\t\"domain\": \"data.phila.gov\",\n\t\t\t\t\"dataset\": \"tqtk-pmbv\",\n\t\t\t\t\"groupBy\": \"zoning\",\n\t\t\t\t\"baseFilters\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"field\": \"owner_1\",\n\t\t\t\t\t\t\"expression\": {\n\t\t\t\t\t\t\t\"type\": \"in\",\n\t\t\t\t\t\t\t\"value\": [\n\t\t\t\t\t\t\t\t\"CITY OF PHILA\",\n\t\t\t\t\t\t\t\t\"CITY OF PHILADELPHIA\",\n\t\t\t\t\t\t\t\t\"PHILA HOUSING AUTHORITY\",\n\t\t\t\t\t\t\t\t\"REDEVELOPMENT AUTHORITY\",\n\t\t\t\t\t\t\t\t\"PHILADELPHIA HOUSING\",\n\t\t\t\t\t\t\t\t\"REDEVELOPMENT AUTHORITY O\",\n\t\t\t\t\t\t\t\t\"PHILADELPHIA HOUSING AUTH\",\n\t\t\t\t\t\t\t\t\"PHILADELPHIA REDEVELOPMEN\",\n\t\t\t\t\t\t\t\t\"PHILA REDEVELOPMENT AUTH\"\n\t\t\t\t\t\t\t]\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t},\n\t\t\t{\n\t\t\t\t\"title\": \"Category Code Description\",\n\t\t\t\t\"chartType\": \"pie\",\n\t\t\t\t\"domain\": \"data.phila.gov\",\n\t\t\t\t\"dataset\": \"tqtk-pmbv\",\n\t\t\t\t\"groupBy\": \"category_code_description\",\n\t\t\t\t\"baseFilters\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"field\": \"owner_1\",\n\t\t\t\t\t\t\"expression\": {\n\t\t\t\t\t\t\t\"type\": \"in\",\n\t\t\t\t\t\t\t\"value\": [\n\t\t\t\t\t\t\t\t\"CITY OF PHILA\",\n\t\t\t\t\t\t\t\t\"CITY OF PHILADELPHIA\",\n\t\t\t\t\t\t\t\t\"PHILA HOUSING AUTHORITY\",\n\t\t\t\t\t\t\t\t\"REDEVELOPMENT AUTHORITY\",\n\t\t\t\t\t\t\t\t\"PHILADELPHIA HOUSING\",\n\t\t\t\t\t\t\t\t\"REDEVELOPMENT AUTHORITY O\",\n\t\t\t\t\t\t\t\t\"PHILADELPHIA HOUSING AUTH\",\n\t\t\t\t\t\t\t\t\"PHILADELPHIA REDEVELOPMEN\",\n\t\t\t\t\t\t\t\t\"PHILA REDEVELOPMENT AUTH\"\n\t\t\t\t\t\t\t]\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t}\n\t\t],\n\t\t[\n\t\t\t{\n\t\t\t\t\"title\": \"Owner 1\",\n\t\t\t\t\"chartType\": \"bar\",\n\t\t\t\t\"domain\": \"data.phila.gov\",\n\t\t\t\t\"dataset\": \"tqtk-pmbv\",\n\t\t\t\t\"groupBy\": \"owner_1\",\n\t\t\t\t\"baseFilters\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"field\": \"owner_1\",\n\t\t\t\t\t\t\"expression\": {\n\t\t\t\t\t\t\t\"type\": \"in\",\n\t\t\t\t\t\t\t\"value\": [\n\t\t\t\t\t\t\t\t\"CITY OF PHILA\",\n\t\t\t\t\t\t\t\t\"CITY OF PHILADELPHIA\",\n\t\t\t\t\t\t\t\t\"PHILA HOUSING AUTHORITY\",\n\t\t\t\t\t\t\t\t\"REDEVELOPMENT AUTHORITY\",\n\t\t\t\t\t\t\t\t\"PHILADELPHIA HOUSING\",\n\t\t\t\t\t\t\t\t\"REDEVELOPMENT AUTHORITY O\",\n\t\t\t\t\t\t\t\t\"PHILADELPHIA HOUSING AUTH\",\n\t\t\t\t\t\t\t\t\"PHILADELPHIA REDEVELOPMEN\",\n\t\t\t\t\t\t\t\t\"PHILA REDEVELOPMENT AUTH\"\n\t\t\t\t\t\t\t]\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t}\n\t\t],\n\t\t[\n\t\t\t{\n\t\t\t\t\"title\": \"Properties\",\n\t\t\t\t\"chartType\": \"table\",\n\t\t\t\t\"domain\": \"data.phila.gov\",\n\t\t\t\t\"dataset\": \"tqtk-pmbv\",\n\t\t\t\t\"padded\": true,\n\t\t\t\t\"baseFilters\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"field\": \"owner_1\",\n\t\t\t\t\t\t\"expression\": {\n\t\t\t\t\t\t\t\"type\": \"in\",\n\t\t\t\t\t\t\t\"value\": [\n\t\t\t\t\t\t\t\t\"CITY OF PHILA\",\n\t\t\t\t\t\t\t\t\"CITY OF PHILADELPHIA\",\n\t\t\t\t\t\t\t\t\"PHILA HOUSING AUTHORITY\",\n\t\t\t\t\t\t\t\t\"REDEVELOPMENT AUTHORITY\",\n\t\t\t\t\t\t\t\t\"PHILADELPHIA HOUSING\",\n\t\t\t\t\t\t\t\t\"REDEVELOPMENT AUTHORITY O\",\n\t\t\t\t\t\t\t\t\"PHILADELPHIA HOUSING AUTH\",\n\t\t\t\t\t\t\t\t\"PHILADELPHIA REDEVELOPMEN\",\n\t\t\t\t\t\t\t\t\"PHILA REDEVELOPMENT AUTH\"\n\t\t\t\t\t\t\t]\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t}\n\t\t]\n\t]\n}"
+    },
+    "another.json": {
+      "filename": "another.json",
+      "type": "application/json",
+      "language": "JSON",
+      "raw_url": "https://gist.githubusercontent.com/timwis/b03fc4fb30e5c8265f6b/raw/05f70c001a3da2d80e2c4b94a82e09e3fe06d37a/city-owned-properties.json",
+      "size": 4343,
+      "truncated": false,
+      "content": "{\n\t\"version\": \"1\",\n\t\"header\": {\n\t\t\"title\": \"City-owned Properties\",\n\t\t\"description\": \"Properties owned by the City of Philadelphia\",\n\t\t\"navigation\": [\n\t\t\t{\n\t\t\t\t\"label\": \"Download\",\n\t\t\t\t\"url\": \"https://data.phila.gov/api/views/3h6i-2hfj/rows.csv?accessType=DOWNLOAD&bom=true\"\n\t\t\t}\n\t\t]\n\t},\n\t\"cards\": [\n\t\t[\n\t\t\t{\n\t\t\t\t\"title\": \"Census Block Groups (2010)\",\n\t\t\t\t\"chartType\": \"choropleth\",\n\t\t\t\t\"domain\": \"data.phila.gov\",\n\t\t\t\t\"dataset\": \"tqtk-pmbv\",\n\t\t\t\t\"groupBy\": \":@computed_region_6tz8_nbrg\",\n\t\t\t\t\n\t\t\t\t\"boundaries\": \"https://data.phila.gov/resource/6tz8-nbrg.geojson?$limit=5000\",\n\t\t\t\t\"boundariesLabel\": \"geoid10\",\n\t\t\t\t\"boundariesId\": \"_feature_id\",\n\t\t\t\t\"baseFilters\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"field\": \"owner_1\",\n\t\t\t\t\t\t\"expression\": {\n\t\t\t\t\t\t\t\"type\": \"in\",\n\t\t\t\t\t\t\t\"value\": [\n\t\t\t\t\t\t\t\t\"CITY OF PHILA\",\n\t\t\t\t\t\t\t\t\"CITY OF PHILADELPHIA\",\n\t\t\t\t\t\t\t\t\"PHILA HOUSING AUTHORITY\",\n\t\t\t\t\t\t\t\t\"REDEVELOPMENT AUTHORITY\",\n\t\t\t\t\t\t\t\t\"PHILADELPHIA HOUSING\",\n\t\t\t\t\t\t\t\t\"REDEVELOPMENT AUTHORITY O\",\n\t\t\t\t\t\t\t\t\"PHILADELPHIA HOUSING AUTH\",\n\t\t\t\t\t\t\t\t\"PHILADELPHIA REDEVELOPMEN\",\n\t\t\t\t\t\t\t\t\"PHILA REDEVELOPMENT AUTH\"\n\t\t\t\t\t\t\t]\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t},\n\t\t\t{\n\t\t\t\t\"title\": \"Council Districts (2016)\",\n\t\t\t\t\"chartType\": \"choropleth\",\n\t\t\t\t\"domain\": \"data.phila.gov\",\n\t\t\t\t\"dataset\": \"tqtk-pmbv\",\n\t\t\t\t\"groupBy\": \":@computed_region_j2cn_knjf\",\n\t\t\t\t\n\t\t\t\t\"boundaries\": \"https://data.phila.gov/resource/j2cn-knjf.geojson?$limit=5000\",\n\t\t\t\t\"boundariesLabel\": \"district\",\n\t\t\t\t\"boundariesId\": \"_feature_id\",\n\t\t\t\t\"baseFilters\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"field\": \"owner_1\",\n\t\t\t\t\t\t\"expression\": {\n\t\t\t\t\t\t\t\"type\": \"in\",\n\t\t\t\t\t\t\t\"value\": [\n\t\t\t\t\t\t\t\t\"CITY OF PHILA\",\n\t\t\t\t\t\t\t\t\"CITY OF PHILADELPHIA\",\n\t\t\t\t\t\t\t\t\"PHILA HOUSING AUTHORITY\",\n\t\t\t\t\t\t\t\t\"REDEVELOPMENT AUTHORITY\",\n\t\t\t\t\t\t\t\t\"PHILADELPHIA HOUSING\",\n\t\t\t\t\t\t\t\t\"REDEVELOPMENT AUTHORITY O\",\n\t\t\t\t\t\t\t\t\"PHILADELPHIA HOUSING AUTH\",\n\t\t\t\t\t\t\t\t\"PHILADELPHIA REDEVELOPMEN\",\n\t\t\t\t\t\t\t\t\"PHILA REDEVELOPMENT AUTH\"\n\t\t\t\t\t\t\t]\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t}\n\t\t],\n\t\t[\n\t\t\t{\n\t\t\t\t\"title\": \"Zoning\",\n\t\t\t\t\"chartType\": \"bar\",\n\t\t\t\t\"domain\": \"data.phila.gov\",\n\t\t\t\t\"dataset\": \"tqtk-pmbv\",\n\t\t\t\t\"groupBy\": \"zoning\",\n\t\t\t\t\"baseFilters\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"field\": \"owner_1\",\n\t\t\t\t\t\t\"expression\": {\n\t\t\t\t\t\t\t\"type\": \"in\",\n\t\t\t\t\t\t\t\"value\": [\n\t\t\t\t\t\t\t\t\"CITY OF PHILA\",\n\t\t\t\t\t\t\t\t\"CITY OF PHILADELPHIA\",\n\t\t\t\t\t\t\t\t\"PHILA HOUSING AUTHORITY\",\n\t\t\t\t\t\t\t\t\"REDEVELOPMENT AUTHORITY\",\n\t\t\t\t\t\t\t\t\"PHILADELPHIA HOUSING\",\n\t\t\t\t\t\t\t\t\"REDEVELOPMENT AUTHORITY O\",\n\t\t\t\t\t\t\t\t\"PHILADELPHIA HOUSING AUTH\",\n\t\t\t\t\t\t\t\t\"PHILADELPHIA REDEVELOPMEN\",\n\t\t\t\t\t\t\t\t\"PHILA REDEVELOPMENT AUTH\"\n\t\t\t\t\t\t\t]\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t},\n\t\t\t{\n\t\t\t\t\"title\": \"Category Code Description\",\n\t\t\t\t\"chartType\": \"pie\",\n\t\t\t\t\"domain\": \"data.phila.gov\",\n\t\t\t\t\"dataset\": \"tqtk-pmbv\",\n\t\t\t\t\"groupBy\": \"category_code_description\",\n\t\t\t\t\"baseFilters\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"field\": \"owner_1\",\n\t\t\t\t\t\t\"expression\": {\n\t\t\t\t\t\t\t\"type\": \"in\",\n\t\t\t\t\t\t\t\"value\": [\n\t\t\t\t\t\t\t\t\"CITY OF PHILA\",\n\t\t\t\t\t\t\t\t\"CITY OF PHILADELPHIA\",\n\t\t\t\t\t\t\t\t\"PHILA HOUSING AUTHORITY\",\n\t\t\t\t\t\t\t\t\"REDEVELOPMENT AUTHORITY\",\n\t\t\t\t\t\t\t\t\"PHILADELPHIA HOUSING\",\n\t\t\t\t\t\t\t\t\"REDEVELOPMENT AUTHORITY O\",\n\t\t\t\t\t\t\t\t\"PHILADELPHIA HOUSING AUTH\",\n\t\t\t\t\t\t\t\t\"PHILADELPHIA REDEVELOPMEN\",\n\t\t\t\t\t\t\t\t\"PHILA REDEVELOPMENT AUTH\"\n\t\t\t\t\t\t\t]\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t}\n\t\t],\n\t\t[\n\t\t\t{\n\t\t\t\t\"title\": \"Owner 1\",\n\t\t\t\t\"chartType\": \"bar\",\n\t\t\t\t\"domain\": \"data.phila.gov\",\n\t\t\t\t\"dataset\": \"tqtk-pmbv\",\n\t\t\t\t\"groupBy\": \"owner_1\",\n\t\t\t\t\"baseFilters\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"field\": \"owner_1\",\n\t\t\t\t\t\t\"expression\": {\n\t\t\t\t\t\t\t\"type\": \"in\",\n\t\t\t\t\t\t\t\"value\": [\n\t\t\t\t\t\t\t\t\"CITY OF PHILA\",\n\t\t\t\t\t\t\t\t\"CITY OF PHILADELPHIA\",\n\t\t\t\t\t\t\t\t\"PHILA HOUSING AUTHORITY\",\n\t\t\t\t\t\t\t\t\"REDEVELOPMENT AUTHORITY\",\n\t\t\t\t\t\t\t\t\"PHILADELPHIA HOUSING\",\n\t\t\t\t\t\t\t\t\"REDEVELOPMENT AUTHORITY O\",\n\t\t\t\t\t\t\t\t\"PHILADELPHIA HOUSING AUTH\",\n\t\t\t\t\t\t\t\t\"PHILADELPHIA REDEVELOPMEN\",\n\t\t\t\t\t\t\t\t\"PHILA REDEVELOPMENT AUTH\"\n\t\t\t\t\t\t\t]\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t}\n\t\t],\n\t\t[\n\t\t\t{\n\t\t\t\t\"title\": \"Properties\",\n\t\t\t\t\"chartType\": \"table\",\n\t\t\t\t\"domain\": \"data.phila.gov\",\n\t\t\t\t\"dataset\": \"tqtk-pmbv\",\n\t\t\t\t\"padded\": true,\n\t\t\t\t\"baseFilters\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"field\": \"owner_1\",\n\t\t\t\t\t\t\"expression\": {\n\t\t\t\t\t\t\t\"type\": \"in\",\n\t\t\t\t\t\t\t\"value\": [\n\t\t\t\t\t\t\t\t\"CITY OF PHILA\",\n\t\t\t\t\t\t\t\t\"CITY OF PHILADELPHIA\",\n\t\t\t\t\t\t\t\t\"PHILA HOUSING AUTHORITY\",\n\t\t\t\t\t\t\t\t\"REDEVELOPMENT AUTHORITY\",\n\t\t\t\t\t\t\t\t\"PHILADELPHIA HOUSING\",\n\t\t\t\t\t\t\t\t\"REDEVELOPMENT AUTHORITY O\",\n\t\t\t\t\t\t\t\t\"PHILADELPHIA HOUSING AUTH\",\n\t\t\t\t\t\t\t\t\"PHILADELPHIA REDEVELOPMEN\",\n\t\t\t\t\t\t\t\t\"PHILA REDEVELOPMENT AUTH\"\n\t\t\t\t\t\t\t]\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t}\n\t\t]\n\t]\n}"
+    }
+  },
+  "public": true,
+  "created_at": "2015-09-24T19:13:50Z",
+  "updated_at": "2015-09-27T15:00:03Z",
+  "description": "City-owned properties VizWit configuration",
+  "comments": 0,
+  "user": null,
+  "comments_url": "https://api.github.com/gists/b03fc4fb30e5c8265f6b/comments",
+  "owner": {
+    "login": "timwis",
+    "id": 761444,
+    "avatar_url": "https://avatars.githubusercontent.com/u/761444?v=3",
+    "gravatar_id": "",
+    "url": "https://api.github.com/users/timwis",
+    "html_url": "https://github.com/timwis",
+    "followers_url": "https://api.github.com/users/timwis/followers",
+    "following_url": "https://api.github.com/users/timwis/following{/other_user}",
+    "gists_url": "https://api.github.com/users/timwis/gists{/gist_id}",
+    "starred_url": "https://api.github.com/users/timwis/starred{/owner}{/repo}",
+    "subscriptions_url": "https://api.github.com/users/timwis/subscriptions",
+    "organizations_url": "https://api.github.com/users/timwis/orgs",
+    "repos_url": "https://api.github.com/users/timwis/repos",
+    "events_url": "https://api.github.com/users/timwis/events{/privacy}",
+    "received_events_url": "https://api.github.com/users/timwis/received_events",
+    "type": "User",
+    "site_admin": false
+  },
+  "forks": [
+
+  ],
+  "history": [
+    {
+      "user": {
+        "login": "timwis",
+        "id": 761444,
+        "avatar_url": "https://avatars.githubusercontent.com/u/761444?v=3",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/timwis",
+        "html_url": "https://github.com/timwis",
+        "followers_url": "https://api.github.com/users/timwis/followers",
+        "following_url": "https://api.github.com/users/timwis/following{/other_user}",
+        "gists_url": "https://api.github.com/users/timwis/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/timwis/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/timwis/subscriptions",
+        "organizations_url": "https://api.github.com/users/timwis/orgs",
+        "repos_url": "https://api.github.com/users/timwis/repos",
+        "events_url": "https://api.github.com/users/timwis/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/timwis/received_events",
+        "type": "User",
+        "site_admin": false
+      },
+      "version": "baeb25a69f9e85ea428e135b815fe717cbf4dc38",
+      "committed_at": "2015-09-27T15:00:03Z",
+      "change_status": {
+        "total": 2,
+        "additions": 1,
+        "deletions": 1
+      },
+      "url": "https://api.github.com/gists/b03fc4fb30e5c8265f6b/baeb25a69f9e85ea428e135b815fe717cbf4dc38"
+    },
+    {
+      "user": {
+        "login": "timwis",
+        "id": 761444,
+        "avatar_url": "https://avatars.githubusercontent.com/u/761444?v=3",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/timwis",
+        "html_url": "https://github.com/timwis",
+        "followers_url": "https://api.github.com/users/timwis/followers",
+        "following_url": "https://api.github.com/users/timwis/following{/other_user}",
+        "gists_url": "https://api.github.com/users/timwis/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/timwis/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/timwis/subscriptions",
+        "organizations_url": "https://api.github.com/users/timwis/orgs",
+        "repos_url": "https://api.github.com/users/timwis/repos",
+        "events_url": "https://api.github.com/users/timwis/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/timwis/received_events",
+        "type": "User",
+        "site_admin": false
+      },
+      "version": "b0417e3b13902776add58afaa4ac5dee2c88911e",
+      "committed_at": "2015-09-24T19:13:50Z",
+      "change_status": {
+        "total": 187,
+        "additions": 187,
+        "deletions": 0
+      },
+      "url": "https://api.github.com/gists/b03fc4fb30e5c8265f6b/b0417e3b13902776add58afaa4ac5dee2c88911e"
+    }
+  ]
+}
