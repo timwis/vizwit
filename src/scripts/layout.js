@@ -1,7 +1,7 @@
 var $ = global.jQuery = require('jquery');
 var _ = global._ = require('underscore');
 var Backbone = require('backbone');
-var deparam = require('jquery-deparam');
+var deparam = require('node-jquery-deparam');
 require('gridstack/dist/gridstack');
 
 var Header = require('./views/header');
