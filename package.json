@@ -2,7 +2,7 @@
   "name": "vizwit",
   "version": "1.0.0",
   "description": "An interactive data visualization tool",
-  "main": "src/scripts/main.js",
+  "main": "src/scripts/vizwit.js",
   "scripts": {
     "start": "npm run watch & npm run server",
     "build": "./node_modules/gulp/bin/gulp.js build",
