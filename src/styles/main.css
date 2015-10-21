@@ -115,3 +115,14 @@ body.embed .container {
 body.embed .card {
 	padding-top: 0;
 }
+
+.bbm-wrapper {
+	padding: 0;
+	z-index: 10000;
+}
+
+.copy {
+	position: absolute;
+	right: 0;
+	margin-right: 30px;
+}

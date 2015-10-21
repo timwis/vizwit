@@ -19,8 +19,10 @@
   "dependencies": {
     "amcharts3": "amcharts/amcharts3",
     "backbone": "^1.2.2",
+    "backbone.modal": "^1.1.5",
     "bootstrap": "^3.3.5",
     "chroma-js": "^1.1.1",
+    "clipboard": "^1.4.2",
     "datatables": "https://github.com/DataTables/DataTables/archive/1.10.9.tar.gz",
     "geocolor": "0.0.16",
     "gridstack": "^0.2.3",
