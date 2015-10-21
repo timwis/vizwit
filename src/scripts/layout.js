@@ -14,8 +14,9 @@ var fields = {};
 var params = window.location.search.substr(1) ? deparam(window.location.search.substr(1)) : {};
 
 // If no gist specified, redirect to homepage
+var redirect = function() { console.log('redirecting'); window.location.replace('http://vizwit.io'); }
 if( ! params.gist) {
-	window.location.replace('http://vizwit.io');
+	redirect();
 }
 
 // Fetch gist
@@ -27,7 +28,7 @@ if( ! params.gist) {
 		var model = params.file && collection.get(params.file) ? collection.get(params.file) : collection.at(0);
 		var config = JSON.parse(model.get('content'));
 		
-		if( ! config.version) return console.error('No version specified in config');
+		if( ! config.version || config.version !== '2') return redirect();
 
 		// Render header
 		if(config.header) {
