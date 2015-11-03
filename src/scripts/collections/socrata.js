@@ -57,9 +57,11 @@ module.exports = Backbone.Collection.extend({
 			// Group by
 			if(this.groupBy) {
 				query.select(this.groupBy + ' as label')
-				.group(this.groupBy)
-				.order(this.order || 'value desc');
+				.group(this.groupBy);
 			}
+			
+			// Order by
+			query.order(this.order || 'value desc');
 		} else {
 			// Offset
 			if(this.offset) query.offset(this.offset);
