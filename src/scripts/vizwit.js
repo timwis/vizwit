@@ -16,6 +16,7 @@ var Callout = require('./views/callout');
 
 exports.init = function(container, config, opts) {
 	// If globals weren't passed, create them within this scope
+	opts = opts || {};
 	opts.vent = opts.vent || _.clone(Backbone.Events);
 	opts.fields = opts.fields || {};
 	
