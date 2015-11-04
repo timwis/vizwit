@@ -3,7 +3,9 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 var Template = require('../templates/card.html');
 var FiltersTemplate = require('../templates/filters.html');
+var EmbedHelperView = require('./embed-helper');
 require('bootstrap/js/dropdown');
+require('bootstrap/js/modal');
 
 var operatorMap = {
 	'=': 'is',
@@ -25,13 +27,15 @@ module.exports = Backbone.View.extend({
 		
 		// Delegate event here so as not to have it overriden by child classes' events properties
 		this.events = _.extend({
-			'click .remove-filter': 'onClickRemoveFilter'
+			'click .remove-filter': 'onClickRemoveFilter',
+			'click .embed-link': 'onClickEmbedLink'
 		}, this.events || {});
 		this.delegateEvents();
 		
 		// Render template
 		this.$el.addClass(this.config.chartType)
 		this.renderTemplate();
+		this.setHeight();
 		
 		// Set export link
 		this.updateExportLink();
@@ -42,6 +46,17 @@ module.exports = Backbone.View.extend({
 	},
 	renderTemplate: function() {
 		this.$el.empty().append(this.template(this.config));
+	},
+	setHeight: function() {
+		var availableHeight = this.$el.height();
+		this.$('.card').css('min-height', availableHeight);
+		
+		// Set .card-content height to the available height in its container
+		var cardContent = this.$('.card-content');
+		$.each(cardContent.siblings(), function() {
+			availableHeight -= $(this).height();
+		});
+		cardContent.css('min-height', availableHeight);
 	},
 	renderFilters: function() {
 		var self = this;
@@ -84,5 +99,10 @@ module.exports = Backbone.View.extend({
 	updateExportLink: function(collection) {
 		collection = collection || this.collection;
 		this.$('.export-link').attr('href', collection.exportUrl());
+	},
+	onClickEmbedLink: function(e) {
+		var exportView = new EmbedHelperView({model: new Backbone.Model(this.config)})
+		this.$el.after(exportView.render().el)
+		e.preventDefault();
 	}
 });

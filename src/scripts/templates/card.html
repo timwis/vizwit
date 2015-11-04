@@ -16,9 +16,7 @@
 				</a>
 				<ul class="dropdown-menu dropdown-menu-right" role="menu">
 					<li>
-						<a href="?<% if(data.gist) { %>gist=<%= encodeURIComponent(data.gist) %>&<% } %>card=<%= encodeURIComponent(data.title) %>" target="_blank">
-							<span class="glyphicon glyphicon-new-window"></span> Full Screen
-						</a>
+						<a href="#" class="embed-link"><span class="glyphicon glyphicon-new-window"></span> Embed</a>
 					</li>
 					<li>
 						<a href="#" class="export-link"><span class="glyphicon glyphicon-download-alt"></span> Export (CSV)</a>
@@ -44,11 +42,11 @@
 	<div class="card-body">
 	<% } %>
 		
-		<% if(data.chartType === 'table') { %>
-		<table class="card-content table table-striped"></table>
-		<% } else { %>
-		<div class="card-content"></div>
-		<% } %>
+		<div class="card-content">
+			<% if(data.chartType === 'table') { %>
+			<table class="table table-striped"></table>
+			<% } %>
+		</div>
 	
 	<% if(data.padded) { %>
 	</div>

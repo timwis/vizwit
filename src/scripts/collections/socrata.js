@@ -29,6 +29,7 @@ module.exports = Backbone.Collection.extend({
 		this.filters = options.filters || {};
 		this.order = options.order || null;
 		this.limit = options.limit || this.limit;
+		this.offset = options.offset || this.offset;
 		
 		this.countModel = new Backbone.Model();
 	},
@@ -56,9 +57,11 @@ module.exports = Backbone.Collection.extend({
 			// Group by
 			if(this.groupBy) {
 				query.select(this.groupBy + ' as label')
-				.group(this.groupBy)
-				.order(this.order || 'value desc');
+				.group(this.groupBy);
 			}
+			
+			// Order by
+			query.order(this.order || 'value desc');
 		} else {
 			// Offset
 			if(this.offset) query.offset(this.offset);
@@ -121,9 +124,7 @@ module.exports = Backbone.Collection.extend({
 			return [
 				field,
 				expression.type,
-				'(',
-				expression.value.map(enclose).join(', '),
-				')'
+				'(' + expression.value.map(enclose).join(', ') + ')'
 			].join(' ');
 		} else {
 			return [

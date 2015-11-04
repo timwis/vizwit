@@ -41,17 +41,17 @@ body {
 
 .card-content {
 	width: 100%;
-	min-height: 260px;
+	min-height: 100px;
 }
 
-.card-content.table {
+.card-content table {
 	font-size: 13px;
 	white-space: nowrap;
 }
 
-.callout .card-content {
+/*.callout .card-content {
 	min-height: 0;
-}
+}*/
 .callout-value,
 .callout-filtered-value {
 	font-size: 50px;
@@ -114,4 +114,15 @@ body.embed .container {
 
 body.embed .card {
 	padding-top: 0;
+}
+
+.bbm-wrapper {
+	padding: 0;
+	z-index: 10000;
+}
+
+.copy {
+	position: absolute;
+	right: 0;
+	margin-right: 30px;
 }
