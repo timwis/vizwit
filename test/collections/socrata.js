@@ -6,7 +6,7 @@ var _ = require('underscore')
 var Socrata = require('../../src/scripts/collections/socrata')
 var deparam = require('node-jquery-deparam')
 
-var sampleData = require('./sample-data/business-licenses.json')
+var sampleData = require('../sample-data/business-licenses.json')
 
 function inspect(obj) {
   console.log(require('util').inspect(obj, false, 10, true))

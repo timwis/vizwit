@@ -3,7 +3,7 @@ var sinon = require('sinon')
 var proxyquire = require('proxyquire')
 var $ = require('jquery')
 
-var sampleData = require('./sample-data/gist.json')
+var sampleData = require('../sample-data/gist.json')
 
 function inspect(obj) {
   console.log(require('util').inspect(obj, false, 10, true))
