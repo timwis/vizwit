@@ -3,8 +3,8 @@ var L = require('mapbox.js')
 var Card = require('./card')
 var LoaderOn = require('../util/loader').on
 var LoaderOff = require('../util/loader').off
-var ColorRange = require('../util/color-range')
-// L.Icon.Default.imagePath = 'node_modules/leaflet/dist/images/' // necessary w/browserify
+var hashTable = require('../util/hash-table')
+var choropleth = require('leaflet-choropleth')
 
 module.exports = Card.extend({
   initialize: function (options) {
@@ -60,6 +60,54 @@ module.exports = Card.extend({
     }).addTo(this.map)
   },
   addBoundaries: function () {
+    if (this.boundaries.length && this.collection.length) {
+      // Create hash table for easy reference
+      var collectionValues = hashTable(this.collection.toJSON(), 'label', 'value')
+      var filteredCollectionValues = hashTable(this.filteredCollection.toJSON(), 'label', 'value')
+
+      // Add value from hash tables to geojson properties
+      var idAttribute = this.boundaries.idAttribute
+      var filtered = this.filteredCollection.getFilters().length
+      this.boundaries.forEach(function (item) {
+        var properties = item.get('properties')
+        properties.value = collectionValues[properties[idAttribute]]
+        if (filtered) {
+          properties.filteredValue = filteredCollectionValues[properties[idAttribute]]
+        }
+        item.set('properties', properties)
+      }, this)
+
+      // Remove any existing layers
+      if (this.layer) {
+        this.map.removeLayer(this.layer)
+      }
+
+      // Add choropleth layer
+      var self = this
+      this.layer = L.choropleth(this.boundaries.toGeoJSON(), {
+        valueProperty: filtered ? 'filteredValue' : 'value',
+        scale: ['#d9e6ed', '#477a94'],
+        steps: 5,
+        mode: 'q',
+        style: {
+          color: '#fff',
+          weight: 2,
+          fillOpacity: 0.7
+        },
+        onEachFeature: function (feature, layer) {
+          layer.on({
+            mousemove: self.onMousemove,
+            mouseout: self.onMouseout,
+            click: self.onClick
+          })
+        }
+      }).addTo(this.map)
+
+      // Zoom to boundaries of new layer
+      this.map.fitBounds((L.featureGroup([this.layer])).getBounds())
+    }
+  },
+  _addBoundaries: function () {
     var self = this
     if (this.boundaries.length && this.collection.length) {
       // Put the dataset into the features
