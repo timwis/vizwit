@@ -5,9 +5,9 @@ var Clipboard = require('clipboard')
 require('backbone.modal/backbone.modal')
 
 module.exports = Backbone.Modal.extend({
-	template: Template,
-	cancelEl: '.cancel',
-	onShow: function() {
-		new Clipboard('.copy')
-	}
+  template: Template,
+  cancelEl: '.cancel',
+  onShow: function () {
+    new Clipboard('.copy')
+  }
 })
