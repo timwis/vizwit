@@ -13,6 +13,7 @@ var DateTime = require('./views/datetime');
 var Choropleth = require('./views/choropleth');
 var Pie = require('./views/pie');
 var Callout = require('./views/callout');
+var Stacked = require('./views/stacked');
 
 exports.init = function(container, config, opts) {
 	// If globals weren't passed, create them within this scope
@@ -90,6 +91,15 @@ exports.init = function(container, config, opts) {
 				el: container,
 				collection: collection,
 				filteredCollection: filteredCollection,
+				fields: opts.fields[config.dataset],
+				vent: opts.vent
+			});
+			break;
+		case 'stacked':
+			new Stacked({
+				config: config,
+				el: container,
+				collection: collection,
 				fields: opts.fields[config.dataset],
 				vent: opts.vent
 			});
