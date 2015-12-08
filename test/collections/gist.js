@@ -1,13 +1,9 @@
-var should = require('should')
+/* global describe, it, before, after */
 var sinon = require('sinon')
 var proxyquire = require('proxyquire')
 var $ = require('jquery')
 
 var sampleData = require('../sample-data/gist.json')
-
-function inspect (obj) {
-  console.log(require('util').inspect(obj, false, 10, true))
-}
 
 describe('gist', function () {
   before(function () {
@@ -37,5 +33,4 @@ describe('gist', function () {
   after(function () {
     $.ajax.restore()
   })
-
 })

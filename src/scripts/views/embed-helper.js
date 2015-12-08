@@ -1,4 +1,3 @@
-var $ = require('jquery')
 var Backbone = require('backbone')
 var Template = require('../templates/embed-helper.html')
 var Clipboard = require('clipboard')
@@ -8,6 +7,6 @@ module.exports = Backbone.Modal.extend({
   template: Template,
   cancelEl: '.cancel',
   onShow: function () {
-    new Clipboard('.copy')
+    new Clipboard('.copy') // eslint-disable-line
   }
 })

@@ -1,12 +1,10 @@
 var $ = require('jquery')
-var _ = require('underscore')
 var Backbone = require('backbone')
 var Card = require('./card')
-var numberFormatter = require('../util/number-formatter')
 var LoaderOn = require('../util/loader').on
 var LoaderOff = require('../util/loader').off
 window.AmCharts_path = './'
-require('amcharts3')
+;require('amcharts3')
 require('amcharts3/amcharts/serial')
 require('amcharts3/amcharts/themes/light')
 require('amcharts3/amcharts/plugins/responsive/responsive')
@@ -61,7 +59,6 @@ module.exports = Card.extend({
     // Initialize the chart
     this.chart = AmCharts.makeChart(null, config)
     this.chart.write(this.$('.card-content').get(0))
-
   },
   formatChartData: function (limit) {
     var self = this

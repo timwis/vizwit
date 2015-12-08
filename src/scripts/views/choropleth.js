@@ -1,8 +1,5 @@
-var $ = require('jquery')
 var _ = require('underscore')
-var Backbone = require('backbone')
 var L = require('mapbox.js')
-var geocolor = require('geocolor')
 var Card = require('./card')
 var LoaderOn = require('../util/loader').on
 var LoaderOff = require('../util/loader').off
@@ -52,7 +49,7 @@ module.exports = Card.extend({
     this.renderFilters()
   },
   render: function () {
-    this.map = L.map(this.$('.card-content').get(0)); // .setView([39.95, -75.1667], 13)
+    this.map = L.map(this.$('.card-content').get(0)) // .setView([39.95, -75.1667], 13)
 
     // Disable scroll zoom
     this.map.scrollWheelZoom.disable()
@@ -73,7 +70,7 @@ module.exports = Card.extend({
       var values = _.chain(this.boundaries.pluck('properties')).pluck(colorizeField).value()
       var min = _.min(values)
       var max = _.max(values)
-      var colorRange = new ColorRange('#d9e6ed', '#477a94', 5, min, max); // http://www.colorhexa.com/97bbcd			
+      var colorRange = new ColorRange('#d9e6ed', '#477a94', 5, min, max) // http://www.colorhexa.com/97bbcd
 
       // Remove any existing layers
       if (this.layer) {
@@ -128,10 +125,9 @@ module.exports = Card.extend({
     var layer = e.target
 
     // Construct popup HTML (TODO: Move to template)
-    var popupContent = '\
-			<div class="marker-title">\
-			<h2>' + layer.feature.properties[this.boundaries.label] + '</h2>\
-			Total: ' + layer.feature.properties.value.toLocaleString()
+    var popupContent = '<div class="marker-title">' +
+			'<h2>' + layer.feature.properties[this.boundaries.label] + '</h2>' +
+			'Total: ' + layer.feature.properties.value.toLocaleString()
     if (layer.feature.properties.filteredValue !== undefined) {
       popupContent += '<br>Filtered Amount: ' + layer.feature.properties.filteredValue.toLocaleString()
     }
@@ -140,7 +136,7 @@ module.exports = Card.extend({
     this.popup.setLatLng(e.latlng)
     this.popup.setContent(popupContent)
 
-    if (! this.popup._map) this.popup.openOn(this.map)
+    if (!this.popup._map) this.popup.openOn(this.map)
     window.clearTimeout(this.closeTooltip)
 
     // highlight feature
@@ -149,7 +145,7 @@ module.exports = Card.extend({
       opacity: 0.8
     })
 
-    if (! L.Browser.ie && ! L.Browser.opera) {
+    if (!L.Browser.ie && !L.Browser.opera) {
       layer.bringToFront()
     }
   },

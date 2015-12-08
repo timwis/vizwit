@@ -1,6 +1,5 @@
 var $ = require('jquery')
 var _ = require('underscore')
-var Backbone = require('backbone')
 var BaseChart = require('./basechart')
 var numberFormatter = require('../util/number-formatter')
 
@@ -24,9 +23,9 @@ module.exports = BaseChart.extend({
         clustered: false,
         lineColor: '#97bbcd',
         balloonFunction: function (item, graph) {
-          return '<b>' + item.category + '</b><br>\
-						Total: ' + (+item.dataContext.value).toLocaleString() + '<br> \
-						Filtered Amount: ' + (+item.dataContext.filteredValue).toLocaleString()
+          return '<b>' + item.category +
+            '</b><br>Total: ' + (+item.dataContext.value).toLocaleString() +
+            '<br>Filtered Amount: ' + (+item.dataContext.filteredValue).toLocaleString()
         }
       }
     ],
@@ -115,7 +114,7 @@ module.exports = BaseChart.extend({
 
     // If there are greater than 10 bars, zoom to the first bar (ideally this would be done by configuration)
     this.chart.addListener('drawn', this.zoomToBeginning)
-    this.zoomToBeginning(); // since rendered isn't called the first time
+    this.zoomToBeginning() // since rendered isn't called the first time
 
     // Listen to cursor hover changes
     this.chart.chartCursor.addListener('changed', this.onHover)
@@ -183,7 +182,7 @@ module.exports = BaseChart.extend({
     }
     // Otherwise, add the filter
     else {
-      // Trigger the global event handler with this filter			
+      // Trigger the global event handler with this filter
       this.vent.trigger(this.collection.dataset + '.filter', {
         field: this.collection.triggerField,
         expression: {

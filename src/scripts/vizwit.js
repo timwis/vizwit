@@ -1,4 +1,3 @@
-var $ = require('jquery')
 var _ = require('underscore')
 var Backbone = require('backbone')
 
@@ -6,7 +5,6 @@ var Socrata = require('./collections/socrata')
 var SocrataFields = require('./collections/socrata-fields')
 var GeoJSON = require('./collections/geojson')
 
-var Header = require('./views/header')
 var Bar = require('./views/bar')
 var Table = require('./views/table')
 var DateTime = require('./views/datetime')

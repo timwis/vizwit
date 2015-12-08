@@ -1,16 +1,11 @@
-var should = require('should')
+/* global describe, it, before, after */
 var sinon = require('sinon')
 var proxyquire = require('proxyquire')
 var $ = require('jquery')
-var _ = require('underscore')
 var Socrata = require('../../src/scripts/collections/socrata')
 var deparam = require('node-jquery-deparam')
 
 var sampleData = require('../sample-data/business-licenses.json')
-
-function inspect (obj) {
-  console.log(require('util').inspect(obj, false, 10, true))
-}
 
 describe('socrata query builder', function () {
   it('should construct base url', function () {
@@ -78,7 +73,6 @@ describe('socrata query builder', function () {
     var params = deparam(collection.url().split('?')[1])
     params.$q.should.eql('foo')
   })
-
 })
 
 describe('socrata aggregation', function () {
@@ -133,7 +127,6 @@ describe('socrata aggregation', function () {
     params.$select.should.eql('count(*) as value, license_type as label')
     params.$order.should.eql('label asc')
   })
-
 })
 
 describe('socrata query filters', function () {
@@ -233,7 +226,6 @@ describe('socrata query filters', function () {
     var params = deparam(collection.url().split('?')[1])
     params.$where.should.eql("(code in (1, 2, 3) and text_code in ('foo', 'bar'))")
   })
-
 })
 
 describe('socrata fetch', function () {
@@ -257,7 +249,7 @@ describe('socrata fetch', function () {
     this.collection.length.should.eql(132)
   })
 
-  /*it('should construct record count url', function() {
+  /* it('should construct record count url', function() {
   	this.collection.getRecordCount()
   	console.log($.ajax.getCall(1).args[0].url)
   })*/
@@ -265,5 +257,4 @@ describe('socrata fetch', function () {
   after(function () {
     $.ajax.restore()
   })
-
 })

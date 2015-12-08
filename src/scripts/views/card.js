@@ -1,4 +1,4 @@
-var $ = jQuery = require('jquery')
+var $ = jQuery = require('jquery') // eslint-disable-line
 var _ = require('underscore')
 var Backbone = require('backbone')
 var Template = require('../templates/card.html')
@@ -69,7 +69,7 @@ module.exports = Backbone.View.extend({
       }
     })
 
-    this.$('.filters').empty().append(FiltersTemplate(parsedFilters)).toggle(parsedFilters.length ? true : false)
+    this.$('.filters').empty().append(FiltersTemplate(parsedFilters)).toggle(parsedFilters.length)
   },
   parseExpression: function (field, expression) {
     if (expression['type'] === 'and' || expression['type'] === 'or') {

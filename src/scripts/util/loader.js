@@ -5,7 +5,7 @@ exports.on = function () {
   this.$('.card-content').fadeTo(1, 0.4)
 
   // Create the spinner if it doesn't exist yet
-  if (! this.spinner) {
+  if (!this.spinner) {
     this.spinner = new Spinner()
   }
 

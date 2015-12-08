@@ -1,5 +1,6 @@
 module.exports = function (num) {
-  isNegative = false
+  var formattedNumber
+  var isNegative = false
   if (num < 0) {
     isNegative = true
   }

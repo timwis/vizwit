@@ -1,6 +1,3 @@
-var $ = require('jquery')
-var _ = require('underscore')
-var Backbone = require('backbone')
 var Card = require('./card')
 var LoaderOn = require('../util/loader').on
 var LoaderOff = require('../util/loader').off
@@ -22,7 +19,7 @@ module.exports = Card.extend({
     this.listenTo(this.collection, 'sync', LoaderOff)
 
     // If columns were defined in the config, go straight to render
-    // otherwise, fetch columns through the metadata model 
+    // otherwise, fetch columns through the metadata model
     if (this.config.columns) {
       this.render()
     } else {

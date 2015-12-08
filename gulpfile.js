@@ -66,7 +66,7 @@ function scripts (src, dest, watch) {
   if (watch) {
     bundle = watchify(bundle)
 
-    bundle.on('update', function () { compileBundle(bundle, dest) }); // when a dependency changes, recompile
+    bundle.on('update', function () { compileBundle(bundle, dest) }) // when a dependency changes, recompile
     bundle.on('log', gutil.log) // output build logs to terminal
   }
 

@@ -1,6 +1,4 @@
-var $ = require('jquery')
 var _ = require('underscore')
-var Backbone = require('backbone')
 var BaseChart = require('./basechart')
 var numberFormatter = require('../util/number-formatter')
 
@@ -30,9 +28,9 @@ module.exports = BaseChart.extend({
         lineColor: '#97bbcd',
         dateFormat: 'MMM YYYY',
         balloonFunction: function (item, graph) {
-          return '<b>' + AmCharts.formatDate(item.category, graph.dateFormat) + '</b><br>\
-						Total: ' + (+item.dataContext.value).toLocaleString() + '<br> \
-						Filtered Amount: ' + (+item.dataContext.filteredValue).toLocaleString()
+          return '<b>' + AmCharts.formatDate(item.category, graph.dateFormat) + '</b><br>' +
+						'Total: ' + (+item.dataContext.value).toLocaleString() + '<br>' +
+						'Filtered Amount: ' + (+item.dataContext.filteredValue).toLocaleString()
         }
       }
     ],
@@ -110,7 +108,7 @@ module.exports = BaseChart.extend({
     var endIso = trimLastCharacter(end.toISOString())
     var endFriendly = end.toLocaleDateString()
 
-    // Trigger the global event handler with this filter		
+    // Trigger the global event handler with this filter
     this.vent.trigger(this.collection.dataset + '.filter', {
       field: field,
       expression: {

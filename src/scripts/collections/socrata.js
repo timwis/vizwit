@@ -2,14 +2,13 @@ var $ = require('jquery')
 var _ = require('underscore')
 var Backbone = require('backbone')
 var soda = require('soda-js')
-var SocrataFields = require('./socrata-fields')
 
 var model = Backbone.Model.extend({
   idAttribute: 'label'
 })
 
 var enclose = function (val) {
-  return typeof val === 'string' && val != 'true' && val != 'false' ? "'" + val + "'" : val
+  return typeof val === 'string' && val != 'true' && val != 'false' ? "'" + val + "'" : val // eslint-disable-line
 }
 
 module.exports = Backbone.Collection.extend({
@@ -48,7 +47,7 @@ module.exports = Backbone.Collection.extend({
       // Otherwise use the aggregateFunction / aggregateField as the value
       else {
         // If group by was specified but no aggregate function, use count by default
-        if (! this.aggregateFunction) this.aggregateFunction = 'count'
+        if (!this.aggregateFunction) this.aggregateFunction = 'count'
 
         // Aggregation
         query.select(this.aggregateFunction + '(' + (this.aggregateField || '*') + ') as value')
@@ -106,7 +105,7 @@ module.exports = Backbone.Collection.extend({
       // If dontFilterSelf enabled, remove the filter this collection's triggerField
       // (don't do this if key provided since that's usually done to see if a filter is set
       // rather than to perform an actual filter query)
-      if (! _.isEmpty(filters) && this.dontFilterSelf) {
+      if (!_.isEmpty(filters) && this.dontFilterSelf) {
         filters = _.omit(filters, this.triggerField)
       }
 

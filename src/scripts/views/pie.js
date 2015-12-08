@@ -1,12 +1,10 @@
 var $ = require('jquery')
 var _ = require('underscore')
-var Backbone = require('backbone')
 var Card = require('./card')
-var numberFormatter = require('../util/number-formatter')
 var LoaderOn = require('../util/loader').on
 var LoaderOff = require('../util/loader').off
 window.AmCharts_path = './'
-require('amcharts3')
+;require('amcharts3')
 require('amcharts3/amcharts/pie')
 require('amcharts3/amcharts/themes/light')
 require('amcharts3/amcharts/plugins/responsive/responsive')
@@ -22,8 +20,8 @@ module.exports = Card.extend({
       innerRadius: '40%',
       groupPercent: 1,
       balloonFunction: function (item, formattedText) {
-        var content = '<b>' + item.title + '</b><br> \
-					Total: ' + item.value.toLocaleString() + ' (' + parseFloat(item.percents.toFixed(2)) + '%)'
+        var content = '<b>' + item.title + '</b><br>' +
+					'Total: ' + item.value.toLocaleString() + ' (' + parseFloat(item.percents.toFixed(2)) + '%)'
         if (item.dataContext.filteredValue !== undefined) {
           content += '<br>Filtered Amount: ' + (+item.dataContext.filteredValue).toLocaleString()
         }
@@ -115,7 +113,7 @@ module.exports = Card.extend({
 
     // Map collection(s) into format expected by chart library
     this.collection.forEach(function (model) {
-      var label = model.get('label') + ''; // ensure it's a string
+      var label = model.get('label') + '' // ensure it's a string
       var data = {
         label: label,
         value: model.get('value')
@@ -187,7 +185,7 @@ module.exports = Card.extend({
       this.filteredCollection.fetch()
     }
     // If it's this chart and the filter is being removed, re-render the chart
-    else if (! data.expression) {
+    else if (!data.expression) {
       this.render()
     }
 

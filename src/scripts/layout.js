@@ -1,3 +1,4 @@
+/* global global */
 var $ = global.jQuery = require('jquery')
 var _ = global._ = require('underscore')
 var Backbone = require('backbone')
@@ -14,21 +15,21 @@ var fields = {}
 var params = window.location.search.substr(1) ? deparam(window.location.search.substr(1)) : {}
 
 // If no gist specified, redirect to homepage
-var redirect = function () { console.log('redirecting'); window.location.replace('http://vizwit.io'); }
-if (! params.gist) {
+var redirect = function () { window.location.replace('http://vizwit.io') }
+if (!params.gist) {
   redirect()
 }
 
 // Fetch gist
 (new Gist(null, {id: params.gist})).fetch({
   success: function (collection, response, options) {
-    if (! collection.length) return console.error('No files in gist', params.gist)
+    if (!collection.length) return console.error('No files in gist', params.gist)
 
     // If a file was provided, use that one; otherwise use the first file in the gist
     var model = params.file && collection.get(params.file) ? collection.get(params.file) : collection.at(0)
     var config = JSON.parse(model.get('content'))
 
-    if (! config.version || config.version !== '2') return redirect()
+    if (!config.version || config.version !== '2') return redirect()
 
     // Render header
     if (config.header) {
@@ -43,7 +44,7 @@ if (! params.gist) {
     }
 
     var container = $('#page-content')
-    var heightInterval = 60; // from gridstack.js
+    var heightInterval = 60 // from gridstack.js
     var current = {x: null, y: null}
     var row
 

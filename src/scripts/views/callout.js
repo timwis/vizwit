@@ -1,6 +1,3 @@
-var $ = require('jquery')
-var _ = require('underscore')
-var Backbone = require('backbone')
 var Card = require('./card')
 var LoaderOn = require('../util/loader').on
 var LoaderOff = require('../util/loader').off
