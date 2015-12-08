@@ -5,10 +5,12 @@
   "main": "src/scripts/vizwit.js",
   "scripts": {
     "start": "npm run watch & npm run server",
-    "build": "./node_modules/gulp/bin/gulp.js build",
-    "watch": "./node_modules/gulp/bin/gulp.js watch",
-    "server": "./node_modules/node-static/bin/cli.js ./dist",
-    "deploy": ". deploy.sh"
+    "build": "gulp build",
+    "watch": "gulp watch",
+    "server": "static ./dist",
+    "deploy": ". deploy.sh",
+    "lint": "standard | snazzy",
+    "test": "mocha test/collections"
   },
   "author": "timwis",
   "repository": {
@@ -54,6 +56,8 @@
     "npm-css": "^0.2.3",
     "proxyquire": "^1.7.2",
     "should": "^7.1.0",
+    "snazzy": "^2.0.1",
+    "standard": "^5.4.1",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.3.1"
