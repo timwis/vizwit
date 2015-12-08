@@ -2,6 +2,7 @@
 var sinon = require('sinon')
 var proxyquire = require('proxyquire')
 var $ = require('jquery')
+;require('should')
 
 var sampleData = require('../sample-data/gist.json')
 

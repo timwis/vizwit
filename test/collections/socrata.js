@@ -4,6 +4,7 @@ var proxyquire = require('proxyquire')
 var $ = require('jquery')
 var Socrata = require('../../src/scripts/collections/socrata')
 var deparam = require('node-jquery-deparam')
+;require('should')
 
 var sampleData = require('../sample-data/business-licenses.json')
 
