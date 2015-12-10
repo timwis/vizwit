@@ -1,10 +1,10 @@
 var _ = require('underscore')
-var L = require('mapbox.js')
+var L = require('leaflet')
 var Card = require('./card')
 var LoaderOn = require('../util/loader').on
 var LoaderOff = require('../util/loader').off
 var hashTable = require('../util/hash-table')
-var choropleth = require('leaflet-choropleth')
+;require('leaflet-choropleth')
 
 module.exports = Card.extend({
   initialize: function (options) {
@@ -61,21 +61,8 @@ module.exports = Card.extend({
   },
   addBoundaries: function () {
     if (this.boundaries.length && this.collection.length) {
-      // Create hash table for easy reference
-      var collectionValues = hashTable(this.collection.toJSON(), 'label', 'value')
-      var filteredCollectionValues = hashTable(this.filteredCollection.toJSON(), 'label', 'value')
-
-      // Add value from hash tables to geojson properties
-      var idAttribute = this.boundaries.idAttribute
-      var filtered = this.filteredCollection.getFilters().length
-      this.boundaries.forEach(function (item) {
-        var properties = item.get('properties')
-        properties.value = collectionValues[properties[idAttribute]]
-        if (filtered) {
-          properties.filteredValue = filteredCollectionValues[properties[idAttribute]]
-        }
-        item.set('properties', properties)
-      }, this)
+      // Put the dataset into the features
+      this.datasetInFeatures()
 
       // Remove any existing layers
       if (this.layer) {
@@ -84,6 +71,7 @@ module.exports = Card.extend({
 
       // Add choropleth layer
       var self = this
+      var filtered = this.filteredCollection.getFilters().length
       this.layer = L.choropleth(this.boundaries.toGeoJSON(), {
         valueProperty: filtered ? 'filteredValue' : 'value',
         scale: ['#d9e6ed', '#477a94'],
@@ -107,67 +95,26 @@ module.exports = Card.extend({
       this.map.fitBounds((L.featureGroup([this.layer])).getBounds())
     }
   },
-  _addBoundaries: function () {
-    var self = this
-    if (this.boundaries.length && this.collection.length) {
-      // Put the dataset into the features
-      this.datasetInFeatures()
-
-      // Setup a color range utility
-      var colorizeField = this.filteredCollection.getFilters().length ? 'filteredValue' : 'value'
-      var values = _.chain(this.boundaries.pluck('properties')).pluck(colorizeField).value()
-      var min = _.min(values)
-      var max = _.max(values)
-      var colorRange = new ColorRange('#d9e6ed', '#477a94', 5, min, max) // http://www.colorhexa.com/97bbcd
-
-      // Remove any existing layers
-      if (this.layer) {
-        this.map.removeLayer(this.layer)
-      }
-
-      this.layer = L.geoJson(this.boundaries.toGeoJSON(), {
-        style: function (feature) {
-          return {
-            fillColor: colorRange.getColor(feature.properties[colorizeField]),
-            color: '#fff',
-            weight: 2,
-            fillOpacity: 0.7
-          }
-        },
-        onEachFeature: function (feature, layer) {
-          layer.on({
-            mousemove: self.onMousemove,
-            mouseout: self.onMouseout,
-            click: self.onClick
-          })
-        }
-      }).addTo(this.map)
-
-      // Zoom to boundaries of new layer
-      this.map.fitBounds((L.featureGroup([this.layer])).getBounds())
-    }
-  },
   /**
    * Loop through features, find the matching dataset record, and put the specific field into the feature
    * Done via reference
    */
   datasetInFeatures: function () {
-    var self = this
-    this.boundaries.forEach(function (featureModel) {
-      var featureProperties = featureModel.get('properties')
+    // Create hash table for easy reference
+    var collectionValues = hashTable(this.collection.toJSON(), 'label', 'value')
+    var filteredCollectionValues = hashTable(this.filteredCollection.toJSON(), 'label', 'value')
 
-      // Find match in collection
-      var collectionMatch = self.collection.get(featureProperties[self.boundaries.idAttribute])
-      featureProperties.value = collectionMatch ? +collectionMatch.get('value') : 0
-
-      // If filters are set, find match on filteredCollection too
-      if (self.filteredCollection.getFilters().length) {
-        var filteredCollectionMatch = self.filteredCollection.length ? self.filteredCollection.get(featureProperties[self.boundaries.idAttribute]) : null
-        featureProperties.filteredValue = filteredCollectionMatch ? +filteredCollectionMatch.get('value') : 0
+    // Add value from hash tables to geojson properties
+    var idAttribute = this.boundaries.idAttribute
+    var filtered = this.filteredCollection.getFilters().length
+    this.boundaries.forEach(function (item) {
+      var properties = item.get('properties')
+      properties.value = collectionValues[properties[idAttribute]]
+      if (filtered) {
+        properties.filteredValue = filteredCollectionValues[properties[idAttribute]] || 0
       }
-
-      featureModel.set('properties', featureProperties)
-    })
+      item.set('properties', properties)
+    }, this)
   },
   onMousemove: function (e) {
     var layer = e.target
