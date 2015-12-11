@@ -1,7 +1,7 @@
 # VizWit
 [![Stories in Ready](https://badge.waffle.io/timwis/vizwit.svg?label=ready&title=Ready)](http://waffle.io/timwis/vizwit)
 
-![screencast](http://i.imgur.com/chIiqui.gifv)
+![screencast](http://i.imgur.com/chIiqui.gif)
 
 An interactive data visualization tool. VizWit uses a [JSON config file](https://gist.github.com/601224472a5d53cbb908) to generate 
 interactive charts that cross-filter one another. It currently supports data hosted in a Socrata Open Data portal, which includes 
