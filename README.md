@@ -1,11 +1,11 @@
 # VizWit
 [![Stories in Ready](https://badge.waffle.io/timwis/vizwit.svg?label=ready&title=Ready)](http://waffle.io/timwis/vizwit)
 
-An interactive data visualization tool.
+![screencast](http://i.imgur.com/chIiqui.gifv)
 
-VizWit uses a [JSON config file](https://gist.github.com/601224472a5d53cbb908) to generate interactive charts that
-cross-filter one another. It currently supports data hosted in a Socrata Open Data portal, which includes cities such
-as [Philadelphia](http://opendataphilly.org), [Chicago](https://data.cityofchicago.org/), [San Francisco](https://data.sfgov.org/)
+An interactive data visualization tool. VizWit uses a [JSON config file](https://gist.github.com/601224472a5d53cbb908) to generate 
+interactive charts that cross-filter one another. It currently supports data hosted in a Socrata Open Data portal, which includes 
+cities such as [Philadelphia](http://opendataphilly.org), [Chicago](https://data.cityofchicago.org/), [San Francisco](https://data.sfgov.org/)
 and many others. However, interactions with Socrata have been [abstracted](src/scripts/collections/socrata.js) to allow
 for other data providers to be written (in theory).
 
