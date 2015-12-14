@@ -68,8 +68,7 @@ module.exports = Backbone.View.extend({
         expression: self.parseExpression(filter.field, filter.expression)
       }
     })
-
-    this.$('.filters').empty().append(FiltersTemplate(parsedFilters)).toggle(parsedFilters.length)
+    this.$('.filters').empty().append(FiltersTemplate(parsedFilters)).toggle(parsedFilters.length ? true : false) // eslint-disable-line
   },
   parseExpression: function (field, expression) {
     if (expression['type'] === 'and' || expression['type'] === 'or') {
