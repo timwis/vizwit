@@ -37,6 +37,16 @@ VizWit cards are configured via JSON objects. The layout is defined using size a
 a free and easy service to share code snippets. The Gist ID is then used in the VizWit URL (ie. `vizw.it/?gist=a304ce8fac9c14dfbf16`). 
 This allows viewers to fork the Gist and build their own VizWit page.
 
+[Configuration Documentation](https://github.com/timwis/vizwit/wiki/Configuration)
+
+# Build your own
+Visit the [builder](http://builder.vizwit.io) and add a few cards, then configure them using the wrench icon. When you're finished, click
+**Export** and copy the configuration code into a new "gist" at [gist.github.com](http://gist.github.com). Once you click **Create**,
+you should see your new "gist" and the "gist id" of random characters in the URL (ie. `813483da72ac781f8b13`). Use that gist id to go to
+`http://vizw.it?gist=YOUR_GIST_ID`
+
+If you'd like to share what you've created, [post an issue](https://github.com/timwis/vizwit/issues/new) with a link to it.
+
 # Technology
 VizWit is a client-side JavaScript application. The application is structured using Backbone. Charts are built using AmCharts. Maps are
 built using Leaflet. Tables are built using DataTables. Tests (of which there are not nearly enough!) are run using Mocha. The interactive
