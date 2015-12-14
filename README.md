@@ -7,7 +7,7 @@ cities such as [Philadelphia](http://opendataphilly.org), [Chicago](https://data
 and many others. However, interactions with Socrata have been [abstracted](src/scripts/collections/socrata.js) to allow
 for other data providers to be written (in theory).
 
-![screencast](http://i.imgur.com/4gTXNFK.gif)
+[![screencast](http://i.imgur.com/4gTXNFK.gif)](http://vizw.it/?gist=51db593dc0537d1a3f05)
 
 # Features
 * Clicking on a chart cross-filters the other charts
