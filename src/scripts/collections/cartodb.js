@@ -18,32 +18,88 @@ module.exports = Backbone.Collection.extend({
     options = options || {}
     this.user = options.user || null
     //this.consumer = new soda.Consumer(this.domain)
-    //this.dataset = options.dataset || null
+    this.dataset = options.table || null
     this.sql = options.sql || null
-    //this.aggregateFunction = options.aggregateFunction || null
-    //this.aggregateField = options.aggregateField || null
-    //this.valueField = options.valueField || null
-    //this.groupBy = options.groupBy || null
+    this.aggregateFunction = options.aggregateFunction || null
+    this.aggregateField = options.aggregateField || null
+    this.valueField = options.valueField || null
+    this.groupBy = options.groupBy || null
     this.triggerField = options.triggerField || options.groupBy // TODO do we ever need groupBy?
     this.baseFilters = options.baseFilters || []
     this.filters = options.filters || {}
     this.apiKey = options.filters || {}
-    //this.order = options.order || null
-    //this.limit = options.limit || this.limit
-    //this.offset = options.offset || this.offset
+    this.order = options.order || null
+    this.limit = options.limit || this.limit
+    this.offset = options.offset || this.offset
 
     this.countModel = new Backbone.Model()
   },
 
   url: function () {
+    console.log('url!');
     var self = this
     var filters = this.baseFilters.concat(this.getFilters())
-    // TODO generate CartoDB url which generates JSON
+    var query = squel.select();
+    query.from(this.dataset);
+    console.log(query.toString)
+    // Aggregate & group by
+    console.log('45', this);
+    if (this.valueField || this.aggregateFunction || this.groupBy) {
+      // If valueField specified, use it as the value
+      if (this.valueField) {
+        query.field(this.valueField + ' as value')
+      }
+      // Otherwise use the aggregateFunction / aggregateField as the value
+      else {
+        // If group by was specified but no aggregate function, use count by default
+        if (!this.aggregateFunction) this.aggregateFunction = 'count'
+
+        // Aggregation
+        console.log('here!');
+        console.log(query.toString());
+        query.field(this.aggregateFunction + '(' + (this.aggregateField || '*') + ') as value')
+        console.log(query.toString());
+      }
+
+      // Group by
+      if (this.groupBy) {
+        query.field(this.groupBy + ' as label')
+          .group(this.groupBy)
+
+        // Order by (only if there will be multiple results)
+        query.order(this.order || 'value desc')
+      }
+    } else {
+      // Offset
+      if (this.offset) query.offset(this.offset)
+
+      // Order by
+      query.order(this.order || ':id')
+    }
+
     // Where
     if (filters.length) {
+      // Parse filter expressions into basic SQL strings and concatenate
+      filters = _.map(filters, function (filter) {
+        return self.parseExpression(filter.field, filter.expression)
+      }).join(' and ')
+      query.where(filters)
     }
-    return 'https://' + self.user +
-           '.cartodb.com/api/v2/sql?q=' + self.sql
+
+    // Full text search
+    if (this.search) query.q(this.search)
+
+    // Limit
+    query.limit(this.limit || '5000')
+    console.log('query',query);
+    //return query.getURL()
+
+    var output = 'https://' + self.user +
+           '.cartodb.com/api/v2/sql?q=' + query.toString();
+
+    console.log('output',output);
+
+    return output;
   },
 
   exportUrl: function () {
