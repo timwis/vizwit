@@ -3,6 +3,7 @@ var _ = require('underscore')
 var Backbone = require('backbone')
 
 var Providers = require('./providers')
+
 var GeoJSON = require('./collections/geojson')
 
 var Bar = require('./views/bar')
@@ -24,12 +25,14 @@ exports.init = function (container, config, opts) {
   if (!provider) console.error('Unrecognized provider %s', config.provider)
 
   // Initialize collection
+
   var collection = new provider.Collection(null, config)
   var filteredCollection = new provider.Collection(null, config)
 
   // If we haven't already created a fields collection for this dataset, create one
   if (opts.fields[config.dataset] === undefined) {
     opts.fields[config.dataset] = new provider.Fields(null, config)
+
     opts.fields[config.dataset].fetch()
   }
 
