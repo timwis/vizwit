@@ -18,7 +18,7 @@ module.exports = Backbone.Collection.extend({
     options = options || {}
     this.user = options.user || null
     //this.consumer = new soda.Consumer(this.domain)
-    this.dataset = options.table || null
+    this.dataset = options.dataset || null
     this.sql = options.sql || null
     this.aggregateFunction = options.aggregateFunction || null
     this.aggregateField = options.aggregateField || null
@@ -36,14 +36,14 @@ module.exports = Backbone.Collection.extend({
   },
 
   url: function () {
-    console.log('url!');
+    console.log(this);
     var self = this
     var filters = this.baseFilters.concat(this.getFilters())
+    console.log(filters);
     var query = squel.select();
     query.from(this.dataset);
-    console.log(query.toString)
     // Aggregate & group by
-    console.log('45', this);
+
     if (this.valueField || this.aggregateFunction || this.groupBy) {
       // If valueField specified, use it as the value
       if (this.valueField) {
@@ -55,10 +55,7 @@ module.exports = Backbone.Collection.extend({
         if (!this.aggregateFunction) this.aggregateFunction = 'count'
 
         // Aggregation
-        console.log('here!');
-        console.log(query.toString());
         query.field(this.aggregateFunction + '(' + (this.aggregateField || '*') + ') as value')
-        console.log(query.toString());
       }
 
       // Group by
@@ -67,14 +64,18 @@ module.exports = Backbone.Collection.extend({
           .group(this.groupBy)
 
         // Order by (only if there will be multiple results)
-        query.order(this.order || 'value desc')
+        console.log(this.order);
+
+        (this.order) ? query.order(this.order) : query.order('value',false);
       }
     } else {
       // Offset
       if (this.offset) query.offset(this.offset)
 
       // Order by
-      query.order(this.order || ':id')
+
+
+      (this.order) ? query.order(this.order) : query.order('cartodb_id');
     }
 
     // Where
@@ -91,13 +92,10 @@ module.exports = Backbone.Collection.extend({
 
     // Limit
     query.limit(this.limit || '5000')
-    console.log('query',query);
     //return query.getURL()
 
     var output = 'https://' + self.user +
            '.cartodb.com/api/v2/sql?q=' + query.toString();
-
-    console.log('output',output);
 
     return output;
   },
@@ -151,7 +149,7 @@ module.exports = Backbone.Collection.extend({
       return [
         field,
         expression.type,
-        enclose(expression.value)
+        expression.value
       ].join(' ')
     }
   },
