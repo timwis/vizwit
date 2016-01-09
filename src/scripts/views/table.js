@@ -81,11 +81,9 @@ module.exports = Card.extend({
                 tableData = _.map(collection.toJSON(), function(item){
                   item = _.each(item, function(v,k){
                     if(typeof v === 'object'){
-                      console.log(v)
                       item[k] = JSON.stringify(v)
                     }
                   })
-                  console.log(item)
                   return item
                 })
 
