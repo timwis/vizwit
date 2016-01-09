@@ -1,4 +1,6 @@
 # VizWit
+
+[![Join the chat at https://gitter.im/timwis/vizwit](https://badges.gitter.im/timwis/vizwit.svg)](https://gitter.im/timwis/vizwit?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Stories in Ready](https://badge.waffle.io/timwis/vizwit.svg?label=ready&title=Ready)](http://waffle.io/timwis/vizwit)
 
 An interactive data visualization tool. VizWit uses a [JSON config file](https://gist.github.com/601224472a5d53cbb908) to generate 
