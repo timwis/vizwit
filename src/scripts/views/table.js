@@ -55,6 +55,12 @@ module.exports = Card.extend({
         order = this.fields.sortKey ? [[this.fields.sortKey, this.fields.sortDir]] : null
       }
 
+      if(_.isArray(this.config.columnsToHide)){
+        columns = _.reject(columns, function(column){
+          return _.contains(this.config.columnsToHide,column.data)
+        }, this);
+      }
+
       // Initialize the table
       this.table = this.$('.card-content table').DataTable({
         columns: columns,
