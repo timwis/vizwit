@@ -43,6 +43,7 @@ module.exports = Card.extend({
       hideLabelsPercent: 5,
       creditsPosition: 'bottom-right',
       startDuration: 0,
+      addClassNames: true,
       responsive: {
         enabled: true,
         addDefaultRules: false,
