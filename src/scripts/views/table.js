@@ -1,3 +1,4 @@
+var _ = require('underscore')
 var Card = require('./card')
 var LoaderOn = require('../util/loader').on
 var LoaderOff = require('../util/loader').off
@@ -55,10 +56,10 @@ module.exports = Card.extend({
         order = this.fields.sortKey ? [[this.fields.sortKey, this.fields.sortDir]] : null
       }
 
-      if(_.isArray(this.config.columnsToHide)){
-        columns = _.reject(columns, function(column){
-          return _.contains(this.config.columnsToHide,column.data)
-        }, this);
+      if (_.isArray(this.config.columnsToHide)) {
+        columns = _.reject(columns, function (column) {
+          return _.contains(this.config.columnsToHide, column.data)
+        }, this)
       }
 
       // Initialize the table
