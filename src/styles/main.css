@@ -89,7 +89,8 @@ body {
 .amcharts-plot-area,
 .amcharts-graph-line,
 .amcharts-graph-column,
-.amcharts-guide-fill {
+.amcharts-guide-fill,
+.amcharts-pie-item {
 	cursor: pointer
 }
 
