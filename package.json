@@ -59,8 +59,10 @@
     "npm-css": "^0.2.3",
     "proxyquire": "^1.7.2",
     "should": "^7.1.0",
+    "sinon": "^1.17.2",
     "snazzy": "^2.0.1",
     "standard": "^5.4.1",
+    "tape": "^4.4.0",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.3.1"
