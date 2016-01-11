@@ -3,11 +3,11 @@ var sinon = require('sinon')
 var Backbone = require('backbone')
 var _ = require('underscore')
 var $ = require('jquery')
-var Socrata = require('../../src/scripts/collections/socrata')
-var SocrataFields = require('../../src/scripts/collections/socrata-fields')
-var Bar = require('../../src/scripts/views/bar')
+var Socrata = require('../../../src/scripts/collections/socrata')
+var SocrataFields = require('../../../src/scripts/collections/socrata-fields')
+var Bar = require('../../../src/scripts/views/bar')
 
-var sampleData = require('../sample-data/business-licenses.json')
+var sampleData = require('../../fixtures/business-licenses.json')
 
 var setup = function () {
   var config = {
@@ -35,17 +35,18 @@ var tearDown = function (fixtures) {
   fixtures.server.restore()
 }
 
-var respond = function (fixtures, data) {
-  fixtures.server.requests[0].respond(
+var respond = function (server, data) {
+  server.respond([
     200,
     {'Content-Type': 'application/json'},
     JSON.stringify(data)
-  )
+  ])
 }
 
-test('initializes amchart', function (t) {
+test('bar: initializes amchart', function (t) {
+  t.plan(1)
   var fixtures = setup()
-  respond(fixtures, sampleData)
+  respond(fixtures.server, sampleData)
   t.ok(fixtures.view.chart, 'creates a chart property')
   tearDown(fixtures)
 })
