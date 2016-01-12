@@ -143,9 +143,7 @@ module.exports = Card.extend({
       this.vent.trigger(this.collection.dataset + '.filter', {
         field: this.filteredCollection.triggerField
       })
-    }
-    // Otherwise, add the filter
-    else {
+    } else { // Otherwise, add the filter
       // If "Other" slice, get all of the currently displayed categories and send then as a NOT IN() query
       if (_.isEmpty(data.dataItem.dataContext)) {
         var shownCategories = []
@@ -163,9 +161,7 @@ module.exports = Card.extend({
             label: this.config.groupedTitle || 'Other'
           }
         })
-      }
-      // Otherwise fire a normal = query
-      else {
+      } else { // Otherwise fire a normal = query
         this.vent.trigger(this.collection.dataset + '.filter', {
           field: this.collection.triggerField,
           expression: {
@@ -184,9 +180,7 @@ module.exports = Card.extend({
     // Only re-fetch if it's another chart (since this view doesn't filter itself)
     if (data.field !== this.filteredCollection.triggerField) {
       this.filteredCollection.fetch()
-    }
-    // If it's this chart and the filter is being removed, re-render the chart
-    else if (!data.expression) {
+    } else if (!data.expression) { // If it's this chart and the filter is being removed, re-render the chart
       this.render()
     }
 
