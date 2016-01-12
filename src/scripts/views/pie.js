@@ -3,11 +3,12 @@ var _ = require('underscore')
 var Card = require('./card')
 var LoaderOn = require('../util/loader').on
 var LoaderOff = require('../util/loader').off
-window.AmCharts_path = './'
 ;require('amcharts3')
-require('amcharts3/amcharts/pie')
-require('amcharts3/amcharts/themes/light')
-require('amcharts3/amcharts/plugins/responsive/responsive')
+;require('amcharts3/amcharts/pie')
+;require('amcharts3/amcharts/themes/light')
+;require('amcharts3/amcharts/plugins/responsive/responsive')
+var AmCharts = window.AmCharts
+AmCharts.path = './'
 
 module.exports = Card.extend({
   settings: {
