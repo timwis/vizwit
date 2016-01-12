@@ -8,7 +8,7 @@
     "build": "gulp build",
     "watch": "gulp watch",
     "server": "static ./dist",
-    "deploy": ". deploy.sh",
+    "deploy": "bash ./deploy.sh",
     "lint": "standard | snazzy",
     "test": "npm run lint && browserify test/spec/*/*.js | tape-run | faucet"
   },
