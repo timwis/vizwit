@@ -72,10 +72,11 @@ inside of it. This way of embedding allows the VizWit library to only be loaded 
 element ([example](http://vizw.it/embed-demo.html)).
 
 # Development
+* After cloning the repo, use `npm install` to install dependencies
 * While developing, use `npm start` to automatically recompile when changes are made and run a web server at `localhost:8080`
-* Use `npm run lint` to verify code style
-* Use `npm test` to run unit tests
+* Use `npm test` to verify code style and run unit tests
 * Use `npm run build` for a production build, and then use `npm run deploy` to push the `dist/` directory to the `gh-pages` branch
+(first make the deploy script executable via `chmod +x deploy.sh`)
 
 # License
 [GPL-2](LICENSE.md) (create an issue if that doesn't work for someone)
