@@ -10,7 +10,7 @@
     "server": "static ./dist",
     "deploy": ". deploy.sh",
     "lint": "standard | snazzy",
-    "test": "browserify test/spec/*/*.js | tape-run | faucet"
+    "test": "npm run lint && browserify test/spec/*/*.js | tape-run | faucet"
   },
   "author": "timwis",
   "repository": {
@@ -42,7 +42,6 @@
   },
   "devDependencies": {
     "browserify": "^11.0.1",
-    "browserify-shim": "^3.8.10",
     "del": "^2.0.2",
     "gulp": "^3.9.0",
     "gulp-sourcemaps": "^1.5.2",
