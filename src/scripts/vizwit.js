@@ -1,3 +1,4 @@
+/*eslint no-new:0*/
 var _ = require('underscore')
 var Backbone = require('backbone')
 
