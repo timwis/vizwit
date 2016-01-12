@@ -1,6 +1,9 @@
 var _ = require('underscore')
 var BaseChart = require('./basechart')
 var numberFormatter = require('../util/number-formatter')
+;require('amcharts3')
+var AmCharts = window.AmCharts
+AmCharts.path = './'
 
 var trimLastCharacter = function (str) {
   return str.substr(0, str.length - 1)

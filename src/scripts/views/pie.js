@@ -3,11 +3,12 @@ var _ = require('underscore')
 var Card = require('./card')
 var LoaderOn = require('../util/loader').on
 var LoaderOff = require('../util/loader').off
-window.AmCharts_path = './'
 ;require('amcharts3')
-require('amcharts3/amcharts/pie')
-require('amcharts3/amcharts/themes/light')
-require('amcharts3/amcharts/plugins/responsive/responsive')
+;require('amcharts3/amcharts/pie')
+;require('amcharts3/amcharts/themes/light')
+;require('amcharts3/amcharts/plugins/responsive/responsive')
+var AmCharts = window.AmCharts
+AmCharts.path = './'
 
 module.exports = Card.extend({
   settings: {
@@ -143,9 +144,7 @@ module.exports = Card.extend({
       this.vent.trigger(this.collection.dataset + '.filter', {
         field: this.filteredCollection.triggerField
       })
-    }
-    // Otherwise, add the filter
-    else {
+    } else { // Otherwise, add the filter
       // If "Other" slice, get all of the currently displayed categories and send then as a NOT IN() query
       if (_.isEmpty(data.dataItem.dataContext)) {
         var shownCategories = []
@@ -163,9 +162,7 @@ module.exports = Card.extend({
             label: this.config.groupedTitle || 'Other'
           }
         })
-      }
-      // Otherwise fire a normal = query
-      else {
+      } else { // Otherwise fire a normal = query
         this.vent.trigger(this.collection.dataset + '.filter', {
           field: this.collection.triggerField,
           expression: {
@@ -184,9 +181,7 @@ module.exports = Card.extend({
     // Only re-fetch if it's another chart (since this view doesn't filter itself)
     if (data.field !== this.filteredCollection.triggerField) {
       this.filteredCollection.fetch()
-    }
-    // If it's this chart and the filter is being removed, re-render the chart
-    else if (!data.expression) {
+    } else if (!data.expression) { // If it's this chart and the filter is being removed, re-render the chart
       this.render()
     }
 

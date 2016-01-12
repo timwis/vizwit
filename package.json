@@ -10,7 +10,7 @@
     "server": "static ./dist",
     "deploy": ". deploy.sh",
     "lint": "standard | snazzy",
-    "test": "mocha test/collections"
+    "test": "npm run lint && browserify test/spec/*/*.js | tape-run | faucet"
   },
   "author": "timwis",
   "repository": {
@@ -42,7 +42,6 @@
   },
   "devDependencies": {
     "browserify": "^11.0.1",
-    "browserify-shim": "^3.8.10",
     "del": "^2.0.2",
     "gulp": "^3.9.0",
     "gulp-sourcemaps": "^1.5.2",
@@ -50,16 +49,16 @@
     "gulp-util": "^3.0.6",
     "lodash.assign": "^3.2.0",
     "merge-stream": "^1.0.0",
-    "mocha": "^2.3.3",
     "node-jquery-deparam": "0.0.3",
     "node-sass": "^3.2.0",
     "node-static": "^0.7.7",
     "node-underscorify": "0.0.14",
     "npm-css": "^0.2.3",
-    "proxyquire": "^1.7.2",
-    "should": "^7.1.0",
+    "sinon": "^1.17.2",
     "snazzy": "^2.0.1",
     "standard": "^5.4.1",
+    "tape": "^4.4.0",
+    "tape-run": "^2.1.1",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.3.1"

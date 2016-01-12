@@ -161,9 +161,7 @@ module.exports = Card.extend({
       this.vent.trigger(this.filteredCollection.dataset + '.filter', {
         field: this.filteredCollection.triggerField
       })
-    }
-    // Otherwise, add the filter
-    else {
+    } else { // Otherwise, add the filter
       // Trigger the global event handler with this filter
       this.vent.trigger(this.filteredCollection.dataset + '.filter', {
         field: this.collection.triggerField,

@@ -125,9 +125,7 @@ module.exports = BaseChart.extend({
     // If chart cursor is enabled (on larger screens) listen to clicks on it
     if (this.chart.chartCursor.enabled) {
       this.delegateEvents(_.extend({'click .card-content': 'onClickCursor'}, this.events))
-    }
-    // Otherwise listen to clicks on the bars
-    else {
+    } else { // Otherwise listen to clicks on the bars
       this.chart.addListener('clickGraphItem', this.onClickBar)
     }
 
@@ -179,9 +177,7 @@ module.exports = BaseChart.extend({
       this.vent.trigger(this.collection.dataset + '.filter', {
         field: this.filteredCollection.triggerField
       })
-    }
-    // Otherwise, add the filter
-    else {
+    } else { // Otherwise, add the filter
       // Trigger the global event handler with this filter
       this.vent.trigger(this.collection.dataset + '.filter', {
         field: this.collection.triggerField,
