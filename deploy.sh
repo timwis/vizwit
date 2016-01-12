@@ -1,7 +1,8 @@
 #!/bin/bash
 set -e && \
+npm run build && \
 cd ./dist && \
-remote_repo=${GITHUB_TOKEN_URL:-`git config remote.origin.url`} && \
+remote_repo=${GITHUB_URL:-`git config remote.origin.url`} && \
 remote_branch="gh-pages" && \
 git init && \
 git add . && \

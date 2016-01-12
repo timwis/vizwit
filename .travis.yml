@@ -11,7 +11,7 @@ install:
   - npm install
 deploy:
   provider: script
-  script: npm run build && npm run deploy
+  script: npm run deploy
   skip_cleanup: true
 env:
   global:
