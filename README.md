@@ -2,6 +2,8 @@
 
 [![Join the chat at https://gitter.im/timwis/vizwit](https://badges.gitter.im/timwis/vizwit.svg)](https://gitter.im/timwis/vizwit?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Stories in Ready](https://badge.waffle.io/timwis/vizwit.svg?label=ready&title=Ready)](http://waffle.io/timwis/vizwit)
+[![Build Status](https://travis-ci.org/timwis/vizwit.svg?branch=master)](https://travis-ci.org/timwis/vizwit)
+[![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
 
 An interactive data visualization tool. VizWit uses a [JSON config file](https://gist.github.com/601224472a5d53cbb908) to generate 
 interactive charts that cross-filter one another. It currently supports data hosted in a Socrata Open Data portal, which includes 
