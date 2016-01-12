@@ -80,3 +80,5 @@ element ([example](http://vizw.it/embed-demo.html)).
 
 # License
 [GPL-2](LICENSE.md) (create an issue if that doesn't work for someone)
+
+Testing travis config with a pull request
