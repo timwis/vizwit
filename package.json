@@ -10,7 +10,7 @@
     "server": "static ./dist",
     "deploy": "bash ./deploy.sh",
     "lint": "standard | snazzy",
-    "test": "npm run lint && browserify test/spec/*/*.js | tape-run | faucet"
+    "test": "npm run lint && browserify test/spec/*/*.js | tape-run | tap-spec"
   },
   "author": "timwis",
   "repository": {
@@ -39,7 +39,6 @@
   "devDependencies": {
     "browserify": "^11.0.1",
     "del": "^2.0.2",
-    "faucet": "0.0.1",
     "gulp": "^3.9.0",
     "gulp-util": "^3.0.6",
     "merge-stream": "^1.0.0",
@@ -49,6 +48,7 @@
     "sinon": "^1.17.2",
     "snazzy": "^2.0.1",
     "standard": "^5.4.1",
+    "tap-spec": "^4.1.1",
     "tape": "^4.4.0",
     "tape-run": "^2.1.1",
     "vinyl-buffer": "^1.0.0",
