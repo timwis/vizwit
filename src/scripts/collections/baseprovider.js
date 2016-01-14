@@ -83,5 +83,8 @@ module.exports = Backbone.Collection.extend({
   },
   setLimit: function (newValue) {
     this.options.limit = newValue
+  },
+  unsetRecordCount: function () {
+    this.recordCount = null
   }
 })

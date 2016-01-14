@@ -89,8 +89,5 @@ module.exports = BaseProvider.extend({
         self.recordCount = response.length ? response[0].value : 0
         return self.recordCount
       })
-  },
-  unsetRecordCount: function () {
-    this.recordCount = null
   }
 })
