@@ -43,7 +43,8 @@ module.exports = Backbone.Collection.extend({
       // If valueField specified, use it as the value
       if (this.valueField) {
         query.select(this.valueField + ' as value')
-      } else { // Otherwise use the aggregateFunction / aggregateField as the value
+      // Otherwise use the aggregateFunction / aggregateField as the value
+      } else {
         // If group by was specified but no aggregate function, use count by default
         if (!this.aggregateFunction) this.aggregateFunction = 'count'
 

@@ -32,7 +32,8 @@ module.exports = Card.extend({
     // If table is already initialized, clear it and add the collection to it
     if (this.table) {
       this.$el.DataTable().clear().rows.add(this.collection.toJSON()).draw()
-    } else { // Otherwise, initialize the table
+    // Otherwise, initialize the table
+    } else {
       // Map the array of columns to the expected format
       var columns, order
 
