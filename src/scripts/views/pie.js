@@ -71,7 +71,7 @@ module.exports = Card.extend({
     this.filteredCollection = options.filteredCollection || null
 
     // Listen to vent filters
-    this.listenTo(this.vent, this.collection.dataset + '.filter', this.onFilter)
+    this.listenTo(this.vent, this.collection.getDataset() + '.filter', this.onFilter)
 
     // Listen to collection
     this.listenTo(this.collection, 'sync', this.render)
@@ -99,7 +99,7 @@ module.exports = Card.extend({
 
     // If "other" slice is selected, set other slice to be pulled out
     var otherSliceTitle = config.groupedTitle || 'Other'
-    var filter = this.filteredCollection.getFilters(this.filteredCollection.triggerField)
+    var filter = this.filteredCollection.getFilters(this.filteredCollection.getTriggerField())
     if (filter && (filter.expression.label || filter.expression.value) === otherSliceTitle) {
       config.groupedPulled = true
     }
@@ -111,7 +111,7 @@ module.exports = Card.extend({
   formatChartData: function () {
     var self = this
     var chartData = []
-    var filter = this.filteredCollection.getFilters(this.filteredCollection.triggerField)
+    var filter = this.filteredCollection.getFilters(this.filteredCollection.getTriggerField())
 
     // Map collection(s) into format expected by chart library
     this.collection.forEach(function (model) {
@@ -139,10 +139,10 @@ module.exports = Card.extend({
     var category = data.dataItem.title
 
     // If already selected, clear the filter
-    var filter = this.filteredCollection.getFilters(this.filteredCollection.triggerField)
+    var filter = this.filteredCollection.getFilters(this.filteredCollection.getTriggerField())
     if (filter && (filter.expression.value === category || filter.expression.label === category)) {
-      this.vent.trigger(this.collection.dataset + '.filter', {
-        field: this.filteredCollection.triggerField
+      this.vent.trigger(this.collection.getDataset() + '.filter', {
+        field: this.filteredCollection.getTriggerField()
       })
     // Otherwise, add the filter
     } else {
@@ -155,8 +155,8 @@ module.exports = Card.extend({
           }
         })
 
-        this.vent.trigger(this.collection.dataset + '.filter', {
-          field: this.collection.triggerField,
+        this.vent.trigger(this.collection.getDataset() + '.filter', {
+          field: this.collection.getTriggerField(),
           expression: {
             'type': 'not in',
             value: shownCategories,
@@ -165,8 +165,8 @@ module.exports = Card.extend({
         })
       // Otherwise fire a normal = query
       } else {
-        this.vent.trigger(this.collection.dataset + '.filter', {
-          field: this.collection.triggerField,
+        this.vent.trigger(this.collection.getDataset() + '.filter', {
+          field: this.collection.getTriggerField(),
           expression: {
             'type': '=',
             value: category
@@ -181,7 +181,7 @@ module.exports = Card.extend({
     this.filteredCollection.setFilter(data)
 
     // Only re-fetch if it's another chart (since this view doesn't filter itself)
-    if (data.field !== this.filteredCollection.triggerField) {
+    if (data.field !== this.filteredCollection.getTriggerField()) {
       this.filteredCollection.fetch()
     // If it's this chart and the filter is being removed, re-render the chart
     } else if (!data.expression) {
