@@ -27,13 +27,12 @@ module.exports = Backbone.Collection.extend({
     this.baseFilters = options.baseFilters || []
     this.filters = options.filters || {}
     this.order = options.order || null
-    this.limit = options.limit || this.limit
-    this.offset = options.offset || this.offset
+    this.limit = options.limit || null
+    this.offset = options.offset || null
 
     this.countModel = new Backbone.Model()
   },
   url: function () {
-    var self = this
     var filters = this.baseFilters.concat(this.getFilters())
     var query = this.consumer.query()
       .withDataset(this.dataset)
@@ -72,8 +71,8 @@ module.exports = Backbone.Collection.extend({
     if (filters.length) {
       // Parse filter expressions into basic SQL strings and concatenate
       filters = _.map(filters, function (filter) {
-        return self.parseExpression(filter.field, filter.expression)
-      }).join(' and ')
+        return this.parseExpression(filter.field, filter.expression)
+      }, this).join(' and ')
       query.where(filters)
     }
 
