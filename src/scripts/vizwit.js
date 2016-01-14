@@ -56,8 +56,8 @@ exports.init = function (container, config, opts) {
       })
       break
     case 'pie':
-      collection.dontFilterSelf = true
-      filteredCollection.dontFilterSelf = true
+      collection.setDontFilterSelf(true)
+      filteredCollection.setDontFilterSelf(true)
       new Pie({
         config: config,
         el: container,
