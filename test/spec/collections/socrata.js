@@ -88,7 +88,7 @@ test('socrata: query: should free text search', function (t) {
     dataset: 'xqx5-8hwx'
   })
 
-  collection.search = 'foo'
+  collection.setSearch('foo')
 
   var params = deparam(collection.url().split('?')[1])
   t.equal(params.$q, 'foo')

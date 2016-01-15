@@ -13,7 +13,7 @@ module.exports = Card.extend({
     this.vent = options.vent || null
 
     // Listen to vent filters
-    this.listenTo(this.vent, this.collection.dataset + '.filter', this.onFilter)
+    this.listenTo(this.vent, this.collection.getDataset() + '.filter', this.onFilter)
 
     // Loading indicators
     this.listenTo(this.collection, 'request', LoaderOn)
@@ -68,13 +68,13 @@ module.exports = Card.extend({
         scrollX: true,
         serverSide: true,
         ajax: function (data, callback, settings) {
-          self.collection.search = data.search.value ? data.search.value : null
+          self.collection.setSearch(data.search.value ? data.search.value : null)
 
           self.collection.getRecordCount().done(function (recordCount) {
             self.recordsTotal = self.recordsTotal || recordCount
-            self.collection.offset = data.start || 0
-            self.collection.limit = data.length || 25
-            self.collection.order = data.columns[data.order[0].column].data + ' ' + data.order[0].dir
+            self.collection.setOffset(data.start || 0)
+            self.collection.setLimit(data.length || 25)
+            self.collection.setOrder(data.columns[data.order[0].column].data + ' ' + data.order[0].dir)
             self.collection.fetch({
               success: function (collection, response, options) {
                 callback({
@@ -92,7 +92,7 @@ module.exports = Card.extend({
   // When another chart is filtered, filter this collection
   onFilter: function (data) {
     this.collection.setFilter(data)
-    this.collection.recordCount = null
+    this.collection.unsetRecordCount()
     this.table.ajax.reload()
     this.renderFilters()
   }

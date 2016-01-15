@@ -2,8 +2,7 @@
 var _ = require('underscore')
 var Backbone = require('backbone')
 
-var Socrata = require('./collections/socrata')
-var SocrataFields = require('./collections/socrata-fields')
+var Providers = require('./providers')
 var GeoJSON = require('./collections/geojson')
 
 var Bar = require('./views/bar')
@@ -19,13 +18,18 @@ exports.init = function (container, config, opts) {
   opts.vent = opts.vent || _.clone(Backbone.Events)
   opts.fields = opts.fields || {}
 
+  // Get provider
+  if (!config.provider) config.provider = 'socrata' // set default for backwards compatibility
+  var provider = Providers[config.provider.toLowerCase()]
+  if (!provider) console.error('Unrecognized provider %s', config.provider)
+
   // Initialize collection
-  var collection = new Socrata(null, config)
-  var filteredCollection = new Socrata(null, config)
+  var collection = new provider.Collection(null, config)
+  var filteredCollection = new provider.Collection(null, config)
 
   // If we haven't already created a fields collection for this dataset, create one
   if (opts.fields[config.dataset] === undefined) {
-    opts.fields[config.dataset] = new SocrataFields(null, config)
+    opts.fields[config.dataset] = new provider.Fields(null, config)
     opts.fields[config.dataset].fetch()
   }
 
@@ -52,8 +56,8 @@ exports.init = function (container, config, opts) {
       })
       break
     case 'pie':
-      collection.dontFilterSelf = true
-      filteredCollection.dontFilterSelf = true
+      collection.setDontFilterSelf(true)
+      filteredCollection.setDontFilterSelf(true)
       new Pie({
         config: config,
         el: container,
