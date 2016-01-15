@@ -7,7 +7,7 @@ var _ = require('underscore')
 var model = Backbone.Model.extend({
   idAttribute: 'label'
 })
-
+    
 var enclose = function (val) {
   return typeof val === 'string' && val != 'true' && val != 'false' ? "'" + val + "'" : val // eslint-disable-line
 }

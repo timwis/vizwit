@@ -13,7 +13,7 @@ var Choropleth = require('./views/choropleth')
 var Pie = require('./views/pie')
 var Callout = require('./views/callout')
 
-exports.init = function (container, config, opts) {
+exports.init = function (container, config, opts) { 
   // If globals weren't passed, create them within this scope
   opts = opts || {}
   opts.vent = opts.vent || _.clone(Backbone.Events)
