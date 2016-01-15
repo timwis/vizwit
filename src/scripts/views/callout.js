@@ -10,7 +10,6 @@ module.exports = Card.extend({
     Card.prototype.initialize.apply(this, arguments)
 
     // Save options to view
-    options = options || {}
     this.vent = options.vent || null
     this.filteredCollection = options.filteredCollection || null
 
