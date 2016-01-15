@@ -2,7 +2,7 @@ var Backbone = require('backbone')
 
 module.exports = Backbone.Collection.extend({
   initialize: function (models, options) {
-    options = options || {}
+    this.options = options || {}
     this.url = options.boundaries || this.url || null
     this.label = options.boundariesLabel || 'objectid'
     this.idAttribute = options.boundariesId || 'objectid'

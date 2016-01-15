@@ -52,7 +52,8 @@ module.exports = Card.extend({
         })
       } else {
         columns = this.fields.toJSON()
-        order = this.fields.sortKey ? [[this.fields.sortKey, this.fields.sortDir]] : null
+        var sortKey = this.fields.getSortKey()
+        order = sortKey ? [[sortKey, this.fields.getSortDir()]] : null
       }
 
       if (_.isArray(this.config.columnsToHide)) {

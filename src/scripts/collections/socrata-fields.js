@@ -14,24 +14,19 @@ module.exports = Backbone.Collection.extend({
   model: model,
   comparator: 'position',
   initialize: function (models, options) {
-    // Save config to collection
-    options = options || {}
-    this.domain = options.domain || null
-    this.dataset = options.dataset || null
+    this.options = options || {}
   },
   url: function () {
     return [
       'https://',
-      this.domain,
+      this.options.domain,
       '/api',
       '/views',
-      '/' + this.dataset,
+      '/' + this.options.dataset,
       '.json'
     ].join('')
   },
   parse: function (response) {
-    var self = this
-
     // Parse out sort field and order
     var sortId, sortDir
     if (response.query && response.query.orderBys && response.query.orderBys.length && response.query.orderBys[0].expression) {
@@ -41,15 +36,21 @@ module.exports = Backbone.Collection.extend({
 
     return response.columns.map(function (row, key) {
       if (sortId && row.id === sortId) {
-        self.sortKey = key
-        self.sortDir = sortDir
+        this.sortKey = key
+        this.sortDir = sortDir
       }
       return {
         data: row.fieldName,
         title: row.name,
-        'type': self.typeMap[row.renderTypeName] || self.typeMap['default'],
+        'type': this.typeMap[row.renderTypeName] || this.typeMap['default'],
         defaultContent: ''
       }
-    })
+    }, this)
+  },
+  getSortKey: function () {
+    return this.sortKey
+  },
+  getSortDir: function () {
+    return this.sortDir
   }
 })
