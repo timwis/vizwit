@@ -22,7 +22,7 @@ for other data providers to be written (in theory).
 * Callout metric
 * Scrolling bar charts
 * Responsive / mobile-friendly
-* [Embeddable](http://vizw.it/embed-demo.html)
+* [Embeddable](http://vizw.it/embed-demo.html) (and cross-filtering still works)
 * Free-text search on table
 * 100% client-side
 * Open source / extendable
