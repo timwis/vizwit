@@ -38,7 +38,7 @@ module.exports = BaseChart.extend({
       }
     ],
     chart: {
-      'type': 'serial',
+      type: 'serial',
       theme: 'light',
       responsive: {
         enabled: true
@@ -115,15 +115,15 @@ module.exports = BaseChart.extend({
     this.vent.trigger(this.collection.getDataset() + '.filter', {
       field: field,
       expression: {
-        'type': 'and',
+        type: 'and',
         value: [
           {
-            'type': '>=',
+            type: '>=',
             value: startIso,
             label: startFriendly
           },
           {
-            'type': '<=',
+            type: '<=',
             value: endIso,
             label: endFriendly
           }

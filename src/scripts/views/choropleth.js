@@ -167,7 +167,7 @@ module.exports = Card.extend({
       this.vent.trigger(this.filteredCollection.getDataset() + '.filter', {
         field: this.collection.getTriggerField(),
         expression: {
-          'type': '=',
+          type: '=',
           value: clickedId,
           label: clickedLabel
         }

@@ -13,7 +13,7 @@ AmCharts.path = './'
 module.exports = Card.extend({
   settings: {
     chart: {
-      'type': 'pie',
+      type: 'pie',
       theme: 'light',
       titleField: 'label',
       valueField: 'value',
@@ -158,7 +158,7 @@ module.exports = Card.extend({
         this.vent.trigger(this.collection.getDataset() + '.filter', {
           field: this.collection.getTriggerField(),
           expression: {
-            'type': 'not in',
+            type: 'not in',
             value: shownCategories,
             label: this.config.groupedTitle || 'Other'
           }
@@ -168,7 +168,7 @@ module.exports = Card.extend({
         this.vent.trigger(this.collection.getDataset() + '.filter', {
           field: this.collection.getTriggerField(),
           expression: {
-            'type': '=',
+            type: '=',
             value: category
           }
         })

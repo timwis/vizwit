@@ -43,13 +43,13 @@ module.exports = Backbone.Collection.extend({
     return _.values(filters)
   },
   parseExpression: function (field, expression) {
-    if (expression['type'] === 'and' || expression['type'] === 'or') {
+    if (expression.type === 'and' || expression.type === 'or') {
       return [
         this.parseExpression(field, expression.value[0]),
         expression.type,
         this.parseExpression(field, expression.value[1])
       ].join(' ')
-    } else if (expression['type'] === 'in' || expression['type'] === 'not in') {
+    } else if (expression.type === 'in' || expression.type === 'not in') {
       return [
         field,
         expression.type,

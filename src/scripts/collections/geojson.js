@@ -12,8 +12,8 @@ module.exports = Backbone.Collection.extend({
   },
   toGeoJSON: function () {
     return {
-      'type': 'FeatureCollection',
-      'features': this.toJSON()
+      type: 'FeatureCollection',
+      features: this.toJSON()
     }
   }
 })

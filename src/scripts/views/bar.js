@@ -7,7 +7,7 @@ module.exports = BaseChart.extend({
   settings: {
     graphs: [
       {
-        'type': 'column',
+        type: 'column',
         title: 'Data',
         valueField: 'value',
         fillAlphas: 0.6,
@@ -16,7 +16,7 @@ module.exports = BaseChart.extend({
         balloonText: '<b>[[category]]</b><br>Total: [[value]]'
       },
       {
-        'type': 'column',
+        type: 'column',
         title: 'Filtered Data',
         valueField: 'filteredValue',
         fillAlphas: 0.4,
@@ -30,7 +30,7 @@ module.exports = BaseChart.extend({
       }
     ],
     chart: {
-      'type': 'serial',
+      type: 'serial',
       theme: 'light',
       responsive: {
         enabled: true,
@@ -184,7 +184,7 @@ module.exports = BaseChart.extend({
       this.vent.trigger(this.collection.getDataset() + '.filter', {
         field: this.collection.getTriggerField(),
         expression: {
-          'type': '=',
+          type: '=',
           value: category
         }
       })
