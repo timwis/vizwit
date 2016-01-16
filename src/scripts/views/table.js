@@ -35,7 +35,7 @@ module.exports = Card.extend({
     // Otherwise, initialize the table
     } else {
       // Map the array of columns to the expected format
-      var columns, order
+      var columns
 
       if (this.config.columns) {
         columns = this.config.columns.map(function (column) {
@@ -52,8 +52,6 @@ module.exports = Card.extend({
         })
       } else {
         columns = this.fields.toJSON()
-        var sortKey = this.fields.getSortKey()
-        order = sortKey ? [[sortKey, this.fields.getSortDir()]] : null
       }
 
       if (_.isArray(this.config.columnsToHide)) {
@@ -65,7 +63,7 @@ module.exports = Card.extend({
       // Initialize the table
       this.table = this.$('.card-content table').DataTable({
         columns: columns,
-        order: order || [[0, 'asc']],
+        order: [],
         scrollX: true,
         serverSide: true,
         ajax: function (data, callback, settings) {
@@ -75,7 +73,9 @@ module.exports = Card.extend({
             self.recordsTotal = self.recordsTotal || recordCount
             self.collection.setOffset(data.start || 0)
             self.collection.setLimit(data.length || 25)
-            self.collection.setOrder(data.columns[data.order[0].column].data + ' ' + data.order[0].dir)
+            if (data.order.length) {
+              self.collection.setOrder(data.columns[data.order[0].column].data + ' ' + data.order[0].dir)
+            }
             self.collection.fetch({
               success: function (collection, response, options) {
                 callback({
