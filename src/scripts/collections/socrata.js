@@ -1,14 +1,17 @@
 var $ = require('jquery')
 var _ = require('underscore')
 var Backbone = require('backbone')
+var Promise = require('bluebird')
 var BaseProvider = require('./baseprovider')
 var soda = require('soda-js')
+var SocrataFields = require('./socrata-fields')
 
 module.exports = BaseProvider.extend({
   initialize: function (models, options) {
     BaseProvider.prototype.initialize.apply(this, arguments)
     this.consumer = new soda.Consumer(this.options.domain)
     this.countModel = new Backbone.Model()
+    this.fields = new SocrataFields(null, this.options)
   },
   url: function () {
     var filters = this.options.baseFilters.concat(this.getFilters())
@@ -89,5 +92,20 @@ module.exports = BaseProvider.extend({
         self.recordCount = response.length ? response[0].value : 0
         return self.recordCount
       })
+  },
+  getFields: function () {
+    var self = this
+    // TODO: Is there a better way to detect whether it's been fetched?
+    //  (technically it could just have a 0 length after being fetched)
+    if (this.fields.length) {
+      return Promise.resolve(this.fields)
+    } else {
+      return new Promise(function (resolve, reject) {
+        self.fields.fetch({
+          success: resolve,
+          error: reject
+        })
+      })
+    }
   }
 })
