@@ -16,7 +16,7 @@ exports.init = function (container, config, opts) {
   // If globals weren't passed, create them within this scope
   opts = opts || {}
   opts.vent = opts.vent || _.clone(Backbone.Events)
-  opts.fieldCache = opts.fieldCache || {}
+  opts.fieldsCache = opts.fieldsCache || {}
 
   // Get provider
   if (!config.provider) config.provider = 'socrata' // set default for backwards compatibility
@@ -26,11 +26,11 @@ exports.init = function (container, config, opts) {
   // Initialize collection
   var collection = new provider.Collection(null, {
     config: config,
-    fieldCache: opts.fieldCache
+    fieldsCache: opts.fieldsCache
   })
   var filteredCollection = new provider.Collection(null, {
     config: config,
-    fieldCache: opts.fieldCache
+    fieldsCache: opts.fieldsCache
   })
 
   // Initialize view
