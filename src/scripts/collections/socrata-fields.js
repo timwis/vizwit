@@ -6,10 +6,10 @@ var model = Backbone.Model.extend({
 
 module.exports = Backbone.Collection.extend({
   typeMap: {
-    'calendar_date': 'date',
-    'number': 'num',
-    'money': 'num',
-    'default': 'string'
+    calendar_date: 'date',
+    number: 'num',
+    money: 'num',
+    default: 'string'
   },
   model: model,
   comparator: 'position',
@@ -31,7 +31,7 @@ module.exports = Backbone.Collection.extend({
       return {
         data: row.fieldName,
         title: row.name,
-        'type': this.typeMap[row.renderTypeName] || this.typeMap['default'],
+        type: this.typeMap[row.renderTypeName] || this.typeMap.default,
         defaultContent: ''
       }
     }, this)
