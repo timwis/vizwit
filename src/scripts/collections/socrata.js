@@ -9,43 +9,43 @@ var SocrataFields = require('./socrata-fields')
 module.exports = BaseProvider.extend({
   initialize: function (models, options) {
     BaseProvider.prototype.initialize.apply(this, arguments)
-    this.consumer = new soda.Consumer(this.options.domain)
+    this.consumer = new soda.Consumer(this.config.domain)
     this.countModel = new Backbone.Model()
-    this.fields = new SocrataFields(null, this.options)
+    this.fields = new SocrataFields(null, this.config)
   },
   url: function () {
-    var filters = this.options.baseFilters.concat(this.getFilters())
+    var filters = this.config.baseFilters.concat(this.getFilters())
     var query = this.consumer.query()
-      .withDataset(this.options.dataset)
+      .withDataset(this.config.dataset)
 
     // Aggregate & group by
-    if (this.options.valueField || this.options.aggregateFunction || this.options.groupBy) {
+    if (this.config.valueField || this.config.aggregateFunction || this.config.groupBy) {
       // If valueField specified, use it as the value
-      if (this.options.valueField) {
-        query.select(this.options.valueField + ' as value')
+      if (this.config.valueField) {
+        query.select(this.config.valueField + ' as value')
       // Otherwise use the aggregateFunction / aggregateField as the value
       } else {
         // If group by was specified but no aggregate function, use count by default
-        if (!this.options.aggregateFunction) this.options.aggregateFunction = 'count'
+        if (!this.config.aggregateFunction) this.config.aggregateFunction = 'count'
 
         // Aggregation
-        query.select(this.options.aggregateFunction + '(' + (this.options.aggregateField || '*') + ') as value')
+        query.select(this.config.aggregateFunction + '(' + (this.config.aggregateField || '*') + ') as value')
       }
 
       // Group by
-      if (this.options.groupBy) {
-        query.select(this.options.groupBy + ' as label')
-          .group(this.options.groupBy)
+      if (this.config.groupBy) {
+        query.select(this.config.groupBy + ' as label')
+          .group(this.config.groupBy)
 
         // Order by (only if there will be multiple results)
-        query.order(this.options.order || 'value desc')
+        query.order(this.config.order || 'value desc')
       }
     } else {
       // Offset
-      if (this.options.offset) query.offset(this.options.offset)
+      if (this.config.offset) query.offset(this.config.offset)
 
       // Order by
-      query.order(this.options.order || ':id')
+      query.order(this.config.order || ':id')
     }
 
     // Where
@@ -58,33 +58,33 @@ module.exports = BaseProvider.extend({
     }
 
     // Full text search
-    if (this.options.search) query.q(this.options.search)
+    if (this.config.search) query.q(this.config.search)
 
     // Limit
-    query.limit(this.options.limit || '5000')
+    query.limit(this.config.limit || '5000')
 
     return query.getURL()
   },
   exportUrl: function () {
-    return this.url().replace(this.options.dataset + '.json', this.options.dataset + '.csv')
+    return this.url().replace(this.config.dataset + '.json', this.config.dataset + '.csv')
   },
   getRecordCount: function () {
     var self = this
 
     // Save current values
-    var oldAggregateFunction = this.options.aggregateFunction
-    var oldGroupBy = this.options.groupBy
+    var oldAggregateFunction = this.config.aggregateFunction
+    var oldGroupBy = this.config.groupBy
 
     // Change values in order to get the URL
-    this.options.aggregateFunction = 'count'
-    this.options.groupBy = null
+    this.config.aggregateFunction = 'count'
+    this.config.groupBy = null
 
     // Get the URL
     this.countModel.url = this.url()
 
     // Set the values back
-    this.options.aggregateFunction = oldAggregateFunction
-    this.options.groupBy = oldGroupBy
+    this.config.aggregateFunction = oldAggregateFunction
+    this.config.groupBy = oldGroupBy
 
     // If recordCount is already set, return it (as a deferred); otherwise fetch it
     return self.recordCount ? ($.Deferred()).resolve(self.recordCount) : this.countModel.fetch()
