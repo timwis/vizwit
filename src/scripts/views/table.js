@@ -19,13 +19,7 @@ module.exports = Card.extend({
     this.listenTo(this.collection, 'request', LoaderOn)
     this.listenTo(this.collection, 'sync', LoaderOff)
 
-    // If columns were defined in the config, go straight to render
-    // otherwise, fetch columns through the metadata model
-    if (this.config.columns) {
-      this.render()
-    } else {
-      this.listenTo(this.fields, 'sync', this.render)
-    }
+    this.render()
   },
   render: function () {
     var self = this
@@ -35,10 +29,10 @@ module.exports = Card.extend({
     // Otherwise, initialize the table
     } else {
       // Map the array of columns to the expected format
-      var columns
+      var columnsPromise
 
       if (this.config.columns) {
-        columns = this.config.columns.map(function (column) {
+        columnsPromise = Promise.resolve(this.config.columns.map(function (column) {
           if (typeof column === 'string') {
             return {
               data: column,
@@ -49,44 +43,48 @@ module.exports = Card.extend({
             column.defaultContent = ''
             return column
           }
-        })
+        }))
       } else {
-        columns = this.fields.toJSON()
+        columnsPromise = this.collection.getFields().then(function (fieldsCollection) {
+          return fieldsCollection.toJSON()
+        })
       }
 
-      if (_.isArray(this.config.columnsToHide)) {
-        columns = _.reject(columns, function (column) {
-          return _.contains(this.config.columnsToHide, column.data)
-        }, this)
-      }
-
-      // Initialize the table
-      this.table = this.$('.card-content table').DataTable({
-        columns: columns,
-        order: [],
-        scrollX: true,
-        serverSide: true,
-        ajax: function (data, callback, settings) {
-          self.collection.setSearch(data.search.value ? data.search.value : null)
-
-          self.collection.getRecordCount().done(function (recordCount) {
-            self.recordsTotal = self.recordsTotal || recordCount
-            self.collection.setOffset(data.start || 0)
-            self.collection.setLimit(data.length || 25)
-            if (data.order.length) {
-              self.collection.setOrder(data.columns[data.order[0].column].data + ' ' + data.order[0].dir)
-            }
-            self.collection.fetch({
-              success: function (collection, response, options) {
-                callback({
-                  data: collection.toJSON(),
-                  recordsTotal: self.recordsTotal,
-                  recordsFiltered: recordCount
-                })
-              }
-            })
-          })
+      columnsPromise.then(function (columns) {
+        if (_.isArray(self.config.columnsToHide)) {
+          columns = _.reject(columns, function (column) {
+            return _.contains(this.config.columnsToHide, column.data)
+          }, self)
         }
+
+        // Initialize the table
+        self.table = self.$('.card-content table').DataTable({
+          columns: columns,
+          order: [],
+          scrollX: true,
+          serverSide: true,
+          ajax: function (data, callback, settings) {
+            self.collection.setSearch(data.search.value ? data.search.value : null)
+
+            self.collection.getRecordCount().done(function (recordCount) {
+              self.recordsTotal = self.recordsTotal || recordCount
+              self.collection.setOffset(data.start || 0)
+              self.collection.setLimit(data.length || 25)
+              if (data.order.length) {
+                self.collection.setOrder(data.columns[data.order[0].column].data + ' ' + data.order[0].dir)
+              }
+              self.collection.fetch({
+                success: function (collection, response, options) {
+                  callback({
+                    data: collection.toJSON(),
+                    recordsTotal: self.recordsTotal,
+                    recordsFiltered: recordCount
+                  })
+                }
+              })
+            })
+          }
+        })
       })
     }
   },
