@@ -41,7 +41,6 @@ exports.init = function (container, config, opts) {
         el: container,
         collection: collection,
         filteredCollection: filteredCollection,
-        // fields: opts.fields[config.dataset],
         vent: opts.vent
       })
       break
@@ -51,7 +50,6 @@ exports.init = function (container, config, opts) {
         el: container,
         collection: collection,
         filteredCollection: filteredCollection,
-        // fields: opts.fields[config.dataset],
         vent: opts.vent
       })
       break
@@ -63,7 +61,6 @@ exports.init = function (container, config, opts) {
         el: container,
         collection: collection,
         filteredCollection: filteredCollection,
-        // fields: opts.fields[config.dataset],
         vent: opts.vent
       })
       break
@@ -72,7 +69,6 @@ exports.init = function (container, config, opts) {
         config: config,
         el: container,
         collection: collection,
-        // fields: opts.fields[config.dataset],
         vent: opts.vent
       })
       break
@@ -83,7 +79,6 @@ exports.init = function (container, config, opts) {
         collection: collection,
         boundaries: new GeoJSON(null, config),
         filteredCollection: filteredCollection,
-        // fields: opts.fields[config.dataset],
         vent: opts.vent
       })
       break
@@ -93,7 +88,6 @@ exports.init = function (container, config, opts) {
         el: container,
         collection: collection,
         filteredCollection: filteredCollection,
-        // fields: opts.fields[config.dataset],
         vent: opts.vent
       })
       break
