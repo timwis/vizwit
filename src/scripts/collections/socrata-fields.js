@@ -1,10 +1,11 @@
 var Backbone = require('backbone')
+var BaseFields = require('./basefields')
 
 var model = Backbone.Model.extend({
   idAttribute: 'data'
 })
 
-module.exports = Backbone.Collection.extend({
+module.exports = BaseFields.extend({
   typeMap: {
     calendar_date: 'date',
     number: 'num',

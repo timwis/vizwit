@@ -3,6 +3,7 @@
  */
 var Backbone = require('backbone')
 var _ = require('underscore')
+var BaseFields = require('basefields')
 
 var model = Backbone.Model.extend({
   idAttribute: 'label'
@@ -27,7 +28,7 @@ module.exports = Backbone.Collection.extend({
       this.fieldsCache[this.config.dataset] = new this.fieldsCollection(null, this.config) // eslint-disable-line
     }
   },
-  fieldsCollection: Backbone.Collection,
+  fieldsCollection: BaseFields,
   setFilter: function (filter) {
     if (filter.expression) {
       this.config.filters[filter.field] = filter
