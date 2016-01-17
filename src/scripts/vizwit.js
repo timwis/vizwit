@@ -20,15 +20,15 @@ exports.init = function (container, config, opts) {
 
   // Get provider
   if (!config.provider) config.provider = 'socrata' // set default for backwards compatibility
-  var provider = Providers[config.provider.toLowerCase()]
-  if (!provider) console.error('Unrecognized provider %s', config.provider)
+  var Provider = Providers[config.provider.toLowerCase()]
+  if (!Provider) console.error('Unrecognized provider %s', config.provider)
 
   // Initialize collection
-  var collection = new provider.Collection(null, {
+  var collection = new Provider(null, {
     config: config,
     fieldsCache: opts.fieldsCache
   })
-  var filteredCollection = new provider.Collection(null, {
+  var filteredCollection = new Provider(null, {
     config: config,
     fieldsCache: opts.fieldsCache
   })
