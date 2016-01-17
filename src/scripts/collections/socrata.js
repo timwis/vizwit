@@ -11,8 +11,8 @@ module.exports = BaseProvider.extend({
     BaseProvider.prototype.initialize.apply(this, arguments)
     this.consumer = new soda.Consumer(this.config.domain)
     this.countModel = new Backbone.Model()
-    this.fields = new SocrataFields(null, this.config)
   },
+  fieldsCollection: SocrataFields,
   url: function () {
     var filters = this.config.baseFilters.concat(this.getFilters())
     var query = this.consumer.query()
@@ -94,14 +94,14 @@ module.exports = BaseProvider.extend({
       })
   },
   getFields: function () {
-    var self = this
+    var fields = this.fieldsCache[this.config.dataset]
     // TODO: Is there a better way to detect whether it's been fetched?
     //  (technically it could just have a 0 length after being fetched)
-    if (this.fields.length) {
-      return Promise.resolve(this.fields)
+    if (fields.length) {
+      return Promise.resolve(fields)
     } else {
       return new Promise(function (resolve, reject) {
-        self.fields.fetch({
+        fields.fetch({
           success: resolve,
           error: reject
         })

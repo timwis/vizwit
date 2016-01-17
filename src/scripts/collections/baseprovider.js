@@ -20,7 +20,14 @@ module.exports = Backbone.Collection.extend({
     if (!this.config.triggerField) this.config.triggerField = this.config.groupBy
     if (!this.config.baseFilters) this.config.baseFilters = []
     if (!this.config.filters) this.config.filters = {}
+
+    this.fieldsCache = options.fieldsCache || {}
+    // Check if fieldsCache already has a collection for this dataset, otherwise create one
+    if (!this.fieldsCache[this.config.dataset]) {
+      this.fieldsCache[this.config.dataset] = new this.fieldsCollection(null, this.config) // eslint-disable-line
+    }
   },
+  fieldsCollection: Backbone.Collection,
   setFilter: function (filter) {
     if (filter.expression) {
       this.config.filters[filter.field] = filter
