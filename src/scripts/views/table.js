@@ -28,11 +28,12 @@ module.exports = Card.extend({
       this.$el.DataTable().clear().rows.add(this.collection.toJSON()).draw()
     // Otherwise, initialize the table
     } else {
-      // Map the array of columns to the expected format
       var columnsPromise
 
+      // If columns specified in the config, use those
       if (this.config.columns) {
-        columnsPromise = Promise.resolve(this.config.columns.map(function (column) {
+        // Map the array of columns to the expected format
+        var formattedColumns = this.config.columns.map(function (column) {
           if (typeof column === 'string') {
             return {
               data: column,
@@ -43,7 +44,9 @@ module.exports = Card.extend({
             column.defaultContent = ''
             return column
           }
-        }))
+        })
+        columnsPromise = Promise.resolve(formattedColumns)
+      // Otherwise use the collection's getFields method
       } else {
         columnsPromise = this.collection.getFields().then(function (fieldsCollection) {
           return fieldsCollection.toJSON()
