@@ -3,7 +3,7 @@
  */
 var Backbone = require('backbone')
 var _ = require('underscore')
-var BaseFields = require('basefields')
+var BaseFields = require('./basefields')
 
 var model = Backbone.Model.extend({
   idAttribute: 'label'
