@@ -10,9 +10,6 @@
 		</div>
 		
 		<div class="card-tools col-xs-2">
-			<% if(data.chartType == 'bar') { %>
-				<a href="#" class="zoom-link"><span class="fa fa-search-plus zoom-link-span"></span></a>
-			<% } %>
 			<div class="dropdown">
 				<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 					<span class="fa fa-bars"></span>
@@ -24,6 +21,13 @@
 					<li>
 						<a href="#" class="export-link"><span class="glyphicon glyphicon-download-alt"></span> Export (CSV)</a>
 					</li>
+					<li class='toggle-base-collection' style='display: none;'>
+						<a href="#" class="toggle-base-collection-link">
+							<span class="fa fa-toggle-on toggle-base-collection-icon"></span>
+							Toggle base collection
+						</a>
+					</li>
+
 				</ul>
 			</div>
 			

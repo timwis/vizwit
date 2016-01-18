@@ -108,7 +108,7 @@ module.exports = BaseChart.extend({
   },
   events: {
     'click .scroll a': 'onClickScroll',
-    'click .zoom-link': 'onClickZoomLink'
+    'click .toggle-base-collection-link': 'onClickToggleBaseCollectionLink'
   },
   render: function () {
     BaseChart.prototype.render.apply(this, arguments)
@@ -135,6 +135,13 @@ module.exports = BaseChart.extend({
     // If there are more records than the default, show scroll bars
     if (this.chart.endIndex - this.chart.startIndex < this.collection.length) {
       this.$('.scroll').removeClass('hidden')
+    }
+
+    // If there are filters, show the toggle for base collection
+    if(_.isEmpty(this.filteredCollection.getFilters())){
+      this.$('.toggle-base-collection').hide()
+    } else {
+      this.$('.toggle-base-collection').show()
     }
   },
   zoomToBeginning: function () {
@@ -193,17 +200,21 @@ module.exports = BaseChart.extend({
       })
     }
   },
-  onClickZoomLink: function (e) {
-    if(this.chart.graphs.length == 2){
-      var target = $(e.target)
-      if(target.hasClass("fa-search-plus")){
-        this.chart.hideGraph(this.chart.graphs[0])
-      } else { 
-        this.chart.showGraph(this.chart.graphs[0])
-      }
-      target.toggleClass("fa-search-plus")
-      target.toggleClass("fa-search-minus")
+  onClickToggleBaseCollectionLink: function (e) {
+    var target = $(e.target)
+    // If target was the text, change target to the icon
+    if(!target.hasClass('toggle-base-collection-icon')){
+      target = target.children('.toggle-base-collection-icon')
     }
+    // If the toggle is currently on, hide the first graph (base collection)
+    if(target.hasClass("fa-toggle-on")){
+      this.chart.hideGraph(this.chart.graphs[0])
+    } else { 
+      this.chart.showGraph(this.chart.graphs[0])
+    }
+    // No matter what, toggle the icons classes to show the other one
+    target.filter('span.fa').toggleClass("fa-toggle-on")
+    target.filter('span.fa').toggleClass("fa-toggle-off")
     e.preventDefault()
   }
 })
