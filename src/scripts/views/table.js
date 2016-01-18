@@ -69,6 +69,7 @@ module.exports = Card.extend({
         ajax: function (data, callback, settings) {
           self.collection.setSearch(data.search.value ? data.search.value : null)
 
+
           self.collection.getRecordCount().done(function (recordCount) {
             self.recordsTotal = self.recordsTotal || recordCount
             self.collection.setOffset(data.start || 0)
@@ -78,8 +79,17 @@ module.exports = Card.extend({
             }
             self.collection.fetch({
               success: function (collection, response, options) {
+                tableData = _.map(collection.toJSON(), function(item){
+                  item = _.each(item, function(v,k){
+                    if(typeof v === 'object'){
+                      item[k] = JSON.stringify(v)
+                    }
+                  })
+                  return item
+                })
+
                 callback({
-                  data: collection.toJSON(),
+                  data: tableData,
                   recordsTotal: self.recordsTotal,
                   recordsFiltered: recordCount
                 })
