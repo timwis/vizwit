@@ -8,11 +8,10 @@ var model = Backbone.Model.extend({
 module.exports = Backbone.Collection.extend({
   model: model,
   initialize: function (models, options) {
-    options = options || {}
-    this.id = options.id
+    this.options = options || {}
   },
   url: function () {
-    return 'https://api.github.com/gists/' + this.id
+    return 'https://api.github.com/gists/' + this.options.id
   },
   parse: function (response) {
     return _.values(response.files)

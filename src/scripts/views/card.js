@@ -71,7 +71,7 @@ module.exports = Backbone.View.extend({
     this.$('.filters').empty().append(FiltersTemplate(parsedFilters)).toggle(parsedFilters.length ? true : false) // eslint-disable-line
   },
   parseExpression: function (field, expression) {
-    if (expression['type'] === 'and' || expression['type'] === 'or') {
+    if (expression.type === 'and' || expression.type === 'or') {
       return [
         this.parseExpression(field, expression.value[0]),
         expression.type,
@@ -89,7 +89,7 @@ module.exports = Backbone.View.extend({
   onClickRemoveFilter: function (e) {
     var filter = $(e.currentTarget).data('filter')
     if (filter) {
-      this.vent.trigger(this.collection.dataset + '.filter', {
+      this.vent.trigger(this.collection.getDataset() + '.filter', {
         field: filter
       })
     }

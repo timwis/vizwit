@@ -1,6 +1,9 @@
 var _ = require('underscore')
 var BaseChart = require('./basechart')
 var numberFormatter = require('../util/number-formatter')
+;require('amcharts3')
+var AmCharts = window.AmCharts
+AmCharts.path = './'
 
 var trimLastCharacter = function (str) {
   return str.substr(0, str.length - 1)
@@ -35,7 +38,7 @@ module.exports = BaseChart.extend({
       }
     ],
     chart: {
-      'type': 'serial',
+      type: 'serial',
       theme: 'light',
       responsive: {
         enabled: true
@@ -98,7 +101,7 @@ module.exports = BaseChart.extend({
   // When the user clicks on a bar in this chart
   onClick: function (e) {
     // console.log('Filtered by', (new Date(e.start)).toISOString(), (new Date(e.end)).toISOString())
-    var field = this.collection.triggerField
+    var field = this.collection.getTriggerField()
 
     var start = new Date(e.start)
     var startIso = trimLastCharacter(start.toISOString())
@@ -109,18 +112,18 @@ module.exports = BaseChart.extend({
     var endFriendly = end.toLocaleDateString()
 
     // Trigger the global event handler with this filter
-    this.vent.trigger(this.collection.dataset + '.filter', {
+    this.vent.trigger(this.collection.getDataset() + '.filter', {
       field: field,
       expression: {
-        'type': 'and',
+        type: 'and',
         value: [
           {
-            'type': '>=',
+            type: '>=',
             value: startIso,
             label: startFriendly
           },
           {
-            'type': '<=',
+            type: '<=',
             value: endIso,
             label: endFriendly
           }

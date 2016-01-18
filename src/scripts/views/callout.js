@@ -10,12 +10,11 @@ module.exports = Card.extend({
     Card.prototype.initialize.apply(this, arguments)
 
     // Save options to view
-    options = options || {}
     this.vent = options.vent || null
     this.filteredCollection = options.filteredCollection || null
 
     // Listen to vent filters
-    if (this.config.channel !== null) this.listenTo(this.vent, this.collection.dataset + '.filter', this.onFilter)
+    if (this.config.channel !== null) this.listenTo(this.vent, this.collection.getDataset() + '.filter', this.onFilter)
 
     // Listen to collection
     this.listenTo(this.collection, 'sync', this.render)

@@ -1,0 +1,18 @@
+language: node_js
+node_js:
+  - "4.0"
+addons:
+  apt:
+    packages:
+      - xvfb
+install:
+  - export DISPLAY=':99.0'
+  - Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
+  - npm install
+deploy:
+  provider: script
+  script: npm run build && npm run deploy
+  skip_cleanup: true
+env:
+  global:
+    - secure: "Qm7Wa8P3rq1oYDBIOhM200rLCvQ9vwihc1ec9YKAUcqy/IJcLVeuDW0eGVQpngpRuk8DalZVg0DeXMok4c+7uLyXJhSev6l9H8TdjsroimW5KWofTEmYD39yPMM5suAsCOGmZntCWjAb0+PfN2wMITnqH6QCv2uaGDp1ay3A+SCGgEAPg0UCXH/2G2phGcwxUAG/fMC76uHMlDRvxSfOIbOe5hPmd+KSyEu3h8B+ySShsMhbxPZFsQM3pzmrwSG3xER1JRysObz+JpTEiQMTzOmrBMv3iBYc6Q/QvMXgOKo0feyH0XcfVamW84xaFKO1oXmxmSck0oIrrsevMXuqU/IZ0dKjEqIZagZpgNIWVCaoVt43CLrmZQzjx+maw50qnWRvvP2Xd3eqVXICPeNOpljV5V8fa1ioO7DNQIM9hmyO7JUXn2734Qw9l6iGlEFaWerQ9rclnoT1ZWZf9RHmpdGOmMgaU9YCM4XTJf5OOxW+Lc9egCG8vPRRUQQlym6JqqeHVfdi3UMDN1vdTuB7RptLdPP557OdRCXGkuolmjdAQczkXYqypmK7Mwk31gHNOPN1Q7YoKxd9/6emSl29ZYMwCOTFYU/2nb6cwRuOr/WxZ3pQlOpVILInliKLdQ3CTYP2ELLESjYAopm2z66CANFB2a0+F14ltIE+QK3aJqk="

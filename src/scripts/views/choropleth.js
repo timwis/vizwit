@@ -27,7 +27,7 @@ module.exports = Card.extend({
     this.listenTo(this.filteredCollection, 'sync', LoaderOff)
 
     // Listen to vent filters
-    this.listenTo(this.vent, this.collection.dataset + '.filter', this.onFilter)
+    this.listenTo(this.vent, this.collection.getDataset() + '.filter', this.onFilter)
 
     // Fetch boundaries & collection
     this.boundaries.fetch()
@@ -156,19 +156,18 @@ module.exports = Card.extend({
     var clickedLabel = e.target.feature.properties[this.boundaries.label]
 
     // If already selected, clear the filter
-    var filter = this.filteredCollection.getFilters(this.filteredCollection.triggerField)
+    var filter = this.filteredCollection.getFilters(this.filteredCollection.getTriggerField())
     if (filter && filter.expression.value === clickedId) {
-      this.vent.trigger(this.filteredCollection.dataset + '.filter', {
-        field: this.filteredCollection.triggerField
+      this.vent.trigger(this.filteredCollection.getDataset() + '.filter', {
+        field: this.filteredCollection.getTriggerField()
       })
-    }
     // Otherwise, add the filter
-    else {
+    } else {
       // Trigger the global event handler with this filter
-      this.vent.trigger(this.filteredCollection.dataset + '.filter', {
-        field: this.collection.triggerField,
+      this.vent.trigger(this.filteredCollection.getDataset() + '.filter', {
+        field: this.collection.getTriggerField(),
         expression: {
-          'type': '=',
+          type: '=',
           value: clickedId,
           label: clickedLabel
         }

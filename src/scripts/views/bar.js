@@ -7,7 +7,7 @@ module.exports = BaseChart.extend({
   settings: {
     graphs: [
       {
-        'type': 'column',
+        type: 'column',
         title: 'Data',
         valueField: 'value',
         fillAlphas: 0.6,
@@ -16,7 +16,7 @@ module.exports = BaseChart.extend({
         balloonText: '<b>[[category]]</b><br>Total: [[value]]'
       },
       {
-        'type': 'column',
+        type: 'column',
         title: 'Filtered Data',
         valueField: 'filteredValue',
         fillAlphas: 0.4,
@@ -30,7 +30,7 @@ module.exports = BaseChart.extend({
       }
     ],
     chart: {
-      'type': 'serial',
+      type: 'serial',
       theme: 'light',
       responsive: {
         enabled: true,
@@ -125,9 +125,8 @@ module.exports = BaseChart.extend({
     // If chart cursor is enabled (on larger screens) listen to clicks on it
     if (this.chart.chartCursor.enabled) {
       this.delegateEvents(_.extend({'click .card-content': 'onClickCursor'}, this.events))
-    }
     // Otherwise listen to clicks on the bars
-    else {
+    } else {
       this.chart.addListener('clickGraphItem', this.onClickBar)
     }
 
@@ -174,19 +173,18 @@ module.exports = BaseChart.extend({
   },
   onSelect: function (category) {
     // If already selected, clear the filter
-    var filter = this.filteredCollection.getFilters(this.filteredCollection.triggerField)
+    var filter = this.filteredCollection.getFilters(this.filteredCollection.getTriggerField())
     if (filter && filter.expression.value === category) {
-      this.vent.trigger(this.collection.dataset + '.filter', {
-        field: this.filteredCollection.triggerField
+      this.vent.trigger(this.collection.getDataset() + '.filter', {
+        field: this.filteredCollection.getTriggerField()
       })
-    }
     // Otherwise, add the filter
-    else {
+    } else {
       // Trigger the global event handler with this filter
-      this.vent.trigger(this.collection.dataset + '.filter', {
-        field: this.collection.triggerField,
+      this.vent.trigger(this.collection.getDataset() + '.filter', {
+        field: this.collection.getTriggerField(),
         expression: {
-          'type': '=',
+          type: '=',
           value: category
         }
       })

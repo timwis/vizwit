@@ -3,11 +3,12 @@ var Backbone = require('backbone')
 var Card = require('./card')
 var LoaderOn = require('../util/loader').on
 var LoaderOff = require('../util/loader').off
-window.AmCharts_path = './'
 ;require('amcharts3')
-require('amcharts3/amcharts/serial')
-require('amcharts3/amcharts/themes/light')
-require('amcharts3/amcharts/plugins/responsive/responsive')
+;require('amcharts3/amcharts/serial')
+;require('amcharts3/amcharts/themes/light')
+;require('amcharts3/amcharts/plugins/responsive/responsive')
+var AmCharts = window.AmCharts
+AmCharts.path = './'
 
 module.exports = Card.extend({
   settings: {},
@@ -19,7 +20,7 @@ module.exports = Card.extend({
     this.filteredCollection = options.filteredCollection || null
 
     // Listen to vent filters
-    this.listenTo(this.vent, this.collection.dataset + '.filter', this.onFilter)
+    this.listenTo(this.vent, this.collection.getDataset() + '.filter', this.onFilter)
 
     // Listen to collection
     this.listenTo(this.collection, 'sync', this.render)
@@ -32,7 +33,7 @@ module.exports = Card.extend({
     this.listenTo(this.filteredCollection, 'sync', LoaderOff)
 
     // Set collection order if specified (necessary for datetime chart)
-    if (this.settings.collectionOrder) this.collection.order = this.settings.collectionOrder
+    if (this.settings.collectionOrder) this.collection.setOrder(this.settings.collectionOrder)
 
     // Fetch collection
     this.collection.fetch()
@@ -86,7 +87,7 @@ module.exports = Card.extend({
   // Show guide on selected item or remove it if nothing's selected
   updateGuide: function (config) {
     var guide = config.categoryAxis.guides[0]
-    var filter = this.filteredCollection.getFilters(this.filteredCollection.triggerField)
+    var filter = this.filteredCollection.getFilters(this.filteredCollection.getTriggerField())
     if (filter) {
       if (config.categoryAxis.parseDates) {
         guide.date = filter.expression.value[0].value

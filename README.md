@@ -2,6 +2,8 @@
 
 [![Join the chat at https://gitter.im/timwis/vizwit](https://badges.gitter.im/timwis/vizwit.svg)](https://gitter.im/timwis/vizwit?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Stories in Ready](https://badge.waffle.io/timwis/vizwit.svg?label=ready&title=Ready)](http://waffle.io/timwis/vizwit)
+[![Build Status](https://travis-ci.org/timwis/vizwit.svg?branch=master)](https://travis-ci.org/timwis/vizwit)
+[![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
 
 An interactive data visualization tool. VizWit uses a [JSON config file](https://gist.github.com/601224472a5d53cbb908) to generate 
 interactive charts that cross-filter one another. It currently supports data hosted in a Socrata Open Data portal, which includes 
@@ -20,7 +22,7 @@ for other data providers to be written (in theory).
 * Callout metric
 * Scrolling bar charts
 * Responsive / mobile-friendly
-* Embeddable
+* [Embeddable](http://vizw.it/embed-demo.html) (and cross-filtering still works)
 * Free-text search on table
 * 100% client-side
 * Open source / extendable
@@ -70,10 +72,11 @@ inside of it. This way of embedding allows the VizWit library to only be loaded 
 element ([example](http://vizw.it/embed-demo.html)).
 
 # Development
+* After cloning the repo, use `npm install` to install dependencies
 * While developing, use `npm start` to automatically recompile when changes are made and run a web server at `localhost:8080`
-* Use `npm run lint` to verify code style
-* Use `npm test` to run unit tests
+* Use `npm test` to verify code style and run unit tests
 * Use `npm run build` for a production build, and then use `npm run deploy` to push the `dist/` directory to the `gh-pages` branch
+(first make the deploy script executable via `chmod +x deploy.sh`)
 
 # License
 [GPL-2](LICENSE.md) (create an issue if that doesn't work for someone)
