@@ -30,9 +30,10 @@ module.exports = Backbone.Collection.extend({
     return response.columns.map(function (row, key) {
       return {
         data: row.fieldName,
-        title: row.name,
+        title: row.name + ' <span class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="'+row.description+'"></span>',
         type: this.typeMap[row.renderTypeName] || this.typeMap.default,
-        defaultContent: ''
+        defaultContent: '',
+        description: row.description
       }
     }, this)
   }
