@@ -107,7 +107,8 @@ module.exports = BaseChart.extend({
     _.bindAll(this, 'onClickCursor', 'onClickBar', 'onClickLabel', 'onHover', 'onClickScroll', 'zoomToBeginning')
   },
   events: {
-    'click .scroll a': 'onClickScroll'
+    'click .scroll a': 'onClickScroll',
+    'click .zoom-link': 'onClickZoomLink'
   },
   render: function () {
     BaseChart.prototype.render.apply(this, arguments)
@@ -191,5 +192,18 @@ module.exports = BaseChart.extend({
         }
       })
     }
+  },
+  onClickZoomLink: function (e) {
+    if(this.chart.graphs.length == 2){
+      var target = $(e.target)
+      if(target.hasClass("fa-search-plus")){
+        this.chart.hideGraph(this.chart.graphs[0])
+      } else { 
+        this.chart.showGraph(this.chart.graphs[0])
+      }
+      target.toggleClass("fa-search-plus")
+      target.toggleClass("fa-search-minus")
+    }
+    e.preventDefault()
   }
 })

@@ -10,6 +10,9 @@
 		</div>
 		
 		<div class="card-tools col-xs-2">
+			<% if(data.chartType == 'bar') { %>
+				<a href="#" class="zoom-link"><span class="fa fa-search-plus zoom-link-span"></span></a>
+			<% } %>
 			<div class="dropdown">
 				<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 					<span class="fa fa-bars"></span>
