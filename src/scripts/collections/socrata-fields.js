@@ -28,11 +28,16 @@ module.exports = Backbone.Collection.extend({
   },
   parse: function (response) {
     return response.columns.map(function (row, key) {
+      var titleForRow = row.name
+      if(!_.isEmpty(row.description)){
+        titleForRow += ' <span class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="'+row.description+'"></span>'
+      }
       return {
         data: row.fieldName,
-        title: row.name,
+        title: titleForRow,
         type: this.typeMap[row.renderTypeName] || this.typeMap.default,
-        defaultContent: ''
+        defaultContent: '',
+        description: row.description
       }
     }, this)
   }

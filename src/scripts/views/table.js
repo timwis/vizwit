@@ -4,6 +4,7 @@ var LoaderOn = require('../util/loader').on
 var LoaderOff = require('../util/loader').off
 require('datatables')
 require('datatables/media/js/dataTables.bootstrap')
+require('bootstrap/js/tooltip')
 
 module.exports = Card.extend({
   initialize: function (options) {
@@ -99,6 +100,12 @@ module.exports = Card.extend({
         }
       })
     }
+    
+    // Initialize bootstrap-powered tooltips
+    jQuery('.dataTables_scrollHeadInner th span[data-toggle="tooltip"]').tooltip({
+      container : 'body'
+    });
+    
   },
   // When another chart is filtered, filter this collection
   onFilter: function (data) {
