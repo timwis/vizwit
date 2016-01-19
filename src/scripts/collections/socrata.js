@@ -1,6 +1,5 @@
 var $ = require('jquery')
 var _ = require('underscore')
-var Backbone = require('backbone')
 var Promise = require('bluebird')
 var BaseProvider = require('./baseprovider')
 var soda = require('soda-js')
@@ -10,7 +9,6 @@ module.exports = BaseProvider.extend({
   initialize: function (models, options) {
     BaseProvider.prototype.initialize.apply(this, arguments)
     this.consumer = new soda.Consumer(this.config.domain)
-    this.countModel = new Backbone.Model()
   },
   fieldsCollection: SocrataFields,
   url: function () {
@@ -70,28 +68,32 @@ module.exports = BaseProvider.extend({
   },
   getRecordCount: function () {
     var self = this
+    // If recordCount has already been fetched, return it as a promise
+    if (this.recordCount) {
+      return Promise.resolve(this.recordCount)
+    } else {
+      // Save current values
+      var oldAggregateFunction = this.config.aggregateFunction
+      var oldGroupBy = this.config.groupBy
 
-    // Save current values
-    var oldAggregateFunction = this.config.aggregateFunction
-    var oldGroupBy = this.config.groupBy
+      // Change values in order to get the URL
+      this.config.aggregateFunction = 'count'
+      this.config.groupBy = null
 
-    // Change values in order to get the URL
-    this.config.aggregateFunction = 'count'
-    this.config.groupBy = null
+      // Get the URL
+      var url = this.url()
 
-    // Get the URL
-    this.countModel.url = this.url()
+      // Set the values back
+      this.config.aggregateFunction = oldAggregateFunction
+      this.config.groupBy = oldGroupBy
 
-    // Set the values back
-    this.config.aggregateFunction = oldAggregateFunction
-    this.config.groupBy = oldGroupBy
-
-    // If recordCount is already set, return it (as a deferred); otherwise fetch it
-    return self.recordCount ? ($.Deferred()).resolve(self.recordCount) : this.countModel.fetch()
-      .then(function (response) {
+      // technically returns a $.Deferred but bluebird throws a warning when
+      // returning a promise from within DataTables .ajax
+      return $.getJSON(url).then(function (response) {
         self.recordCount = response.length ? response[0].value : 0
         return self.recordCount
       })
+    }
   },
   getFields: function () {
     var fields = this.fieldsCache[this.config.dataset]

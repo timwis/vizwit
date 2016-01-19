@@ -1,4 +1,5 @@
 var _ = require('underscore')
+var Promise = require('bluebird')
 var Card = require('./card')
 var LoaderOn = require('../util/loader').on
 var LoaderOff = require('../util/loader').off
@@ -69,7 +70,7 @@ module.exports = Card.extend({
           ajax: function (data, callback, settings) {
             self.collection.setSearch(data.search.value ? data.search.value : null)
 
-            self.collection.getRecordCount().done(function (recordCount) {
+            self.collection.getRecordCount().then(function (recordCount) {
               self.recordsTotal = self.recordsTotal || recordCount
               self.collection.setOffset(data.start || 0)
               self.collection.setLimit(data.length || 25)
