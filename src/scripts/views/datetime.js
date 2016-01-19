@@ -61,7 +61,7 @@ module.exports = BaseChart.extend({
       categoryAxis: {
         autoWrap: true,
         parseDates: true,
-        minPeriod: 'MM',
+        minPeriod: 'DD',
         gridAlpha: 0,
         guides: [{
           lineThickness: 2,
@@ -79,7 +79,7 @@ module.exports = BaseChart.extend({
       dataDateFormat: 'YYYY-MM-DDT00:00:00.000', // "2015-04-07T16:21:00.000"
       creditsPosition: 'top-right',
       chartCursor: {
-        categoryBalloonDateFormat: 'MMM YYYY',
+        categoryBalloonDateFormat: 'DD MMM YYYY',
         cursorPosition: 'mouse',
         selectWithoutZooming: true,
         oneBalloonOnly: true,
