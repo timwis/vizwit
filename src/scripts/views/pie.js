@@ -9,69 +9,53 @@ var LoaderOff = require('../util/loader').off
 ;require('amcharts3/amcharts/plugins/responsive/responsive')
 var AmCharts = window.AmCharts
 AmCharts.path = './'
+var config = require('./config/pie.config')
+
+var isSliceSelected = function (filteredCollection, sliceTitle) {
+  var selfFilter = filteredCollection.getFilters(filteredCollection.getTriggerField())
+  return selfFilter && (selfFilter.expression.label || selfFilter.expression.value) === sliceTitle
+}
+
+var formatChartData = function (collection, filteredCollection) {
+  var chartData = []
+  var isFiltered = filteredCollection.getFilters().length
+  var selfFilter = filteredCollection.getFilters(filteredCollection.getTriggerField())
+
+  // Map collection(s) into format expected by chart library
+  collection.forEach(function (model) {
+    var data = {
+      label: model.get('label') + '', // ensure it's a string
+      value: model.get('value')
+    }
+    // If the filtered collection has been fetched, find the corresponding record and put it in another series
+    if (isFiltered) {
+      var filteredCollectionMatch = filteredCollection.get(data.label)
+      // Push a record even if there's no match so we don't align w/ the wrong slice in the other collection
+      data.filteredValue = filteredCollectionMatch ? filteredCollectionMatch.get('value') : 0
+    }
+    // If this slice is selected, set it to be pulled
+    if (selfFilter && selfFilter.expression.value === data.label) {
+      data.pulled = true
+    }
+
+    chartData.push(data)
+  })
+  return chartData
+}
+var isOtherSlice = function (dataItem) {
+  return _.isEmpty(dataItem.dataContext)
+}
 
 module.exports = Card.extend({
-  settings: {
-    chart: {
-      type: 'pie',
-      theme: 'light',
-      titleField: 'label',
-      valueField: 'value',
-      pulledField: 'pulled',
-      innerRadius: '40%',
-      groupPercent: 1,
-      balloonFunction: function (item, formattedText) {
-        var content = '<b>' + item.title + '</b><br>' +
-					'Total: ' + item.value.toLocaleString() + ' (' + parseFloat(item.percents.toFixed(2)) + '%)'
-        if (item.dataContext.filteredValue !== undefined) {
-          content += '<br>Filtered Amount: ' + (+item.dataContext.filteredValue).toLocaleString()
-        }
-        return content
-      },
-      labelFunction: function (item, formattedText) {
-        return item.title.length > 15 ? item.title.substr(0, 15) + '…' : item.title
-      },
-      balloon: {},
-      autoMargins: false,
-      marginTop: 0,
-      marginBottom: 0,
-      marginLeft: 0,
-      marginRight: 0,
-      pullOutRadius: '10%',
-      pullOutOnlyOne: true,
-      labelRadius: 1,
-      pieAlpha: 0.8,
-      hideLabelsPercent: 5,
-      creditsPosition: 'bottom-right',
-      startDuration: 0,
-      addClassNames: true,
-      responsive: {
-        enabled: true,
-        addDefaultRules: false,
-        rules: [
-          {
-            maxWidth: 450,
-            overrides: {
-              pullOutRadius: '10%',
-              titles: {
-                enabled: false
-              }
-            }
-          }
-        ]
-      }
-    }
-  },
   initialize: function (options) {
     Card.prototype.initialize.apply(this, arguments)
 
     // Save options to view
-    options = options || {}
     this.vent = options.vent || null
     this.filteredCollection = options.filteredCollection || null
 
     // Listen to vent filters
-    this.listenTo(this.vent, this.collection.getDataset() + '.filter', this.onFilter)
+    this.listenTo(this.vent, this.collection.getChannel(), this.onFilter)
 
     // Listen to collection
     this.listenTo(this.collection, 'sync', this.render)
@@ -90,90 +74,62 @@ module.exports = Card.extend({
   },
   render: function () {
     // Initialize chart
-    var config = $.extend(true, {}, this.settings.chart)
-    config.dataProvider = this.formatChartData()
+    var configCopy = $.extend(true, {}, config) // TODO: Why do we need a copy again?
+    configCopy.dataProvider = formatChartData(this.collection, this.filteredCollection)
 
     if (this.filteredCollection.getFilters().length) {
-      config.valueField = 'filteredValue'
+      configCopy.valueField = 'filteredValue'
     }
 
     // If "other" slice is selected, set other slice to be pulled out
-    var otherSliceTitle = config.groupedTitle || 'Other'
-    var filter = this.filteredCollection.getFilters(this.filteredCollection.getTriggerField())
-    if (filter && (filter.expression.label || filter.expression.value) === otherSliceTitle) {
-      config.groupedPulled = true
+    var otherSliceTitle = configCopy.groupedTitle || 'Other'
+    if (isSliceSelected(this.filteredCollection, otherSliceTitle)) {
+      configCopy.groupedPulled = true
     }
 
-    this.chart = AmCharts.makeChart(this.$('.card-content').get(0), config)
+    var container = this.$('.card-content').get(0)
+    this.chart = AmCharts.makeChart(container, configCopy)
 
     this.chart.addListener('clickSlice', this.onClickSlice)
   },
-  formatChartData: function () {
-    var self = this
-    var chartData = []
-    var filter = this.filteredCollection.getFilters(this.filteredCollection.getTriggerField())
-
-    // Map collection(s) into format expected by chart library
-    this.collection.forEach(function (model) {
-      var label = model.get('label') + '' // ensure it's a string
-      var data = {
-        label: label,
-        value: model.get('value')
-      }
-      // If the filtered collection has been fetched, find the corresponding record and put it in another series
-      if (self.filteredCollection.getFilters().length) {
-        var match = self.filteredCollection.get(label)
-        // Push a record even if there's no match so we don't align w/ the wrong bar in the other collection
-        data.filteredValue = match ? match.get('value') : 0
-      }
-      // If this slice is selected, set it to be pulled
-      if (filter && filter.expression.value === label) {
-        data.pulled = true
-      }
-
-      chartData.push(data)
-    })
-    return chartData
-  },
   onClickSlice: function (data) {
     var category = data.dataItem.title
+    var triggerField = this.filteredCollection.getTriggerField()
 
     // If already selected, clear the filter
-    var filter = this.filteredCollection.getFilters(this.filteredCollection.getTriggerField())
-    if (filter && (filter.expression.value === category || filter.expression.label === category)) {
-      this.vent.trigger(this.collection.getDataset() + '.filter', {
-        field: this.filteredCollection.getTriggerField()
-      })
+    var selfFilter = this.filteredCollection.getFilters(triggerField)
+    if (selfFilter && (selfFilter.expression.label || selfFilter.expression.value) === category) {
+      this._fireFilterEvent()
     // Otherwise, add the filter
     } else {
       // If "Other" slice, get all of the currently displayed categories and send then as a NOT IN() query
-      if (_.isEmpty(data.dataItem.dataContext)) {
-        var shownCategories = []
-        data.chart.chartData.forEach(function (item) {
-          if (item.title !== category) {
-            shownCategories.push(item.title)
-          }
+      if (isOtherSlice(data.dataItem)) {
+        var shownCategories = _.pluck(data.chart.chartData, 'title').filter(function (title) {
+          return title !== category
         })
+        var otherSliceTitle = this.chart.groupedTitle || 'Other'
 
-        this.vent.trigger(this.collection.getDataset() + '.filter', {
-          field: this.collection.getTriggerField(),
-          expression: {
-            type: 'not in',
-            value: shownCategories,
-            label: this.config.groupedTitle || 'Other'
-          }
+        this._fireFilterEvent({
+          type: 'not in',
+          value: shownCategories,
+          label: otherSliceTitle
         })
-      // Otherwise fire a normal = query
+      // Otherwise fire a normal equals query
       } else {
-        this.vent.trigger(this.collection.getDataset() + '.filter', {
-          field: this.collection.getTriggerField(),
-          expression: {
-            type: '=',
-            value: category
-          }
+        this._fireFilterEvent({
+          type: '=',
+          value: category
         })
       }
     }
+  },
+  _fireFilterEvent: function (expression) {
+    var channel = this.collection.getChannel()
+    var triggerField = this.filteredCollection.getTriggerField()
+    this.vent.trigger(channel, {
+      field: triggerField,
+      expression: expression
+    })
   },
   // When a chart has been filtered
   onFilter: function (data) {
