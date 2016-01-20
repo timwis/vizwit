@@ -28,7 +28,8 @@ module.exports = Backbone.View.extend({
     // Delegate event here so as not to have it overriden by child classes' events properties
     this.events = _.extend({
       'click .remove-filter': 'onClickRemoveFilter',
-      'click .embed-link': 'onClickEmbedLink'
+      'click .embed-link': 'onClickEmbedLink',
+      'click .expand-card': 'onClickExpandLink'
     }, this.events || {})
     this.delegateEvents()
 
@@ -102,6 +103,23 @@ module.exports = Backbone.View.extend({
   onClickEmbedLink: function (e) {
     var exportView = new EmbedHelperView({model: new Backbone.Model(this.config)})
     this.$el.after(exportView.render().el)
+    e.preventDefault()
+  },
+  onClickExpandLink: function (e) {
+    var card_el = this.$el
+    if(card_el.attr("data-expanded") == "true"){
+      var originalClasses = card_el.attr("data-original-classes")
+      card_el.addClass("col-sm-12")
+      card_el.attr("data-original-classes","")
+      card_el.attr("class",originalClasses)
+      card_el.attr("data-expanded","false")
+    } else {
+      var originalClasses = card_el.attr("class")
+      card_el.attr("data-original-classes",originalClasses)
+      card_el.removeClass(originalClasses)
+      card_el.addClass("col-sm-12")
+      card_el.attr("data-expanded","true")
+    }
     e.preventDefault()
   }
 })
