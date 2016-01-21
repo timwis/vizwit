@@ -10,7 +10,7 @@ var vizwit = require('./vizwit')
 var Gist = require('./collections/gist')
 
 var vent = _.clone(Backbone.Events)
-var fields = {}
+var fieldsCache = {}
 
 var params = window.location.search.substr(1) ? deparam(window.location.search.substr(1)) : {}
 
@@ -78,7 +78,7 @@ if (!params.gist) {
       // Initialize vizwit on new div
       vizwit.init(column, config.vizwit, {
         vent: vent,
-        fields: fields
+        fieldsCache: fieldsCache
       })
     })
   },

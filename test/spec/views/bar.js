@@ -1,10 +1,7 @@
 var test = require('tape')
 var sinon = require('sinon')
-var Backbone = require('backbone')
-var _ = require('underscore')
 var $ = require('jquery')
 var Socrata = require('../../../src/scripts/collections/socrata')
-var SocrataFields = require('../../../src/scripts/collections/socrata-fields')
 var Bar = require('../../../src/scripts/views/bar')
 
 var sampleData = require('../../fixtures/business-licenses.json')
@@ -23,10 +20,8 @@ var setup = function () {
     view: new Bar({
       config: config,
       el: $('<div/>', {width: 700, height: 500}).appendTo('body'),
-      collection: new Socrata(null, config),
-      filteredCollection: new Socrata(null, config),
-      fields: new SocrataFields(),
-      vent: _.clone(Backbone.Events)
+      collection: new Socrata(null, {config: config}),
+      filteredCollection: new Socrata(null, {config: config})
     })
   }
 }
