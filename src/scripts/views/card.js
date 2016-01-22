@@ -106,17 +106,17 @@ module.exports = Backbone.View.extend({
     e.preventDefault()
   },
   onClickExpandLink: function (e) {
-    console.log(this)
     var card_el = this.$el
     if (card_el.attr("data-expanded") == "true") {
+      // Contract card height
+      card_el.attr("style",card_el.attr("data-original-styles"))
+      card_el.css("min-height",card_el.attr("data-original-min-height"))
+      card_el.height(card_el.attr("data-original-height")-15) // not sure why I need to make this smaller than it was
       // Contract card width
       var originalClasses = card_el.attr("data-original-classes")
       card_el.addClass("col-sm-12")
       card_el.attr("data-original-classes","")
       card_el.attr("class",originalClasses)
-      // Contract card height
-      var originalSetHeight = parseInt(card_el.css("min-height"))
-      card_el.css("height",(originalSetHeight)+"px")
       // Set state as not expanded
       card_el.attr("data-expanded","false")
     } else { 
@@ -126,10 +126,10 @@ module.exports = Backbone.View.extend({
       card_el.removeClass(originalClasses)
       card_el.addClass("col-sm-12")
       // Expand height
-      var originalInlineStyles = card_el.attr("style")
-      card_el.attr("data-original-styles",originalInlineStyles)
-      var originalSetHeight = parseInt(card_el.css("min-height"))
-      card_el.css("height",(originalSetHeight*1.5)+"px")
+      card_el.attr("data-original-styles",card_el.attr("style"))
+      card_el.attr("data-original-height",card_el.height())
+      card_el.attr("data-original-min-height",card_el.css("min-height"))
+      card_el.css("min-height",parseInt(card_el.css("min-height")*1.5)+"px")
       // Set state as expanded
       card_el.attr("data-expanded","true")
     }
