@@ -30,7 +30,7 @@ module.exports = Card.extend({
       initializedTable.rows.add(this.collection.toJSON()).draw()
     // Otherwise, initialize the table
     } else {
-      this.collection.getFields().then(function (fieldsCollection) {
+      this.collection.getFields().then(_.bind(function (fieldsCollection) {
         var columns = fieldsCollection.toJSON()
 
         // Check for columns to hide
