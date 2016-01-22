@@ -3,8 +3,10 @@ var Promise = require('bluebird')
 var Card = require('./card')
 var LoaderOn = require('../util/loader').on
 var LoaderOff = require('../util/loader').off
+var $ = require('jquery')
 require('datatables')
 require('datatables/media/js/dataTables.bootstrap')
+require('bootstrap/js/tooltip')
 
 module.exports = Card.extend({
   initialize: function (options) {
@@ -55,11 +57,19 @@ module.exports = Card.extend({
       }
 
       columnsPromise.then(function (columns) {
+        // Check for columns to hide
         if (_.isArray(self.config.columnsToHide)) {
           columns = _.reject(columns, function (column) {
             return _.contains(this.config.columnsToHide, column.data)
           }, self)
         }
+
+        // Add tooltip for column description
+        _.each(columns, function (column) {
+          if (!_.isEmpty(column.description)) {
+            column.title += ' <span class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="' + column.description + '"></span>'
+          }
+        })
 
         // Initialize the table
         self.table = self.$('.card-content table').DataTable({
@@ -85,6 +95,10 @@ module.exports = Card.extend({
                     recordsFiltered: recordCount
                   })
                 }
+              })
+              // Initialize bootstrap-powered tooltips for column descriptions
+              $('.dataTables_scrollHeadInner th span[data-toggle="tooltip"]').tooltip({
+                container: 'body'
               })
             })
           }
