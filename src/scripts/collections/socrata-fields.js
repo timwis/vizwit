@@ -33,7 +33,8 @@ module.exports = BaseFields.extend({
         data: row.fieldName,
         title: row.name,
         type: this.typeMap[row.renderTypeName] || this.typeMap.default,
-        defaultContent: ''
+        defaultContent: '',
+        description: row.description
       }
     }, this)
   }
