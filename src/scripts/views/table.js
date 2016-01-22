@@ -12,7 +12,6 @@ module.exports = Card.extend({
   initialize: function (options) {
     Card.prototype.initialize.apply(this, arguments)
 
-    options = options || {}
     this.vent = options.vent || null
 
     // Listen to vent filters
@@ -25,10 +24,11 @@ module.exports = Card.extend({
     this.render()
   },
   render: function () {
-    var self = this
     // If table is already initialized, clear it and add the collection to it
     if (this.table) {
-      this.$el.DataTable().clear().rows.add(this.collection.toJSON()).draw()
+      var initializedTable = this.$el.DataTable()
+      initializedTable.clear()
+      initializedTable.rows.add(this.collection.toJSON()).draw()
     // Otherwise, initialize the table
     } else {
       var columnsPromise
@@ -56,12 +56,12 @@ module.exports = Card.extend({
         })
       }
 
-      columnsPromise.then(function (columns) {
+      columnsPromise.then(_.bind(function (columns) {
         // Check for columns to hide
-        if (_.isArray(self.config.columnsToHide)) {
+        if (_.isArray(this.config.columnsToHide)) {
           columns = _.reject(columns, function (column) {
             return _.contains(this.config.columnsToHide, column.data)
-          }, self)
+          }, this)
         }
 
         // Add tooltip for column description
@@ -72,26 +72,27 @@ module.exports = Card.extend({
         })
 
         // Initialize the table
-        self.table = self.$('.card-content table').DataTable({
+        this.table = this.$('.card-content table').DataTable({
           columns: columns,
           order: [],
           scrollX: true,
           serverSide: true,
-          ajax: function (data, callback, settings) {
-            self.collection.setSearch(data.search.value ? data.search.value : null)
+          ajax: _.bind(function (data, callback, settings) {
+            this.collection.setSearch(data.search.value ? data.search.value : null)
 
-            self.collection.getRecordCount().then(function (recordCount) {
-              self.recordsTotal = self.recordsTotal || recordCount
-              self.collection.setOffset(data.start || 0)
-              self.collection.setLimit(data.length || 25)
+            this.collection.getRecordCount().then(_.bind(function (recordCount) {
+              this.recordsTotal = this.recordsTotal || recordCount
+              var recordsTotal = this.recordsTotal // for use in callback below
+              this.collection.setOffset(data.start || 0)
+              this.collection.setLimit(data.length || 25)
               if (data.order.length) {
-                self.collection.setOrder(data.columns[data.order[0].column].data + ' ' + data.order[0].dir)
+                this.collection.setOrder(data.columns[data.order[0].column].data + ' ' + data.order[0].dir)
               }
-              self.collection.fetch({
+              this.collection.fetch({
                 success: function (collection, response, options) {
                   callback({
                     data: collection.toJSON(),
-                    recordsTotal: self.recordsTotal,
+                    recordsTotal: recordsTotal,
                     recordsFiltered: recordCount
                   })
                 }
@@ -100,10 +101,10 @@ module.exports = Card.extend({
               $('.dataTables_scrollHeadInner th span[data-toggle="tooltip"]').tooltip({
                 container: 'body'
               })
-            })
-          }
+            }, this))
+          }, this)
         })
-      })
+      }, this))
     }
   },
   // When another chart is filtered, filter this collection
