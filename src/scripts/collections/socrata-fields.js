@@ -1,10 +1,11 @@
 var Backbone = require('backbone')
+var BaseFields = require('./basefields')
 
 var model = Backbone.Model.extend({
   idAttribute: 'data'
 })
 
-module.exports = Backbone.Collection.extend({
+module.exports = BaseFields.extend({
   typeMap: {
     calendar_date: 'date',
     number: 'num',
@@ -14,15 +15,15 @@ module.exports = Backbone.Collection.extend({
   model: model,
   comparator: 'position',
   initialize: function (models, options) {
-    this.options = options || {}
+    this.config = options || {}
   },
   url: function () {
     return [
       'https://',
-      this.options.domain,
+      this.config.domain,
       '/api',
       '/views',
-      '/' + this.options.dataset,
+      '/' + this.config.dataset,
       '.json'
     ].join('')
   },

@@ -1,0 +1,14 @@
+[
+  {
+    "data": "foo",
+    "title": "Foo",
+    "type": "string",
+    "defaultContent": ""
+  },
+  {
+    "data": "bar",
+    "title": "Boo",
+    "type": "string",
+    "defaultContent": ""
+  }
+]
