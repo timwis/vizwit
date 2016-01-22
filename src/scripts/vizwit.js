@@ -16,22 +16,22 @@ exports.init = function (container, config, opts) {
   // If globals weren't passed, create them within this scope
   opts = opts || {}
   opts.vent = opts.vent || _.clone(Backbone.Events)
-  opts.fields = opts.fields || {}
+  opts.fieldsCache = opts.fieldsCache || {}
 
   // Get provider
   if (!config.provider) config.provider = 'socrata' // set default for backwards compatibility
-  var provider = Providers[config.provider.toLowerCase()]
-  if (!provider) console.error('Unrecognized provider %s', config.provider)
+  var Provider = Providers[config.provider.toLowerCase()]
+  if (!Provider) console.error('Unrecognized provider %s', config.provider)
 
   // Initialize collection
-  var collection = new provider.Collection(null, config)
-  var filteredCollection = new provider.Collection(null, config)
-
-  // If we haven't already created a fields collection for this dataset, create one
-  if (opts.fields[config.dataset] === undefined) {
-    opts.fields[config.dataset] = new provider.Fields(null, config)
-    opts.fields[config.dataset].fetch()
-  }
+  var collection = new Provider(null, {
+    config: config,
+    fieldsCache: opts.fieldsCache
+  })
+  var filteredCollection = new Provider(null, {
+    config: config,
+    fieldsCache: opts.fieldsCache
+  })
 
   // Initialize view
   switch (config.chartType) {
@@ -41,7 +41,6 @@ exports.init = function (container, config, opts) {
         el: container,
         collection: collection,
         filteredCollection: filteredCollection,
-        fields: opts.fields[config.dataset],
         vent: opts.vent
       })
       break
@@ -51,7 +50,6 @@ exports.init = function (container, config, opts) {
         el: container,
         collection: collection,
         filteredCollection: filteredCollection,
-        fields: opts.fields[config.dataset],
         vent: opts.vent
       })
       break
@@ -63,7 +61,6 @@ exports.init = function (container, config, opts) {
         el: container,
         collection: collection,
         filteredCollection: filteredCollection,
-        fields: opts.fields[config.dataset],
         vent: opts.vent
       })
       break
@@ -72,7 +69,6 @@ exports.init = function (container, config, opts) {
         config: config,
         el: container,
         collection: collection,
-        fields: opts.fields[config.dataset],
         vent: opts.vent
       })
       break
@@ -83,7 +79,6 @@ exports.init = function (container, config, opts) {
         collection: collection,
         boundaries: new GeoJSON(null, config),
         filteredCollection: filteredCollection,
-        fields: opts.fields[config.dataset],
         vent: opts.vent
       })
       break
@@ -93,7 +88,6 @@ exports.init = function (container, config, opts) {
         el: container,
         collection: collection,
         filteredCollection: filteredCollection,
-        fields: opts.fields[config.dataset],
         vent: opts.vent
       })
       break

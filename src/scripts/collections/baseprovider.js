@@ -3,6 +3,7 @@
  */
 var Backbone = require('backbone')
 var _ = require('underscore')
+var BaseFields = require('./basefields')
 
 var model = Backbone.Model.extend({
   idAttribute: 'label'
@@ -15,20 +16,28 @@ var enclose = function (val) {
 module.exports = Backbone.Collection.extend({
   model: model,
   initialize: function (models, options) {
-    this.options = options || {}
-    if (!this.options.triggerField) this.options.triggerField = this.options.groupBy
-    if (!this.options.baseFilters) this.options.baseFilters = []
-    if (!this.options.filters) this.options.filters = {}
+    options = options || {}
+    this.config = options.config || {}
+    if (!this.config.triggerField) this.config.triggerField = this.config.groupBy
+    if (!this.config.baseFilters) this.config.baseFilters = []
+    if (!this.config.filters) this.config.filters = {}
+
+    this.fieldsCache = options.fieldsCache || {}
+    // Check if fieldsCache already has a collection for this dataset, otherwise create one
+    if (!this.fieldsCache[this.config.dataset]) {
+      this.fieldsCache[this.config.dataset] = new this.fieldsCollection(null, this.config) // eslint-disable-line
+    }
   },
+  fieldsCollection: BaseFields,
   setFilter: function (filter) {
     if (filter.expression) {
-      this.options.filters[filter.field] = filter
+      this.config.filters[filter.field] = filter
     } else {
-      delete this.options.filters[filter.field]
+      delete this.config.filters[filter.field]
     }
   },
   getFilters: function (key) {
-    var filters = this.options.filters
+    var filters = this.config.filters
 
     if (key) {
       return filters[key]
@@ -36,8 +45,8 @@ module.exports = Backbone.Collection.extend({
     // If dontFilterSelf enabled, remove the filter this collection's triggerField
     // (don't do this if key provided since that's usually done to see if a filter is set
     // rather than to perform an actual filter query)
-    if (!_.isEmpty(filters) && this.options.dontFilterSelf) {
-      filters = _.omit(filters, this.options.triggerField)
+    if (!_.isEmpty(filters) && this.config.dontFilterSelf) {
+      filters = _.omit(filters, this.config.triggerField)
     }
 
     return _.values(filters)
@@ -64,28 +73,28 @@ module.exports = Backbone.Collection.extend({
     }
   },
   getDataset: function () {
-    return this.options.dataset
+    return this.config.dataset
   },
   getTriggerField: function () {
-    return this.options.triggerField
+    return this.config.triggerField
   },
   getChannel: function () {
     return this.options.dataset + '.filter'
   },
   setSearch: function (newValue) {
-    this.options.search = newValue
+    this.config.search = newValue
   },
   setDontFilterSelf: function (newValue) {
-    this.options.dontFilterSelf = newValue
+    this.config.dontFilterSelf = newValue
   },
   setOrder: function (newValue) {
-    this.options.order = newValue
+    this.config.order = newValue
   },
   setOffset: function (newValue) {
-    this.options.offset = newValue
+    this.config.offset = newValue
   },
   setLimit: function (newValue) {
-    this.options.limit = newValue
+    this.config.limit = newValue
   },
   unsetRecordCount: function () {
     this.recordCount = null
