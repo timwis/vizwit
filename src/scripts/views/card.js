@@ -106,19 +106,37 @@ module.exports = Backbone.View.extend({
     e.preventDefault()
   },
   onClickExpandLink: function (e) {
+    console.log(this)
     var card_el = this.$el
-    if(card_el.attr("data-expanded") == "true"){
+    if (card_el.attr("data-expanded") == "true") {
+      // Contract card width
       var originalClasses = card_el.attr("data-original-classes")
       card_el.addClass("col-sm-12")
       card_el.attr("data-original-classes","")
       card_el.attr("class",originalClasses)
+      // Contract card height
+      var originalSetHeight = parseInt(card_el.css("min-height"))
+      card_el.css("height",(originalSetHeight)+"px")
+      // Set state as not expanded
       card_el.attr("data-expanded","false")
-    } else {
+    } else { 
+      // Expand width
       var originalClasses = card_el.attr("class")
       card_el.attr("data-original-classes",originalClasses)
       card_el.removeClass(originalClasses)
       card_el.addClass("col-sm-12")
+      // Expand height
+      var originalInlineStyles = card_el.attr("style")
+      card_el.attr("data-original-styles",originalInlineStyles)
+      var originalSetHeight = parseInt(card_el.css("min-height"))
+      card_el.css("height",(originalSetHeight*1.5)+"px")
+      // Set state as expanded
       card_el.attr("data-expanded","true")
+    }
+    this.setHeight()
+    if (this.config.chartType == "choropleth") {
+      // Leaflet maps need to be refreshed upon container size change
+      this.map.invalidateSize()
     }
     e.preventDefault()
   }
