@@ -1,5 +1,4 @@
 var _ = require('underscore')
-var Promise = require('bluebird')
 var Card = require('./card')
 var LoaderOn = require('../util/loader').on
 var LoaderOff = require('../util/loader').off
@@ -31,32 +30,9 @@ module.exports = Card.extend({
       this.$el.DataTable().clear().rows.add(this.collection.toJSON()).draw()
     // Otherwise, initialize the table
     } else {
-      var columnsPromise
+      this.collection.getFields().then(function (fieldsCollection) {
+        var columns = fieldsCollection.toJSON()
 
-      // If columns specified in the config, use those
-      if (this.config.columns) {
-        // Map the array of columns to the expected format
-        var formattedColumns = this.config.columns.map(function (column) {
-          if (typeof column === 'string') {
-            return {
-              data: column,
-              title: column,
-              defaultContent: ''
-            }
-          } else if (typeof column === 'object') {
-            column.defaultContent = ''
-            return column
-          }
-        })
-        columnsPromise = Promise.resolve(formattedColumns)
-      // Otherwise use the collection's getFields method
-      } else {
-        columnsPromise = this.collection.getFields().then(function (fieldsCollection) {
-          return fieldsCollection.toJSON()
-        })
-      }
-
-      columnsPromise.then(function (columns) {
         // Check for columns to hide
         if (_.isArray(self.config.columnsToHide)) {
           columns = _.reject(columns, function (column) {
