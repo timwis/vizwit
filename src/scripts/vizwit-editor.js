@@ -16,7 +16,7 @@ split(['#editor', '#preview'], {sizes: [40, 60]})
 var editor = ace.edit('editor')
 var session = editor.getSession()
 session.setMode('ace/mode/json')
-editor.insert(JSON.stringify(sampleData, null, 2))
+editor.setValue(JSON.stringify(sampleData, null, 2), -1)
 
 var refresh = function () {
   var input = JSON.parse(editor.getValue())
