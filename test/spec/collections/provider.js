@@ -1,6 +1,6 @@
 var test = require('tape')
 var BaseFields = require('../../../src/scripts/collections/basefields')
-var providers = require('../../../src/scripts/providers')
+var providers = require('../../../src/scripts/config/providers')
 
 var sampleFieldsData = require('../../fixtures/fields.json')
 

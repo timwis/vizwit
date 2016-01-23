@@ -1,88 +1,67 @@
-/* global global */
-var $ = global.jQuery = require('jquery')
-var _ = global._ = require('underscore')
+var $ = require('jquery')
+var _ = require('underscore')
 var Backbone = require('backbone')
-var deparam = require('node-jquery-deparam')
-require('gridstack/dist/gridstack')
 
 var Header = require('./views/header')
 var vizwit = require('./vizwit')
-var Gist = require('./collections/gist')
 
 var vent = _.clone(Backbone.Events)
 var fieldsCache = {}
 
-var params = window.location.search.substr(1) ? deparam(window.location.search.substr(1)) : {}
+module.exports = function (config, options) {
+  options = options || {}
+  if (!config.version || config.version !== '2') console.error('Wrong config version')
 
-// If no gist specified, redirect to homepage
-var redirect = function () { window.location.replace('http://vizwit.io') }
-if (!params.gist) {
-  redirect()
-}
+  // Render header
+  if (config.header) {
+    var header = new Header(config.header)
+    $(options.headerSelector).empty().append(header.render().el)
 
-// Fetch gist
-(new Gist(null, {id: params.gist})).fetch({
-  success: function (collection, response, options) {
-    if (!collection.length) return console.error('No files in gist', params.gist)
+    // Update <title> tag
+    if (config.header.title) {
+      var originalTitle = $('title').text()
+      $('title').text(config.header.title + ' - ' + originalTitle)
+    }
+  }
 
-    // If a file was provided, use that one; otherwise use the first file in the gist
-    var model = params.file && collection.get(params.file) ? collection.get(params.file) : collection.at(0)
-    var config = JSON.parse(model.get('content'))
+  var container = $(options.contentSelector)
+  var heightInterval = 60 // from gridstack.js
+  var current = {x: null, y: null}
+  var row
 
-    if (!config.version || config.version !== '2') return redirect()
+  container.empty()
 
-    // Render header
-    if (config.header) {
-      var header = new Header(config.header)
-      $('#page-header').append(header.render().el)
-
-      // Update <title> tag
-      if (config.header.title) {
-        var originalTitle = $('title').text()
-        $('title').text(config.header.title + ' - ' + originalTitle)
-      }
+  config.cards.forEach(function (config) {
+    // If y suggests we're on a new row (including the first item), create a new row
+    if (config.y !== current.y) {
+      row = $('<div class="row"></div>')
+      container.append(row)
+      current.y = config.y
+      current.x = 0
     }
 
-    var container = $('#page-content')
-    var heightInterval = 60 // from gridstack.js
-    var current = {x: null, y: null}
-    var row
+    var column = $('<div/>')
 
-    config.cards.forEach(function (config) {
-      // If y suggests we're on a new row (including the first item), create a new row
-      if (config.y !== current.y) {
-        row = $('<div class="row"></div>')
-        container.append(row)
-        current.y = config.y
-        current.x = 0
-      }
+    // Add width class
+    column.addClass('col-sm-' + config.width)
 
-      var column = $('<div/>')
+    // If x is not the same as our current x position, add offset class
+    if (config.x !== current.x) {
+      column.addClass('col-sm-offset-' + (config.x - current.x))
+    }
+    // Set height of new div
+    column.css('min-height', config.height * heightInterval)
 
-      // Add width class
-      column.addClass('col-sm-' + config.width)
+    // Increment current.x to new starting position
+    current.x += config.width
 
-      // If x is not the same as our current x position, add offset class
-      if (config.x !== current.x) {
-        column.addClass('col-sm-offset-' + (config.x - current.x))
-      }
-      // Set height of new div
-      column.css('min-height', config.height * heightInterval)
+    // Add the div to the current row
+    row.append(column)
 
-      // Increment current.x to new starting position
-      current.x += config.width
-
-      // Add the div to the current row
-      row.append(column)
-
-      // Initialize vizwit on new div
-      vizwit.init(column, config.vizwit, {
-        vent: vent,
-        fieldsCache: fieldsCache
-      })
+    // Initialize vizwit on new div
+    vizwit.init(column, config.vizwit, {
+      vent: vent,
+      fieldsCache: fieldsCache
     })
-  },
-  error: function () {
-    console.error('Error fetching gist', params.gist)
-  }
-})
+  })
+}
