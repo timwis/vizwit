@@ -11,7 +11,8 @@ var layoutOptions = {
   contentSelector: '#page-content'
 }
 
-split(['#editor', '#preview'], {sizes: [40, 60]})
+split(['#left', '#preview'], {sizes: [40, 60]})
+split(['#docs', '#editor'], {sizes: [5, 95], direction: 'vertical'})
 
 var editor = ace.edit('editor')
 var session = editor.getSession()
