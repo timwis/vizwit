@@ -1,8 +1,6 @@
-/* global global */
-var $ = global.jQuery = require('jquery')
-var _ = global._ = require('underscore')
+var $ = require('jquery')
+var _ = require('underscore')
 var Backbone = require('backbone')
-require('gridstack/dist/gridstack') // TODO: is this used?
 
 var Header = require('./views/header')
 var vizwit = require('./vizwit')
