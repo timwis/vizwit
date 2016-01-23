@@ -10,7 +10,13 @@ var model = Backbone.Model.extend({
 })
 
 var enclose = function (val) {
-  return typeof val === 'string' && val != 'true' && val != 'false' ? "'" + val + "'" : val // eslint-disable-line
+  if (typeof val === 'string' && val != 'true' && val != 'false') { // eslint-disable-line
+    return "'" + val + "'"
+  } else if (val === null) {
+    return 'null'
+  } else {
+    return val
+  }
 }
 
 module.exports = Backbone.Collection.extend({
