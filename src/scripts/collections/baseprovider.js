@@ -64,6 +64,12 @@ module.exports = Backbone.Collection.extend({
         expression.type,
         '(' + expression.value.map(enclose).join(', ') + ')'
       ].join(' ')
+    } else if(expression.type === 'is not' || expression.type == 'is'){
+      return [
+        field,
+        expression.type,
+        expression.value
+      ].join(' ')
     } else {
       return [
         field,
