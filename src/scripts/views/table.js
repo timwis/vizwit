@@ -2,16 +2,34 @@ var _ = require('underscore')
 var Card = require('./card')
 var LoaderOn = require('../util/loader').on
 var LoaderOff = require('../util/loader').off
-var $ = require('jquery')
 require('datatables')
 require('datatables/media/js/dataTables.bootstrap')
 require('bootstrap/js/tooltip')
+
+var hideColumns = function (columns, columnsToHide) {
+  if (!_.isArray(columnsToHide)) {
+    return columns
+  }
+  return _.reject(columns, function (column) {
+    return _.contains(columnsToHide, column.data)
+  })
+}
+
+var tooltip = function (contents) {
+  return '<span class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="' + contents + '"></span>'
+}
+
+var addDescriptionToTitle = function (column) {
+  if (column.description) {
+    column.title += ' ' + tooltip(column.description)
+  }
+  return column
+}
 
 module.exports = Card.extend({
   initialize: function (options) {
     Card.prototype.initialize.apply(this, arguments)
 
-    options = options || {}
     this.vent = options.vent || null
 
     // Listen to vent filters
@@ -24,63 +42,68 @@ module.exports = Card.extend({
     this.render()
   },
   render: function () {
-    var self = this
     // If table is already initialized, clear it and add the collection to it
     if (this.table) {
-      this.$el.DataTable().clear().rows.add(this.collection.toJSON()).draw()
+      var initializedTable = this.$el.DataTable()
+      initializedTable.clear()
+      initializedTable.rows.add(this.collection.toJSON()).draw()
     // Otherwise, initialize the table
     } else {
-      this.collection.getFields().then(function (fieldsCollection) {
+      this.collection.getFields().then(_.bind(function (fieldsCollection) {
         var columns = fieldsCollection.toJSON()
 
-        // Check for columns to hide
-        if (_.isArray(self.config.columnsToHide)) {
-          columns = _.reject(columns, function (column) {
-            return _.contains(this.config.columnsToHide, column.data)
-          }, self)
-        }
+        columns = hideColumns(columns, this.config.columnsToHide)
 
-        // Add tooltip for column description
-        _.each(columns, function (column) {
-          if (!_.isEmpty(column.description)) {
-            column.title += ' <span class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="' + column.description + '"></span>'
-          }
-        })
+        columns = columns.map(addDescriptionToTitle)
 
         // Initialize the table
-        self.table = self.$('.card-content table').DataTable({
+        var container = this.$('.card-content table')
+        this.table = container.DataTable({
           columns: columns,
           order: [],
           scrollX: true,
           serverSide: true,
-          ajax: function (data, callback, settings) {
-            self.collection.setSearch(data.search.value ? data.search.value : null)
-
-            self.collection.getRecordCount().then(function (recordCount) {
-              self.recordsTotal = self.recordsTotal || recordCount
-              self.collection.setOffset(data.start || 0)
-              self.collection.setLimit(data.length || 25)
-              if (data.order.length) {
-                self.collection.setOrder(data.columns[data.order[0].column].data + ' ' + data.order[0].dir)
-              }
-              self.collection.fetch({
-                success: function (collection, response, options) {
-                  callback({
-                    data: collection.toJSON(),
-                    recordsTotal: self.recordsTotal,
-                    recordsFiltered: recordCount
-                  })
-                }
-              })
-              // Initialize bootstrap-powered tooltips for column descriptions
-              $('.dataTables_scrollHeadInner th span[data-toggle="tooltip"]').tooltip({
-                container: 'body'
-              })
-            })
-          }
+          ajax: _.bind(this.dataTablesAjax, this)
         })
-      })
+
+        this.activateTooltips(container)
+      }, this))
     }
+  },
+  // Adjust collection using table state, then pass off to collection.fetch with datatables callback
+  dataTablesAjax: function (tableState, dataTablesCallback, dataTablesSettings) {
+    this.collection.setSearch(tableState.search.value ? tableState.search.value : null)
+
+    // Get record count first because it needs to be passed into the collection.fetch callback
+    this.collection.getRecordCount().then(_.bind(function (recordCount) {
+      if (!this.recordsTotal) {
+        this.recordsTotal = recordCount
+      }
+      var recordsTotal = this.recordsTotal // for use in callback below
+
+      this.collection.setOffset(tableState.start || 0)
+      this.collection.setLimit(tableState.length || 25)
+
+      if (tableState.order.length) {
+        this.collection.setOrder(tableState.columns[tableState.order[0].column].data + ' ' + tableState.order[0].dir)
+      }
+
+      this.collection.fetch({
+        success: function (collection, response, options) {
+          dataTablesCallback({
+            data: collection.toJSON(),
+            recordsTotal: recordsTotal,
+            recordsFiltered: recordCount
+          })
+        }
+      })
+    }, this))
+  },
+  // Initialize bootstrap-powered tooltips for column descriptions
+  activateTooltips: function (container) {
+    this.$('.dataTables_scrollHeadInner th span[data-toggle="tooltip"]', container).tooltip({
+      container: 'body'
+    })
   },
   // When another chart is filtered, filter this collection
   onFilter: function (data) {

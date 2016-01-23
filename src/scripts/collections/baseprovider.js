@@ -78,6 +78,9 @@ module.exports = Backbone.Collection.extend({
   getTriggerField: function () {
     return this.config.triggerField
   },
+  getChannel: function () {
+    return this.config.dataset + '.filter'
+  },
   setSearch: function (newValue) {
     this.config.search = newValue
   },
