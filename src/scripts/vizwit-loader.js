@@ -6,6 +6,11 @@ var layout = require('./layout')
 var params = window.location.search.substr(1) ? deparam(window.location.search.substr(1)) : {}
 var pathToFiles = 'data/' // should include trailing slash
 
+var layoutOptions = {
+  headerSelector: '#page-header',
+  contentSelector: '#page-content'
+}
+
 // If gist ID specified, fetch it using github's API
 if (params.gist) {
   (new Gist(null, {id: params.gist})).fetch({
@@ -16,7 +21,7 @@ if (params.gist) {
       var model = params.file && collection.get(params.file) ? collection.get(params.file) : collection.at(0)
       var config = JSON.parse(model.get('content'))
 
-      layout(config)
+      layout(config, layoutOptions)
     },
     error: function () {
       console.error('Error fetching gist', params.gist)
@@ -25,7 +30,7 @@ if (params.gist) {
 // If file specified, load it from the files directory
 } else if (params.file) {
   $.getJSON(pathToFiles + params.file, function (data) {
-    layout(data)
+    layout(data, layoutOptions)
   }).fail(function () {
     console.error('Error loading file', params.file)
   })

@@ -8,13 +8,14 @@ var vizwit = require('./vizwit')
 var vent = _.clone(Backbone.Events)
 var fieldsCache = {}
 
-module.exports = function (config) {
+module.exports = function (config, options) {
+  options = options || {}
   if (!config.version || config.version !== '2') console.error('Wrong config version')
 
   // Render header
   if (config.header) {
     var header = new Header(config.header)
-    $('#page-header').empty().append(header.render().el)
+    $(options.headerSelector).empty().append(header.render().el)
 
     // Update <title> tag
     if (config.header.title) {
@@ -23,7 +24,7 @@ module.exports = function (config) {
     }
   }
 
-  var container = $('#page-content')
+  var container = $(options.contentSelector)
   var heightInterval = 60 // from gridstack.js
   var current = {x: null, y: null}
   var row

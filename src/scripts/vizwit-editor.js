@@ -4,6 +4,11 @@ var ace = require('brace')
 ;require('brace/mode/json')
 var layout = require('./layout')
 
+var layoutOptions = {
+  headerSelector: '#page-header',
+  contentSelector: '#page-content'
+}
+
 split(['#editor', '#preview'], {sizes: [40, 60]})
 
 var editor = ace.edit('editor')
@@ -12,7 +17,7 @@ session.setMode('ace/mode/json')
 
 var refresh = function () {
   var input = JSON.parse(editor.getValue())
-  layout(input)
+  layout(input, layoutOptions)
 }
 
 session.on('change', _.debounce(refresh, 300))
