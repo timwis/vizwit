@@ -5,9 +5,8 @@ var layout = require('./layout')
 var params = window.location.search.substr(1) ? deparam(window.location.search.substr(1)) : {}
 
 // If no gist specified, redirect to homepage
-var redirect = function () { window.location.replace('http://vizwit.io') }
 if (!params.gist) {
-  redirect()
+  window.location.replace('http://vizwit.io')
 }
 
 // Fetch gist
