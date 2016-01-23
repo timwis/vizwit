@@ -2,7 +2,7 @@
 var _ = require('underscore')
 var Backbone = require('backbone')
 
-var Providers = require('./providers')
+var Providers = require('./config/providers')
 var GeoJSON = require('./collections/geojson')
 
 var Bar = require('./views/bar')
