@@ -1,10 +1,11 @@
 var Backbone = require('backbone')
+var BaseFields = require('./basefields')
 
 var model = Backbone.Model.extend({
   idAttribute: 'data'
 })
 
-module.exports = Backbone.Collection.extend({
+module.exports = BaseFields.extend({
   typeMap: {
     calendar_date: 'date',
     number: 'num',
@@ -14,27 +15,23 @@ module.exports = Backbone.Collection.extend({
   model: model,
   comparator: 'position',
   initialize: function (models, options) {
-    this.options = options || {}
+    this.config = options || {}
   },
   url: function () {
     return [
       'https://',
-      this.options.domain,
+      this.config.domain,
       '/api',
       '/views',
-      '/' + this.options.dataset,
+      '/' + this.config.dataset,
       '.json'
     ].join('')
   },
   parse: function (response) {
     return response.columns.map(function (row, key) {
-      var titleForRow = row.name
-      if(!_.isEmpty(row.description)){
-        titleForRow += ' <span class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="'+row.description+'"></span>'
-      }
       return {
         data: row.fieldName,
-        title: titleForRow,
+        title: row.name,
         type: this.typeMap[row.renderTypeName] || this.typeMap.default,
         defaultContent: '',
         description: row.description

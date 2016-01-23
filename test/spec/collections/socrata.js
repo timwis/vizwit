@@ -24,10 +24,11 @@ var respond = function (server, data) {
  */
 test('socrata: query: should construct base url', function (t) {
   t.plan(1)
-  var collection = new Socrata(null, {
+  var config = {
     domain: 'data.cityofchicago.org',
     dataset: 'xqx5-8hwx'
-  })
+  }
+  var collection = new Socrata(null, {config: config})
 
   var url = collection.url().split('?')[0]
   t.equal(url, 'https://data.cityofchicago.org/resource/xqx5-8hwx.json')
@@ -35,10 +36,11 @@ test('socrata: query: should construct base url', function (t) {
 
 test('socrata: query: should construct export url', function (t) {
   t.plan(1)
-  var collection = new Socrata(null, {
+  var config = {
     domain: 'data.cityofchicago.org',
     dataset: 'xqx5-8hwx'
-  })
+  }
+  var collection = new Socrata(null, {config: config})
 
   var url = collection.exportUrl().split('?')[0]
   t.equal(url, 'https://data.cityofchicago.org/resource/xqx5-8hwx.csv', 'csv suffix')
@@ -46,10 +48,11 @@ test('socrata: query: should construct export url', function (t) {
 
 test('socrata: query: should order by :id by default', function (t) {
   t.plan(1)
-  var collection = new Socrata(null, {
+  var config = {
     domain: 'data.cityofchicago.org',
     dataset: 'xqx5-8hwx'
-  })
+  }
+  var collection = new Socrata(null, {config: config})
 
   var params = deparam(collection.url().split('?')[1])
   t.equal(params.$order, ':id asc')
@@ -57,11 +60,12 @@ test('socrata: query: should order by :id by default', function (t) {
 
 test('socrata: query: should allow order override', function (t) {
   t.plan(1)
-  var collection = new Socrata(null, {
+  var config = {
     domain: 'data.cityofchicago.org',
     dataset: 'xqx5-8hwx',
     order: 'foo desc'
-  })
+  }
+  var collection = new Socrata(null, {config: config})
 
   var params = deparam(collection.url().split('?')[1])
   t.equal(params.$order, 'foo desc')
@@ -69,12 +73,13 @@ test('socrata: query: should allow order override', function (t) {
 
 test('socrata: query: should paginate', function (t) {
   t.plan(2)
-  var collection = new Socrata(null, {
+  var config = {
     domain: 'data.cityofchicago.org',
     dataset: 'xqx5-8hwx',
     limit: 50,
     offset: 100
-  })
+  }
+  var collection = new Socrata(null, {config: config})
 
   var params = deparam(collection.url().split('?')[1])
   t.equal(params.$limit, 50)
@@ -83,10 +88,11 @@ test('socrata: query: should paginate', function (t) {
 
 test('socrata: query: should free text search', function (t) {
   t.plan(1)
-  var collection = new Socrata(null, {
+  var config = {
     domain: 'data.cityofchicago.org',
     dataset: 'xqx5-8hwx'
-  })
+  }
+  var collection = new Socrata(null, {config: config})
 
   collection.setSearch('foo')
 
@@ -99,11 +105,12 @@ test('socrata: query: should free text search', function (t) {
  */
 test('socrata: aggregation: should default to count(*) for basic group by', function (t) {
   t.plan(2)
-  var collection = new Socrata(null, {
+  var config = {
     domain: 'data.cityofchicago.org',
     dataset: 'xqx5-8hwx',
     groupBy: 'license_type'
-  })
+  }
+  var collection = new Socrata(null, {config: config})
 
   var params = deparam(collection.url().split('?')[1])
   t.equal(params.$select, 'count(*) as value, license_type as label')
@@ -112,13 +119,14 @@ test('socrata: aggregation: should default to count(*) for basic group by', func
 
 test('socrata: aggregation: should allow other aggregation functions', function (t) {
   t.plan(2)
-  var collection = new Socrata(null, {
+  var config = {
     domain: 'data.cityofchicago.org',
     dataset: 'xqx5-8hwx',
     groupBy: 'license_type',
     aggregateFunction: 'sum',
     aggregateField: 'license_cost'
-  })
+  }
+  var collection = new Socrata(null, {config: config})
 
   var params = deparam(collection.url().split('?')[1])
   t.equal(params.$select, 'sum(license_cost) as value, license_type as label')
@@ -127,12 +135,13 @@ test('socrata: aggregation: should allow other aggregation functions', function 
 
 test('socrata: aggregation: should allow aggregation without group by', function (t) {
   t.plan(3)
-  var collection = new Socrata(null, {
+  var config = {
     domain: 'data.cityofchicago.org',
     dataset: 'xqx5-8hwx',
     aggregateFunction: 'sum',
     aggregateField: 'license_cost'
-  })
+  }
+  var collection = new Socrata(null, {config: config})
 
   var params = deparam(collection.url().split('?')[1])
   t.ok(params.$select, 'should have $select property')
@@ -142,12 +151,13 @@ test('socrata: aggregation: should allow aggregation without group by', function
 
 test('socrata: aggregation: should allow override of order when grouping', function (t) {
   t.plan(2)
-  var collection = new Socrata(null, {
+  var config = {
     domain: 'data.cityofchicago.org',
     dataset: 'xqx5-8hwx',
     groupBy: 'license_type',
     order: 'label'
-  })
+  }
+  var collection = new Socrata(null, {config: config})
 
   var params = deparam(collection.url().split('?')[1])
   t.equal(params.$select, 'count(*) as value, license_type as label')
@@ -159,10 +169,11 @@ test('socrata: aggregation: should allow override of order when grouping', funct
  */
 test('socrata: filters: should set = filter', function (t) {
   t.plan(1)
-  var collection = new Socrata(null, {
+  var config = {
     domain: 'data.cityofchicago.org',
     dataset: 'xqx5-8hwx'
-  })
+  }
+  var collection = new Socrata(null, {config: config})
 
   collection.setFilter({
     field: 'license_description',
@@ -178,10 +189,11 @@ test('socrata: filters: should set = filter', function (t) {
 
 test('socrata: filters: should set multiple filters', function (t) {
   t.plan(1)
-  var collection = new Socrata(null, {
+  var config = {
     domain: 'data.cityofchicago.org',
     dataset: 'xqx5-8hwx'
-  })
+  }
+  var collection = new Socrata(null, {config: config})
 
   collection.setFilter({
     field: 'license_description',
@@ -205,10 +217,11 @@ test('socrata: filters: should set multiple filters', function (t) {
 
 test('socrata: filters: should set AND filters', function (t) {
   t.plan(1)
-  var collection = new Socrata(null, {
+  var config = {
     domain: 'data.cityofchicago.org',
     dataset: 'xqx5-8hwx'
-  })
+  }
+  var collection = new Socrata(null, {config: config})
 
   collection.setFilter({
     field: 'code',
@@ -233,10 +246,11 @@ test('socrata: filters: should set AND filters', function (t) {
 
 test('socrata: filters: should set IN filters', function (t) {
   t.plan(1)
-  var collection = new Socrata(null, {
+  var config = {
     domain: 'data.cityofchicago.org',
     dataset: 'xqx5-8hwx'
-  })
+  }
+  var collection = new Socrata(null, {config: config})
 
   collection.setFilter({
     field: 'code',
@@ -264,13 +278,14 @@ test('socrata: filters: should set IN filters', function (t) {
 test('socrata: fetch: should get correct number of features', function (t) {
   t.plan(1)
   var fixtures = setup()
-  var collection = new Socrata(null, {
+  var config = {
     'title': 'License Description',
     'chartType': 'bar',
     'domain': 'data.cityofchicago.org',
     'dataset': 'xqx5-8hwx',
     'groupBy': 'license_description'
-  })
+  }
+  var collection = new Socrata(null, {config: config})
   collection.fetch()
   respond(fixtures.server, sampleData)
   t.equal(collection.length, 132)

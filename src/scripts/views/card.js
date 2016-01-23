@@ -20,7 +20,6 @@ module.exports = Backbone.View.extend({
   initialize: function (options) {
     options = options || {}
     this.config = options.config || {}
-    this.fields = options.fields || {}
     this.template = Template
 
     _.bindAll(this, 'onClickRemoveFilter')
@@ -63,13 +62,17 @@ module.exports = Backbone.View.extend({
     var self = this
     var filters = this.filteredCollection ? this.filteredCollection.getFilters() : this.collection.getFilters()
 
-    var parsedFilters = _.map(filters, function (filter) {
-      return {
-        field: filter.field,
-        expression: self.parseExpression(filter.field, filter.expression)
-      }
+    this.collection.getFields().then(function (fieldsCollection) {
+      var parsedFilters = _.map(filters, function (filter) {
+        var match = fieldsCollection.get(filter.field)
+        var fieldName = match ? match.get('title') : filter.field
+        return {
+          field: filter.field,
+          expression: self.parseExpression(fieldName, filter.expression)
+        }
+      })
+      self.$('.filters').empty().append(FiltersTemplate(parsedFilters)).toggle(parsedFilters.length ? true : false) // eslint-disable-line
     })
-    this.$('.filters').empty().append(FiltersTemplate(parsedFilters)).toggle(parsedFilters.length ? true : false) // eslint-disable-line
   },
   parseExpression: function (field, expression) {
     if (expression.type === 'and' || expression.type === 'or') {
@@ -79,9 +82,8 @@ module.exports = Backbone.View.extend({
         this.parseExpression(field, expression.value[1])
       ]
     } else {
-      var match = this.fields.get(field)
       return [
-        match ? match.get('title') : field,
+        field,
         operatorMap[expression.type] || expression.type,
         expression.label || expression.value
       ]
