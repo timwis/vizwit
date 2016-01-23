@@ -25,15 +25,17 @@ gulp.task('watch', ['clean'], function () {
 
 gulp.task('scripts', function () {
   return mergeStream(
-    scripts(dir.dev + 'scripts/layout.js', 'layout.js'),
-    scripts(dir.dev + 'scripts/embed.js', 'embed.js')
+    scripts(dir.dev + 'scripts/layout-from-gist.js', 'layout-from-gist.js'),
+    scripts(dir.dev + 'scripts/embed.js', 'embed.js'),
+    scripts(dir.dev + 'scripts/editor.js', 'editor.js')
   )
 })
 
 gulp.task('scripts-watch', function () {
   return mergeStream(
-    scripts(dir.dev + 'scripts/layout.js', 'layout.js', true),
-    scripts(dir.dev + 'scripts/embed.js', 'embed.js', true)
+    scripts(dir.dev + 'scripts/layout-from-gist.js', 'layout-from-gist.js', true),
+    scripts(dir.dev + 'scripts/embed.js', 'embed.js', true),
+    scripts(dir.dev + 'scripts/editor.js', 'editor.js', true)
   )
 })
 
