@@ -1,3 +1,3 @@
 module.exports = {
-  socrata: require('./collections/socrata')
+  socrata: require('../collections/socrata')
 }
