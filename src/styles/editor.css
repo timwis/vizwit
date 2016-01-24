@@ -7,8 +7,18 @@ body {
   margin: 0;
 }
 
+.split {
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
 .gutter {
   background-color: #eee;
+
   background-repeat: no-repeat;
   background-position: 50%;
 }
@@ -23,15 +33,15 @@ body {
   cursor: ns-resize;
 }
 
-.split {
-  -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-          box-sizing: border-box;
-  overflow-x: hidden;
-  overflow-y: auto;
-}
-
-.split, .gutter.gutter-horizontal {
+.split.split-horizontal, .gutter.gutter-horizontal {
   height: 100%;
   float: left;
+}
+
+#docs .container{
+  margin-left:15px;
+}
+
+#docs .container h1{
+  font-size: 24px
 }
