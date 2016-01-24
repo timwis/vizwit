@@ -36,6 +36,7 @@
     "soda-js": "socrata/soda-js",
     "spin.js": "^2.3.2",
     "split.js": "^1.0.6",
+    "squel": "^4.2.3",
     "underscore": "^1.8.3"
   },
   "devDependencies": {
