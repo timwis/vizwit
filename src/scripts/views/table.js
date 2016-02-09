@@ -111,5 +111,10 @@ module.exports = Card.extend({
     this.collection.unsetRecordCount()
     this.table.ajax.reload()
     this.renderFilters()
-  }
+  },
+  updateExportLink: function (collection) {
+    collection = collection || this.collection
+    collection.config.limit = parseInt(collection.recordCount)
+    this.$('.export-link').attr('href', collection.exportUrl())
+  },
 })
