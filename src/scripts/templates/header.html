@@ -12,7 +12,6 @@
 		
 		<div class="btn-group pull-right navigation" role="group" aria-label="Pages">
 			
-			
 			<% if(data.navigation && data.navigation.length) { %>
 			<strong>Quick links</strong><ul>
 				<% data.navigation.forEach(function(nav) { %>
@@ -20,10 +19,6 @@
 				<% }) %>
 			</ul>
 			<% } %>
-
-			<!-- <a href="http://vizwit.io" class="btn btn-default"><span class="fa fa-home"></span></a> -->
-			<!-- <a href="http://form.jotform.us/form/52708408087157?thePage=<%= encodeURIComponent(window.location.search.substr(1)) %>" class="btn btn-default">Feedback</a> -->
-			<div class="well">This page was built with <a target="blank" href="http://vizwit.io">VizWit</a>, an interactive data visualization tool, by <a target="blank" href="http://timwis.com/">Tim Wisniewski</a>, the Chief Data Officer for the City of Philadelphia. VizWit uses open source technology and Socrata Open Data APIs to do awesome things.</div>
 
 		</div>
 			
