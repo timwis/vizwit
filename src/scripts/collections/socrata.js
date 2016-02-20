@@ -5,6 +5,8 @@ var BaseProvider = require('./baseprovider')
 var soda = require('soda-js')
 var SocrataFields = require('./socrata-fields')
 
+var MAX_ROWS_TO_EXPORT = 100000000 // Export up to 100M records (a null or empty limit only returns 1K records)
+
 module.exports = BaseProvider.extend({
   initialize: function (models, options) {
     BaseProvider.prototype.initialize.apply(this, arguments)
@@ -64,7 +66,11 @@ module.exports = BaseProvider.extend({
     return query.getURL()
   },
   exportUrl: function () {
-    return this.url().replace(this.config.dataset + '.json', this.config.dataset + '.csv')
+    var oldLimit = this.config.limit
+    this.config.limit = MAX_ROWS_TO_EXPORT
+    var exportUrl = this.url().replace(this.config.dataset + '.json', this.config.dataset + '.csv')
+    this.config.limit = oldLimit
+    return exportUrl
   },
   getRecordCount: function () {
     var self = this
