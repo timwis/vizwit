@@ -14,26 +14,28 @@ var dir = {
 }
 
 gulp.task('build', ['clean'], function () {
-  gulp.start('scripts', 'styles', 'html', 'cname')
+  gulp.start('scripts', 'styles', 'data', 'html', 'cname')
 })
 
 gulp.task('watch', ['clean'], function () {
-  gulp.start('scripts-watch', 'styles', 'html', 'cname')
+  gulp.start('scripts-watch', 'styles', 'data', 'html', 'cname')
   gulp.watch(dir.dev + 'styles/*css', ['styles'])
   gulp.watch(dir.dev + '*.html', ['html'])
 })
 
 gulp.task('scripts', function () {
   return mergeStream(
-    scripts(dir.dev + 'scripts/layout.js', 'layout.js'),
-    scripts(dir.dev + 'scripts/embed.js', 'embed.js')
+    scripts(dir.dev + 'scripts/vizwit-loader.js', 'vizwit-loader.js'),
+    scripts(dir.dev + 'scripts/vizwit-embed.js', 'vizwit-embed.js'),
+    scripts(dir.dev + 'scripts/vizwit-editor.js', 'vizwit-editor.js')
   )
 })
 
 gulp.task('scripts-watch', function () {
   return mergeStream(
-    scripts(dir.dev + 'scripts/layout.js', 'layout.js', true),
-    scripts(dir.dev + 'scripts/embed.js', 'embed.js', true)
+    scripts(dir.dev + 'scripts/vizwit-loader.js', 'vizwit-loader.js', true),
+    scripts(dir.dev + 'scripts/vizwit-embed.js', 'vizwit-embed.js', true),
+    scripts(dir.dev + 'scripts/vizwit-editor.js', 'vizwit-editor.js', true)
   )
 })
 
@@ -50,6 +52,11 @@ gulp.task('html', function () {
 gulp.task('styles', function () {
   return gulp.src(dir.dev + 'styles/*.css')
     .pipe(gulp.dest(dir.prod + 'styles/'))
+})
+
+gulp.task('data', function () {
+  return gulp.src(dir.dev + 'data/*.json')
+    .pipe(gulp.dest(dir.prod + 'data/'))
 })
 
 gulp.task('clean', function (cb) {
