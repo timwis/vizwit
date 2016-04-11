@@ -23,9 +23,18 @@ module.exports = BaseChart.extend({
         clustered: false,
         lineColor: '#97bbcd',
         balloonFunction: function (item, graph) {
-          return '<b>' + item.category +
+          var baloonHtml = '<b>' + item.category +
             '</b><br>Total: ' + (+item.dataContext.value).toLocaleString() +
             '<br>Filtered Amount: ' + (+item.dataContext.filteredValue).toLocaleString()
+          try{
+            var percentOfTotal = (parseFloat(item.dataContext.filteredValue)/parseFloat(item.dataContext.value)*100).toFixed(2)
+            if(percentOfTotal != "NaN"){ // NaN becomes "NaN" when converted to Fixed
+              baloonHtml += ' (' + percentOfTotal + '%)'  
+            }
+          } catch(err){
+            console.log(err)
+          }
+          return baloonHtml
         }
       }
     ],
@@ -107,7 +116,9 @@ module.exports = BaseChart.extend({
     _.bindAll(this, 'onClickCursor', 'onClickBar', 'onClickLabel', 'onHover', 'onClickScroll', 'zoomToBeginning')
   },
   events: {
-    'click .scroll a': 'onClickScroll'
+    'click .scroll a': 'onClickScroll',
+    'click .toggle-base-collection-link': 'onClickToggleBaseCollectionLink',
+    'click .zoom-to-filtered-collection-link': 'onClickZoomToFilteredCollectionLink'
   },
   render: function () {
     BaseChart.prototype.render.apply(this, arguments)
@@ -133,6 +144,15 @@ module.exports = BaseChart.extend({
     // If there are more records than the default, show scroll bars
     if (this.chart.endIndex - this.chart.startIndex < this.collection.length) {
       this.$('.scroll').removeClass('hidden')
+    }
+
+    // If there are filters, show the toggle for base collection and zoom filter collection buttons
+    if(_.isEmpty(this.filteredCollection.getFilters())){
+      this.$('.toggle-base-collection').hide()
+      this.$('.zoom-to-filtered-collection').hide()
+    } else {
+      this.$('.toggle-base-collection').show()
+      this.$('.zoom-to-filtered-collection').show()
     }
   },
   zoomToBeginning: function () {
@@ -189,5 +209,50 @@ module.exports = BaseChart.extend({
         }
       })
     }
+  },
+  onClickToggleBaseCollectionLink: function (e) {
+    var target = $(e.target)
+    // If target was the text, change target to the icon
+    if(!target.hasClass('toggle-base-collection-icon')){
+      target = target.children('.toggle-base-collection-icon')
+    }
+    // If the toggle is currently on, hide the first graph (base collection)
+    if(target.hasClass("fa-toggle-on")){
+      this.chart.hideGraph(this.chart.graphs[0])
+    } else { 
+      this.chart.showGraph(this.chart.graphs[0])
+    }
+    // No matter what, toggle the icons classes to show the other one
+    target.filter('span.fa').toggleClass("fa-toggle-on")
+    target.filter('span.fa').toggleClass("fa-toggle-off")
+    e.preventDefault()
+  }, 
+  onClickZoomToFilteredCollectionLink: function (e) {
+    var target = $(e.target)
+    // If target was the text, change target to the icon
+    if(!target.hasClass('zoom-to-filtered-collection-icon')){
+      target = target.children('.zoom-to-filtered-collection-icon')
+    }
+
+    // If the toggle is currently on, hide the first graph (base collection)
+    if(target.hasClass("fa-search-plus")){ // zoom in
+      var filteredCollectionValues = _.map(this.filteredCollection.models, function(o){return parseInt(o.attributes.value)})
+      var filteredCollectionMaxValue = _.max(filteredCollectionValues) * 1.15 // include some top padding
+      this.chart.valueAxes[0].maximum = filteredCollectionMaxValue 
+      this.chart.validateNow()
+    } else { // zoom out
+      var collectionValues = _.map(this.collection.models, function(o){return parseInt(o.attributes.value)})
+      var collectionMaxValue = _.max(collectionValues) * 1.15 // include some top padding
+      this.chart.valueAxes[0].maximum = collectionMaxValue 
+      this.chart.validateNow()
+    }
+
+    // No matter what, toggle the icons classes to show the other one
+    target.filter('span.fa').toggleClass("fa-search-plus")
+    target.filter('span.fa').toggleClass("fa-search-minus")
+    e.preventDefault()
   }
+
+
+
 })

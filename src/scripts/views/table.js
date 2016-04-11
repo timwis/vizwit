@@ -169,5 +169,5 @@ module.exports = Card.extend({
     this.collection.unsetRecordCount()
     this.table.ajax.reload()
     this.renderFilters()
-  }
+  }, 
 })
