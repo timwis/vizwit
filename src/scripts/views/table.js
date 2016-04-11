@@ -30,18 +30,21 @@ var rowDetails = function(rowData, columns) {
   /* create columnLookup so we get column names and tooltips */ 
   var columnLookup = {}
   _.each(columns, function(column){
-    columnLookup[column.data] = column.title || column.data
+    if(column.data != null) // skip the first column where the [+] icon goes
+      columnLookup[column.data] = column.title || column.data
   })
-
   var s = '<div class="table-responsive"><table class="table row-detail">'
   s += '<thead><tr><th style="width: 15%">Attribute</th><th>Value</th></tr></thead>'
   s += '<tbody>'
-  _.each(rowData, function(v,k){
-    s += '<tr><td>'+columnLookup[k]+'</td><td>'+v+'</td></tr>'
+  _.each(columnLookup, function(title,key){
+    s += '<tr><td>'+title+'</td><td>'
+    if(!_.isUndefined(rowData[key])){
+      s += rowData[key]
+    }
+    s += '</td></tr>'  
   })
-
   s += '</tbody></table></div>'
-  return s //JSON.stringify(rowData)
+  return s
 }
 
 module.exports = Card.extend({
@@ -74,13 +77,16 @@ module.exports = Card.extend({
 
         columns = columns.map(addDescriptionToTitle)
 
-        // Add row detail control column
-        columns.unshift({
-          "class": "row-detail-control fa fa-plus-square-o",
-          "orderable": false,
-          "data": null,
-          "defaultContent": ""
-        })
+        if(this.config.rowDetails){
+          // Add row detail control column
+          columns.unshift({
+            "class": "row-detail-control fa fa-plus-square-o",
+            "orderable": false,
+            "data": null,
+            "defaultContent": ""
+          })
+
+        }
 
         // Initialize the table
         var container = this.$('.card-content table')
@@ -93,25 +99,27 @@ module.exports = Card.extend({
         })
 
         /* store this.table as table, which is used in the following callback */
-        var table = this.table
-        /* listen for row detail icon click and act apropriately*/
-        container.on( 'click', 'tr td.row-detail-control', function () {
-            var clicked = jQuery(this)
-            var tr = clicked.closest('tr');
-            var row = table.row( tr );
-            if ( row.child.isShown() ) {
-                clicked.removeClass("fa-minus-square-o")
-                clicked.addClass("fa-plus-square-o")
-                tr.removeClass( 'details' );
-                row.child.hide();
-            }
-            else {
-                clicked.addClass("fa-minus-square-o")
-                clicked.removeClass("fa-plus-square-o")
-                tr.addClass( 'details' );
-                row.child( rowDetails(row.data(), columns) ).show();
-            }
-        } );
+        if(this.config.rowDetails){
+          var table = this.table
+          /* listen for row detail icon click and act apropriately*/
+          container.on( 'click', 'tr td.row-detail-control', function () {
+              var clicked = jQuery(this)
+              var tr = clicked.closest('tr');
+              var row = table.row( tr );
+              if ( row.child.isShown() ) {
+                  clicked.removeClass("fa-minus-square-o")
+                  clicked.addClass("fa-plus-square-o")
+                  tr.removeClass( 'details' );
+                  row.child.hide();
+              }
+              else {
+                  clicked.addClass("fa-minus-square-o")
+                  clicked.removeClass("fa-plus-square-o")
+                  tr.addClass( 'details' );
+                  row.child( rowDetails(row.data(), columns) ).show();
+              }
+          } );
+        }
 
         this.activateTooltips(container)
       }, this))
