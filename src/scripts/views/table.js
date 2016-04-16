@@ -73,6 +73,8 @@ module.exports = Card.extend({
   // Adjust collection using table state, then pass off to collection.fetch with datatables callback
   dataTablesAjax: function (tableState, dataTablesCallback, dataTablesSettings) {
     this.collection.setSearch(tableState.search.value ? tableState.search.value : null)
+    this.collection.unsetRecordCount()
+    this.renderFilters()
 
     // Get record count first because it needs to be passed into the collection.fetch callback
     this.collection.getRecordCount().then(_.bind(function (recordCount) {
