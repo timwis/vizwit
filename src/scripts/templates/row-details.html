@@ -1,0 +1,14 @@
+<div class="table-responsive">
+	<table class="table row-detail">
+		<thead><tr><th style="width: 15%">Attribute</th><th>Value</th></tr></thead>
+		<tbody>
+			<% for(var key in data.columnLookup) { %>
+				<tr><td><%= data.columnLookup[key] %></td><td>
+				<% if(typeof(data.rowData[key]) != "undefined") { %>
+					<%= data.rowData[key] %>
+				<% } %>
+				</td></tr>
+			<% } %>
+		</tbody>
+	</table>
+</div>

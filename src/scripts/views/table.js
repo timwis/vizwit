@@ -36,20 +36,9 @@ var rowDetails = function (rowData, columns) {
     }
   })
 
-  var s = '<div class="table-responsive"><table class="table row-detail">'
-  s += '<thead><tr><th style="width: 15%">Attribute</th><th>Value</th></tr></thead>'
-  s += '<tbody>'
-
-  _.each(columnLookup, function (title, key) {
-    s += '<tr><td>' + title + '</td><td>'
-    if (!_.isUndefined(rowData[key])) {
-      s += rowData[key]
-    }
-    s += '</td></tr>'
-  })
-
-  s += '</tbody></table></div>'
-  return s
+  var RowDetailsTemplate = require('../templates/row-details.html')
+  var templateMarkup = RowDetailsTemplate({columnLookup: columnLookup, rowData: rowData})
+  return templateMarkup
 }
 
 module.exports = Card.extend({
