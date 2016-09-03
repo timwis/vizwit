@@ -53,6 +53,7 @@
     "tap-spec": "^4.1.1",
     "tape": "^4.4.0",
     "tape-run": "^2.1.1",
+    "uglifyify": "^3.0.2",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.3.1"
