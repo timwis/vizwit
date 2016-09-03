@@ -67,7 +67,9 @@ gulp.task('clean', function (cb) {
 * Build scripts and optionally watch for changes
 */
 function scripts (src, dest, watch) {
-  var bundleOpts = _.extend({}, watchify.args, {debug: true})
+  var bundleOpts = _.extend({}, watchify.args)
+  if (watch) bundleOpts.debug = true
+
   var bundle = browserify(src, bundleOpts)
 
   if (watch) {
@@ -75,6 +77,8 @@ function scripts (src, dest, watch) {
 
     bundle.on('update', function () { compileBundle(bundle, dest) }) // when a dependency changes, recompile
     bundle.on('log', gutil.log) // output build logs to terminal
+  } else {
+    bundle.transform({ global: true }, 'uglifyify')
   }
 
   return compileBundle(bundle, dest)
