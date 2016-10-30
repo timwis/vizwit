@@ -9,15 +9,13 @@ module.exports = BaseProvider.extend({
   initialize: function (models, options) {
     BaseProvider.prototype.initialize.apply(this, arguments)
   },
-
   fieldsCollection: CartoDBFields,
-
   url: function () {
     var filters = this.config.baseFilters.concat(this.getFilters())
     var query = squel.select()
     query.from(this.config.dataset)
-    // Aggregate & group by
 
+    // Aggregate & group by
     if (this.config.valueField || this.config.aggregateFunction || this.config.groupBy) {
       // If valueField specified, use it as the value
       if (this.config.valueField) {
@@ -37,13 +35,15 @@ module.exports = BaseProvider.extend({
           .group(this.config.groupBy)
 
         // Order by (only if there will be multiple results)
-        // console.log(this.config.order);
-
-        ;(this.config.order) ? query.order(this.config.order) : query.order('value', false)
+        if (this.config.order) {
+          query.order(this.config.order)
+        } else {
+          query.order('value', false)
+        }
       }
     } else {
       // Offset
-      if (this.config.offset) query.options.offset(this.config.offset)
+      if (this.config.offset) query.offset(this.config.offset)
 
       // Order by
       query.order(this.config.order || 'cartodb_id')
@@ -59,7 +59,12 @@ module.exports = BaseProvider.extend({
     }
 
     // Full text search
-    if (this.config.search) query.q(this.config.search)
+    // if (this.config.search) query.q(this.config.search)
+    if (this.config.search) {
+      var fullTextQuery = this.config.dataset + '::text ' +
+        "ILIKE '%25" + this.config.search + "%25'"
+      query.where(fullTextQuery)
+    }
 
     // Limit
     query.limit(this.config.limit || '5000')
@@ -71,9 +76,7 @@ module.exports = BaseProvider.extend({
   },
 
   exportUrl: function () {
-    // TODO generate CartoDB url which generates CSV
-    // probably from this.url()
-    return this.url()
+    return this.url() + '&format=csv'
   },
 
   parse: function (response) {
@@ -104,12 +107,11 @@ module.exports = BaseProvider.extend({
       // technically returns a $.Deferred but bluebird throws a warning when
       // returning a promise from within DataTables .ajax
       return $.getJSON(url).then(function (response) {
-        self.recordCount = response.length ? response[0].value : 0
+        self.recordCount = response.rows.length ? response.rows[0].value : 0
         return self.recordCount
       })
     }
   },
-
   getFields: function () {
     var fields = this.fieldsCache[this.config.dataset]
     // TODO: Is there a better way to detect whether it's been fetched?
