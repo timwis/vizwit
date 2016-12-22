@@ -1,6 +1,6 @@
 {
   "name": "vizwit",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "An interactive data visualization tool",
   "main": "src/scripts/vizwit.js",
   "scripts": {
