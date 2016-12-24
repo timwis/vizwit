@@ -21,7 +21,7 @@
   "dependencies": {
     "amcharts3": "amcharts/amcharts3",
     "backbone": "^1.2.2",
-    "backbone.modal": "^1.1.5",
+    "backbone.modal": "github:jimf/backbone.modal#npm-remove-engines",
     "bluebird": "^3.1.1",
     "bootstrap": "^3.3.5",
     "brace": "^0.7.0",
