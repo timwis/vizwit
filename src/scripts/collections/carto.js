@@ -76,7 +76,19 @@ module.exports = BaseProvider.extend({
   },
 
   exportUrl: function () {
-    return this.url() + '&format=csv'
+    // Save current value
+    var oldLimit = this.config.limit
+
+    // Change value in order to get the URL
+    this.config.limit = null // defaults to 5000
+
+    // Get the URL
+    var url = this.url() + '&format=csv'
+
+    // Set the value back
+    this.config.limit = oldLimit
+
+    return url
   },
 
   parse: function (response) {
