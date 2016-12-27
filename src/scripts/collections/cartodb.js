@@ -15,10 +15,6 @@ module.exports = BaseProvider.extend({
     var query = squel.select()
     query.from(this.config.dataset)
 
-    if (this.config.leftJoin) {
-      query.left_join(this.config.leftJoin)
-    }
-
     // Aggregate & group by
     if (this.config.valueField || this.config.aggregateFunction || this.config.groupBy) {
       // If valueField specified, use it as the value
