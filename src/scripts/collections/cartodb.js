@@ -40,7 +40,7 @@ module.exports = BaseProvider.extend({
 
         // Order by (only if there will be multiple results)
         if (this.config.order) {
-          query.order(this.config.order)
+          query.order(this.config.order, '')
         } else {
           query.order('value', false)
         }
@@ -50,7 +50,7 @@ module.exports = BaseProvider.extend({
       if (this.config.offset) query.offset(this.config.offset)
 
       // Order by
-      query.order(this.config.order || 'cartodb_id')
+      query.order(this.config.order || 'cartodb_id', '')
     }
 
     // Where
