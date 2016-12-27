@@ -83,3 +83,5 @@ embedding allows the VizWit library to only be loaded once on the page with as m
 
 # License
 [GPL-2](LICENSE.md) (create an issue if that doesn't work for someone)
+
+Testing travis config with a pull request
