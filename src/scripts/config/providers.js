@@ -1,4 +1,4 @@
 module.exports = {
   socrata: require('../collections/socrata'),
-  cartodb: require('../collections/cartodb')
+  carto: require('../collections/carto')
 }

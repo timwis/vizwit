@@ -3,13 +3,13 @@ var _ = require('underscore')
 var Promise = require('bluebird')
 var BaseProvider = require('./baseprovider')
 var squel = require('squel')
-var CartoDBFields = require('./cartodb-fields')
+var CartoFields = require('./carto-fields')
 
 module.exports = BaseProvider.extend({
   initialize: function (models, options) {
     BaseProvider.prototype.initialize.apply(this, arguments)
   },
-  fieldsCollection: CartoDBFields,
+  fieldsCollection: CartoFields,
   url: function () {
     var filters = this.config.baseFilters.concat(this.getFilters())
     var query = squel.select()
