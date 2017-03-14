@@ -1,0 +1,28 @@
+{
+  "name": "vizwit",
+  "version": "2.0.0",
+  "description": "An interactive data visualization tool",
+  "main": "src/App.js",
+  "author": "timwis <tim@timwis.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/timwis/vizwit.git"
+  },
+  "license": "GPL-2.0",
+  "devDependencies": {
+    "react-scripts": "0.9.3"
+  },
+  "dependencies": {
+    "chart.js": "2.4",
+    "react": "^15.4.2",
+    "react-chartjs-2": "^2.0.5",
+    "react-dom": "^15.4.2",
+    "squel": "^5.8.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  }
+}

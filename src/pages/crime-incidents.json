@@ -1,0 +1,19 @@
+[
+  {
+    "title":"Police District",
+    "chartType":"bar",
+    "provider":"cartodb",
+    "domain":"timwis.carto.com",
+    "dataset":"crimes_2015_to_oct_2016",
+    "groupBy":"dc_dist"
+  },
+  {
+    "title":"General Crime Category",
+    "description":"The generalized text for the crime code",
+    "chartType":"bar",
+    "provider":"cartodb",
+    "domain":"timwis.carto.com",
+    "dataset":"crimes_2015_to_oct_2016",
+    "groupBy":"text_general_code"
+  }
+]
