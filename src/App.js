@@ -1,4 +1,5 @@
 import React from 'react'
+import {assoc, dissoc} from 'ramda'
 
 import Carto from './providers/Carto'
 import BarChart from './chart-types/BarChart'
@@ -16,26 +17,13 @@ export default class App extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      filters: []
+      filters: {}
     }
-  }
-
-  componentDidMount () {
-    window.setTimeout(() => {
-      this.setState({
-        filters: [{
-          field: 'dc_dist',
-          expression: {
-            type: '=',
-            value: '26'
-          }
-        }]
-      })
-    }, 2000)
   }
 
   render () {
     const widgets = this.props.widgets
+    console.log('rendering', this.state.filters)
     return (
       <main>
         {widgets.map((widget, index) => {
@@ -46,11 +34,23 @@ export default class App extends React.Component {
               <Provider
                 config={widget}
                 filters={this.state.filters}
-                ChartType={ChartType} />
+                ChartType={ChartType}
+                onFilter={this.onFilter.bind(this)} />
             </div>
           )
         })}
       </main>
     )
+  }
+
+  onFilter (field, expression) {
+    let newFilters
+    if (expression) {
+      const newFilter = { field, expression } // keep 'field' since filters is converted to array later
+      newFilters = assoc(field, newFilter, this.state.filters)
+    } else {
+      newFilters = dissoc(field, this.state.filters)
+    }
+    this.setState({ filters: newFilters })
   }
 }

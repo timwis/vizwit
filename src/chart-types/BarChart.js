@@ -50,6 +50,20 @@ export default class BarChart extends React.Component {
         }]
       }
     }
-    return <Bar data={chartData} options={options} width={600} height={500} />
+
+    return <Bar
+            data={chartData}
+            options={options}
+            width={600}
+            height={500}
+            getElementAtEvent={this.onClick.bind(this)} />
+  }
+
+  onClick (elements) {
+    if (elements.length) {
+      const index = elements[0]._index
+      const label = this.props.totalRows[index].label
+      this.props.onSelect(label)
+    }
   }
 }

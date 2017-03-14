@@ -1,5 +1,6 @@
 import React from 'react'
 import squel from 'squel'
+import {values} from 'ramda'
 
 export default class Carto extends React.Component {
   constructor (props) {
@@ -14,7 +15,8 @@ export default class Carto extends React.Component {
     const ChartType = this.props.ChartType
     return <ChartType
             totalRows={this.state.totalRows}
-            filteredRows={this.state.filteredRows} />
+            filteredRows={this.state.filteredRows}
+            onSelect={this.onSelect.bind(this)} />
   }
 
   async componentDidMount () {
@@ -32,13 +34,27 @@ export default class Carto extends React.Component {
       this.setState({ filteredRows: data.rows })
     }
   }
+
+  onSelect (label) {
+    const field = this.props.config.triggerField || this.props.config.groupBy
+    if (this.props.filters[field] && this.props.filters[field].expression.value === label) { // TODO: move to function
+      this.props.onFilter(field) // reset filter
+    } else {
+      const expression = {
+        type: '=',
+        value: label
+      }
+      this.props.onFilter(field, expression)
+    }
+  }
 }
 
 // Separated from class just to ensure it's pure and stateless
 function constructUrl (config, filters) {
   const query = squel.select().from(config.dataset)
+  const filtersArray = values(filters)
   const baseFilters = config.baseFilters || []
-  const combinedFilters = baseFilters.concat(filters)
+  const combinedFilters = baseFilters.concat(filtersArray)
 
   if (config.valueField || config.aggregateFunction || config.groupBy) {
     if (config.valueField) {
