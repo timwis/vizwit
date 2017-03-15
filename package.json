@@ -13,7 +13,7 @@
     "react-scripts": "0.9.3"
   },
   "dependencies": {
-    "chart.js": "2.4",
+    "chart.js": "~2.4",
     "lodash": "^4.17.4",
     "ramda": "^0.23.0",
     "react": "^15.4.2",

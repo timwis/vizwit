@@ -22,8 +22,7 @@ export default class App extends React.Component {
   }
 
   render () {
-    const widgets = this.props.widgets
-    console.log('rendering', this.state.filters)
+    const widgets = this.props.widgets || []
     return (
       <main>
         {widgets.map((widget, index) => {
