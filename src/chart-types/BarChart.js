@@ -1,5 +1,6 @@
 import React from 'react'
 import {Bar} from 'react-chartjs-2'
+import {keyBy} from 'lodash'
 
 const colors = {
   active: 'rgba(33, 118, 210, 0.2)', // ben-franklin-blue
@@ -11,6 +12,7 @@ export default class BarChart extends React.Component {
   render () {
     const { totalRows, filteredRows } = this.props
     const isFiltered = (filteredRows.length > 0)
+
     const chartData = {
       labels: totalRows.map((row) => row.label),
       datasets: [
@@ -25,9 +27,18 @@ export default class BarChart extends React.Component {
     }
 
     if (isFiltered) {
+      // Server API won't return rows with 0 value, resulting in the 2 datasets
+      // being in the wrong order (filtered may only have 1 item).
+      // Here we convert it back to [0, 0, 0, X, 0]
+      const filteredRowsByLabel = keyBy(filteredRows, 'label')
+      const filteredValues = totalRows.map((row) => {
+        const match = filteredRowsByLabel[row.label]
+        return match ? match.value : 0
+      })
+
       chartData.datasets.push({
         label: 'Filtered',
-        data: filteredRows.map((row) => row.value),
+        data: filteredValues,
         backgroundColor: colors.active,
         borderColor: colors.border,
         borderWidth: 1
