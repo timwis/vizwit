@@ -11,14 +11,16 @@ const colors = {
 export default class BarChart extends React.Component {
   render () {
     const { totalRows, filteredRows } = this.props
+    const labels = totalRows.map((row) => row.label)
+    const totalValues = totalRows.map((row) => row.value)
     const isFiltered = (filteredRows.length > 0)
 
     const chartData = {
-      labels: totalRows.map((row) => row.label),
+      labels,
       datasets: [
         {
           label: 'Total',
-          data: totalRows.map((row) => row.value),
+          data: totalValues,
           backgroundColor: isFiltered ? colors.inactive : colors.active,
           borderColor: colors.border,
           borderWidth: 1
@@ -27,14 +29,7 @@ export default class BarChart extends React.Component {
     }
 
     if (isFiltered) {
-      // Server API won't return rows with 0 value, resulting in the 2 datasets
-      // being in the wrong order (filtered may only have 1 item).
-      // Here we convert it back to [0, 0, 0, X, 0]
-      const filteredRowsByLabel = keyBy(filteredRows, 'label')
-      const filteredValues = totalRows.map((row) => {
-        const match = filteredRowsByLabel[row.label]
-        return match ? match.value : 0
-      })
+      const filteredValues = getSpacedOutFilteredValues(filteredRows, totalRows)
 
       chartData.datasets.push({
         label: 'Filtered',
@@ -77,4 +72,16 @@ export default class BarChart extends React.Component {
       this.props.onSelect(label)
     }
   }
+}
+
+// Server API won't return rows with 0 value, resulting in the 2 datasets
+// being in the wrong order (filtered may only have 1 item).
+// Here we convert it back to [0, 0, 0, X, 0]
+function getSpacedOutFilteredValues (filteredRows, totalRows) {
+  const filteredRowsByLabel = keyBy(filteredRows, 'label')
+  const filteredValues = totalRows.map((row) => {
+    const match = filteredRowsByLabel[row.label]
+    return match ? match.value : 0
+  })
+  return filteredValues
 }

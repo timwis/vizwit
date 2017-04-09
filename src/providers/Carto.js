@@ -1,6 +1,6 @@
 import React from 'react'
 import squel from 'squel'
-import {values} from 'ramda'
+import {values} from 'lodash'
 
 export default class Carto extends React.Component {
   constructor (props) {
