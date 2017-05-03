@@ -166,7 +166,8 @@
         "chartType": "table",
         "provider": "socrata",
         "domain": "data.cityofchicago.org",
-        "dataset": "xqx5-8hwx"
+        "dataset": "xqx5-8hwx",
+        "rowDetails": true
       }
     }
   ]

@@ -49,6 +49,15 @@ body {
 	white-space: nowrap;
 }
 
+.card-content .dataTables_scrollBody table thead .row-detail-control {
+    visibility: hidden;
+}
+
+.card-content table.row-detail{
+	margin-left: 40px;
+	width: inherit;
+}
+
 /*.callout .card-content {
 	min-height: 0;
 }*/
