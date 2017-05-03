@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>VizWit Editor</title>
+		
+		<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Arimo:400,700,400italic">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="https://cdn.datatables.net/1.10.9/css/dataTables.bootstrap.min.css">
+		<link rel="stylesheet" href="https://api.mapbox.com/mapbox.js/v2.2.1/mapbox.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/backbone.modal/1.1.5/backbone.modal-min.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/backbone.modal/1.1.5/backbone.modal.theme-min.css">
+		<link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/editor.css">
+  </head>
+  <body>
+    <div class="row">
+      <div id="left" class="split split-horizontal">
+        <div id="docs" class="split split-vertical">
+          <div class="container">
+            <h1>VizWit Editor</h1>
+            <p>
+              <a href="http://www.vizwit.io" target="blank">VizWit.io w/ examples</a> | 
+              <a href="https://github.com/timwis/vizwit" target="blank">Github code repo</a> | 
+              <a href="https://github.com/timwis/vizwit/wiki/Configuration" target="blank"></span>configuration</a> | 
+              <a href="https://github.com/timwis/vizwit/wiki/Base-Filters" target="blank">base filters</a>
+            </p>
+          </div>
+        </div>
+        <div id="editor" class="split split-vertical"></div>
+      </div>
+      <div id="preview" class="split split-horizontal">
+        <div class="header-container">
+          <div class="container-fluid" id="page-header"></div>
+        </div>
+        
+        <div class="container-fluid">
+          <div id="page-content"></div>
+        </div>
+      </div>
+    </div>
+
+    <script src="scripts/vizwit-editor.js"></script>
+  </body>
+</html>

@@ -1,0 +1,129 @@
+body {
+	font-family: Arimo,"Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+
+.header-container {
+	margin-bottom: 30px;
+	padding-bottom: 10px;
+	-webkit-box-shadow: 0 1px 0 rgba(0,1,1,.08),inset 0 1px 0 #ededed;
+  -moz-box-shadow: 0 1px 0 rgba(0,1,1,.08),inset 0 1px 0 #ededed;
+  box-shadow: 0 1px 0 rgba(0,1,1,.08),inset 0 1px 0 #ededed;
+}
+
+.header-container .title {
+	font-weight: bold;
+}
+.header-container .description {
+	color: #979898;
+	font-size: 13px;
+}
+
+.header-container .navigation {
+	margin-top: 40px;
+}
+
+.card {
+	border-top: 2px #ddd solid;
+	padding-top: 15px;
+	margin-bottom: 15px;
+}
+.card-title {
+	font-size: 18pt;
+	font-weight: bold;
+}
+.card .dropdown,
+.card .scroll {
+	display: inline-block;
+}
+.card-tools {
+	text-align: right;
+}
+
+.card-content {
+	width: 100%;
+	min-height: 100px;
+}
+
+.card-content table {
+	font-size: 13px;
+	white-space: nowrap;
+}
+
+/*.callout .card-content {
+	min-height: 0;
+}*/
+.callout-value,
+.callout-filtered-value {
+	font-size: 50px;
+	font-weight: bold;
+}
+.callout-original-value {
+	font-size: 20px;
+}
+.callout-label {
+	font-size: 16px;
+}
+
+.ct-label {
+	font-size: 1rem;
+}
+
+.info {
+	background: white;
+}
+
+.filters {
+	display: none;
+	margin-bottom: 0;
+	padding-top: 10px;
+}
+
+.filters .filter {
+	display: inline-block;
+}
+
+.filter-value {
+	font-weight: bold;
+}
+
+.amcharts-plot-area,
+.amcharts-graph-line,
+.amcharts-graph-column,
+.amcharts-guide-fill,
+.amcharts-pie-item {
+	cursor: pointer
+}
+
+/* By default, this is set to nowrap, making it oversized on small screens */
+div.dataTables_wrapper div.dataTables_info {
+	white-space: normal;
+}
+
+body.embed {
+	background: none;
+}
+
+body.embed .header-container {
+	display: none;
+}
+
+body.embed .container {
+	margin: 0;
+	padding: 0;
+	width: 100%;
+}
+
+body.embed .card {
+	padding-top: 0;
+}
+
+.bbm-wrapper {
+	padding: 0;
+	z-index: 10000;
+}
+
+.copy {
+	position: absolute;
+	right: 0;
+	margin-right: 30px;
+}

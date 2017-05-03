@@ -1,0 +1,173 @@
+{
+  "version": "2",
+  "header": {
+    "title": "Business Licenses in Chicago",
+    "description": "Business licenses issued by the Department of Business Affairs and Consumer Protection in the City of Chicago from 2002 to the present. January 1, 2006 to present. Data is updated daily.",
+    "navigation": [
+      {
+        "label": "Download",
+        "url": "https://data.cityofchicago.org/api/views/r5kz-chrr/rows.csv?accessType=DOWNLOAD&bom=true"
+      }
+    ]
+  },
+  "cards": [
+    {
+      "x": 0,
+      "y": 0,
+      "width": 6,
+      "height": 2,
+      "vizwit": {
+        "title": "New Licenses Issued",
+        "chartType": "callout",
+        "provider": "socrata",
+        "domain": "data.cityofchicago.org",
+        "dataset": "xqx5-8hwx",
+        "groupBy": "date_trunc_y(date_issued)",
+        "valueFormat": "0,0",
+        "labelFormat": "[Calendar year] YYYY",
+        "order": "label desc",
+        "limit": 1,
+        "baseFilters": [
+          {
+            "field": "license_status",
+            "expression": {
+              "type": "=",
+              "value": "AAI"
+            }
+          },
+          {
+            "field": "application_type",
+            "expression": {
+              "type": "=",
+              "value": "ISSUE"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "x": 6,
+      "y": 0,
+      "width": 6,
+      "height": 2,
+      "vizwit": {
+        "title": "Licenses Renewed",
+        "chartType": "callout",
+        "provider": "socrata",
+        "domain": "data.cityofchicago.org",
+        "dataset": "xqx5-8hwx",
+        "groupBy": "date_trunc_y(date_issued)",
+        "valueFormat": "0a",
+        "labelFormat": "[Calendar year] YYYY",
+        "order": "label desc",
+        "limit": 1,
+        "baseFilters": [
+          {
+            "field": "license_status",
+            "expression": {
+              "type": "=",
+              "value": "AAI"
+            }
+          },
+          {
+            "field": "application_type",
+            "expression": {
+              "type": "=",
+              "value": "RENEW"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "x": 0,
+      "y": 2,
+      "width": 12,
+      "height": 5,
+      "vizwit": {
+        "title": "Date Issued",
+        "description": "Date the license was issued. The spike in December 2012 refers to the City of Chicago's \"Business First!\" initiative (demo).",
+        "chartType": "datetime",
+        "provider": "socrata",
+        "domain": "data.cityofchicago.org",
+        "dataset": "xqx5-8hwx",
+        "groupBy": "date_trunc_ym(date_issued)",
+        "triggerField": "date_issued"
+      }
+    },
+    {
+      "x": 0,
+      "y": 5,
+      "width": 4,
+      "height": 4,
+      "vizwit": {
+        "title": "License Status",
+        "description": "AAI means the license was issued. AAC means the license was cancelled",
+        "chartType": "pie",
+        "provider": "socrata",
+        "domain": "data.cityofchicago.org",
+        "dataset": "xqx5-8hwx",
+        "groupBy": "license_status"
+      }
+    },
+    {
+      "x": 4,
+      "y": 5,
+      "width": 4,
+      "height": 4,
+      "vizwit": {
+        "title": "Community Areas",
+        "chartType": "choropleth",
+        "provider": "socrata",
+        "domain": "data.cityofchicago.org",
+        "dataset": "xqx5-8hwx",
+        "groupBy": ":@computed_region_vrxf_vc4k",
+        "boundaries": "https://data.cityofchicago.org/resource/vrxf-vc4k.geojson?$limit=5000",
+        "boundariesLabel": "community",
+        "boundariesId": "_feature_id"
+      }
+    },
+    {
+      "x": 8,
+      "y": 5,
+      "width": 4,
+      "height": 4,
+      "vizwit": {
+        "title": "Application Type",
+        "description": "C_LOC indicates the business has moved",
+        "chartType": "pie",
+        "provider": "socrata",
+        "domain": "data.cityofchicago.org",
+        "dataset": "xqx5-8hwx",
+        "groupBy": "application_type"
+      }
+    },
+    {
+      "x": 0,
+      "y": 8,
+      "width": 12,
+      "height": 5,
+      "vizwit": {
+        "title": "License Description",
+        "chartType": "bar",
+        "provider": "socrata",
+        "domain": "data.cityofchicago.org",
+        "dataset": "xqx5-8hwx",
+        "groupBy": "license_description"
+      }
+    },
+    {
+      "x": 0,
+      "y": 11,
+      "width": 12,
+      "height": 7,
+      "vizwit": {
+        "title": "Business Licenses",
+        "chartType": "table",
+        "provider": "socrata",
+        "domain": "data.cityofchicago.org",
+        "dataset": "xqx5-8hwx"
+      }
+    }
+  ]
+}
