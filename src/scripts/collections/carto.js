@@ -67,7 +67,7 @@ module.exports = BaseProvider.extend({
     }
 
     // Limit
-    query.limit(this.config.limit || '5000')
+    if (this.config.limit) query.limit(this.config.limit)
 
     var output = 'https://' + this.config.domain +
            '/api/v2/sql?q=' + query.toString()
