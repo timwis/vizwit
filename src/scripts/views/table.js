@@ -1,4 +1,5 @@
 var _ = require('underscore')
+var $ = require('jquery')
 var Card = require('./card')
 var LoaderOn = require('../util/loader').on
 var LoaderOff = require('../util/loader').off
@@ -24,6 +25,20 @@ var addDescriptionToTitle = function (column) {
     column.title += ' ' + tooltip(column.description)
   }
   return column
+}
+
+var rowDetails = function (rowData, columns) {
+  // create columnLookup so we get column names and tooltips
+  var columnLookup = {}
+  _.each(columns, function (column) {
+    if (column.data != null) {
+      columnLookup[column.data] = column.title || column.data
+    }
+  })
+
+  var RowDetailsTemplate = require('../templates/row-details.html')
+  var templateMarkup = RowDetailsTemplate({columnLookup: columnLookup, rowData: rowData})
+  return templateMarkup
 }
 
 module.exports = Card.extend({
@@ -56,6 +71,16 @@ module.exports = Card.extend({
 
         columns = columns.map(addDescriptionToTitle)
 
+        if (this.config.rowDetails) {
+          // Add row detail control column
+          columns.unshift({
+            class: 'row-detail-control fa fa-plus-square-o',
+            orderable: false,
+            data: null,
+            defaultContent: ''
+          })
+        }
+
         // Initialize the table
         var container = this.$('.card-content table')
         this.table = container.DataTable({
@@ -65,6 +90,28 @@ module.exports = Card.extend({
           serverSide: true,
           ajax: _.bind(this.dataTablesAjax, this)
         })
+
+        if (this.config.rowDetails) {
+          // store this.table as table, which is used in the following callback
+          var table = this.table
+          // listen for row detail icon click and act apropriately
+          container.on('click', 'tr td.row-detail-control', function () {
+            var clicked = $(this)
+            var tr = clicked.closest('tr')
+            var row = table.row(tr)
+            if (row.child.isShown()) {
+              clicked.removeClass('fa-minus-square-o')
+              clicked.addClass('fa-plus-square-o')
+              tr.removeClass('details')
+              row.child.hide()
+            } else {
+              clicked.addClass('fa-minus-square-o')
+              clicked.removeClass('fa-plus-square-o')
+              tr.addClass('details')
+              row.child(rowDetails(row.data(), columns)).show()
+            }
+          })
+        }
 
         this.activateTooltips(container)
       }, this))
