@@ -1,5 +1,14 @@
 [
   {
+    "title":"Dispatch date/time",
+    "chartType":"datetime",
+    "provider": "cartodb",
+    "domain":"timwis.carto.com",
+    "dataset":"crimes_2015_to_oct_2016",
+    "groupBy":"date_trunc('month', dispatch_date_time)",
+    "order":"label"
+  },
+  {
     "title":"Police District",
     "chartType":"bar",
     "provider":"cartodb",

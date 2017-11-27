@@ -3,6 +3,7 @@ import {assoc, dissoc} from 'ramda'
 
 import Carto from './providers/Carto'
 import BarChart from './chart-types/BarChart'
+import DateTime from './chart-types/DateTime'
 import './App.css'
 
 const Providers = {
@@ -10,7 +11,8 @@ const Providers = {
 }
 
 const ChartTypes = {
-  bar: BarChart
+  bar: BarChart,
+  datetime: DateTime
 }
 
 export default class App extends React.Component {
