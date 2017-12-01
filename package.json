@@ -1,0 +1,26 @@
+{
+  "name": "vizwit",
+  "version": "2.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "preact watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/timwis/vizwit.git"
+  },
+  "author": "timwis <tim@timwis.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/timwis/vizwit/issues"
+  },
+  "homepage": "https://github.com/timwis/vizwit#readme",
+  "devDependencies": {
+    "preact-cli": "^2.1.0"
+  },
+  "dependencies": {
+    "plottable": "^3.7.0",
+    "preact": "^8.2.6"
+  }
+}
