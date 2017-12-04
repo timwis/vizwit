@@ -1,4 +1,5 @@
 import { Component } from 'preact'
+import { sortBy, first, last } from 'lodash'
 import Plottable from 'plottable'
 import 'plottable/plottable.css'
 
@@ -20,6 +21,8 @@ export default class VizwitDateTime extends Component {
     const colorScale = new Plottable.Scales.InterpolatedColor()
     colorScale.range(['#5279C7', '#BDCEF0'])
 
+    const xAxis = new Plottable.Axes.Time(xScale, 'bottom')
+
     this.plot = new Plottable.Plots.Area()
       .addDataset(this.totalsDataset)
       .addDataset(this.filteredDataset)
@@ -34,8 +37,10 @@ export default class VizwitDateTime extends Component {
       dragbox.onDragEnd((box) => {
         const entities = this.plot.entitiesIn(box)
         if (entities.length >= 2) {
-          const firstLabel = entities[0].datum.label
-          const lastLabel = entities[entities.length - 1].datum.label
+          // TODO: Is there a way for entitiesIn() to return this sorted?
+          const sortedEntities = sortBy(entities, (entity) => entity.datum.label)
+          const firstLabel = first(sortedEntities).datum.label
+          const lastLabel = last(sortedEntities).datum.label
           onSelect([firstLabel, lastLabel])
         }
       })
@@ -43,7 +48,8 @@ export default class VizwitDateTime extends Component {
     }
 
     new Plottable.Components.Table([
-      [group || this.plot]
+      [group || this.plot],
+      [xAxis]
     ]).renderTo(this.container)
   }
   shouldComponentUpdate (nextProps) {
