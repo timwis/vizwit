@@ -1,4 +1,5 @@
 import { Component } from 'preact'
+import { omit } from 'lodash'
 
 import Carto from './providers/Carto'
 import VizwitBar from './components/VizwitBar'
@@ -50,6 +51,15 @@ export default class App extends Component {
     )
   }
   onFilter (field, expression) {
-    console.log('filtering', field, expression)
+    let newFilters
+    if (expression) {
+      newFilters = {
+        [field]: { field, expression }, // keep 'field' since filters is converted to array later
+        ...this.state.filters
+      }
+    } else {
+      newFilters = omit(this.state.filters, field)
+    }
+    this.setState({ filters: newFilters })
   }
 }
