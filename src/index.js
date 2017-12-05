@@ -1,75 +1,55 @@
 import { Component } from 'preact'
 
+import Carto from './providers/Carto'
 import VizwitBar from './components/VizwitBar'
 import VizwitDateTime from './components/VizwitDateTime'
 
-// Fixtures
-import crimesByDistrict from '../test/fixtures/crimes-by-district.json'
-import crimesByDate from '../test/fixtures/crimes-by-date.json'
-import theftsByDistrict from '../test/fixtures/thefts-by-district.json'
-import theftsByDate from '../test/fixtures/thefts-by-date.json'
+import widgets from './pages/crime-incidents.json'
+
+const Providers = {
+  carto: Carto,
+  default: Carto
+}
+const WidgetTypes = {
+  bar: VizwitBar,
+  datetime: VizwitDateTime,
+  default: VizwitBar
+}
 
 export default class App extends Component {
   constructor () {
     super()
     this.state = {
-      bar: {
-        totaledRows: [],
-        filteredRows: [],
-        selected: null
-      },
-      datetime: {
-        totaledRows: [],
-        filteredRows: [],
-        selected: null
-      }
+      filters: {}
     }
   }
   render (props, state) {
     return (
       <main>
-        <VizwitBar
-          totaledRows={state.bar.totaledRows}
-          filteredRows={state.bar.filteredRows}
-          onSelect={(label) => console.log('Selected', label)}
-          selected={state.bar.selected}
-        />
-        <VizwitDateTime
-          totaledRows={state.datetime.totaledRows}
-          filteredRows={state.datetime.filteredRows}
-          onSelect={(labels) => console.log('Selected', labels)}
-          selected={state.datetime.selected}
-        />
+        {widgets.map((config, index) => {
+          const Provider = Providers[config.provider] || Providers.default
+          const WidgetType = WidgetTypes[config.chartType] || WidgetTypes.default
+          return (
+            <div key={index}>
+              <Provider
+                config={config}
+                filters={state.filters}
+                onFilter={this.onFilter.bind(this)}
+                render={({ totaledRows, filteredRows, onSelect }) => (
+                  <WidgetType
+                    totaledRows={totaledRows}
+                    filteredRows={filteredRows}
+                    onSelect={onSelect}
+                  />
+                )}
+              />
+            </div>
+          )
+        })}
       </main>
     )
   }
-  componentDidMount () {
-    // Debug
-    window.setTimeout(this.setTotaled.bind(this), 100)
-    window.setTimeout(this.setFiltered.bind(this), 1000)
-  }
-  setTotaled () {
-    const bar = {
-      ...this.state.bar,
-      totaledRows: crimesByDistrict.rows
-    }
-    const datetime = {
-      ...this.state.datetime,
-      totaledRows: crimesByDate.rows
-    }
-    this.setState({ bar, datetime })
-  }
-  setFiltered () {
-    const bar = {
-      ...this.state.bar,
-      filteredRows: theftsByDistrict.rows,
-      selected: '12'
-    }
-    const datetime = {
-      ...this.state.datetime,
-      filteredRows: theftsByDate.rows,
-      selected: ['2010-01-01T00:00:00Z', '2012-12-31T23:59:59Z']
-    }
-    this.setState({ bar, datetime })
+  onFilter (field, expression) {
+    console.log('filtering', field, expression)
   }
 }
