@@ -15,11 +15,13 @@ export default class App extends Component {
     this.state = {
       bar: {
         totals: [],
-        filtered: []
+        filtered: [],
+        selected: null
       },
       datetime: {
         totals: [],
-        filtered: []
+        filtered: [],
+        selected: null
       }
     }
   }
@@ -30,11 +32,13 @@ export default class App extends Component {
           totals={state.bar.totals}
           filtered={state.bar.filtered}
           onSelect={(label) => console.log('Selected', label)}
+          selected={state.bar.selected}
         />
         <VizwitDateTime
           totals={state.datetime.totals}
           filtered={state.datetime.filtered}
           onSelect={(labels) => console.log('Selected', labels)}
+          selected={state.datetime.selected}
         />
       </main>
     )
@@ -58,11 +62,13 @@ export default class App extends Component {
   setFiltered () {
     const bar = {
       ...this.state.bar,
-      filtered: theftsByDistrict.rows
+      filtered: theftsByDistrict.rows,
+      selected: '12'
     }
     const datetime = {
       ...this.state.datetime,
-      filtered: theftsByDate.rows
+      filtered: theftsByDate.rows,
+      selected: ['2010-01-01T00:00:00Z', '2012-12-31T23:59:59Z']
     }
     this.setState({ bar, datetime })
   }

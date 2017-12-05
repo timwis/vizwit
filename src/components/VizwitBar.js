@@ -2,6 +2,8 @@ import { Component } from 'preact'
 import Plottable from 'plottable'
 import 'plottable/plottable.css'
 
+import { arrayify } from '../helpers'
+
 export default class VizwitBar extends Component {
   render () {
     const style = { height: 400 }
@@ -9,26 +11,41 @@ export default class VizwitBar extends Component {
     return <div ref={saveRef} style={style} />
   }
   componentDidMount () {
-    const { totals, filtered, onSelect } = this.props
+    const { totals, filtered, onSelect, selected } = this.props
 
-    this.totalsDataset = new Plottable.Dataset(totals).metadata(5)
-    this.filteredDataset = new Plottable.Dataset(filtered).metadata(3)
+    this.totalsDataset = new Plottable.Dataset(totals)
+      .metadata({ colorBucket: 5 })
+    this.filteredDataset = new Plottable.Dataset(filtered)
+      .metadata({ colorBucket: 3 })
 
     const xScale = new Plottable.Scales.Category()
+    const xAxis = new Plottable.Axes.Category(xScale, 'bottom')
+
     const yScale = new Plottable.Scales.Linear()
     const colorScale = new Plottable.Scales.InterpolatedColor()
-    colorScale.range(['#5279C7', '#BDCEF0'])
-
-    const xAxis = new Plottable.Axes.Category(xScale, 'bottom')
+      .range(['#5279C7', '#BDCEF0'])
 
     this.plot = new Plottable.Plots.Bar()
       .addDataset(this.totalsDataset)
       .addDataset(this.filteredDataset)
-      .attr('fill', (d, i, dataset) => dataset.metadata(), colorScale)
-      .x((d) => d.label, xScale)
-      .y((d) => d.value, yScale)
+      .attr('fill', (datum, index, dataset) => dataset.metadata().colorBucket, colorScale)
+      .x((datum) => datum.label, xScale)
+      .y((datum) => datum.value, yScale)
       .animated(true)
-      .labelsEnabled(true)
+      // .labelsEnabled(true)
+
+    this.selectedDataset = new Plottable.Dataset(arrayify(selected))
+    const rectangle = new Plottable.Plots.Rectangle()
+      .addDataset(this.selectedDataset)
+      .x((datum) => datum, xScale)
+      .y(0)
+      .y2((datum) => rectangle.height())
+      .attr('fill', '#f99300')
+      .attr('opacity', 0.3)
+
+    xScale.innerPadding(0.4) // See https://github.com/palantir/plottable/issues/3426
+
+    const group = new Plottable.Components.Group([ this.plot, rectangle ])
 
     if (onSelect) {
       const interaction = new Plottable.Interactions.Click()
@@ -37,7 +54,7 @@ export default class VizwitBar extends Component {
     }
 
     const table = new Plottable.Components.Table([
-      [this.plot],
+      [group],
       [xAxis]
     ])
 
@@ -58,6 +75,10 @@ export default class VizwitBar extends Component {
     if (this.props.filtered !== nextProps.filtered) {
       this.plot.animated(false)
       this.filteredDataset.data(nextProps.filtered)
+    }
+    if (this.props.selected !== nextProps.selected) {
+      this.plot.animated(false)
+      this.selectedDataset.data(arrayify(nextProps.selected))
     }
     return false
   }
