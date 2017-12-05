@@ -14,13 +14,13 @@ export default class App extends Component {
     super()
     this.state = {
       bar: {
-        totals: [],
-        filtered: [],
+        totaledRows: [],
+        filteredRows: [],
         selected: null
       },
       datetime: {
-        totals: [],
-        filtered: [],
+        totaledRows: [],
+        filteredRows: [],
         selected: null
       }
     }
@@ -29,14 +29,14 @@ export default class App extends Component {
     return (
       <main>
         <VizwitBar
-          totals={state.bar.totals}
-          filtered={state.bar.filtered}
+          totaledRows={state.bar.totaledRows}
+          filteredRows={state.bar.filteredRows}
           onSelect={(label) => console.log('Selected', label)}
           selected={state.bar.selected}
         />
         <VizwitDateTime
-          totals={state.datetime.totals}
-          filtered={state.datetime.filtered}
+          totaledRows={state.datetime.totaledRows}
+          filteredRows={state.datetime.filteredRows}
           onSelect={(labels) => console.log('Selected', labels)}
           selected={state.datetime.selected}
         />
@@ -45,29 +45,29 @@ export default class App extends Component {
   }
   componentDidMount () {
     // Debug
-    window.setTimeout(this.setTotals.bind(this), 100)
+    window.setTimeout(this.setTotaled.bind(this), 100)
     window.setTimeout(this.setFiltered.bind(this), 1000)
   }
-  setTotals () {
+  setTotaled () {
     const bar = {
       ...this.state.bar,
-      totals: crimesByDistrict.rows
+      totaledRows: crimesByDistrict.rows
     }
     const datetime = {
       ...this.state.datetime,
-      totals: crimesByDate.rows
+      totaledRows: crimesByDate.rows
     }
     this.setState({ bar, datetime })
   }
   setFiltered () {
     const bar = {
       ...this.state.bar,
-      filtered: theftsByDistrict.rows,
+      filteredRows: theftsByDistrict.rows,
       selected: '12'
     }
     const datetime = {
       ...this.state.datetime,
-      filtered: theftsByDate.rows,
+      filteredRows: theftsByDate.rows,
       selected: ['2010-01-01T00:00:00Z', '2012-12-31T23:59:59Z']
     }
     this.setState({ bar, datetime })

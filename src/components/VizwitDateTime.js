@@ -12,12 +12,12 @@ export default class VizwitDateTime extends Component {
     return <div ref={saveRef} style={style} />
   }
   componentDidMount () {
-    const { totals, filtered, onSelect, selected } = this.props
+    const { totaledRows, filteredRows, onSelect, selected } = this.props
     const plotGroupItems = []
 
-    this.totalsDataset = new Plottable.Dataset(totals)
+    this.totaledRowsDataset = new Plottable.Dataset(totaledRows)
       .metadata({ colorBucket: 5 })
-    this.filteredDataset = new Plottable.Dataset(filtered)
+    this.filteredRowsDataset = new Plottable.Dataset(filteredRows)
       .metadata({ colorBucket: 3 })
 
     const xScale = new Plottable.Scales.Time()
@@ -29,8 +29,8 @@ export default class VizwitDateTime extends Component {
       .range(['#5279C7', '#BDCEF0'])
 
     this.plot = new Plottable.Plots.Area()
-      .addDataset(this.totalsDataset)
-      .addDataset(this.filteredDataset)
+      .addDataset(this.totaledRowsDataset)
+      .addDataset(this.filteredRowsDataset)
       .attr('fill', (datum, index, dataset) => dataset.metadata().colorBucket, colorScale)
       .x((datum) => new Date(datum.label), xScale)
       .y((datum) => datum.value, yScale)
@@ -72,13 +72,13 @@ export default class VizwitDateTime extends Component {
     table.renderTo(this.container)
   }
   shouldComponentUpdate (nextProps) {
-    if (this.props.totals !== nextProps.totals) {
+    if (this.props.totaledRows !== nextProps.totaledRows) {
       this.plot.animated(true)
-      this.totalsDataset.data(nextProps.totals)
+      this.totaledRowsDataset.data(nextProps.totaledRows)
     }
-    if (this.props.filtered !== nextProps.filtered) {
+    if (this.props.filteredRows !== nextProps.filteredRows) {
       this.plot.animated(false)
-      this.filteredDataset.data(nextProps.filtered)
+      this.filteredRowsDataset.data(nextProps.filteredRows)
     }
     if (this.props.selected !== nextProps.selected) {
       this.plot.animated(false)
