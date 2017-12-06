@@ -2,8 +2,6 @@ import { Component } from 'preact'
 import Plottable from 'plottable'
 import 'plottable/plottable.css'
 
-import { arrayify } from '../helpers'
-
 export default class VizwitBar extends Component {
   render () {
     const style = { height: 400 }
@@ -34,7 +32,8 @@ export default class VizwitBar extends Component {
       .animated(true)
       // .labelsEnabled(true)
 
-    this.selectedDataset = new Plottable.Dataset(arrayify(selected))
+    const selectedData = (selected) ? [selected.value] : undefined
+    this.selectedDataset = new Plottable.Dataset(selectedData)
     const rectangle = new Plottable.Plots.Rectangle()
       .addDataset(this.selectedDataset)
       .x((datum) => datum, xScale)
@@ -82,7 +81,8 @@ export default class VizwitBar extends Component {
     }
     if (this.props.selected !== nextProps.selected) {
       this.plot.animated(false)
-      this.selectedDataset.data(arrayify(nextProps.selected))
+      const selectedData = (nextProps.selected) ? [nextProps.selected.value] : undefined
+      this.selectedDataset.data(selectedData)
     }
     return false
   }

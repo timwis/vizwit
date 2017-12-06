@@ -3,8 +3,6 @@ import { sortBy, first, last } from 'lodash'
 import Plottable from 'plottable'
 import 'plottable/plottable.css'
 
-import { arrayify } from '../helpers'
-
 export default class VizwitDateTime extends Component {
   render () {
     const style = { height: 400 }
@@ -37,11 +35,12 @@ export default class VizwitDateTime extends Component {
       .animated(true)
     plotGroupItems.push(this.plot)
 
-    this.selectedDataset = new Plottable.Dataset(arrayify(selected))
+    const selectedData = (selected) ? [selected.value] : undefined
+    this.selectedDataset = new Plottable.Dataset(selectedData)
     const rectangle = new Plottable.Plots.Rectangle()
       .addDataset(this.selectedDataset)
-      .x((datum) => new Date(datum[0]), xScale)
-      .x2((datum) => new Date(datum[1]))
+      .x((datum) => new Date(datum[0].value), xScale)
+      .x2((datum) => new Date(datum[1].value))
       .y(0)
       .y2((datum) => rectangle.height())
       .attr('fill', '#f99300')
@@ -89,7 +88,8 @@ export default class VizwitDateTime extends Component {
     }
     if (this.props.selected !== nextProps.selected) {
       this.plot.animated(false)
-      this.selectedDataset.data(arrayify(nextProps.selected))
+      const selectedData = (nextProps.selected) ? [nextProps.selected.value] : undefined
+      this.selectedDataset.data(selectedData)
     }
     return false
   }

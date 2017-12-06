@@ -13,11 +13,14 @@ export default class Carto extends Component {
   }
 
   render (props, state) {
+    const { config, filters } = this.props
+    const field = config.triggerField || config.groupBy
     const args = {
       totaledRows: state.totaledRows,
       filteredRows: state.filteredRows,
       onSelect: this.onSelect.bind(this)
     }
+    if (filters[field]) args.selected = filters[field].expression
     return this.props.render(args)
   }
 
@@ -38,7 +41,8 @@ export default class Carto extends Component {
   }
 
   onSelect (expression) {
-    const field = this.props.config.triggerField || this.props.config.groupBy
+    const config = this.props.config
+    const field = config.triggerField || config.groupBy
     this.props.onFilter(field, expression)
   }
 }

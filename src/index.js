@@ -36,10 +36,11 @@ export default class App extends Component {
                 config={config}
                 filters={state.filters}
                 onFilter={this.onFilter.bind(this)}
-                render={({ totaledRows, filteredRows, onSelect }) => (
+                render={({ totaledRows, filteredRows, selected, onSelect }) => (
                   <WidgetType
                     totaledRows={totaledRows}
                     filteredRows={filteredRows}
+                    selected={selected}
                     onSelect={onSelect}
                   />
                 )}
