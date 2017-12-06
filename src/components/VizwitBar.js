@@ -64,7 +64,11 @@ export default class VizwitBar extends Component {
     const entities = this.plot.entitiesAt(point)
     if (entities.length > 0) {
       const label = entities[0].datum.label
-      this.props.onSelect(label)
+      const expression = {
+        type: '=',
+        value: label
+      }
+      this.props.onSelect(expression)
     }
   }
   shouldComponentUpdate (nextProps) {

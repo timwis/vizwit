@@ -57,7 +57,14 @@ export default class VizwitDateTime extends Component {
           const sortedEntities = sortBy(entities, (entity) => entity.datum.label)
           const firstLabel = first(sortedEntities).datum.label
           const lastLabel = last(sortedEntities).datum.label
-          onSelect([firstLabel, lastLabel])
+          const expression = {
+            type: 'and',
+            value: [
+              { type: '>=', value: firstLabel },
+              { type: '<=', value: lastLabel }
+            ]
+          }
+          onSelect(expression)
         }
       })
       plotGroupItems.push(dragbox)

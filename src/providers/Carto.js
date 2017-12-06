@@ -37,17 +37,9 @@ export default class Carto extends Component {
     }
   }
 
-  onSelect (label) {
+  onSelect (expression) {
     const field = this.props.config.triggerField || this.props.config.groupBy
-    if (this.props.filters[field] && this.props.filters[field].expression.value === label) { // TODO: move to function
-      this.props.onFilter(field) // reset filter
-    } else {
-      const expression = {
-        type: '=',
-        value: label
-      }
-      this.props.onFilter(field, expression)
-    }
+    this.props.onFilter(field, expression)
   }
 }
 
