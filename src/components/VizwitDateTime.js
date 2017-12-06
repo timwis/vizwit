@@ -35,7 +35,7 @@ export default class VizwitDateTime extends Component {
       .animated(true)
     plotGroupItems.push(this.plot)
 
-    const selectedData = (selected) ? [selected.value] : undefined
+    const selectedData = (selected) ? [selected.value] : []
     this.selectedDataset = new Plottable.Dataset(selectedData)
     const rectangle = new Plottable.Plots.Rectangle()
       .addDataset(this.selectedDataset)
@@ -56,14 +56,19 @@ export default class VizwitDateTime extends Component {
           const sortedEntities = sortBy(entities, (entity) => entity.datum.label)
           const firstLabel = first(sortedEntities).datum.label
           const lastLabel = last(sortedEntities).datum.label
-          const expression = {
-            type: 'and',
-            value: [
-              { type: '>=', value: firstLabel },
-              { type: '<=', value: lastLabel }
-            ]
+          const prevSelected = this.props.selected
+          if (prevSelected && prevSelected.value[0].value === firstLabel && prevSelected.value[1].value === lastLabel) {
+            onSelect() // empty payload resets
+          } else {
+            const expression = {
+              type: 'and',
+              value: [
+                { type: '>=', value: firstLabel },
+                { type: '<=', value: lastLabel }
+              ]
+            }
+            onSelect(expression)
           }
-          onSelect(expression)
         }
       })
       plotGroupItems.push(dragbox)
@@ -88,7 +93,7 @@ export default class VizwitDateTime extends Component {
     }
     if (this.props.selected !== nextProps.selected) {
       this.plot.animated(false)
-      const selectedData = (nextProps.selected) ? [nextProps.selected.value] : undefined
+      const selectedData = (nextProps.selected) ? [nextProps.selected.value] : []
       this.selectedDataset.data(selectedData)
     }
     return false

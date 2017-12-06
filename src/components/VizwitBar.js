@@ -32,7 +32,7 @@ export default class VizwitBar extends Component {
       .animated(true)
       // .labelsEnabled(true)
 
-    const selectedData = (selected) ? [selected.value] : undefined
+    const selectedData = (selected) ? [selected.value] : []
     this.selectedDataset = new Plottable.Dataset(selectedData)
     const rectangle = new Plottable.Plots.Rectangle()
       .addDataset(this.selectedDataset)
@@ -63,11 +63,16 @@ export default class VizwitBar extends Component {
     const entities = this.plot.entitiesAt(point)
     if (entities.length > 0) {
       const label = entities[0].datum.label
-      const expression = {
-        type: '=',
-        value: label
+      const prevSelected = this.props.selected
+      if (prevSelected && prevSelected.value === label) {
+        this.props.onSelect() // empty payload will reset
+      } else {
+        const expression = {
+          type: '=',
+          value: label
+        }
+        this.props.onSelect(expression)
       }
-      this.props.onSelect(expression)
     }
   }
   shouldComponentUpdate (nextProps) {
@@ -81,7 +86,7 @@ export default class VizwitBar extends Component {
     }
     if (this.props.selected !== nextProps.selected) {
       this.plot.animated(false)
-      const selectedData = (nextProps.selected) ? [nextProps.selected.value] : undefined
+      const selectedData = (nextProps.selected) ? [nextProps.selected.value] : []
       this.selectedDataset.data(selectedData)
     }
     return false
