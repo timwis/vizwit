@@ -57,8 +57,8 @@ export default class App extends Component {
     let newFilters
     if (expression) {
       newFilters = {
-        [field]: { field, expression }, // keep 'field' since filters is converted to array later
-        ...this.state.filters
+        ...this.state.filters,
+        [field]: { field, expression } // keep 'field' since filters is converted to array later
       }
     } else {
       newFilters = omit(this.state.filters, field)
