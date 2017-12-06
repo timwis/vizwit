@@ -21,7 +21,7 @@ export default class VizwitDateTime extends Component {
       .metadata({ colorBucket: 3 })
 
     const xScale = new Plottable.Scales.Time()
-      .domain([new Date(2006, 0, 1), new Date(2017, 11, 31)])
+      .padProportion(0) // remove outer padding
     const xAxis = new Plottable.Axes.Time(xScale, 'bottom')
 
     const yScale = new Plottable.Scales.Linear()
