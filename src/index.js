@@ -7,6 +7,8 @@ import VizwitDateTime from './components/VizwitDateTime'
 
 import widgets from './pages/crime-incidents.json'
 
+if (process.env.NODE_ENV !== 'production') require('preact/debug')
+
 const Providers = {
   carto: Carto,
   default: Carto
