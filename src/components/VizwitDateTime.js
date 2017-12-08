@@ -1,5 +1,5 @@
 import { Component } from 'preact'
-import { sortBy, first, last } from 'lodash'
+import { sortBy, first, last } from 'lodash-es'
 import Plottable from 'plottable'
 import 'plottable/plottable.css'
 
@@ -49,28 +49,7 @@ export default class VizwitDateTime extends Component {
 
     if (onSelect) {
       const dragbox = new Plottable.Components.XDragBoxLayer()
-      dragbox.onDragEnd((box) => {
-        const entities = this.plot.entitiesIn(box)
-        if (entities.length >= 2) {
-          // TODO: Is there a way for entitiesIn() to return this sorted?
-          const sortedEntities = sortBy(entities, (entity) => entity.datum.label)
-          const firstLabel = first(sortedEntities).datum.label
-          const lastLabel = last(sortedEntities).datum.label
-          const prevSelected = this.props.selected
-          if (prevSelected && prevSelected.value[0].value === firstLabel && prevSelected.value[1].value === lastLabel) {
-            onSelect() // empty payload resets
-          } else {
-            const expression = {
-              type: 'and',
-              value: [
-                { type: '>=', value: firstLabel },
-                { type: '<=', value: lastLabel }
-              ]
-            }
-            onSelect(expression)
-          }
-        }
-      })
+      dragbox.onDragEnd(this.onDragEnd.bind(this))
       plotGroupItems.push(dragbox)
     }
 
@@ -81,6 +60,29 @@ export default class VizwitDateTime extends Component {
     ])
 
     table.renderTo(this.container)
+  }
+  onDragEnd (box) {
+    const entities = this.plot.entitiesIn(box)
+    if (entities.length >= 2) {
+      // TODO: Is there a way for entitiesIn() to return this sorted?
+      console.log(entities)
+      const sortedEntities = sortBy(entities, (entity) => entity.datum.label)
+      const firstLabel = first(sortedEntities).datum.label
+      const lastLabel = last(sortedEntities).datum.label
+      const prevSelected = this.props.selected
+      if (prevSelected && prevSelected.value[0].value === firstLabel && prevSelected.value[1].value === lastLabel) {
+        this.props.onSelect() // empty payload resets
+      } else {
+        const expression = {
+          type: 'and',
+          value: [
+            { type: '>=', value: firstLabel },
+            { type: '<=', value: lastLabel }
+          ]
+        }
+        this.props.onSelect(expression)
+      }
+    }
   }
   shouldComponentUpdate (nextProps) {
     if (this.props.totaledRows !== nextProps.totaledRows) {
