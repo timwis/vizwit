@@ -65,7 +65,6 @@ export default class VizwitDateTime extends Component {
     const entities = this.plot.entitiesIn(box)
     if (entities.length >= 2) {
       // TODO: Is there a way for entitiesIn() to return this sorted?
-      console.log(entities)
       const sortedEntities = sortBy(entities, (entity) => entity.datum.label)
       const firstLabel = first(sortedEntities).datum.label
       const lastLabel = last(sortedEntities).datum.label

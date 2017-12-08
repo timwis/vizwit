@@ -1,5 +1,5 @@
 import { Component } from 'preact'
-import { omit } from 'lodash'
+import { omit } from 'lodash-es'
 
 import Carto from './providers/Carto'
 import VizwitBar from './components/VizwitBar'

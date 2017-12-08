@@ -1,7 +1,7 @@
 /* global fetch */
 import { Component } from 'preact'
 import squel from 'squel'
-import {values} from 'lodash'
+import {values} from 'lodash-es'
 
 export default class Carto extends Component {
   constructor (props) {

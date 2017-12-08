@@ -20,7 +20,7 @@
     "preact-cli": "^2.1.0"
   },
   "dependencies": {
-    "lodash": "^4.17.4",
+    "lodash-es": "^4.17.4",
     "plottable": "^3.7.0",
     "preact": "^8.2.6",
     "squel": "^5.12.0"
