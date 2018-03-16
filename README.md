@@ -4,6 +4,7 @@
 [![Stories in Ready](https://badge.waffle.io/timwis/vizwit.svg?label=ready&title=Ready)](http://waffle.io/timwis/vizwit)
 [![Build Status](https://travis-ci.org/timwis/vizwit.svg?branch=master)](https://travis-ci.org/timwis/vizwit)
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Ftimwis%2Fvizwit.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Ftimwis%2Fvizwit?ref=badge_shield)
 
 An interactive data visualization tool. VizWit uses a [JSON config file](https://gist.github.com/601224472a5d53cbb908) to generate 
 interactive charts that cross-filter one another. It currently supports data hosted in [Socrata](https://socrata.com) and 
@@ -84,3 +85,6 @@ embedding allows the VizWit library to only be loaded once on the page with as m
 
 # License
 [GPL-2](LICENSE.md) (create an issue if that doesn't work for someone)
+
+
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Ftimwis%2Fvizwit.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Ftimwis%2Fvizwit?ref=badge_large)
