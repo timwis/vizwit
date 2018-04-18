@@ -29,7 +29,7 @@
         <text
           y="9"
           dy="0.71em">
-          {{ tick.toLocaleDateString() }}
+          {{ getMonthYear(tick) }}
         </text>
       </g>
     </g>
@@ -38,6 +38,7 @@
 
 <script>
 import * as d3 from 'd3'
+import formatDate from 'date-fns/format'
 
 export default {
   props: {
@@ -48,6 +49,10 @@ export default {
     filteredData: {
       type: Array,
       default: () => []
+    },
+    dateFormat: {
+      type: String,
+      default: 'MMM YYYY'
     }
   },
   data () {
@@ -88,6 +93,9 @@ export default {
     window.removeEventListener('resize', this.updateWidth)
   },
   methods: {
+    getMonthYear (date) {
+      return formatDate(date, this.dateFormat)
+    },
     updateWidth () {
       this.width = this.$refs.chart.getBoundingClientRect().width
     },
@@ -102,12 +110,12 @@ export default {
             {
               type: '>=',
               value: minDate.toISOString(),
-              label: minDate.toLocaleDateString()
+              label: formatDate(minDate, this.dateFormat)
             },
             {
               type: '<=',
               value: maxDate.toISOString(),
-              label: maxDate.toLocaleDateString()
+              label: formatDate(maxDate, this.dateFormat)
             }
           ]
         }
