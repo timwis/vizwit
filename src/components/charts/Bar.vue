@@ -4,23 +4,26 @@
     :height="height"
     width="100%"
     class="chart">
-    <g class="bars">
+    <g
+      class="bars"
+      @click="onClickBar">
       <g
-        v-for="(datum, index) in initialData"
+        v-for="datum in initialData"
         :key="datum.label"
         :height="height - yScale(datum.value)"
         :transform="`translate(${xScale(datum.label)}, 0)`">
         <rect
           :y="yScale(datum.value)"
           :width="xScale.bandwidth()"
-          height="100%"
           :height="height - yScale(datum.value)"
+          :data-label="datum.label"
           class="bar initial-data"/>
         <rect
-          v-if="filteredData[index]"
-          :y="yScale(filteredData[index].value)"
+          v-if="filteredDataKeyed[datum.label]"
+          :y="yScale(filteredDataKeyed[datum.label].value)"
           :width="xScale.bandwidth()"
-          :height="height-yScale(filteredData[index].value)"
+          :height="height-yScale(filteredDataKeyed[datum.label].value)"
+          :data-label="datum.label"
           class="bar filtered-data"/>
       </g>
     </g>
@@ -29,6 +32,7 @@
 
 <script>
 import * as d3 from 'd3'
+import keyBy from 'lodash/keyBy'
 
 export default {
   props: {
@@ -48,6 +52,9 @@ export default {
     }
   },
   computed: {
+    filteredDataKeyed () {
+      return keyBy(this.filteredData, 'label')
+    },
     xScale () {
       const labels = this.initialData.map((datum) => datum.label)
       return d3.scaleBand()
@@ -72,6 +79,14 @@ export default {
   methods: {
     updateWidth () {
       this.width = this.$refs.chart.getBoundingClientRect().width
+    },
+    onClickBar (event) {
+      const label = event.target.dataset.label
+      const expression = {
+        type: '=',
+        value: label
+      }
+      this.$emit('select', expression)
     }
   }
 }

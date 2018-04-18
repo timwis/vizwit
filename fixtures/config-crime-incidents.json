@@ -7,5 +7,13 @@
     "domain":"timwis.carto.com",
     "dataset":"crimes_2015_to_oct_2016",
     "groupBy":"text_general_code"
+  },
+  {
+    "title":"Police District",
+    "chartType":"bar",
+    "provider":"carto",
+    "domain":"timwis.carto.com",
+    "dataset":"crimes_2015_to_oct_2016",
+    "groupBy":"dc_dist"
   }
 ]

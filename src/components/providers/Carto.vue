@@ -2,7 +2,8 @@
   <div>
     <slot
       :initialData="initialData"
-      :filteredData="filteredData"/>
+      :filteredData="filteredData"
+      :onSelect="onSelect"
   </div>
 </template>
 
@@ -17,8 +18,8 @@ export default {
       default: () => {}
     },
     filters: {
-      type: Array,
-      default: () => []
+      type: Object,
+      default: () => {}
     }
   },
   data () {
@@ -29,11 +30,14 @@ export default {
   },
   computed: {
     url () {
-      return constructUrl(this.config, this.filters)
+      return constructUrl(this.config, this.filtersArray)
+    },
+    filtersArray () {
+      return Object.values(this.filters)
     }
   },
   watch: {
-    filters: 'getFilteredData'
+    filtersArray: 'getFilteredData'
   },
   mounted () {
     this.getInitialData()
@@ -46,14 +50,24 @@ export default {
     async getFilteredData () {
       const response = await axios.get(this.url)
       this.filteredData = response.data.rows
+    },
+    onSelect (expression) {
+      const field = this.config.triggerField || this.config.groupBy
+      const filter = { field }
+      if (!this.filters[field] || this.filters[field].expression.value !== expression.value) {
+        filter.expression = expression
+        // Otherwise omit expression to send a "remove" filter
+      }
+      this.$emit('filter', filter)
+    },
     }
   }
 }
 
-function constructUrl (config, filters) {
+function constructUrl (config, filtersArray) {
   const query = squel.select().from(config.dataset)
   const baseFilters = config.baseFilters || []
-  const combinedFilters = baseFilters.concat(filters)
+  const combinedFilters = baseFilters.concat(filtersArray)
 
   if (config.valueField || config.aggregateFunction || config.groupBy) {
     if (config.valueField) {
