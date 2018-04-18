@@ -11,8 +11,9 @@
         :is="widget.chartType"
         :initial-data="initialData"
         :filtered-data="filteredData"
-        slot-scope="{ initialData, filteredData, onSelect }"
-        @select="onSelect"/>
+        slot-scope="{ initialData, filteredData, onSelect, onDeselect }"
+        @select="onSelect"
+        @deselect="onDeselect"/>
     </component>
   </main>
 </template>
@@ -21,12 +22,14 @@
 import Vue from 'vue'
 import Carto from './components/providers/Carto'
 import Bar from './components/charts/Bar'
+import DateTime from './components/charts/DateTime'
 import widgets from '../fixtures/config-crime-incidents.json'
 
 export default {
   components: {
     Carto,
-    Bar: Bar
+    Bar,
+    datetime: DateTime
   },
   data () {
     return {

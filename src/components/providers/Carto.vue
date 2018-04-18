@@ -4,6 +4,7 @@
       :initialData="initialData"
       :filteredData="filteredData"
       :onSelect="onSelect"
+      :onDeselect="onDeselect"/>
   </div>
 </template>
 
@@ -60,6 +61,10 @@ export default {
       }
       this.$emit('filter', filter)
     },
+    onDeselect () {
+      const field = this.config.triggerField || this.config.groupBy
+      const filter = { field } // omit expression to send "remove" filter
+      this.$emit('filter', filter)
     }
   }
 }
