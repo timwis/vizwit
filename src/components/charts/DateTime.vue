@@ -12,6 +12,27 @@
         :d="area(filteredData)"
         class="area filtered-data"/>
     </g>
+    <g
+      :transform="`translate(0,${height-30})`"
+      class="axis axis--x">
+      <line
+        :x2="width"
+        x1="0"/>
+      <g
+        v-for="(tick, index) in xScale.ticks()"
+        v-if="index !== 0"
+        :key="tick.toISOString()"
+        :transform="`translate(${xScale(tick)})`"
+        class="tick"
+        opacity="1">
+        <line y2="6"/>
+        <text
+          y="9"
+          dy="0.71em">
+          {{ tick.toLocaleDateString() }}
+        </text>
+      </g>
+    </g>
   </svg>
 </template>
 
@@ -108,4 +129,14 @@ export default {
 
     &.filtered-data
       fill: #f99300
+
+  .axis
+    font-family: sans-serif
+    text-anchor: middle
+
+    line
+      stroke: #000
+
+    text
+      fill: #000
 </style>
