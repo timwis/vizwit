@@ -17,6 +17,7 @@
           :width="xScale.bandwidth()"
           :height="height - yScale(datum.value)"
           :data-label="datum.label"
+          :class="{ 'is-filtered': filteredData.length > 0 }"
           class="bar initial-data"/>
         <rect
           v-if="filteredDataKeyed[datum.label]"
@@ -63,7 +64,7 @@ export default {
       const labels = this.initialData.map((datum) => datum.label)
       return d3.scaleBand()
         .rangeRound([0, this.width])
-        .padding(0.1)
+        .padding(0.2)
         .domain(labels)
     },
     yScale () {
@@ -102,10 +103,15 @@ export default {
 </script>
 
 <style lang="sass">
+@import '../../styles/_variables.sass'
+
 .chart
   .bar
-    fill: #2176d2
+    fill: $chart-fill-active
+    stroke: $chart-stroke-active
+    stroke-width: 0.8
 
-    &.filtered-data
-      fill: #96c9ff
+    &.is-filtered
+      fill: $chart-fill-filtered
+      stroke: $chart-stroke-filtered
 </style>

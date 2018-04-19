@@ -7,6 +7,7 @@
     <g ref="group">
       <path
         :d="area(initialData)"
+        :class="{ 'is-filtered': filteredData.length > 0 }"
         class="area"/>
       <path
         :d="area(filteredData)"
@@ -129,14 +130,17 @@ export default {
 </script>
 
 <style lang="sass">
+@import '../../styles/_variables.sass'
+
 .chart
   .area
-    fill: #96c9ff
-    stroke: #2176d2
-    stroke-width: 2.5px
+    fill: $chart-fill-active
+    stroke: $chart-stroke-active
+    stroke-width: 1.5
 
-    &.filtered-data
-      fill: #f99300
+    &.is-filtered
+      fill: $chart-fill-filtered
+      stroke: $chart-stroke-filtered
 
   .axis
     font-family: sans-serif
