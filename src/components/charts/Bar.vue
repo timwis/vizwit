@@ -43,6 +43,10 @@ export default {
     filteredData: {
       type: Array,
       default: () => []
+    },
+    currentSelection: {
+      type: Object,
+      default: null
     }
   },
   data () {
@@ -82,11 +86,16 @@ export default {
     },
     onClickBar (event) {
       const label = event.target.dataset.label
-      const expression = {
-        type: '=',
-        value: label
+      const currentSelectionLabel = this.currentSelection && this.currentSelection.value
+      if (label === currentSelectionLabel) {
+        this.$emit('deselect')
+      } else {
+        const expression = {
+          type: '=',
+          value: label
+        }
+        this.$emit('select', expression)
       }
-      this.$emit('select', expression)
     }
   }
 }

@@ -2,9 +2,7 @@
   <div>
     <slot
       :initialData="initialData"
-      :filteredData="filteredData"
-      :onSelect="onSelect"
-      :onDeselect="onDeselect"/>
+      :filteredData="filteredData"/>
   </div>
 </template>
 
@@ -14,13 +12,29 @@ import axios from 'axios'
 
 export default {
   props: {
-    config: {
-      type: Object,
-      default: () => {}
-    },
     filters: {
       type: Object,
       default: () => {}
+    },
+    domain: {
+      type: String,
+      required: true
+    },
+    dataset: {
+      type: String,
+      required: true
+    },
+    groupBy: {
+      type: String,
+      required: true
+    },
+    triggerField: {
+      type: String,
+      default: null
+    },
+    order: {
+      type: String,
+      default: null
     }
   },
   data () {
@@ -30,9 +44,6 @@ export default {
     }
   },
   computed: {
-    url () {
-      return constructUrl(this.config, this.filtersArray)
-    },
     filtersArray () {
       return Object.values(this.filters)
     }
@@ -45,31 +56,23 @@ export default {
   },
   methods: {
     async getInitialData () {
-      const response = await axios.get(this.url)
+      const url = constructUrl(this.$props)
+      const response = await axios.get(url)
       this.initialData = response.data.rows
     },
     async getFilteredData () {
-      const response = await axios.get(this.url)
-      this.filteredData = response.data.rows
-    },
-    onSelect (expression) {
-      const field = this.config.triggerField || this.config.groupBy
-      const filter = { field }
-      if (!this.filters[field] || this.filters[field].expression.value !== expression.value) {
-        filter.expression = expression
-        // Otherwise omit expression to send a "remove" filter
+      if (this.filtersArray.length === 0) {
+        this.filteredData = []
+      } else {
+        const url = constructUrl(this.$props, this.filtersArray)
+        const response = await axios.get(url)
+        this.filteredData = response.data.rows
       }
-      this.$emit('filter', filter)
-    },
-    onDeselect () {
-      const field = this.config.triggerField || this.config.groupBy
-      const filter = { field } // omit expression to send "remove" filter
-      this.$emit('filter', filter)
     }
   }
 }
 
-function constructUrl (config, filtersArray) {
+function constructUrl (config, filtersArray = []) {
   const query = squel.select().from(config.dataset)
   const baseFilters = config.baseFilters || []
   const combinedFilters = baseFilters.concat(filtersArray)

@@ -1,35 +1,22 @@
 <template>
   <main>
-    <component
+    <Widget
       v-for="widget in widgets"
       :key="widget.title"
-      :is="widget.provider"
-      :config="widget"
+      v-bind="widget"
       :filters="filters"
-      @filter="onFilter">
-      <component
-        :is="widget.chartType"
-        :initial-data="initialData"
-        :filtered-data="filteredData"
-        slot-scope="{ initialData, filteredData, onSelect, onDeselect }"
-        @select="onSelect"
-        @deselect="onDeselect"/>
-    </component>
+      @filter="onFilter"/>
   </main>
 </template>
 
 <script>
 import Vue from 'vue'
-import Carto from './components/providers/Carto'
-import Bar from './components/charts/Bar'
-import DateTime from './components/charts/DateTime'
+import Widget from './components/Widget'
 import widgets from '../fixtures/config-crime-incidents.json'
 
 export default {
   components: {
-    Carto,
-    Bar,
-    datetime: DateTime
+    Widget
   },
   data () {
     return {
