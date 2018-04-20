@@ -12,6 +12,7 @@
         class="bars"
         @click="onClickBar">
         <g
+          v-tooltip="getTooltipContent(datum)"
           v-for="datum in initialData"
           :key="datum.label"
           :height="height - yScale(datum.value)"
@@ -39,8 +40,12 @@
 <script>
 import * as d3 from 'd3'
 import keyBy from 'lodash/keyBy'
+import { VTooltip } from 'v-tooltip'
 
 export default {
+  directives: {
+    'tooltip': VTooltip
+  },
   props: {
     height: {
       type: Number,
@@ -100,6 +105,18 @@ export default {
         }
         this.$emit('select', expression)
       }
+    },
+    getTooltipContent (datum) {
+      let content = `
+        <b>${datum.label}</b><br>
+        Total: ${datum.value.toLocaleString()}
+      `
+      if (this.filteredDataKeyed[datum.label]) {
+        content += `<br>
+        Filtered: ${datum.value.toLocaleString()}
+        `
+      }
+      return content
     }
   }
 }
@@ -107,6 +124,7 @@ export default {
 
 <style lang="sass">
 @import '../../styles/_variables.sass'
+@import '../../styles/tooltip.scss'
 
 .chart-container
   overflow-x: auto
@@ -120,4 +138,7 @@ export default {
     &.is-filtered
       fill: $chart-fill-filtered
       stroke: $chart-stroke-filtered
+
+.tooltip
+  font-family: sans-serif
 </style>
