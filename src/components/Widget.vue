@@ -10,6 +10,7 @@
     <component
       :is="chartComponent"
       :current-selection="currentSelection"
+      :height="height"
       :initial-data="initialData"
       :filtered-data="filteredData"
       slot-scope="{ initialData, filteredData }"
@@ -41,6 +42,10 @@ export default {
     filters: {
       type: Object,
       default: () => {}
+    },
+    height: {
+      type: Number,
+      default: undefined
     },
     provider: {
       type: String,

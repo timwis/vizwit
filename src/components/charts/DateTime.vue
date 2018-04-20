@@ -43,6 +43,10 @@ import formatDate from 'date-fns/format'
 
 export default {
   props: {
+    height: {
+      type: Number,
+      default: 450
+    },
     initialData: {
       type: Array,
       default: () => []
@@ -58,8 +62,7 @@ export default {
   },
   data () {
     return {
-      width: 0,
-      height: 450
+      width: 0
     }
   },
   computed: {

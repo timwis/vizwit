@@ -42,6 +42,10 @@ import keyBy from 'lodash/keyBy'
 
 export default {
   props: {
+    height: {
+      type: Number,
+      default: 450
+    },
     initialData: {
       type: Array,
       default: () => []
@@ -57,7 +61,6 @@ export default {
   },
   data () {
     return {
-      height: 450,
       barWidth: 75
     }
   },
