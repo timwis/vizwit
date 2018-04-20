@@ -1,34 +1,39 @@
 <template>
-  <svg
-    ref="chart"
-    :height="height"
-    width="100%"
-    class="chart">
-    <g
-      class="bars"
-      @click="onClickBar">
+  <div
+    ref="container"
+    class="chart-container"
+    width="100%">
+    <svg
+      ref="chart"
+      :height="height"
+      :width="width"
+      class="chart">
       <g
-        v-for="datum in initialData"
-        :key="datum.label"
-        :height="height - yScale(datum.value)"
-        :transform="`translate(${xScale(datum.label)}, 0)`">
-        <rect
-          :y="yScale(datum.value)"
-          :width="xScale.bandwidth()"
+        class="bars"
+        @click="onClickBar">
+        <g
+          v-for="datum in initialData"
+          :key="datum.label"
           :height="height - yScale(datum.value)"
-          :data-label="datum.label"
-          :class="{ 'is-filtered': filteredData.length > 0 }"
-          class="bar initial-data"/>
-        <rect
-          v-if="filteredDataKeyed[datum.label]"
-          :y="yScale(filteredDataKeyed[datum.label].value)"
-          :width="xScale.bandwidth()"
-          :height="height-yScale(filteredDataKeyed[datum.label].value)"
-          :data-label="datum.label"
-          class="bar filtered-data"/>
+          :transform="`translate(${xScale(datum.label)}, 0)`">
+          <rect
+            :y="yScale(datum.value)"
+            :width="xScale.bandwidth()"
+            :height="height - yScale(datum.value)"
+            :data-label="datum.label"
+            :class="{ 'is-filtered': filteredData.length > 0 }"
+            class="bar initial-data"/>
+          <rect
+            v-if="filteredDataKeyed[datum.label]"
+            :y="yScale(filteredDataKeyed[datum.label].value)"
+            :width="xScale.bandwidth()"
+            :height="height-yScale(filteredDataKeyed[datum.label].value)"
+            :data-label="datum.label"
+            class="bar filtered-data"/>
+        </g>
       </g>
-    </g>
-  </svg>
+    </svg>
+  </div>
 </template>
 
 <script>
@@ -52,8 +57,8 @@ export default {
   },
   data () {
     return {
-      width: 0,
-      height: 450
+      height: 450,
+      barWidth: 75
     }
   },
   computed: {
@@ -62,9 +67,11 @@ export default {
     },
     xScale () {
       const labels = this.initialData.map((datum) => datum.label)
+      const width = this.barWidth * this.initialData.length
       return d3.scaleBand()
-        .rangeRound([0, this.width])
-        .padding(0.2)
+        .rangeRound([0, width])
+        .paddingInner(0.1)
+        .align(0)
         .domain(labels)
     },
     yScale () {
@@ -72,19 +79,12 @@ export default {
       return d3.scaleLinear()
         .rangeRound([this.height, 0])
         .domain([0, d3.max(values)])
+    },
+    width () {
+      return this.barWidth * this.initialData.length
     }
   },
-  mounted () {
-    window.addEventListener('resize', this.updateWidth)
-    this.updateWidth() // refs are not available in `data`
-  },
-  destroyed () {
-    window.removeEventListener('resize', this.updateWidth)
-  },
   methods: {
-    updateWidth () {
-      this.width = this.$refs.chart.getBoundingClientRect().width
-    },
     onClickBar (event) {
       const label = event.target.dataset.label
       const currentSelectionLabel = this.currentSelection && this.currentSelection.value
@@ -104,6 +104,9 @@ export default {
 
 <style lang="sass">
 @import '../../styles/_variables.sass'
+
+.chart-container
+  overflow-x: auto
 
 .chart
   .bar
