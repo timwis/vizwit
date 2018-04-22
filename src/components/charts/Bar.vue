@@ -33,6 +33,23 @@
             class="bar filtered-data"/>
         </g>
       </g>
+      <g
+        :transform="`translate(0, ${height-30})`"
+        class="axis axis--x">
+        <g
+          v-for="datum in initialData"
+          :key="`tick-${datum.label}`"
+          :transform="`translate(${xScale(datum.label) + (barWidth / 2)})`"
+          class="tick"
+          opacity="1">
+          <line y2="6"/>
+          <WrappingText
+            :characters-per-line="10"
+            :text="datum.label"
+            y="9"
+            dy="0.71em"/>
+        </g>
+      </g>
     </svg>
   </div>
 </template>
@@ -41,8 +58,12 @@
 import * as d3 from 'd3'
 import keyBy from 'lodash/keyBy'
 import { VTooltip } from 'v-tooltip'
+import WrappingText from '../WrappingText'
 
 export default {
+  components: {
+    WrappingText
+  },
   directives: {
     'tooltip': VTooltip
   },

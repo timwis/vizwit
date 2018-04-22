@@ -16,22 +16,19 @@
     <g
       :transform="`translate(0,${height-30})`"
       class="axis axis--x">
-      <line
-        :x2="width"
-        x1="0"/>
       <g
-        v-for="(tick, index) in xScale.ticks()"
+        v-for="(tick, index) in xScale.ticks(tickCount)"
         v-if="index !== 0"
         :key="tick.toISOString()"
         :transform="`translate(${xScale(tick)})`"
         class="tick"
         opacity="1">
         <line y2="6"/>
-        <text
+        <WrappingText
+          :characters-per-line="5"
+          :text="getMonthYear(tick)"
           y="9"
-          dy="0.71em">
-          {{ getMonthYear(tick) }}
-        </text>
+          dy="0.71em"/>
       </g>
     </g>
   </svg>
@@ -40,8 +37,12 @@
 <script>
 import * as d3 from 'd3'
 import formatDate from 'date-fns/format'
+import WrappingText from '../WrappingText'
 
 export default {
+  components: {
+    WrappingText
+  },
   props: {
     height: {
       type: Number,
@@ -62,7 +63,8 @@ export default {
   },
   data () {
     return {
-      width: 0
+      width: 0,
+      tickWidth: 100
     }
   },
   computed: {
@@ -84,6 +86,9 @@ export default {
         .x((datum) => this.xScale(new Date(datum.label)))
         .y0(this.height)
         .y1((datum) => this.yScale(datum.value))
+    },
+    tickCount () {
+      return Math.round(this.width / this.tickWidth)
     }
   },
   mounted () {
