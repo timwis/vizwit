@@ -4,7 +4,10 @@
     :height="height"
     width="100%"
     class="chart">
-    <g ref="group">
+    <g
+      ref="areas"
+      :transform="`translate(${margin.left}, ${margin.top})`"
+      :height="innerHeight">
       <path
         :d="area(initialData)"
         :class="{ 'is-filtered': filteredData.length > 0 }"
@@ -14,8 +17,9 @@
         class="area filtered-data"/>
     </g>
     <g
-      :transform="`translate(0,${height-30})`"
+      :transform="`translate(0,${innerHeight})`"
       class="axis axis--x">
+      <line :x2="width"/>
       <g
         v-for="(tick, index) in xScale.ticks(tickCount)"
         v-if="index !== 0"
@@ -25,7 +29,7 @@
         opacity="1">
         <line y2="6"/>
         <WrappingText
-          :characters-per-line="5"
+          :characters-per-line="9"
           :text="getMonthYear(tick)"
           y="9"
           dy="0.71em"/>
@@ -64,10 +68,19 @@ export default {
   data () {
     return {
       width: 0,
-      tickWidth: 100
+      tickWidth: 100,
+      margin: {
+        top: 0,
+        right: 0,
+        bottom: 30,
+        left: 0
+      }
     }
   },
   computed: {
+    innerHeight () {
+      return this.height - this.margin.top - this.margin.bottom
+    },
     xScale () {
       const labels = this.initialData.map((datum) => new Date(datum.label))
       return d3.scaleTime()
@@ -77,14 +90,14 @@ export default {
     yScale () {
       const values = this.initialData.map((datum) => datum.value)
       return d3.scaleLinear()
-        .rangeRound([this.height, 0])
+        .rangeRound([this.innerHeight, 0])
         .domain([0, d3.max(values)])
     },
     area () {
       return d3.area()
         .curve(d3.curveMonotoneX)
         .x((datum) => this.xScale(new Date(datum.label)))
-        .y0(this.height)
+        .y0(this.innerHeight)
         .y1((datum) => this.yScale(datum.value))
     },
     tickCount () {
@@ -95,7 +108,7 @@ export default {
     window.addEventListener('resize', this.updateWidth)
     this.updateWidth() // refs are not available in `data`
 
-    d3.select(this.$refs.group)
+    d3.select(this.$refs.areas)
       .call(d3.brushX().on('end', this.onBrush))
   },
   destroyed () {
@@ -109,7 +122,7 @@ export default {
       this.width = this.$refs.chart.getBoundingClientRect().width
     },
     onBrush () {
-      const selection = d3.brushSelection(this.$refs.group)
+      const selection = d3.brushSelection(this.$refs.areas)
       let expression
       if (selection) {
         const [ minDate, maxDate ] = selection.map((item) => this.xScale.invert(item))

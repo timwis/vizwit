@@ -9,18 +9,19 @@
       :width="width"
       class="chart">
       <g
+        :transform="`translate(${margin.left}, ${margin.top})`"
         class="bars"
         @click="onClickBar">
         <g
           v-tooltip="getTooltipContent(datum)"
           v-for="datum in initialData"
           :key="datum.label"
-          :height="height - yScale(datum.value)"
+          :height="innerHeight - yScale(datum.value)"
           :transform="`translate(${xScale(datum.label)}, 0)`">
           <rect
             :y="yScale(datum.value)"
             :width="xScale.bandwidth()"
-            :height="height - yScale(datum.value)"
+            :height="innerHeight - yScale(datum.value)"
             :data-label="datum.label"
             :class="{ 'is-filtered': filteredData.length > 0 }"
             class="bar initial-data"/>
@@ -28,13 +29,13 @@
             v-if="filteredDataKeyed[datum.label]"
             :y="yScale(filteredDataKeyed[datum.label].value)"
             :width="xScale.bandwidth()"
-            :height="height-yScale(filteredDataKeyed[datum.label].value)"
+            :height="innerHeight - yScale(filteredDataKeyed[datum.label].value)"
             :data-label="datum.label"
             class="bar filtered-data"/>
         </g>
       </g>
       <g
-        :transform="`translate(0, ${height-30})`"
+        :transform="`translate(0, ${innerHeight})`"
         class="axis axis--x">
         <g
           v-for="datum in initialData"
@@ -44,7 +45,7 @@
           opacity="1">
           <line y2="6"/>
           <WrappingText
-            :characters-per-line="10"
+            :characters-per-line="8"
             :text="datum.label"
             y="9"
             dy="0.71em"/>
@@ -87,10 +88,19 @@ export default {
   },
   data () {
     return {
-      barWidth: 75
+      barWidth: 75,
+      margin: {
+        top: 0,
+        right: 0,
+        bottom: 30,
+        left: 0
+      }
     }
   },
   computed: {
+    innerHeight () {
+      return this.height - this.margin.top - this.margin.bottom
+    },
     filteredDataKeyed () {
       return keyBy(this.filteredData, 'label')
     },
@@ -98,7 +108,7 @@ export default {
       const labels = this.initialData.map((datum) => datum.label)
       const width = this.barWidth * this.initialData.length
       return d3.scaleBand()
-        .rangeRound([0, width])
+        .rangeRound([0, width - this.margin.left - this.margin.right])
         .paddingInner(0.1)
         .align(0)
         .domain(labels)
@@ -106,7 +116,7 @@ export default {
     yScale () {
       const values = this.initialData.map((datum) => datum.value)
       return d3.scaleLinear()
-        .rangeRound([this.height, 0])
+        .rangeRound([this.innerHeight, 0])
         .domain([0, d3.max(values)])
     },
     width () {

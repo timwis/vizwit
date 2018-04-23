@@ -3,7 +3,7 @@
     <tspan
       v-for="(line, index) in lines"
       :key="index"
-      :dy="`${index * lineHeight}em`"
+      :dy="`${index + 1 * lineHeight}em`"
       x="0">
       {{ line }}
     </tspan>
@@ -25,7 +25,7 @@ export default {
     },
     lineHeight: {
       type: Number,
-      default: 1
+      default: 0.71
     }
   },
   computed: {
