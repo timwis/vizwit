@@ -1,22 +1,25 @@
 <template>
-  <component
-    :is="providerComponent"
-    :domain="domain"
-    :dataset="dataset"
-    :group-by="groupBy"
-    :trigger-field="triggerField"
-    :order="order"
-    :filters="filters">
+  <div class="widget">
+    <h2 v-if="title">{{ title }}</h2>
     <component
-      :is="chartComponent"
-      :current-selection="currentSelection"
-      :height="height"
-      :initial-data="initialData"
-      :filtered-data="filteredData"
-      slot-scope="{ initialData, filteredData }"
-      @select="onSelect"
-      @deselect="onDeselect"/>
-  </component>
+      :is="providerComponent"
+      :domain="domain"
+      :dataset="dataset"
+      :group-by="groupBy"
+      :trigger-field="triggerField"
+      :order="order"
+      :filters="filters">
+      <component
+        :is="chartComponent"
+        :current-selection="currentSelection"
+        :height="height"
+        :initial-data="initialData"
+        :filtered-data="filteredData"
+        slot-scope="{ initialData, filteredData }"
+        @select="onSelect"
+        @deselect="onDeselect"/>
+    </component>
+  </div>
 </template>
 
 <script>
@@ -45,7 +48,11 @@ export default {
     },
     height: {
       type: Number,
-      default: undefined
+      default: undefined // let charts set their own default height
+    },
+    title: {
+      type: String,
+      default: null
     },
     provider: {
       type: String,
