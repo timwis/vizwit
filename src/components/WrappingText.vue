@@ -17,7 +17,7 @@ export default {
   props: {
     text: {
       type: String,
-      required: true
+      default: ''
     },
     charactersPerLine: {
       type: Number,
@@ -30,6 +30,8 @@ export default {
   },
   computed: {
     lines () {
+      if (!this.text) return []
+
       return wrap.hard(0, this.charactersPerLine)(this.text).split('\n')
     }
   }
