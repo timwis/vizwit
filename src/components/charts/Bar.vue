@@ -18,20 +18,41 @@
           :key="datum.label"
           :height="innerHeight - yScale(datum.value)"
           :transform="`translate(${xScale(datum.label)}, 0)`">
+
+          <!-- Inactive, initial data, always rendered -->
           <rect
             :y="yScale(datum.value)"
             :width="xScale.bandwidth()"
             :height="innerHeight - yScale(datum.value)"
             :data-label="datum.label"
-            :class="{ 'is-filtered': filteredData.length > 0 }"
-            class="bar initial-data"/>
+            class="bar inactive initial-data"/>
+
+          <!-- Active initial data, when no filters set -->
           <rect
-            v-if="filteredDataKeyed[datum.label]"
+            v-if="filteredData.length === 0"
+            :y="yScale(datum.value)"
+            :width="xScale.bandwidth()"
+            :height="innerHeight - yScale(datum.value)"
+            :data-label="datum.label"
+            class="bar active initial-data"/>
+
+          <!-- Filtered data, when a value exists for this category -->
+          <rect
+            v-else-if="filteredDataKeyed[datum.label]"
             :y="yScale(filteredDataKeyed[datum.label].value)"
             :width="xScale.bandwidth()"
             :height="innerHeight - yScale(filteredDataKeyed[datum.label].value)"
             :data-label="datum.label"
-            class="bar filtered-data"/>
+            class="bar active filtered-data"/>
+
+          <!-- Filtered data, 0 height, when no value exists for this category -->
+          <rect
+            v-else
+            :y="innerHeight"
+            :width="xScale.bandwidth()"
+            :height="0"
+            :data-label="datum.label"
+            class="bar active filtered-data"/>
         </g>
       </g>
       <g
@@ -162,11 +183,14 @@ export default {
 
 .chart
   .bar
-    fill: $chart-fill-active
-    stroke: $chart-stroke-active
     stroke-width: 0.8
+    transition: height 0.3s ease-out, y 0.3s ease-out
 
-    &.is-filtered
+    &.active
+      fill: $chart-fill-active
+      stroke: $chart-stroke-active
+
+    &.inactive
       fill: $chart-fill-filtered
       stroke: $chart-stroke-filtered
 

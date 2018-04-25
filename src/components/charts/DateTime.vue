@@ -8,13 +8,23 @@
       ref="areas"
       :transform="`translate(${margin.left}, ${margin.top})`"
       :height="innerHeight">
+
+      <!-- Inactive, initial data, always rendered -->
       <path
         :d="area(initialData)"
-        :class="{ 'is-filtered': filteredData.length > 0 }"
-        class="area"/>
+        class="area inactive initial-data"/>
+
+      <!-- Active initial data, when no filters set -->
       <path
+        v-if="filteredData.length === 0"
+        :d="area(initialData)"
+        class="area active initial-data"/>
+
+      <!-- Filtered data -->
+      <path
+        v-else
         :d="area(filteredData)"
-        class="area filtered-data"/>
+        class="area active filtered-data"/>
     </g>
     <g
       :transform="`translate(0,${innerHeight})`"
@@ -155,11 +165,14 @@ export default {
 
 .chart
   .area
-    fill: $chart-fill-active
-    stroke: $chart-stroke-active
     stroke-width: 1.5
+    transition: d 0.3s ease-out
 
-    &.is-filtered
+    &.active
+      fill: $chart-fill-active
+      stroke: $chart-stroke-active
+
+    &.inactive
       fill: $chart-fill-filtered
       stroke: $chart-stroke-filtered
 
