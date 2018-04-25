@@ -165,7 +165,7 @@ export default {
       `
       if (this.filteredDataKeyed[datum.label]) {
         content += `<br>
-        Filtered: ${datum.value.toLocaleString()}
+        Filtered: ${this.filteredDataKeyed[datum.label].value.toLocaleString()}
         `
       }
       return content
