@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import Carto from './providers/CartoStub'
+import Carto from './providers/Carto'
 import Bar from './charts/Bar'
 import DateTime from './charts/DateTime'
 
