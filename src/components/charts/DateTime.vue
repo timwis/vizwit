@@ -7,7 +7,8 @@
     <g
       ref="areas"
       :transform="`translate(${margin.left}, ${margin.top})`"
-      :height="innerHeight">
+      :height="innerHeight"
+      @mousemove="onMouseMove">
 
       <!-- Inactive, initial data, always rendered -->
       <path
@@ -45,12 +46,39 @@
           dy="0.71em"/>
       </g>
     </g>
+    <g
+      v-if="focusDatum"
+      :transform="`translate(${xScale(new Date(focusDatum.label))},${yScale(focusDatum.value)})`"
+      class="focus">
+      <circle r="4.5"/>
+      <text
+        x="9"
+        dy=".35em">
+        <tspan
+          x="0"
+          dy="1em">
+          {{ getMonthYear(focusDatum.label) }}
+        </tspan>
+        <tspan
+          x="0"
+          dy="1em">
+          Total: {{ focusDatum.value.toLocaleString() }}
+        </tspan>
+        <tspan
+          v-if="filteredDataKeyed[focusDatum.label]"
+          x="0"
+          dy="1em">
+          Filtered: {{ filteredDataKeyed[focusDatum.label].value.toLocaleString() }}
+        </tspan>
+      </text>
+    </g>
   </svg>
 </template>
 
 <script>
 import * as d3 from 'd3'
 import formatDate from 'date-fns/format'
+import keyBy from 'lodash/keyBy'
 import WrappingText from '../WrappingText'
 
 export default {
@@ -84,12 +112,16 @@ export default {
         right: 0,
         bottom: 30,
         left: 0
-      }
+      },
+      focusDatum: null
     }
   },
   computed: {
     innerHeight () {
       return this.height - this.margin.top - this.margin.bottom
+    },
+    filteredDataKeyed () {
+      return keyBy(this.filteredData, 'label')
     },
     xScale () {
       const labels = this.initialData.map((datum) => new Date(datum.label))
@@ -155,6 +187,25 @@ export default {
       } else {
         this.$emit('deselect')
       }
+    },
+    onMouseMove (event) {
+      const hoverDate = this.xScale.invert(event.clientX)
+      this.focusDatum = this.getNearestDatum(hoverDate)
+    },
+    getNearestDatum (date) {
+      const getBisectedIndex = d3.bisector((datum) => new Date(datum.label)).left
+      const bisectedIndex = getBisectedIndex(this.initialData, date, 1)
+
+      const leftDatum = this.initialData[bisectedIndex - 1]
+      const rightDatum = this.initialData[bisectedIndex]
+
+      if (!rightDatum) return leftDatum // will occur at right edge of scale
+
+      const leftDate = leftDatum.label
+      const rightDate = rightDatum.label
+      return ((date - leftDate) > (rightDate - date))
+        ? rightDatum
+        : leftDatum
     }
   }
 }
@@ -185,4 +236,11 @@ export default {
 
     text
       fill: #000
+
+  .focus
+    circle
+      stroke: $chart-stroke-active
+    
+    text
+      font-family: sans-serif
 </style>
