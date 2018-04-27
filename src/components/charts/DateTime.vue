@@ -240,7 +240,7 @@ export default {
   .focus
     circle
       stroke: $chart-stroke-active
-    
+
     text
       font-family: sans-serif
 </style>

@@ -19,6 +19,9 @@
         @select="onSelect"
         @deselect="onDeselect"/>
     </component>
+    <CurrentFilters
+      :filters="filters"
+      @remove="onRemoveFilter"/>
   </div>
 </template>
 
@@ -26,6 +29,7 @@
 import Carto from './providers/Carto'
 import Bar from './charts/Bar'
 import DateTime from './charts/DateTime'
+import CurrentFilters from './CurrentFilters'
 
 const providers = {
   carto: Carto
@@ -39,7 +43,8 @@ export default {
   components: {
     Carto,
     Bar,
-    DateTime
+    DateTime,
+    CurrentFilters
   },
   props: {
     filters: {
@@ -108,6 +113,13 @@ export default {
     onDeselect () {
       const filter = {
         field: this.field
+        // omit expression to remove the filter
+      }
+      this.$emit('filter', filter)
+    },
+    onRemoveFilter (field) {
+      const filter = {
+        field
         // omit expression to remove the filter
       }
       this.$emit('filter', filter)
