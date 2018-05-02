@@ -52,6 +52,9 @@
       :transform="`translate(${xScale(new Date(focusDatum.label))},${yScale(focusDatum.value)})`"
       class="focus">
       <circle r="4.5"/>
+      <line
+        :y2="innerHeight - yScale(focusDatum.value)"
+        x2="3"/>
       <text
         x="9"
         dy=".35em">
@@ -244,4 +247,8 @@ export default {
 
     text
       font-family: sans-serif
+
+    line
+      stroke: $chart-stroke-active
+      stroke-dasharray: 5,5
 </style>
