@@ -8,7 +8,8 @@
       ref="areas"
       :transform="`translate(${margin.left}, ${margin.top})`"
       :height="innerHeight"
-      @mousemove="onMouseMove">
+      @mousemove="onMouseMove"
+      @mouseout="focusDatum = null">
 
       <!-- Inactive, initial data, always rendered -->
       <path
