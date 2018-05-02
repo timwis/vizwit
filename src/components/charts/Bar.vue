@@ -193,7 +193,4 @@ export default {
     &.inactive
       fill: $chart-fill-filtered
       stroke: $chart-stroke-filtered
-
-.tooltip
-  font-family: sans-serif
 </style>

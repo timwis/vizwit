@@ -221,7 +221,6 @@ export default {
       stroke: $chart-stroke-filtered
 
   .axis
-    font-family: sans-serif
     text-anchor: middle
 
     line
