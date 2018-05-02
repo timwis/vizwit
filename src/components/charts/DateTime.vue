@@ -55,26 +55,15 @@
       <line
         :y2="innerHeight - yScale(focusDatum.value)"
         x2="3"/>
-      <text
-        x="9"
-        dy=".35em">
-        <tspan
-          x="0"
-          dy="1em">
-          {{ getMonthYear(focusDatum.label) }}
-        </tspan>
-        <tspan
-          x="0"
-          dy="1em">
-          Total: {{ focusDatum.value.toLocaleString() }}
-        </tspan>
-        <tspan
-          v-if="filteredDataKeyed[focusDatum.label]"
-          x="0"
-          dy="1em">
-          Filtered: {{ filteredDataKeyed[focusDatum.label].value.toLocaleString() }}
-        </tspan>
-      </text>
+      <foreignObject>
+        <div class="tooltip">
+          <h3>{{ getMonthYear(focusDatum.label) }}</h3>
+          <p>Total: {{ focusDatum.value.toLocaleString() }}</p>
+          <p v-if="filteredDataKeyed[focusDatum.label]">
+            Filtered: {{ filteredDataKeyed[focusDatum.label].value.toLocaleString() }}
+          </p>
+        </div>
+      </foreignObject>
     </g>
   </svg>
 </template>
@@ -245,8 +234,15 @@ export default {
     circle
       stroke: $chart-stroke-active
 
-    text
-      font-family: sans-serif
+    .tooltip
+      width: 150px
+      background-color: rgba(0, 0, 0, 0.5)
+      color: #fff
+      padding: 10px
+      margin: 5px
+
+      p
+        line-height: 1em
 
     line
       stroke: $chart-stroke-active
