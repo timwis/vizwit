@@ -174,7 +174,7 @@ export default {
 }
 </script>
 
-<style lang="sass">
+<style lang="sass" scoped>
 @import '../../styles/_variables.sass'
 @import '../../styles/tooltip.scss'
 
@@ -185,6 +185,7 @@ export default {
   .bar
     stroke-width: 0.8
     transition: height 0.3s ease-out, y 0.3s ease-out
+    cursor: pointer
 
     &.active
       fill: $chart-fill-active
@@ -193,4 +194,13 @@ export default {
     &.inactive
       fill: $chart-fill-filtered
       stroke: $chart-stroke-filtered
+
+  .axis
+    text-anchor: middle
+
+    line
+      stroke: #000
+
+    text
+      fill: #000
 </style>

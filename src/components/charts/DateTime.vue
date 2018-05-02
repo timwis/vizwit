@@ -204,7 +204,7 @@ export default {
 }
 </script>
 
-<style lang="sass">
+<style lang="sass" scoped>
 @import '../../styles/_variables.sass'
 
 .chart
