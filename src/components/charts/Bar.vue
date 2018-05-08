@@ -11,9 +11,10 @@
       <g
         :transform="`translate(${margin.left}, ${margin.top})`"
         class="bars"
-        @click="onClickBar">
+        @click="onClickBar"
+        @mouseover="onMouseOver"
+        @mouseout="focusDatum = null">
         <g
-          v-tooltip="getTooltipContent(datum)"
           v-for="datum in initialData"
           :key="datum.label"
           :height="innerHeight - yScale(datum.value)"
@@ -72,6 +73,20 @@
             dy="0.71em"/>
         </g>
       </g>
+      <g
+        v-if="focusDatum"
+        :transform="`translate(${xScale(focusDatum.label)},${yScale(focusDatum.value)})`"
+        class="focus">
+        <foreignObject>
+          <div class="tooltip">
+            <h3>{{ focusDatum.label }}</h3>
+            <p>Total: {{ focusDatum.value.toLocaleString() }}</p>
+            <p v-if="filteredDataKeyed[focusDatum.label]">
+              Filtered: {{ filteredDataKeyed[focusDatum.label].value.toLocaleString() }}
+            </p>
+          </div>
+        </foreignObject>
+      </g>
     </svg>
   </div>
 </template>
@@ -115,7 +130,8 @@ export default {
         right: 0,
         bottom: 30,
         left: 0
-      }
+      },
+      focusDatum: null
     }
   },
   computed: {
@@ -169,6 +185,10 @@ export default {
         `
       }
       return content
+    },
+    onMouseOver (event) {
+      const label = event.target.dataset.label
+      this.focusDatum = this.initialData.find((datum) => datum.label === label)
     }
   }
 }
@@ -203,4 +223,16 @@ export default {
 
     text
       fill: #000
+
+  .focus
+    .tooltip
+      width: 150px
+      background-color: rgba(0, 0, 0, 0.5)
+      color: #fff
+      padding: 10px
+      margin: 5px
+      pointer-events: none
+
+      p
+        line-height: 1em
 </style>
