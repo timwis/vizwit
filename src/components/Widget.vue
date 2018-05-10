@@ -10,12 +10,12 @@
       :order="order"
       :filters="filters">
       <component
+        slot-scope="{ initialData, filteredData }"
         :is="chartComponent"
-        :current-selection="currentSelection"
-        :height="height"
         :initial-data="initialData"
         :filtered-data="filteredData"
-        slot-scope="{ initialData, filteredData }"
+        :current-selection="currentSelection"
+        :height="height"
         @select="onSelect"
         @deselect="onDeselect"/>
     </component>
