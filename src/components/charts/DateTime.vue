@@ -182,7 +182,7 @@ export default {
       }
     },
     onMouseMove (event) {
-      const hoverDate = this.xScale.invert(event.clientX)
+      const hoverDate = this.xScale.invert(event.offsetX)
       this.focusDatum = this.getNearestDatum(hoverDate)
     },
     getNearestDatum (date) {
