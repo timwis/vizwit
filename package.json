@@ -18,17 +18,47 @@
     "wordwrap": "^1.0.0"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^3.0.0-beta.6",
-    "@vue/cli-plugin-eslint": "^3.0.0-beta.6",
-    "@vue/cli-service": "^3.0.0-beta.6",
-    "@vue/eslint-config-standard": "^3.0.0-beta.6",
-    "node-sass": "^4.7.2",
-    "sass-loader": "^6.0.6",
-    "vue-template-compiler": "^2.5.13"
+    "@vue/cli-plugin-babel": "^3.7.0",
+    "@vue/cli-plugin-eslint": "^3.7.0",
+    "@vue/cli-service": "^3.7.0",
+    "@vue/eslint-config-standard": "^4.0.0",
+    "babel-eslint": "^10.0.1",
+    "eslint": "^5.16.0",
+    "eslint-plugin-vue": "^5.0.0",
+    "sass": "^1.18.0",
+    "sass-loader": "^7.1.0",
+    "vue-cli-plugin-pug": "^1.0.7",
+    "vue-template-compiler": "^2.5.21"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/recommended",
+      "@vue/standard"
+    ],
+    "rules": {
+      "vue/html-closing-bracket-newline": [
+        "error",
+        {
+          "multiline": "never"
+        }
+      ]
+    },
+    "parserOptions": {
+      "parser": "babel-eslint"
+    }
+  },
+  "postcss": {
+    "plugins": {
+      "autoprefixer": {}
+    }
   },
   "browserslist": [
-    "> 1%",
-    "last 2 versions",
-    "not ie <= 8"
+    ">0.25%",
+    "not ie 11",
+    "not op_mini all"
   ]
 }
