@@ -27,12 +27,14 @@
 
 <script>
 import Carto from './providers/Carto'
+import Local from './providers/Local'
 import Bar from './charts/Bar'
 import DateTime from './charts/DateTime'
 import CurrentFilters from './CurrentFilters'
 
 const providers = {
-  carto: Carto
+  carto: Carto,
+  local: Local
 }
 const chartTypes = {
   bar: Bar,
@@ -65,7 +67,7 @@ export default {
     },
     domain: {
       type: String,
-      required: true
+      required: false
     },
     dataset: {
       type: String,

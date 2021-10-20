@@ -13,7 +13,15 @@
       @filter="onFilter"/>
     <Widget
       :filters="filters"
-      title="General crime category"
+      title="General crime category (local)"
+      chart-type="bar"
+      provider="local"
+      dataset="crimes_1k.csv"
+      group-by="text_general_code"
+      @filter="onFilter"/>
+    <Widget
+      :filters="filters"
+      title="General crime category (remote)"
       chart-type="bar"
       provider="carto"
       domain="timwis.carto.com"
