@@ -89,7 +89,7 @@ function constructUrl (config, filtersArray = []) {
     }
 
     if (config.groupBy) {
-      query.field(`${config.groupBy} as label`)
+      query.field(`${config.groupBy} as key`)
         .group(config.groupBy)
 
       // Order by (only if there will be multiple results)

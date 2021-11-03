@@ -49,7 +49,7 @@
     </g>
     <g
       v-if="focusDatum"
-      :transform="`translate(${xScale(new Date(focusDatum.label))},${yScale(focusDatum.value)})`"
+      :transform="`translate(${xScale(new Date(focusDatum.key))},${yScale(focusDatum.value)})`"
       class="focus">
       <circle r="4.5"/>
       <line
@@ -57,10 +57,10 @@
         x2="3"/>
       <foreignObject>
         <div class="tooltip">
-          <h3>{{ getMonthYear(focusDatum.label) }}</h3>
+          <h3>{{ getMonthYear(focusDatum.key) }}</h3>
           <p>Total: {{ focusDatum.value.toLocaleString() }}</p>
-          <p v-if="filteredDataKeyed[focusDatum.label]">
-            Filtered: {{ filteredDataKeyed[focusDatum.label].value.toLocaleString() }}
+          <p v-if="filteredDataKeyed[focusDatum.key]">
+            Filtered: {{ filteredDataKeyed[focusDatum.key].value.toLocaleString() }}
           </p>
         </div>
       </foreignObject>
@@ -114,13 +114,13 @@ export default {
       return this.height - this.margin.top - this.margin.bottom
     },
     filteredDataKeyed () {
-      return keyBy(this.filteredData, 'label')
+      return keyBy(this.filteredData, 'key')
     },
     xScale () {
-      const labels = this.initialData.map((datum) => new Date(datum.label))
+      const keys = this.initialData.map((datum) => new Date(datum.key))
       return d3.scaleTime()
         .range([0, this.width])
-        .domain(d3.extent(labels))
+        .domain(d3.extent(keys))
     },
     yScale () {
       const values = this.initialData.map((datum) => datum.value)
@@ -131,7 +131,7 @@ export default {
     area () {
       return d3.area()
         .curve(d3.curveMonotoneX)
-        .x((datum) => this.xScale(new Date(datum.label)))
+        .x((datum) => this.xScale(new Date(datum.key)))
         .y0(this.innerHeight)
         .y1((datum) => this.yScale(datum.value))
     },
@@ -167,12 +167,12 @@ export default {
             {
               type: '>=',
               value: minDate.toISOString(),
-              label: formatDate(minDate, this.dateFormat)
+              key: formatDate(minDate, this.dateFormat)
             },
             {
               type: '<=',
               value: maxDate.toISOString(),
-              label: formatDate(maxDate, this.dateFormat)
+              key: formatDate(maxDate, this.dateFormat)
             }
           ]
         }
@@ -186,7 +186,7 @@ export default {
       this.focusDatum = this.getNearestDatum(hoverDate)
     },
     getNearestDatum (date) {
-      const getBisectedIndex = d3.bisector((datum) => new Date(datum.label)).left
+      const getBisectedIndex = d3.bisector((datum) => new Date(datum.key)).left
       const bisectedIndex = getBisectedIndex(this.initialData, date, 1)
 
       const leftDatum = this.initialData[bisectedIndex - 1]
@@ -194,8 +194,8 @@ export default {
 
       if (!rightDatum) return leftDatum // will occur at right edge of scale
 
-      const leftDate = leftDatum.label
-      const rightDate = rightDatum.label
+      const leftDate = leftDatum.key
+      const rightDate = rightDatum.key
       return ((date - leftDate) > (rightDate - date))
         ? rightDatum
         : leftDatum

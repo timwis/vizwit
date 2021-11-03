@@ -16,16 +16,16 @@
         @mouseout="focusDatum = null">
         <g
           v-for="datum in initialData"
-          :key="datum.label"
+          :key="datum.key"
           :height="innerHeight - yScale(datum.value)"
-          :transform="`translate(${xScale(datum.label)}, 0)`">
+          :transform="`translate(${xScale(datum.key)}, 0)`">
 
           <!-- Inactive, initial data, always rendered -->
           <rect
             :y="yScale(datum.value)"
             :width="xScale.bandwidth()"
             :height="innerHeight - yScale(datum.value)"
-            :data-label="datum.label"
+            :data-key="datum.key"
             class="bar inactive initial-data"/>
 
           <!-- Active initial data, when no filters set -->
@@ -34,16 +34,16 @@
             :y="yScale(datum.value)"
             :width="xScale.bandwidth()"
             :height="innerHeight - yScale(datum.value)"
-            :data-label="datum.label"
+            :data-key="datum.key"
             class="bar active initial-data"/>
 
           <!-- Filtered data, when a value exists for this category -->
           <rect
-            v-else-if="filteredDataKeyed[datum.label]"
-            :y="yScale(filteredDataKeyed[datum.label].value)"
+            v-else-if="filteredDataKeyed[datum.key]"
+            :y="yScale(filteredDataKeyed[datum.key].value)"
             :width="xScale.bandwidth()"
-            :height="innerHeight - yScale(filteredDataKeyed[datum.label].value)"
-            :data-label="datum.label"
+            :height="innerHeight - yScale(filteredDataKeyed[datum.key].value)"
+            :data-key="datum.key"
             class="bar active filtered-data"/>
 
           <!-- Filtered data, 0 height, when no value exists for this category -->
@@ -52,7 +52,7 @@
             :y="innerHeight"
             :width="xScale.bandwidth()"
             :height="0"
-            :data-label="datum.label"
+            :data-key="datum.key"
             class="bar active filtered-data"/>
         </g>
       </g>
@@ -61,28 +61,28 @@
         class="axis axis--x">
         <g
           v-for="datum in initialData"
-          :key="`tick-${datum.label}`"
-          :transform="`translate(${xScale(datum.label) + (barWidth / 2)})`"
+          :key="`tick-${datum.key}`"
+          :transform="`translate(${xScale(datum.key) + (barWidth / 2)})`"
           class="tick"
           opacity="1">
           <line y2="6"/>
           <WrappingText
             :characters-per-line="8"
-            :text="datum.label"
+            :text="datum.key"
             y="9"
             dy="0.71em"/>
         </g>
       </g>
       <g
         v-if="focusDatum"
-        :transform="`translate(${xScale(focusDatum.label)},${yScale(focusDatum.value)})`"
+        :transform="`translate(${xScale(focusDatum.key)},${yScale(focusDatum.value)})`"
         class="focus">
         <foreignObject>
           <div class="tooltip">
-            <h3>{{ focusDatum.label }}</h3>
+            <h3>{{ focusDatum.key }}</h3>
             <p>Total: {{ focusDatum.value.toLocaleString() }}</p>
-            <p v-if="filteredDataKeyed[focusDatum.label]">
-              Filtered: {{ filteredDataKeyed[focusDatum.label].value.toLocaleString() }}
+            <p v-if="filteredDataKeyed[focusDatum.key]">
+              Filtered: {{ filteredDataKeyed[focusDatum.key].value.toLocaleString() }}
             </p>
           </div>
         </foreignObject>
@@ -139,16 +139,16 @@ export default {
       return this.height - this.margin.top - this.margin.bottom
     },
     filteredDataKeyed () {
-      return keyBy(this.filteredData, 'label')
+      return keyBy(this.filteredData, 'key')
     },
     xScale () {
-      const labels = this.initialData.map((datum) => datum.label)
+      const keys = this.initialData.map((datum) => datum.key)
       const width = this.barWidth * this.initialData.length
       return d3.scaleBand()
         .rangeRound([0, width - this.margin.left - this.margin.right])
         .paddingInner(0.1)
         .align(0)
-        .domain(labels)
+        .domain(keys)
     },
     yScale () {
       const values = this.initialData.map((datum) => datum.value)
@@ -162,33 +162,33 @@ export default {
   },
   methods: {
     onClickBar (event) {
-      const label = event.target.dataset.label
+      const key = event.target.dataset.key
       const currentSelectionLabel = this.currentSelection && this.currentSelection.value
-      if (label === currentSelectionLabel) {
+      if (key === currentSelectionLabel) {
         this.$emit('deselect')
       } else {
         const expression = {
           type: '=',
-          value: label
+          value: key
         }
         this.$emit('select', expression)
       }
     },
     getTooltipContent (datum) {
       let content = `
-        <b>${datum.label}</b><br>
+        <b>${datum.key}</b><br>
         Total: ${datum.value.toLocaleString()}
       `
-      if (this.filteredDataKeyed[datum.label]) {
+      if (this.filteredDataKeyed[datum.key]) {
         content += `<br>
-        Filtered: ${this.filteredDataKeyed[datum.label].value.toLocaleString()}
+        Filtered: ${this.filteredDataKeyed[datum.key].value.toLocaleString()}
         `
       }
       return content
     },
     onMouseOver (event) {
-      const label = event.target.dataset.label
-      this.focusDatum = this.initialData.find((datum) => datum.label === label)
+      const key = event.target.dataset.key
+      this.focusDatum = this.initialData.find((datum) => datum.key === key)
     }
   }
 }
