@@ -28,14 +28,14 @@
 
 <script>
 import Carto from './providers/Carto'
-import Local from './providers/Local'
+import Memory from './providers/Memory'
 import Bar from './charts/Bar'
 import DateTime from './charts/DateTime'
 import CurrentFilters from './CurrentFilters'
 
 const providers = {
   carto: Carto,
-  local: Local
+  memory: Memory
 }
 const chartTypes = {
   bar: Bar,

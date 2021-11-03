@@ -2,7 +2,7 @@
   <main>
     <Widget
       :filters="filters"
-      title="Crimes by date"
+      title="Crimes by date (carto)"
       chart-type="datetime"
       provider="carto"
       domain="timwis.carto.com"
@@ -14,16 +14,16 @@
       @filter="filter"/>
     <Widget
       :filters="filters"
-      title="General crime category (local)"
+      title="General crime category (memory)"
       chart-type="bar"
-      provider="local"
+      provider="memory"
       dataset="crimes_1k.csv"
       channel="crimes"
       group-by="text_general_code"
       @filter="filter"/>
     <Widget
       :filters="filters"
-      title="Police district"
+      title="Police district (carto)"
       chart-type="bar"
       provider="carto"
       domain="timwis.carto.com"
@@ -33,7 +33,7 @@
       @filter="filter"/>
     <Widget
       :filters="filters"
-      title="General crime category (remote)"
+      title="General crime category (carto)"
       chart-type="bar"
       provider="carto"
       domain="timwis.carto.com"
