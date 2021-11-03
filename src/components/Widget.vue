@@ -5,10 +5,11 @@
       :is="providerComponent"
       :domain="domain"
       :dataset="dataset"
+      :channel="channel"
       :group-by="groupBy"
       :trigger-field="triggerField"
       :order="order"
-      :filters="filters">
+      :filters="relevantFilters">
       <component
         slot-scope="{ initialData, filteredData }"
         :is="chartComponent"
@@ -20,7 +21,7 @@
         @deselect="onDeselect"/>
     </component>
     <CurrentFilters
-      :filters="filters"
+      :filters="relevantFilters"
       @remove="onRemoveFilter"/>
   </div>
 </template>
@@ -73,6 +74,12 @@ export default {
       type: String,
       required: true
     },
+    channel: {
+      type: String,
+      default () {
+        return this.dataset
+      }
+    },
     chartType: {
       type: String,
       required: true
@@ -100,13 +107,17 @@ export default {
     field () {
       return this.triggerField || this.groupBy
     },
+    relevantFilters () {
+      return this.filters[this.channel] || {}
+    },
     currentSelection () {
-      return this.filters[this.field] && this.filters[this.field].expression
+      return this.relevantFilters[this.field] && this.relevantFilters[this.field].expression
     }
   },
   methods: {
     onSelect (expression) {
       const filter = {
+        channel: this.channel,
         field: this.field,
         expression
       }
@@ -114,6 +125,7 @@ export default {
     },
     onDeselect () {
       const filter = {
+        channel: this.channel,
         field: this.field
         // omit expression to remove the filter
       }
@@ -121,6 +133,7 @@ export default {
     },
     onRemoveFilter (field) {
       const filter = {
+        channel: this.channel,
         field
         // omit expression to remove the filter
       }
