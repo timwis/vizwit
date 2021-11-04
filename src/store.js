@@ -44,8 +44,19 @@ export default new Vuex.Store({
     filterDimension (state, { channel, field, expression }) {
       const dataset = state.datasets[channel]
       const dimension = dataset.dimensions[field]
-      // TODO: work with other expression types
-      dimension.filter(expression.value)
+
+      if (expression.type === 'and') {
+        const valuesByOperator = expression.value.reduce((memo, exp) => {
+          memo[exp.type] = exp.value
+          return memo
+        }, {})
+        const gte = valuesByOperator['>=']
+        const lte = valuesByOperator['<=']
+
+        dimension.filterRange([gte, lte])
+      } else if (expression.type === '=') {
+        dimension.filterExact(expression.value)
+      }
     },
     unfilterDimension (state, { channel, field }) {
       const dataset = state.datasets[channel]
