@@ -76,7 +76,6 @@ export default new Vuex.Store({
     filter ({ commit, state }, filter) {
       const { field, expression, channel } = filter
       const dataset = state.datasets[channel]
-      console.log('filtering', filter)
 
       if (filter.expression) {
         commit('setFilter', filter)

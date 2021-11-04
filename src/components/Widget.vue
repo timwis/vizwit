@@ -1,6 +1,6 @@
 <template>
   <div class="widget">
-    <h2 v-if="title">{{ title }}</h2>
+    <h2 v-if="title" class="title">{{ title }}</h2>
     <component
       :is="providerComponent"
       :domain="domain"
