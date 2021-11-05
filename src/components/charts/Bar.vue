@@ -225,6 +225,10 @@ export default {
       fill: #000
 
   .focus
+    foreignObject
+      width: 150px
+      height: 200px
+
     .tooltip
       width: 150px
       background-color: rgba(0, 0, 0, 0.5)

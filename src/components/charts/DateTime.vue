@@ -233,6 +233,10 @@ export default {
     circle
       stroke: $chart-stroke-active
 
+    foreignObject
+      width: 150px
+      height: 200px
+
     .tooltip
       width: 150px
       background-color: rgba(0, 0, 0, 0.5)
