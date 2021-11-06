@@ -102,7 +102,7 @@ export default {
     WrappingText
   },
   directives: {
-    'tooltip': VTooltip
+    tooltip: VTooltip
   },
   props: {
     height: {
@@ -194,45 +194,56 @@ export default {
 }
 </script>
 
-<style lang="sass" scoped>
-@import '../../styles/_variables.sass'
-@import '../../styles/tooltip.scss'
+<style lang="scss" scoped>
+@import '../../styles/_variables.sass';
+@import '../../styles/tooltip.scss';
 
-.chart-container
-  overflow-x: auto
+.chart-container {
+  overflow-x: auto;
+}
 
-.chart
-  .bar
-    stroke-width: 0.8
-    transition: height 0.3s ease-out, y 0.3s ease-out
-    cursor: pointer
+.chart {
+  .bar {
+    stroke-width: 0.8;
+    transition: height 0.3s ease-out, y 0.3s ease-out;
+    cursor: pointer;
 
-    &.active
-      fill: $chart-fill-active
-      stroke: $chart-stroke-active
+    &.active {
+      fill: $chart-fill-active;
+      stroke: $chart-stroke-active;
+    }
 
-    &.inactive
-      fill: $chart-fill-filtered
-      stroke: $chart-stroke-filtered
+    &.inactive {
+      fill: $chart-fill-filtered;
+      stroke: $chart-stroke-filtered;
+    }
+  }
 
-  .axis
-    text-anchor: middle
+  .axis {
+    text-anchor: middle;
 
-    line
-      stroke: #000
+    line {
+      stroke: #000;
+    }
 
-    text
-      fill: #000
+    text {
+      fill: #000;
+    }
+  }
 
-  .focus
-    .tooltip
-      width: 150px
-      background-color: rgba(0, 0, 0, 0.5)
-      color: #fff
-      padding: 10px
-      margin: 5px
-      pointer-events: none
+  .focus {
+    .tooltip {
+      width: 150px;
+      background-color: rgba(0, 0, 0, 0.5);
+      color: #fff;
+      padding: 10px;
+      margin: 5px;
+      pointer-events: none;
 
-      p
-        line-height: 1em
+      p {
+        line-height: 1em;
+      }
+    }
+  }
+}
 </style>

@@ -35,8 +35,8 @@ const operators = {
   '!=': 'is not',
   '<=': 'is less than or equal to',
   '>=': 'is greater than or equal to',
-  'and': 'and',
-  'or': 'or'
+  and: 'and',
+  or: 'or'
 }
 
 export default {

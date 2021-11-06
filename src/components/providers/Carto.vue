@@ -49,7 +49,10 @@ export default {
     }
   },
   watch: {
-    filtersArray: 'getFilteredData'
+    filtersArray: {
+      handler: 'getFilteredData',
+      deep: true
+    }
   },
   mounted () {
     this.getInitialData()

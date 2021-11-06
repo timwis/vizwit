@@ -33,7 +33,6 @@
 </template>
 
 <script>
-import Vue from 'vue'
 import Widget from './components/Widget'
 
 export default {
@@ -49,9 +48,9 @@ export default {
     onFilter (filter) {
       if (filter.expression) {
         console.log('setting filter', filter)
-        Vue.set(this.filters, filter.field, filter)
+        this.filters[filter.field] = filter
       } else {
-        Vue.delete(this.filters, filter.field)
+        delete this.filters[filter.field]
       }
     }
   }

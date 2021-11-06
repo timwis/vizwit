@@ -9,15 +9,16 @@
       :trigger-field="triggerField"
       :order="order"
       :filters="filters">
-      <component
-        slot-scope="{ initialData, filteredData }"
-        :is="chartComponent"
-        :initial-data="initialData"
-        :filtered-data="filteredData"
-        :current-selection="currentSelection"
-        :height="height"
-        @select="onSelect"
-        @deselect="onDeselect"/>
+      <template v-slot:default="{ initialData, filteredData }">
+        <component
+          :is="chartComponent"
+          :initial-data="initialData"
+          :filtered-data="filteredData"
+          :current-selection="currentSelection"
+          :height="height"
+          @select="onSelect"
+          @deselect="onDeselect"/>
+      </template>
     </component>
     <CurrentFilters
       :filters="filters"

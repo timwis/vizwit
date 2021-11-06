@@ -32,20 +32,21 @@
       :transform="`translate(0,${innerHeight})`"
       class="axis axis--x">
       <line :x2="width"/>
-      <g
-        v-for="(tick, index) in xScale.ticks(tickCount)"
-        v-if="index !== 0"
-        :key="tick.toISOString()"
-        :transform="`translate(${xScale(tick)})`"
-        class="tick"
-        opacity="1">
-        <line y2="6"/>
-        <WrappingText
-          :characters-per-line="9"
-          :text="getMonthYear(tick)"
-          y="9"
-          dy="0.71em"/>
-      </g>
+      <template v-for="(tick, index) in xScale.ticks(tickCount)">
+        <g
+          v-if="index !== 0"
+          :key="tick.toISOString()"
+          :transform="`translate(${xScale(tick)})`"
+          class="tick"
+          opacity="1">
+          <line y2="6"/>
+          <WrappingText
+            :characters-per-line="9"
+            :text="getMonthYear(tick)"
+            y="9"
+            dy="0.71em"/>
+        </g>
+      </template>
     </g>
     <g
       v-if="focusDatum"
@@ -146,7 +147,7 @@ export default {
     d3.select(this.$refs.areas)
       .call(d3.brushX().on('end', this.onBrush))
   },
-  destroyed () {
+  unmounted () {
     window.removeEventListener('resize', this.updateWidth)
   },
   methods: {
@@ -160,7 +161,7 @@ export default {
       const selection = d3.brushSelection(this.$refs.areas)
       let expression
       if (selection) {
-        const [ minDate, maxDate ] = selection.map((item) => this.xScale.invert(item))
+        const [minDate, maxDate] = selection.map((item) => this.xScale.invert(item))
         expression = {
           type: 'and',
           value: [
@@ -204,46 +205,58 @@ export default {
 }
 </script>
 
-<style lang="sass" scoped>
-@import '../../styles/_variables.sass'
+<style lang="scss" scoped>
+@import '../../styles/_variables.sass';
 
-.chart
-  .area
-    stroke-width: 1.5
-    transition: d 0.3s ease-out
+.chart {
+  .area {
+    stroke-width: 1.5;
+    transition: d 0.3s ease-out;
 
-    &.active
-      fill: $chart-fill-active
-      stroke: $chart-stroke-active
+    &.active {
+      fill: $chart-fill-active;
+      stroke: $chart-stroke-active;
+    }
 
-    &.inactive
-      fill: $chart-fill-filtered
-      stroke: $chart-stroke-filtered
+    &.inactive {
+      fill: $chart-fill-filtered;
+      stroke: $chart-stroke-filtered;
+    }
+  }
 
-  .axis
-    text-anchor: middle
+  .axis {
+    text-anchor: middle;
 
-    line
-      stroke: #000
+    line {
+      stroke: #000;
+    }
 
-    text
-      fill: #000
+    text {
+      fill: #000;
+    }
+  }
 
-  .focus
-    circle
-      stroke: $chart-stroke-active
+  .focus {
+    circle {
+      stroke: $chart-stroke-active;
+    }
 
-    .tooltip
-      width: 150px
-      background-color: rgba(0, 0, 0, 0.5)
-      color: #fff
-      padding: 10px
-      margin: 5px
+    .tooltip {
+      width: 150px;
+      background-color: rgba(0, 0, 0, 0.5);
+      color: #fff;
+      padding: 10px;
+      margin: 5px;
 
-      p
-        line-height: 1em
+      p {
+        line-height: 1em;
+      }
+    }
 
-    line
-      stroke: $chart-stroke-active
-      stroke-dasharray: 5,5
+    line {
+      stroke: $chart-stroke-active;
+      stroke-dasharray: 5,5;
+    }
+  }
+}
 </style>
