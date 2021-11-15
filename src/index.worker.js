@@ -18,7 +18,7 @@ let db
 
 expose({
   query (sql, params) {
-    console.log('querying')
+    console.log('querying', sql)
     const result = db.exec(sql, params)
     return result
   }
@@ -65,6 +65,9 @@ function fetchData () {
 function loadData (data) {
   db.exec(`CREATE TABLE IF NOT EXISTS crimes (dc_key, dispatch_date_time datetime,
     dc_dist, text_general_code, location_block)`)
+
+  db.exec('CREATE INDEX idx_crimes_text_general_code ON crimes (text_general_code)')
+  db.exec('CREATE INDEX idx_crimes_dc_dist ON crimes (dc_dist)')
 
   db.exec('BEGIN TRANSACTION')
   db.exec('DELETE FROM crimes')
