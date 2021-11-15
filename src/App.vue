@@ -1,16 +1,15 @@
 <template>
   <main>
-    <!-- <Widget
+    <Widget
       :filters="filters"
       title="Crimes by date"
       chart-type="datetime"
-      provider="carto"
-      domain="timwis.carto.com"
-      dataset="crimes_2015_to_oct_2016"
-      group-by="date_trunc('month', dispatch_date)"
-      trigger-field="dispatch_date"
+      provider="sqlite"
+      dataset="crimes"
+      group-by="substr(dispatch_date_time, 1, 7)"
+      trigger-field="dispatch_date_time"
       order="label"
-      @filter="onFilter"/> -->
+      @filter="onFilter"/>
     <Widget
       :filters="filters"
       title="General crime category"

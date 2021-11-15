@@ -19,8 +19,7 @@ let db
 expose({
   query (sql, params) {
     console.log('querying', sql)
-    const result = db.exec(sql, params)
-    return result
+    return db.exec(sql, params)
   }
 })
 
@@ -68,6 +67,7 @@ function loadData (data) {
 
   db.exec('CREATE INDEX idx_crimes_text_general_code ON crimes (text_general_code)')
   db.exec('CREATE INDEX idx_crimes_dc_dist ON crimes (dc_dist)')
+  db.exec('CREATE INDEX idx_crimes_dispatch_date_time ON crimes (dispatch_date_time)')
 
   db.exec('BEGIN TRANSACTION')
   db.exec('DELETE FROM crimes')
