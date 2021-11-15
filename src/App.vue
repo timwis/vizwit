@@ -1,6 +1,6 @@
 <template>
   <main>
-    <Widget
+    <!-- <Widget
       :filters="filters"
       title="Crimes by date"
       chart-type="datetime"
@@ -10,23 +10,21 @@
       group-by="date_trunc('month', dispatch_date)"
       trigger-field="dispatch_date"
       order="label"
-      @filter="onFilter"/>
+      @filter="onFilter"/> -->
     <Widget
       :filters="filters"
       title="General crime category"
       chart-type="bar"
-      provider="carto"
-      domain="timwis.carto.com"
-      dataset="crimes_2015_to_oct_2016"
+      provider="sqlite"
+      dataset="crimes"
       group-by="text_general_code"
       @filter="onFilter"/>
     <Widget
       :filters="filters"
       title="Police district"
       chart-type="bar"
-      provider="carto"
-      domain="timwis.carto.com"
-      dataset="crimes_2015_to_oct_2016"
+      provider="sqlite"
+      dataset="crimes"
       group-by="dc_dist"
       @filter="onFilter"/>
   </main>

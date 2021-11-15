@@ -28,12 +28,14 @@
 
 <script>
 import Carto from './providers/Carto'
+import SQLite from './providers/SQLite'
 import Bar from './charts/Bar'
 import DateTime from './charts/DateTime'
 import CurrentFilters from './CurrentFilters'
 
 const providers = {
-  carto: Carto
+  carto: Carto,
+  sqlite: SQLite
 }
 const chartTypes = {
   bar: Bar,
@@ -43,6 +45,7 @@ const chartTypes = {
 export default {
   components: {
     Carto,
+    SQLite,
     Bar,
     DateTime,
     CurrentFilters
@@ -65,8 +68,7 @@ export default {
       required: true
     },
     domain: {
-      type: String,
-      required: true
+      type: String
     },
     dataset: {
       type: String,

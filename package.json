@@ -8,12 +8,15 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@jlongster/sql.js": "^1.6.7",
+    "absurd-sql": "^0.0.53",
     "axios": "^0.18.0",
     "core-js": "^3.6.5",
     "d3": "^4.13.0",
     "date-fns": "^1.29.0",
     "lodash": "^4.17.5",
     "squel": "^5.12.0",
+    "threads": "^1.7.0",
     "v-tooltip": "^2.0.0-rc.31",
     "vue": "^3.1.0",
     "@vue/compat": "^3.1.0",
@@ -34,7 +37,8 @@
     "sass": "^1.18.0",
     "sass-loader": "^7.1.0",
     "vue-cli-plugin-pug": "~2.0.0",
-    "@vue/compiler-sfc": "^3.1.0"
+    "@vue/compiler-sfc": "^3.1.0",
+    "threads-plugin": "^1.4.0"
   },
   "eslintConfig": {
     "root": true,
